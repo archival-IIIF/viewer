@@ -1,0 +1,7 @@
+#audio-player {
+    background-color: #404346;
+}
+
+.mejs__audio, .mejs__controls {
+    background: transparent !important;
+}

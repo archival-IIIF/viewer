@@ -1,0 +1,68 @@
+#treeview {
+    padding: 18px 12px;
+    flex-wrap: nowrap;
+    background-color: #EDECED;
+    flex-direction: column;
+}
+
+
+.treeview-item {
+    padding: 2px 6px;
+    cursor: pointer;
+    display: inline-flex;
+}
+
+
+.treeview-item.current {
+    background-color: #7CD6FA;
+    border-radius: 4px;
+}
+
+.treeview-caret {
+    height: 22px;
+    background: url("../icons/fa/caret-right.svg") no-repeat  4px;
+    width: 20px;
+}
+
+.no-caret {
+    height: 22px;
+    background: none !important;
+    width: 20px;
+}
+
+
+.treeview-label {
+    vertical-align: middle;
+    word-break: break-all;
+    line-height: 24px;
+}
+
+.treeview-caret.opened {
+    background: url("../icons/fa/caret-down.svg") no-repeat;
+}
+
+
+.level-2 {
+    margin-left: 10px;
+}
+
+.level-3 {
+    margin-left: 20px;
+}
+
+.level-4 {
+    margin-left: 30px;
+}
+
+a {
+    color: #7CD6FA;
+    text-decoration: none;
+}
+
+.label {
+    margin: 9px 0 3px 0;
+}
+
+.value {
+    margin: 0 0 6px 0;
+}
