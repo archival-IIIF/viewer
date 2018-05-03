@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import './css/App.css';
 import FolderView from './FolderView';
 import TreeView from './TreeView';
-import AudioPlayer from './AudioPlayer';
 import Splitter from './Splitter';
 import FileInfo from './FileInfo';
 import EventEmitter from "wolfy87-eventemitter/EventEmitter";
 import Manifest from "./lib/Manifest";
+import Viewer from "./Viewer";
 
 class App extends Component {
 
@@ -38,7 +38,7 @@ class App extends Component {
                     <TreeView />
                     <Splitter />
                     <div id="content">
-                        <AudioPlayer />
+                        <Viewer/>
                         <div id="folder-and-info">
                             <FolderView/>
                             <FileInfo />

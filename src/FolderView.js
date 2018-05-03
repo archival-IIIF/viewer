@@ -162,10 +162,13 @@ class FolderView extends React.Component {
                     }
                 }
 
-                // image
-                if (file.hasOwnProperty("sequences")) {
-                    window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
-                    return;
+
+                // pdf
+                if (Nested.has(file, "sequences", 0, "canvases", 0, "content", 0, "items", 0, "body", "type")) {
+                    if (file.sequences[0].canvases[0].content[0].items[0].body.type === "PDF") {
+                        window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
+                        return;
+                    }
                 }
 
                 // open unsupported file
