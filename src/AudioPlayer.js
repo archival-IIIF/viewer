@@ -10,7 +10,9 @@ class AudioPlayer extends React.Component {
         super(props);
 
         this.state = {
-            file: null
+            file: null,
+            mime: null,
+            mediaType: null
         };
     }
 
@@ -20,7 +22,7 @@ class AudioPlayer extends React.Component {
             return "";
         }
 
-        let sources = [{src: this.state.file, type: 'audio/mp3'}];
+        let sources = [{src: this.state.file, type: this.state.mime}];
         let config = {};
         let tracks = {};
 
@@ -28,9 +30,11 @@ class AudioPlayer extends React.Component {
             <div id="audio-player">
                 <MediaElement
                     id="player1"
-                    mediaType="audio"
+                    key={this.state.file}
+                    mediaType={this.state.mediaType}
                     preload="metadata"
                     controls
+                    height="360"
                     sources={JSON.stringify(sources)}
                     options={JSON.stringify(config)}
                     tracks={JSON.stringify(tracks)}
@@ -47,49 +51,50 @@ class AudioPlayer extends React.Component {
 
     showAudio(data) {
 
-
         if ( !Nested.has(data, "mediaSequences", 0, "elements", 0, "rendering", "format")) {
-
-            this.setState({
-                file: null,
-            });
-
+            this.clear();
             return;
         }
 
-        let format = data.mediaSequences[0].elements[0].rendering["format"];
-        if (format.substr(0, 5) !== "audio") {
-
-            this.setState({
-                file: null,
-            });
-
+        let mime = data.mediaSequences[0].elements[0].rendering["format"];
+        let mediaFormat = mime.substr(0, 5);
+        if (mediaFormat !== "audio" && mediaFormat !== "video") {
+            this.clear();
             return;
         }
 
         let file = data.mediaSequences[0].elements[0].rendering["@id"];
-
-        if (this.state.file !== null) {
-            document.getElementById("player1_html5").src = file;
+        if (file === null) {
+            this.clear();
             return;
         }
 
         this.setState({
             file: file,
+            mime: mime,
+            mediaType: mediaFormat
         });
     }
 
     updateFileInfo = this.showAudio.bind(this);
-    playAudio = this.playAudio.bind(this);
+    playAudioListener = this.playAudio.bind(this);
+
+    clear() {
+        this.setState({
+            file: null,
+            mime: null,
+            mediaType: null
+        });
+    }
 
     componentDidMount() {
         global.ee.addListener('update-file-info', this.updateFileInfo);
-        global.ee.addListener('play-audio', this.playAudio);
+        global.ee.addListener('play-audio', this.playAudioListener);
     }
 
     componentWillUnmount() {
         global.ee.removeListener('update-file-info', this.updateFileInfo);
-        global.ee.removeListener('play-audio', this.playAudio);
+        global.ee.removeListener('play-audio', this.playAudioListener);
 
     }
 

@@ -155,14 +155,11 @@ class FolderView extends React.Component {
 
                     let format = file.mediaSequences[0].elements[0].rendering.format;
 
-                    if (format.substr(0, 5) === "audio") {
+                    if (format.substr(0, 5) === "audio" || "video") {
                         let audioFile = file.mediaSequences[0].elements[0].rendering["@id"];
                         global.ee.emitEvent('play-audio', [audioFile]);
                         return;
                     }
-
-                    window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
-                    return;
                 }
 
                 // image
