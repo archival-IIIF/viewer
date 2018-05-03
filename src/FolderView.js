@@ -1,6 +1,5 @@
 import React from "react";
 import Loading from "./Loading";
-import Config from "./config/config";
 import Nested from './lib/Nested';
 import Manifest from "./lib/Manifest";
 
@@ -158,15 +157,6 @@ class FolderView extends React.Component {
                     if (format.substr(0, 5) === "audio" || "video") {
                         let audioFile = file.mediaSequences[0].elements[0].rendering["@id"];
                         global.ee.emitEvent('play-audio', [audioFile]);
-                        return;
-                    }
-                }
-
-
-                // pdf
-                if (Nested.has(file, "sequences", 0, "canvases", 0, "content", 0, "items", 0, "body", "type")) {
-                    if (file.sequences[0].canvases[0].content[0].items[0].body.type === "PDF") {
-                        window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
                         return;
                     }
                 }

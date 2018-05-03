@@ -3,6 +3,7 @@ import './css/viewer.css';
 import Nested from "./lib/Nested";
 import OpenSeadragon from "./OpenSeadragon";
 import MediaElement from "./MediaElement";
+import PdfViewer from "./PdfViewer";
 
 
 class Viewer extends React.Component {
@@ -33,6 +34,11 @@ class Viewer extends React.Component {
         let audioVideo = this.renderAudioVideo(data);
         if (audioVideo) {
             return audioVideo;
+        }
+
+        let pdf = this.renderPdf(data);
+        if (pdf) {
+            return pdf;
         }
 
         return "";
@@ -89,6 +95,34 @@ class Viewer extends React.Component {
                     options={JSON.stringify(config)}
                     tracks={JSON.stringify(tracks)}
                 />
+            </div>
+        );
+    }
+
+
+    renderPdf(data) {
+
+        if (!Nested.has(data, "sequences", 0, "canvases", 0, "content", 0, "items", 0, "body")) {
+            return false;
+        }
+
+        let body = data.sequences[0].canvases[0].content[0].items[0].body;
+
+        if (!body.hasOwnProperty("type") || body.type !== "PDF") {
+            return false;
+        }
+
+        if (!body.hasOwnProperty("id")) {
+            return false;
+        }
+
+        let file = body.id;
+        this.type = "pdf";
+
+
+        return (
+            <div id="viewer">
+                <PdfViewer file={file} key={file}/>
             </div>
         );
     }
