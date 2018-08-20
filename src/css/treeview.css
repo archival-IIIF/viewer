@@ -1,9 +1,12 @@
 #treeview {
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
     padding: 18px 12px;
-    flex-wrap: nowrap;
     background-color: #EDECED;
-    flex-direction: column;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 

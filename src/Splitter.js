@@ -9,6 +9,9 @@ class Splitter extends React.Component {
 
         super(props);
 
+        this.state = {
+            left: global.intialWidth
+        };
 
         let t = this;
 
@@ -26,7 +29,7 @@ class Splitter extends React.Component {
 
     render() {
 
-        return <div id="splitter"  onMouseDown={() => this.moveEnde() } onDoubleClick={() => this.hideTreeView()} />
+        return <div id="splitter"  onMouseDown={() => this.moveEnde() } onDoubleClick={() => this.hideTreeView()} style={{"left": this.state.left}} />
     }
 
 
@@ -41,6 +44,36 @@ class Splitter extends React.Component {
         global.ee.emitEvent('splitter-double-click');
     }
 
+
+    splitterMove(width) {
+        this.setState(
+            {left: width}
+        )
+    }
+
+    splitterDoubleClick() {
+        if (this.state.width > this.minWidth) {
+            this.setState({left: 0})
+        } else {
+            this.setState({left: this.intialWidth})
+        }
+
+    }
+
+    splitterMove = this.splitterMove.bind(this);
+    splitterDoubleClick = this.splitterDoubleClick.bind(this);
+
+
+    componentDidMount() {
+        global.ee.addListener('splitter-move', this.splitterMove);
+        global.ee.addListener('splitter-double-click', this.splitterDoubleClick);
+    }
+
+    componentWillUnmount() {
+
+        global.ee.removeListener('splitter-move', this.splitterMove);
+        global.ee.removeListener('splitter-move-end', this.splitterDoubleClick);
+    }
 
 
 }
