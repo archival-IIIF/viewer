@@ -102,21 +102,21 @@ class Viewer extends React.Component {
 
     renderPdf(data) {
 
-        if (!Nested.has(data, "sequences", 0, "canvases", 0, "content", 0, "items", 0, "body")) {
+        if (!Nested.has(data, "mediaSequences", 0, "elements", 0)) {
             return false;
         }
 
-        let body = data.sequences[0].canvases[0].content[0].items[0].body;
+        let element = data.mediaSequences[0].elements[0];
 
-        if (!body.hasOwnProperty("type") || body.type !== "PDF") {
+        if (!element.hasOwnProperty("format") || element.format !== "application/pdf") {
             return false;
         }
 
-        if (!body.hasOwnProperty("id")) {
+        if (!element.hasOwnProperty("@id")) {
             return false;
         }
 
-        let file = body.id;
+        let file = element["@id"];
         this.type = "pdf";
 
 
@@ -144,7 +144,7 @@ class Viewer extends React.Component {
     }
 
     openListener = this.open.bind(this); // click
-    playListener = this.play.bind(this);    // doubleClick
+    playListener = this.play.bind(this); // doubleClick
 
     componentDidMount() {
         global.ee.addListener('update-file-info', this.openListener);
