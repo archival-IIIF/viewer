@@ -1,5 +1,7 @@
 #viewer {
    background-color: #404346;
+    position: sticky;
+    top:0;
 }
 
 #openseadragon {

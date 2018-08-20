@@ -11,13 +11,11 @@ class TreeView extends React.Component {
         super(props);
 
         this.minWidth = 60;
-        this.intialWidth = 300;
 
         this.state = {
             opened: {},
             tree: false,
-            width: this.intialWidth,
-            height: this.getWindowHeight()
+            width: global.intialWidth,
         };
 
         this.treeInProgress = null;
@@ -36,7 +34,7 @@ class TreeView extends React.Component {
         }
 
         return (
-            <div id="treeview" style={{maxWidth: this.state.width, minWidth: this.state.width, height: this.state.height}} >
+            <div id="treeview" style={{maxWidth: this.state.width, minWidth: this.state.width}} >
                 <TreeViewItem data={this.state.tree} level={1} opened={true} currentFolderId={this.currentFolderId}/>
             </div>
         );
@@ -109,18 +107,6 @@ class TreeView extends React.Component {
 
     }
 
-    getWindowHeight() {
-        let w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0];
-        return w.innerHeight || e.clientHeight || g.clientHeight;
-    }
-
-    updateDimensions() {
-        this.setState({height: this.getWindowHeight()});
-    }
-
     splitterMove = this.splitterMove.bind(this);
     splitterDoubleClick = this.splitterDoubleClick.bind(this);
     updateCurrentFolderId = this.buildTree.bind(this);
@@ -129,20 +115,14 @@ class TreeView extends React.Component {
         global.ee.addListener('splitter-move', this.splitterMove);
         global.ee.addListener('splitter-double-click', this.splitterDoubleClick);
         global.ee.addListener('update-current-folder-id', this.updateCurrentFolderId);
-        window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     componentWillUnmount() {
-
         global.ee.removeListener('splitter-move', this.splitterMove);
         global.ee.removeListener('splitter-move-end', this.splitterDoubleClick);
         global.ee.removeListener('update-current-folder-id', this.updateCurrentFolderId);
-        window.removeEventListener("resize", this.updateDimensions.bind(this));
     }
 
-    componentWillMount() {
-        this.updateDimensions();
-    }
 
 
 }

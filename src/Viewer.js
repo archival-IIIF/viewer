@@ -84,7 +84,7 @@ class Viewer extends React.Component {
         this.type = "audioVideo";
 
         return (
-            <div id="viewer">
+            <div id="viewer" style={{left: this.state.left}}>
                 <MediaElement
                     id="player1"
                     key={file}
