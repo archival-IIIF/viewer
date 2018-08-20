@@ -41,19 +41,6 @@
     background: url("../icons/fa/caret-down.svg") no-repeat;
 }
 
-
-.level-2 {
-    margin-left: 10px;
-}
-
-.level-3 {
-    margin-left: 20px;
-}
-
-.level-4 {
-    margin-left: 30px;
-}
-
 a {
     color: #7CD6FA;
     text-decoration: none;

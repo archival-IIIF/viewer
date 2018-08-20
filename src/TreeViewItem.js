@@ -48,6 +48,7 @@ class TreeViewItem extends React.Component {
         }
 
 
+        let style = {"margin-left": (this.props.level-1)*10};
         let className = "treeview-item level-" + this.props.level;
         let classNameCaret = "treeview-caret";
 
@@ -85,7 +86,7 @@ class TreeViewItem extends React.Component {
 
         return (
             <div>
-                <div className={className}>
+                <div className={className} style={style}>
                     <div className={classNameCaret} onClick={() => this.toggleCaret()} />
                     <div className="treeview-label" onClick={() => this.openFolder(id)}>{label}</div>
                 </div>
