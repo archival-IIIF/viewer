@@ -57,7 +57,7 @@ class FileInfo extends React.Component {
             }
         }
 
-        let manifestUrl = data["@id"]+"/manifest.json";
+        let manifestUrl = data["@id"];
 
         return (
             <div id="file-info">

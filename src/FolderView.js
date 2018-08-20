@@ -127,7 +127,7 @@ class FolderView extends React.Component {
         });
 
         Manifest.get(
-            data["@id"] + "/manifest.json",
+            data["@id"],
             function (data) {
                 global.ee.emitEvent('update-file-info', [data]);
             }
@@ -138,7 +138,7 @@ class FolderView extends React.Component {
 
     openFile(file) {
         let id = file["@id"];
-        let manifest = id+"/manifest.json";
+        let manifest = id;
 
         Manifest.get(
             manifest,
@@ -180,7 +180,7 @@ class FolderView extends React.Component {
             return;
         }
 
-        let url = itemId+"/manifest.json";
+        let url = itemId;
         let t = this;
 
         Manifest.get(

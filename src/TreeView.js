@@ -52,7 +52,7 @@ class TreeView extends React.Component {
             this.currentFolderId = folderId;
         }
 
-        let url = folderId+"/manifest.json";
+        let url = folderId;
         let data = Manifest.fetchFromCache(url);
         data.opened = true;
 
@@ -76,7 +76,7 @@ class TreeView extends React.Component {
         }
 
         this.treeInProgress = data;
-        url = data.within+"/manifest.json";
+        url = data.within;
         let t = this;
         Manifest.get(
             url,
