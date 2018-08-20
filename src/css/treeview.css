@@ -1,12 +1,11 @@
 #treeview {
     position: fixed;
-    top:0;
+    top:40px;
     bottom: 0;
     left: 0;
     padding: 18px 12px;
     background-color: #EDECED;
     overflow-y: auto;
-    box-sizing: border-box;
 }
 
 

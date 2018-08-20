@@ -1,11 +1,10 @@
 #splitter {
     max-width: 8px;
     min-width: 8px;
-    bottom: 0;
     background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
     z-index: 999;
     cursor: col-resize;
     position: fixed;
-    top: 0;
+    top: 40px;
     bottom: 0;
 }
