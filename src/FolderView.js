@@ -202,6 +202,7 @@ class FolderView extends React.Component {
                 if (selectedData !== undefined) {
                     selected = selectedData["@id"];
                 }
+                selectedData = data;
 
                 let label = data["label"];
                 t.setState({
