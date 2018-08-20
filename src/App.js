@@ -7,6 +7,7 @@ import FileInfo from './FileInfo';
 import EventEmitter from "wolfy87-eventemitter/EventEmitter";
 import Manifest from "./lib/Manifest";
 import Viewer from "./Viewer";
+import TopBar from "./TopBar";
 
 
 class App extends Component {
@@ -27,9 +28,7 @@ class App extends Component {
 
         this.state = {
             className: "",
-            contentLeft: global.intialWidth,
-            folderAndInfoTop: 0,
-            folderAndInfoLeft: global.intialWidth +  global.splitterWidth
+            contentLeft: global.intialWidth +  global.splitterWidth,
         }
 
     }
@@ -40,6 +39,7 @@ class App extends Component {
 
         return (
             <div id="app">
+                <TopBar />
                 <div id="main" className={this.state.className}>
                     <TreeView />
                     <Splitter />

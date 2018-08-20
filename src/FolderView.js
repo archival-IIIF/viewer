@@ -13,7 +13,8 @@ class FolderView extends React.Component {
 
         this.state = {
             data: false,
-            selected: null
+            selected: null,
+            mode: "icon-view"
         };
     }
 
@@ -85,10 +86,12 @@ class FolderView extends React.Component {
             );
         }
 
+        let folderViewClassNames = "folder-view " + this.state.mode;
+
         return (
             <div id="folder-view-container">
                 <h1>{this.state.data.label}</h1>
-                <div className="folder-view">{content}</div>
+                <div className={folderViewClassNames}>{content}</div>
             </div>
         );
     }
@@ -217,10 +220,23 @@ class FolderView extends React.Component {
 
     }
 
+
+    showListView() {
+        this.setState({mode: "list-view"});
+    }
+
+    showIconView() {
+        this.setState({mode: "icon-view"});
+    }
+
     openFolder = this.openFolder.bind(this);
+    showListView = this.showListView.bind(this);
+    showIconView = this.showIconView.bind(this);
 
     componentDidMount() {
        global.ee.addListener('open-folder', this.openFolder);
+       global.ee.addListener('show-list-view', this.showListView);
+       global.ee.addListener('show-icon-view', this.showIconView);
 
         let id = Manifest.getIdFromCurrentUrl();
         this.openFolder(id);
@@ -228,6 +244,8 @@ class FolderView extends React.Component {
 
     componentWillUnmount() {
         global.ee.removeListener('open-folder', this.openFolder);
+        global.ee.removeListener('show-list-view', this.showListView);
+        global.ee.removeListener('show-icon-view', this.showIconView);
     }
 
 }

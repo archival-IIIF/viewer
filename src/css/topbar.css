@@ -1,0 +1,23 @@
+#topbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 40px;
+    padding: 10px;
+    background-color: lightgrey;
+    text-align: center;
+}
+
+#show-list-view {
+    background-image: url("../icons/fa/list-solid.svg");
+    background-repeat: no-repeat;
+    padding-left: 24px;
+}
+
+#show-icon-view {
+    background-image: url("../icons/fa/th-solid.svg");
+    background-repeat: no-repeat;
+    padding-left: 24px;
+    margin-right: 32px;
+}
