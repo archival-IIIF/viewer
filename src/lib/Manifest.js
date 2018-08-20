@@ -63,8 +63,6 @@ class Manifest {
 
         let url = new URL(window.location);
         let manifestUri = url.searchParams.get("manifest");
-        console.log(manifestUri);
-
 
         if (manifestUri === "") {
             return false;

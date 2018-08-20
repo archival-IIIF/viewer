@@ -61,17 +61,19 @@ class Viewer extends React.Component {
     }
 
     renderAudioVideo(data) {
-        if (!Nested.has(data, "mediaSequences", 0, "elements", 0, "rendering", "format")) {
+        if (!Nested.has(data, "mediaSequences", 0, "elements", 0, "format")) {
             return false;
         }
 
-        let mime = data.mediaSequences[0].elements[0].rendering["format"];
+        let mime = data.mediaSequences[0].elements[0]["format"];
+        console.log(mime);
+
         let mediaType = mime.substr(0, 5);
         if (mediaType !== "audio" && mediaType !== "video") {
             return false;
         }
 
-        let file = data.mediaSequences[0].elements[0].rendering["@id"];
+        let file = data.mediaSequences[0].elements[0]["@id"];
         if (file === null) {
             return false;
         }
@@ -137,6 +139,7 @@ class Viewer extends React.Component {
     }
 
     play(data) {
+
         if (this.type === "audioVideo") {
             document.getElementById("player1_html5").play();
 

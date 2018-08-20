@@ -2,7 +2,6 @@ import React from "react";
 import filesize from "file-size";
 import iifLogo from "./icons/iiif.png";
 import Interweave from 'interweave';
-import Manifest from "./lib/Manifest";
 
 class FileInfo extends React.Component {
 
