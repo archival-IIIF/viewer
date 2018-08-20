@@ -1,5 +1,3 @@
-import Config from "../config/config";
-
 class Manifest {
 
     static cache = {};
@@ -62,15 +60,16 @@ class Manifest {
     }
 
     static getIdFromCurrentUrl() {
-        let shortId = window.location.pathname.substr(1);
-        if (shortId === "") {
+
+        let url = new URL(window.location);
+        let manifestUri = url.searchParams.get("manifest");
+        console.log(manifestUri);
+
+
+        if (manifestUri === "") {
             return false;
         }
-        return Config.manifestPrefix+shortId;
-    }
-
-    static getShortId(id) {
-        return id.substring(id.lastIndexOf('/') + 1);
+        return manifestUri;
     }
 }
 
