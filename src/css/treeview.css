@@ -3,6 +3,7 @@
     flex-wrap: nowrap;
     background-color: #EDECED;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 

@@ -48,7 +48,7 @@ class TreeViewItem extends React.Component {
         }
 
 
-        let style = {"margin-left": (this.props.level-1)*10};
+        let style = {"marginLeft": (this.props.level-1)*10};
         let className = "treeview-item level-" + this.props.level;
         let classNameCaret = "treeview-caret";
 
