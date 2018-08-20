@@ -150,12 +150,12 @@ class FolderView extends React.Component {
                 }
 
                 // audio/video
-                if (Nested.has(file, "mediaSequences", 0, "elements", 0, "rendering", "format")) {
+                if (Nested.has(file, "mediaSequences", 0, "elements", 0, "format")) {
 
-                    let format = file.mediaSequences[0].elements[0].rendering.format;
+                    let format = file.mediaSequences[0].elements[0].format;
 
                     if (format.substr(0, 5) === "audio" || format.substr(0, 5) === "video") {
-                        let audioFile = file.mediaSequences[0].elements[0].rendering["@id"];
+                        let audioFile = file.mediaSequences[0].elements[0]["@id"];
                         global.ee.emitEvent('play-audio', [audioFile]);
                         return;
                     }
