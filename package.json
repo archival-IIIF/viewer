@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "file-size": "^1.0.0",
+    "homepage": "^1.0.0",
     "interweave": "^8.0.2",
     "mediaelement": "^4.2.9",
     "openseadragon": "^2.3.1",
