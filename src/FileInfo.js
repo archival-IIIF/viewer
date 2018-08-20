@@ -100,8 +100,7 @@ class FileInfo extends React.Component {
 
         if (data !== null && data !== undefined) {
             let label = data["label"];
-            let shortId = Manifest.getShortId(data["@id"]);
-            window.history.pushState({}, label, shortId);
+            window.history.pushState({}, label, "?manifest=" + data["@id"]);
         }
 
     }

@@ -203,13 +203,12 @@ class FolderView extends React.Component {
                     selected = selectedData["@id"];
                 }
 
-                let shortId = Manifest.getShortId(id);
                 let label = data["label"];
                 t.setState({
                     data: data,
                     selected: selected
                 });
-                window.history.pushState({}, label, shortId);
+                window.history.pushState({}, label, "?manifest=" + id);
                 global.ee.emitEvent('update-current-folder-id', [id]);
                 global.ee.emitEvent('update-file-info', [selectedData]);
             }
