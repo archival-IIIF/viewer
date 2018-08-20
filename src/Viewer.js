@@ -66,7 +66,6 @@ class Viewer extends React.Component {
         }
 
         let mime = data.mediaSequences[0].elements[0]["format"];
-        console.log(mime);
 
         let mediaType = mime.substr(0, 5);
         if (mediaType !== "audio" && mediaType !== "video") {
