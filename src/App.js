@@ -76,31 +76,10 @@ class App extends Component {
         }
 
     }
-
-    viewerActivated() {
-        this.setState({folderAndInfoTop: document.getElementById("viewer").clientHeight});
-    }
-
-    viewerDeactivated() {
-        this.setState({folderAndInfoTop: 0});
-    }
-
-
-    viewerActivated = this.viewerActivated.bind(this);
-    viewerDeactivated = this.viewerDeactivated.bind(this);
-
-
-
+    
     componentDidMount() {
         global.ee.addListener('splitter-move', this.splitterMove.bind(this));
         global.ee.addListener('splitter-move-end', this.splitterMoveEnd.bind(this));
-        global.ee.addListener('viewer-activated', this.viewerActivated);
-        global.ee.addListener('viewer-deactivated', this.viewerDeactivated);
-    }
-
-    componentWillUnmount() {
-        global.ee.addListener('viewer-activated', this.viewerActivated);
-        global.ee.addListener('viewer-deactivated', this.viewerDeactivated);
     }
 
 }
