@@ -133,3 +133,9 @@ h3 {
 .empty {
     margin-top: 24px;
 }
+
+#provider-logo {
+    margin: 30px 0 0;
+    max-width: 70%;
+    display: block;
+}

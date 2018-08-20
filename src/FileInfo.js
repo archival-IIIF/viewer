@@ -56,6 +56,10 @@ class FileInfo extends React.Component {
             }
         }
 
+        if (this.state.data.hasOwnProperty("logo")) {
+            metadataView.push(<img id="provider-logo" src={this.state.data.logo} title="" alt=""/>);
+        }
+
         let manifestUrl = data["@id"];
 
         return (
