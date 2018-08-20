@@ -1,6 +1,5 @@
 import React from "react";
 import Loading from "./Loading";
-import Config from "./config/config";
 import Nested from './lib/Nested';
 import Manifest from "./lib/Manifest";
 
@@ -128,7 +127,7 @@ class FolderView extends React.Component {
         });
 
         Manifest.get(
-            data["@id"] + "/manifest.json",
+            data["@id"],
             function (data) {
                 global.ee.emitEvent('update-file-info', [data]);
             }
@@ -139,7 +138,7 @@ class FolderView extends React.Component {
 
     openFile(file) {
         let id = file["@id"];
-        let manifest = id+"/manifest.json";
+        let manifest = id;
 
         Manifest.get(
             manifest,
@@ -155,20 +154,11 @@ class FolderView extends React.Component {
 
                     let format = file.mediaSequences[0].elements[0].rendering.format;
 
-                    if (format.substr(0, 5) === "audio") {
+                    if (format.substr(0, 5) === "audio" || format.substr(0, 5) === "video") {
                         let audioFile = file.mediaSequences[0].elements[0].rendering["@id"];
                         global.ee.emitEvent('play-audio', [audioFile]);
                         return;
                     }
-
-                    window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
-                    return;
-                }
-
-                // image
-                if (file.hasOwnProperty("sequences")) {
-                    window.location.href = Config.universalViewerUrl+"index.html?manifest="+manifest;
-                    return;
                 }
 
                 // open unsupported file
@@ -190,7 +180,7 @@ class FolderView extends React.Component {
             return;
         }
 
-        let url = itemId+"/manifest.json";
+        let url = itemId;
         let t = this;
 
         Manifest.get(

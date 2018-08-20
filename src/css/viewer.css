@@ -1,5 +1,11 @@
-#audio-player {
-    background-color: #404346;
+#viewer {
+   background-color: #404346;
+}
+
+#openseadragon {
+    width: 800px;
+    height: 600px;
+    margin: 0 auto;
 }
 
 .mejs__container, .mejs__controls {

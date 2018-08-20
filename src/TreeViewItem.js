@@ -24,7 +24,7 @@ class TreeViewItem extends React.Component {
         let data;
         if (this.state.data === undefined) {
 
-            let url = this.state.id+"/manifest.json";
+            let url = this.state.id;
             let t = this;
 
             data = Manifest.fetchFromCache(url);
