@@ -5,9 +5,9 @@ import TreeView from './TreeView';
 import Splitter from './Splitter';
 import FileInfo from './FileInfo';
 import EventEmitter from "wolfy87-eventemitter/EventEmitter";
-import Manifest from "./lib/Manifest";
 import Viewer from "./Viewer";
 import TopBar from "./TopBar";
+import ManifestHistory from "./lib/ManifestHistory";
 
 
 class App extends Component {
@@ -20,11 +20,6 @@ class App extends Component {
         global.intialWidth = 300;
         global.splitterWidth = 8;
 
-
-        window.onpopstate = function(event) {
-            let id = Manifest.getIdFromCurrentUrl();
-            global.ee.emitEvent('open-folder', [id]);
-        };
 
         this.state = {
             className: "",
@@ -78,6 +73,11 @@ class App extends Component {
     }
     
     componentDidMount() {
+
+        window.addEventListener('popstate', function(event) {
+           ManifestHistory.goBack();
+        });
+
         global.ee.addListener('splitter-move', this.splitterMove.bind(this));
         global.ee.addListener('splitter-move-end', this.splitterMoveEnd.bind(this));
     }

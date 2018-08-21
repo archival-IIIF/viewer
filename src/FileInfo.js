@@ -113,12 +113,6 @@ class FileInfo extends React.Component {
         this.setState({
             data: data
         });
-
-        if (data !== null && data !== undefined) {
-            let label = data["label"];
-            window.history.pushState({}, label, "?manifest=" + data["@id"]);
-        }
-
     }
 
 

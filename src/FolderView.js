@@ -2,6 +2,7 @@ import React from "react";
 import Loading from "./Loading";
 import Nested from './lib/Nested';
 import Manifest from "./lib/Manifest";
+import ManifestHistory from "./lib/ManifestHistory";
 
 
 class FolderView extends React.Component {
@@ -132,6 +133,7 @@ class FolderView extends React.Component {
         Manifest.get(
             data["@id"],
             function (data) {
+                ManifestHistory.pageChanged(data["@id"], data["label"]);
                 global.ee.emitEvent('update-file-info', [data]);
             }
         );
@@ -140,6 +142,9 @@ class FolderView extends React.Component {
     }
 
     openFile(file) {
+
+        console.log(file);
+
         let id = file["@id"];
         let manifest = id;
 
@@ -176,7 +181,7 @@ class FolderView extends React.Component {
     }
 
 
-    openFolder(itemId, selectedData) {
+    openFolder(itemId, selectedData, pageReload) {
 
         if (itemId === false) {
             alert("No manifest short ID given!");
@@ -190,6 +195,7 @@ class FolderView extends React.Component {
             url,
             function(data) {
 
+
                 if (typeof data === "string") {
                     alert(data);
                     return;
@@ -197,22 +203,25 @@ class FolderView extends React.Component {
 
                 let id = data["@id"];
                 if (data["@type"] !== "sc:Collection") {
-                    t.openFolder(data["within"], data);
+                    t.openFolder(data["within"], data, false);
                     return;
                 }
 
                 let selected = null;
                 if (selectedData !== undefined) {
                     selected = selectedData["@id"];
+                } else {
+                    selectedData = data;
                 }
-                selectedData = data;
 
                 let label = data["label"];
                 t.setState({
                     data: data,
                     selected: selected
                 });
-                window.history.pushState({}, label, "?manifest=" + id);
+                if (pageReload !== false) {
+                    ManifestHistory.pageChanged(id, label);
+                }
                 global.ee.emitEvent('update-current-folder-id', [id]);
                 global.ee.emitEvent('update-file-info', [selectedData]);
             }
