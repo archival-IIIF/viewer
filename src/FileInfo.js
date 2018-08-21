@@ -56,9 +56,21 @@ class FileInfo extends React.Component {
             }
         }
 
-        if (this.state.data.hasOwnProperty("logo")) {
-            metadataView.push(<img key="providerLogo" id="provider-logo" src={this.state.data.logo} />);
+        if (this.state.data.hasOwnProperty("license")) {
+
+            let license = this.state.data.license;
+            if (this.isURL(license)) {
+                license = <a href={license}>{license}</a>;
+            }
+
+            metadataView.push(<div key="termsOfUsage">
+                <div className="label">License</div>
+                <div className="value">{license}</div>
+            </div>);
         }
+
+        if (this.state.data.hasOwnProperty("logo")) {
+            metadataView.push(<img key="providerLogo" id="provider-logo" src={this.state.data.logo} alt="Logo" title="Logo" />);
         }
 
         let manifestUrl = data["@id"];
@@ -108,6 +120,19 @@ class FileInfo extends React.Component {
         }
 
     }
+
+
+
+    isURL(str) {
+        let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return pattern.test(str);
+    }
+
 
 }
 
