@@ -5,9 +5,53 @@
 }
 
 #openseadragon {
-    width: 800px;
+    position: relative;
+    width: 100%;
     height: 600px;
     margin: 0 auto;
+}
+
+
+#zoom-in-button {
+    left: 8px;
+    background-image: url("../icons/fa/search-plus-solid.svg");
+}
+
+#zoom-out-button {
+    left:36px;
+    background-image: url("../icons/fa/search-minus-solid.svg");
+}
+
+#rotate-right-button {
+    left:64px;
+    background-image: url("../icons/fa/if_rotate-right_1608421.svg");
+}
+
+
+#home-button {
+    left:92px;
+    background-image: url("../icons/fa/home-solid.svg");
+}
+
+#fullpage-button {
+    left: 120px;
+    background-image: url("../icons/fa/arrows-alt-solid.svg");
+}
+
+.openseadragon-icon {
+    top: 8px;
+    position: absolute !important;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    z-index: 999;
+    background-size: 24px;
+}
+
+#zoom-out2 {
+    position: relative;
+    top: 0;
+    left: 30px;
 }
 
 .mejs__container, .mejs__controls {
