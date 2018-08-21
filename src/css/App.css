@@ -33,13 +33,6 @@ html, body, #root
     flex-direction: row;
 }
 
-#banner {
-    background-color: #e2f3ff;
-    border-left: 9px solid #7CD6FA;
-    padding: 20px;
-
-}
-
 .folder-view {
     display: flex;
     flex-wrap: wrap;
