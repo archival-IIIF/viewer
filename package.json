@@ -1,8 +1,7 @@
 {
-  "name": "loris-app",
+  "name": "archival-iiif-viewer",
   "version": "0.1.0",
-  "private": true,
-  "homepage": ".",
+  "license": "MIT",
   "dependencies": {
     "file-size": "^1.0.0",
     "interweave": "^8.0.2",
