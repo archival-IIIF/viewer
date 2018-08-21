@@ -109,7 +109,7 @@ class FolderView extends React.Component {
         if (file.hasOwnProperty("thumbnail")) {
             if (file.thumbnail.hasOwnProperty("service")) {
                 return {
-                    backgroundImage: "url(" + file.thumbnail.service["@id"] + "/full/"+width+","+height+"/0/default.jpg)",
+                    backgroundImage: "url(" + file.thumbnail.service["@id"] + "/full/!"+width+","+height+"/0/default.jpg)",
                     backgroundSize: width+"px "+height+"px"
                 };
             } else if (file.thumbnail.hasOwnProperty("@id")) {
