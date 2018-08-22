@@ -4,6 +4,7 @@ import Nested from "./lib/Nested";
 import OpenSeadragon from "./OpenSeadragon";
 import MediaElement from "./MediaElement";
 import PdfViewer from "./PdfViewer";
+import InfoJson from "./lib/InfoJson";
 
 
 class Viewer extends React.Component {
@@ -14,69 +15,57 @@ class Viewer extends React.Component {
 
         this.state = {
             data: null,
+            itemType: null,
+            source: null
         };
     }
 
     render() {
 
-        this.type = null;
         let data = this.state.data;
 
         if (data === null) {
             return "";
         }
 
-        let image = this.renderImage(data);
-        if (image) {
-            return image;
+        if (this.state.itemType === "image") {
+            return this.renderImage(data);
         }
 
-        let audioVideo = this.renderAudioVideo(data);
-        if (audioVideo) {
-            return audioVideo;
+        if (this.state.itemType === "audioVideo") {
+            return this.renderAudioVideo(data);
         }
 
-        let pdf = this.renderPdf(data);
-        if (pdf) {
-            return pdf;
+        if (this.state.itemType === "pdf") {
+            return this.renderPdf(data);
         }
 
         return "";
-
     }
 
     renderImage(data) {
-        if (!Nested.has(data, "sequences", 0, "canvases", 0, "images", 0, "resource", "service", "@id")) {
-            return false;
-        }
-
-        this.type = "image";
-
-        let source = data.sequences[0].canvases[0].images[0].resource.service["@id"];
         return (
             <div id="viewer">
-                <OpenSeadragon source={source} key={source} />
+                <OpenSeadragon source={this.state.source} key={this.state.source} />
             </div>
         );
     }
 
-    renderAudioVideo(data) {
-        if (!Nested.has(data, "mediaSequences", 0, "elements", 0, "format")) {
+
+    isImage(data) {
+        if (!Nested.has(data, "sequences", 0, "canvases", 0, "images", 0, "resource", "service", "@id")) {
             return false;
         }
+
+        return true;
+    }
+
+    renderAudioVideo(data) {
+
 
         let mime = data.mediaSequences[0].elements[0]["format"];
-
         let mediaType = mime.substr(0, 5);
-        if (mediaType !== "audio" && mediaType !== "video") {
-            return false;
-        }
-
         let file = data.mediaSequences[0].elements[0]["@id"];
-        if (file === null) {
-            return false;
-        }
-
         let sources = [{src: file, type: mime}];
         let config = {};
         let tracks = {};
@@ -101,7 +90,42 @@ class Viewer extends React.Component {
     }
 
 
+
+    isAudioVideo(data) {
+        if (!Nested.has(data, "mediaSequences", 0, "elements", 0, "format")) {
+            return false;
+        }
+
+        let mime = data.mediaSequences[0].elements[0]["format"];
+        let mediaType = mime.substr(0, 5);
+        if (mediaType !== "audio" && mediaType !== "video") {
+            return false;
+        }
+
+        if (data.mediaSequences[0].elements[0]["@id"] === null) {
+            return false;
+        }
+
+        return true;
+    }
+
+
     renderPdf(data) {
+
+        let element = data.mediaSequences[0].elements[0];
+        let file = element["@id"];
+
+
+        return (
+            <div id="viewer">
+                <PdfViewer file={file} key={file}/>
+            </div>
+        );
+    }
+
+
+
+    isPdf(data) {
 
         if (!Nested.has(data, "mediaSequences", 0, "elements", 0)) {
             return false;
@@ -117,24 +141,36 @@ class Viewer extends React.Component {
             return false;
         }
 
-        let file = element["@id"];
-        this.type = "pdf";
-
-
-        return (
-            <div id="viewer">
-                <PdfViewer file={file} key={file}/>
-            </div>
-        );
+        true
     }
 
 
     open(data) {
 
-        this.setState({
-            data: data
-        });
+        let t = this;
+        if (this.isImage(data)) {
+            let infoJsonUrl = data.sequences[0].canvases[0].images[0].resource.service["@id"];
+            InfoJson.get(infoJsonUrl, function (url) {
+                t.setState({
+                    data: data,
+                    itemType: "image",
+                    source: url
+                });
+            });
+            return;
+        }
 
+        let itemType = "";
+        if (this.isAudioVideo(data)) {
+            itemType = "audioVideo";
+
+        } else if (this.isPdf(data)) {
+            itemType = "pdf";
+        }
+        this.setState({
+            data: data,
+            itemType: itemType
+        });
     }
 
     play(data) {

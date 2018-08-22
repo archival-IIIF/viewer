@@ -26,7 +26,8 @@ class OpenSeadragon extends React.Component {
 
 
     componentDidMount() {
-        OpenSeadragonLoader({
+
+        let options = {
             id: "openseadragon",
             defaultZoomLevel: 0,
             tileSources: [this.state.source],
@@ -45,7 +46,16 @@ class OpenSeadragon extends React.Component {
             homeButton: "home-button",
             fullPageButton: "fullpage-button",
             rotateRightButton: "rotate-right-button",
-        });
+            ajaxWithCredentials: false
+        };
+
+        if (global.token !== "") {
+            options.ajaxHeaders = {
+                'Authorization': 'Bearer ' + global.token
+            }
+        }
+
+        OpenSeadragonLoader(options);
     }
 
     componentWillUnmount() {

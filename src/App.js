@@ -8,6 +8,7 @@ import EventEmitter from "wolfy87-eventemitter/EventEmitter";
 import Viewer from "./Viewer";
 import TopBar from "./TopBar";
 import ManifestHistory from "./lib/ManifestHistory";
+import Login from "./Login";
 
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
         global.ee = new EventEmitter();
         global.intialWidth = 300;
         global.splitterWidth = 8;
+        global.token = "";
 
 
         this.state = {
@@ -35,6 +37,7 @@ class App extends Component {
         return (
             <div id="app">
                 <TopBar />
+                <Login />
                 <div id="main" className={this.state.className}>
                     <TreeView />
                     <Splitter />
