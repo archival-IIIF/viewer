@@ -1,6 +1,6 @@
 import React from "react";
 import Loading from "./Loading";
-import Nested from './lib/Nested';
+import Item from "./Item";
 import Manifest from "./lib/Manifest";
 import ManifestHistory from "./lib/ManifestHistory";
 
@@ -18,7 +18,6 @@ class FolderView extends React.Component {
             mode: "icon-view"
         };
     }
-
 
 
     render() {
@@ -46,44 +45,16 @@ class FolderView extends React.Component {
         for (let key in folders) {
 
             let folder = folders[key];
-            let className = "item folder";
-            let id = folder["@id"];
-            if (id === this.state.selected) {
-                className += " active";
-            }
             content.push(
-                <div
-                    className={className}
-                    key={id}
-                    onClick={() => this.activateItem(folder)}
-                    onDoubleClick={() => this.openFolder(id)}
-                >
-                    {folders[key].label}
-                </div>
+                <Item item={folder} selected={this.state.selected} key={folder["@id"]} />
             );
         }
         for (let key in files) {
 
-            let className = "item file";
             let file = files[key];
-            let id = file["@id"];
-            let label = files[key].label;
-            if (id === this.state.selected) {
-                className += " active";
-            }
-
-            let style = this.getThumbnail(file);
 
             content.push(
-                <div
-                    className={className}
-                    style={style}
-                    key={id}
-                    onClick={() => this.activateItem(file)}
-                    onDoubleClick={() => this.openFile(file)}
-                >
-                    {label}
-                </div>
+                <Item item={file} selected={this.state.selected} key={file["@id"]} />
             );
         }
 
@@ -97,94 +68,10 @@ class FolderView extends React.Component {
         );
     }
 
-
-    getThumbnail(file, width, height) {
-
-        if (width === undefined) {
-            width = "72";
-        }
-        if (height === undefined) {
-            height = width;
-        }
-
-        if (file.hasOwnProperty("thumbnail")) {
-            if (file.thumbnail.hasOwnProperty("service")) {
-                return {
-                    backgroundImage: "url(" + file.thumbnail.service["@id"] + "/full/!"+width+","+height+"/0/default.jpg)",
-                    backgroundSize: width+"px "+height+"px"
-                };
-            } else if (file.thumbnail.hasOwnProperty("@id")) {
-                return {
-                    backgroundImage: "url(" + file.thumbnail["@id"] + ")",
-                    backgroundSize: width+"px "+height+"px"
-                };
-            }
-        }
-
-        return {};
-    }
-
-    activateItem(data) {
-
-        this.setState({
-            selected: data["@id"]
-        });
-
-        Manifest.get(
-            data["@id"],
-            function (data) {
-                ManifestHistory.pageChanged(data["@id"], data["label"]);
-                global.ee.emitEvent('update-file-info', [data]);
-            }
-        );
-
-
-    }
-
-    openFile(file) {
-
-        console.log(file);
-
-        let id = file["@id"];
-        let manifest = id;
-
-        Manifest.get(
-            manifest,
-            function(file) {
-
-                if (typeof file === "string") {
-                    alert(file);
-                    return;
-                }
-
-                // audio/video
-                if (Nested.has(file, "mediaSequences", 0, "elements", 0, "format")) {
-
-                    let format = file.mediaSequences[0].elements[0].format;
-
-                    if (format.substr(0, 5) === "audio" || format.substr(0, 5) === "video") {
-                        let audioFile = file.mediaSequences[0].elements[0]["@id"];
-                        global.ee.emitEvent('play-audio', [audioFile]);
-                        return;
-                    }
-                }
-
-                // open unsupported file
-                let url = Nested.get(file, 'mediaSequences', 0, 'elements', 0, '@id');
-                if (url) {
-                    window.location.assign(url);
-                }
-            }
-        );
-
-
-    }
-
-
     openFolder(itemId, selectedData, pageReload) {
 
         if (itemId === false) {
-            alert("No manifest short ID given!");
+            alert("No manifest ID given!");
             return;
         }
 
@@ -229,6 +116,8 @@ class FolderView extends React.Component {
 
     }
 
+    openFolder = this.openFolder.bind(this);
+
 
     showListView() {
         this.setState({mode: "list-view"});
@@ -243,18 +132,20 @@ class FolderView extends React.Component {
     showIconView = this.showIconView.bind(this);
 
     componentDidMount() {
-       global.ee.addListener('open-folder', this.openFolder);
        global.ee.addListener('show-list-view', this.showListView);
        global.ee.addListener('show-icon-view', this.showIconView);
+       global.ee.addListener('open-folder', this.openFolder);
+
 
         let id = Manifest.getIdFromCurrentUrl();
         this.openFolder(id);
     }
 
     componentWillUnmount() {
-        global.ee.removeListener('open-folder', this.openFolder);
         global.ee.removeListener('show-list-view', this.showListView);
         global.ee.removeListener('show-icon-view', this.showIconView);
+        global.ee.removeListener('open-folder', this.openFolder);
+
     }
 
 }
