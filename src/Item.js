@@ -70,13 +70,15 @@ class Item extends React.Component {
             height = width;
         }
 
+        let t = this;
+        
         if (file.hasOwnProperty("thumbnail")) {
             if (file.thumbnail.hasOwnProperty("service")) {
 
                 let url = file.thumbnail.service["@id"];
                 InfoJson.get(url, function (url) {
                     let thumbnailUrl = url.replace("/info.json", "") + "/full/!" + width + "," + height + "/0/default.jpg";
-                    this.setState({
+                    t.setState({
                         backgroundImage: "url(" + thumbnailUrl + ")",
                         backgroundSize: width + "px " + height + "px"
                     });
