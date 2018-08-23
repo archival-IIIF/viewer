@@ -20,34 +20,32 @@ class Manifest {
     static fetchFromUrl(url, callback) {
 
         let t  = this;
-
-        let request = new XMLHttpRequest();
-        request.onload = function() {
-            let data;
-
-            try {
-                data = JSON.parse(this.responseText);
-            } catch(e) {
-                let error = "The manifest is not a valid json-file: \n"+url;
-                data = error;
+        let headers = {};
+        let statusCode = 0;
+        if (global.token !== "") {
+            headers.Authorization = 'Bearer ' + global.token;
+        }
+        fetch(url, {
+                headers: headers
             }
+        ).then((response) => {
+            statusCode = response.status;
+            return response.json();
+        }).then((json) => {
+            if (json !== undefined) {
 
-            t.cache[url] = data;
+                if (statusCode === 401) {
+                    global.ee.emitEvent('show-login', [json.service]);
+                    return;
+                }
 
-            if (callback !== undefined) {
-                callback(data);
+                t.cache[url] = json;
+                if (callback !== undefined) {
+                    callback(json);
+                }
             }
-        };
-        request.onerror = function() {
-            let error = "Could not fetch manifest url: \n"+url;
-            t.cache[url] = error;
-            if (callback !== undefined) {
-                callback(error);
-            }
+        });
 
-        };
-        request.open("get", url, true);
-        request.send();
     }
 
     static fetchFromCache(url) {
