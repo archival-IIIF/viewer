@@ -27,7 +27,7 @@ class Login extends React.Component {
             <div id="login" className="modal">
                 <iframe id="messageFrame" title="messageFrame" />
                 <div className="modal-content">
-                    <span className="close">&times;</span>
+                    <span className="close"  onClick={() => this.closeModal()}>&times;</span>
 
                     <div className="title">{this.state.header}</div>
 
@@ -39,23 +39,32 @@ class Login extends React.Component {
         );
     }
 
+    checkIfLoginWindowIsClosedInterval = null;
+
     openWindow(id, tokenUrl) {
 
         let origin = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
         let url = id + "?origin=" + origin;
 
+        let t = this;
         let win = window.open(url);
-        let interval = window.setInterval(function() {
+        this.checkIfLoginWindowIsClosedInterval = window.setInterval(function() {
             try {
                 if (win == null || win.closed) {
-                    window.clearInterval(interval);
+                    window.clearInterval(t.checkIfLoginWindowIsClosedInterval);
                     document.getElementById('messageFrame').src = tokenUrl + '?messageId=1&origin=' + origin;
-
                 }
             }
             catch (e) {
             }
         }, 1000);
+    }
+
+    closeModal(service) {
+        window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
+        this.setState({
+            visible: false
+        })
     }
 
 
