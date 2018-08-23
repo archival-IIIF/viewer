@@ -3,7 +3,7 @@ import Manifest from "./lib/Manifest";
 import ManifestHistory from "./lib/ManifestHistory";
 import Nested from "./lib/Nested";
 import InfoJson from "./lib/InfoJson";
-
+import './css/item.css';
 
 class Item extends React.Component {
 
@@ -23,7 +23,6 @@ class Item extends React.Component {
             item: props.item,
             selected: props.selected,
             backgroundImage: "",
-            backgroundSize: ""
         };
     }
 
@@ -34,8 +33,7 @@ class Item extends React.Component {
         let className = "item " + this.state.itemType;
         let label = this.state.item.label;
         let style = {
-            backgroundImage: this.state.backgroundImage,
-            backgroundSize: this.state.backgroundSize
+            backgroundImage: this.state.backgroundImage
         };
         if (id === this.state.selected) {
             className += " active";
@@ -43,12 +41,12 @@ class Item extends React.Component {
 
         return <div
             className={className}
-            style={style}
             key={id}
             onClick={() => this.activateItem()}
             onDoubleClick={() => this.open()}
         >
-            {label}
+                <div className="item-thumbnail" style={style} />
+                <div className="item-label">{label}</div>
         </div>
     }
 
@@ -79,7 +77,6 @@ class Item extends React.Component {
                     let thumbnailUrl = url.replace("/info.json", "") + "/full/!" + width + "," + height + "/0/default.jpg";
                     t.setState({
                         backgroundImage: "url(" + thumbnailUrl + ")",
-                        backgroundSize: width + "px " + height + "px"
                     });
                 });
 
@@ -87,7 +84,6 @@ class Item extends React.Component {
             } else if (file.thumbnail.hasOwnProperty("@id")) {
                 this.setState({
                     backgroundImage: "url(" + file.thumbnail["@id"] + ")",
-                    backgroundSize: width + "px " + height + "px"
                 });
             }
         }
