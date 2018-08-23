@@ -141,7 +141,7 @@ class Viewer extends React.Component {
             return false;
         }
 
-        true
+        return true;
     }
 
 
