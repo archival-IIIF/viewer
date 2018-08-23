@@ -151,10 +151,22 @@ class Item extends React.Component {
     }
 
 
-    componentDidMount() {
-        this.getThumbnail(this.state.item);
+    updateFileInfo = this.updateFileInfo.bind(this);
+
+    updateFileInfo(data) {
+        this.setState({
+            selected: data["@id"]
+        });
     }
 
+    componentDidMount() {
+        this.getThumbnail(this.state.item);
+        global.ee.addListener('update-file-info', this.updateFileInfo);
+    }
+
+    omponentWillUnmount() {
+        global.ee.removeListener('update-file-info', this.updateFileInfo);
+    }
 
 }
 
