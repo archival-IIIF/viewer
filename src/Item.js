@@ -140,7 +140,7 @@ class Item extends React.Component {
                 // open unsupported file
                 let url = Nested.get(file, 'mediaSequences', 0, 'elements', 0, '@id');
                 if (url) {
-                    window.location.assign(url);
+                    window.open(url, "_target");
                 }
             }
         );
