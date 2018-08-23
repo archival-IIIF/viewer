@@ -15,7 +15,7 @@ class OpenSeadragon extends React.Component {
 
     render() {
 
-        return <div id="openseadragon" key={this.state.source}>
+        return <div id="openseadragon" key={this.state.source} style={{height: this.getWindowHeight()/2}}>
             <div id="zoom-in-button" className="openseadragon-icon" />
             <div id="zoom-out-button" className="openseadragon-icon" />
             <div id="rotate-right-button" className="openseadragon-icon" />
@@ -59,6 +59,15 @@ class OpenSeadragon extends React.Component {
     }
 
     componentWillUnmount() {
+    }
+
+    getWindowHeight() {
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0];
+
+        return w.innerHeight|| e.clientHeight|| g.clientHeight;
     }
 
 }
