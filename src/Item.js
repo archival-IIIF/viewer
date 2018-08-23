@@ -61,19 +61,18 @@ class Item extends React.Component {
         }
     }
 
-    getThumbnail(file, width, height) {
+    getThumbnail() {
 
-        if (width === undefined) {
-            width = "72";
-        }
-        if (height === undefined) {
-            height = width;
-        }
+        let width = "72",
+            height = "72",
+            file = this.state.item;
 
         let t = this;
         
         if (file.hasOwnProperty("thumbnail")) {
             if (file.thumbnail.hasOwnProperty("service")) {
+
+                this.hasThumbnailService = true;
 
                 let url = file.thumbnail.service["@id"];
                 InfoJson.get(url, function (url) {
@@ -93,6 +92,8 @@ class Item extends React.Component {
             }
         }
     }
+
+    hasThumbnailService = false;
 
 
     activateItem() {
@@ -117,8 +118,7 @@ class Item extends React.Component {
 
     openFile(file) {
 
-        let id = file["@id"];
-        let manifest = id;
+        let manifest = file["@id"];
 
         Manifest.get(
             manifest,
@@ -152,8 +152,14 @@ class Item extends React.Component {
 
     }
 
+    openFolder(file) {
+        if (this.hasThumbnailService && this.state.backgroundImage === "") {
+            this.getThumbnail();
+        }
+    }
 
     updateFileInfo = this.updateFileInfo.bind(this);
+    openFolder = this.openFolder.bind(this);
 
     updateFileInfo(data) {
         this.setState({
@@ -162,12 +168,14 @@ class Item extends React.Component {
     }
 
     componentDidMount() {
-        this.getThumbnail(this.state.item);
+        this.getThumbnail();
         global.ee.addListener('update-file-info', this.updateFileInfo);
+        global.ee.addListener('open-folder', this.openFolder);
     }
 
     omponentWillUnmount() {
         global.ee.removeListener('update-file-info', this.updateFileInfo);
+        global.ee.removeListener('open-folder', this.openFolder);
     }
 
 }
