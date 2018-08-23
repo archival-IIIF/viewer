@@ -45,8 +45,8 @@ class Item extends React.Component {
             onClick={() => this.activateItem()}
             onDoubleClick={() => this.open()}
         >
-                <div className="item-thumbnail" style={style} />
-                <div className="item-label">{label}</div>
+            <div className="item-thumbnail" style={style} />
+            <div className="item-label">{label}</div>
         </div>
     }
 
@@ -66,7 +66,7 @@ class Item extends React.Component {
             file = this.state.item;
 
         let t = this;
-        
+
         if (file.hasOwnProperty("thumbnail")) {
             if (file.thumbnail.hasOwnProperty("service")) {
 
@@ -140,7 +140,8 @@ class Item extends React.Component {
                 // open unsupported file
                 let url = Nested.get(file, 'mediaSequences', 0, 'elements', 0, '@id');
                 if (url) {
-                    window.open(url, "_target");
+                    let win = window.open(url, "_target");
+                    win.focus();
                 }
             }
         );
