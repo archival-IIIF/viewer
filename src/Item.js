@@ -169,7 +169,7 @@ class Item extends React.Component {
         global.ee.addListener('open-folder', this.openFolder);
     }
 
-    omponentWillUnmount() {
+    componentWillUnmount() {
         global.ee.removeListener('update-file-info', this.updateFileInfo);
         global.ee.removeListener('open-folder', this.openFolder);
     }
