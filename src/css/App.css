@@ -43,23 +43,6 @@ html, body, #root
     margin: 0 24px;
 }
 
-
-
-.item {
-    background-repeat: no-repeat;
-    background-size: 48px;
-    background-position: center 2px;
-    min-height: 45px;
-    width: 120px;
-    padding: 76px 8px 8px 8px;
-    margin: 8px;
-    text-align: center;
-    font-size: 14px;
-    border-radius: 5px;
-    word-break: break-all;
-    line-height: 14px;
-}
-
 .list-view > .item {
     background-position: 0;
     width: 100%;
@@ -68,22 +51,6 @@ html, body, #root
     margin: 2px;
     background-size: 16px 16px !important;
     min-height: inherit;
-}
-
-.item.active {
-    background-color: lightgray;
-}
-
-
-
-.file {
-    background-image: url("../icons/fa/file.svg");
-}
-
-.folder {
-    background-image: url("../icons/fa/folder.svg");
-    background-size:72px ;
-    padding-top: 75px
 }
 
 .no-select {

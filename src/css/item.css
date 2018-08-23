@@ -1,0 +1,36 @@
+.item {
+    min-height: 45px;
+    width: 120px;
+    padding: 8px;
+    margin: 8px;
+    border-radius: 5px;
+}
+
+.item.active {
+    background-color: lightgray;
+}
+
+.file .item-thumbnail {
+    background-image: url("../icons/fa/file.svg");
+}
+
+.folder .item-thumbnail {
+    background-image: url("../icons/fa/folder.svg");
+}
+
+.item-thumbnail {
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 72px;
+    height: 72px;
+    background-position: center;
+    margin: 0 auto;
+}
+
+.item-label {
+    line-height: 14px;
+    text-align: center;
+    word-break: break-all;
+    font-size: 14px;
+    text-align: center;
+}
