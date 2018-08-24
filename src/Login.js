@@ -61,7 +61,7 @@ class Login extends React.Component {
                 if (win == null || win.closed) {
                     window.clearInterval(t.checkIfLoginWindowIsClosedInterval);
                     window.addEventListener("message", t.receiveToken);
-                    document.getElementById('messageFrame').src = t.tokenUrl + '?messageId=1&origin=' + origin;
+                    document.getElementById('messageFrame').src = t.tokenUrl + '?messageId=1&origin=' + t.origin;
                     window.removeListener("message", t.receiveToken);
                 }
             }
