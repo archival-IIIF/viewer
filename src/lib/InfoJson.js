@@ -55,6 +55,10 @@ class InfoJson {
 
         return false;
     }
+
+    static clearCache() {
+        this.cache = {};
+    }
 }
 
 export default InfoJson;
