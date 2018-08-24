@@ -43,16 +43,6 @@ html, body, #root
     margin: 0 24px;
 }
 
-.list-view > .item {
-    background-position: 0;
-    width: 100%;
-    text-align: left;
-    padding: 4px 4px 4px 20px;;
-    margin: 2px;
-    background-size: 16px 16px !important;
-    min-height: inherit;
-}
-
 .no-select {
     user-select: none;
 }
