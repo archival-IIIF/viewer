@@ -52,8 +52,7 @@ class Login extends React.Component {
 
     openWindow(id) {
 
-        let origin = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
-        let url = id + "?origin=" + origin;
+        let url = id + "?origin=" + this.origin;
 
         let t = this;
         let win = window.open(url);
@@ -71,6 +70,8 @@ class Login extends React.Component {
         }, 1000);
     }
 
+    origin = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
+
     closeModal(service) {
         window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
         this.setState({
@@ -82,10 +83,58 @@ class Login extends React.Component {
     tokenUrl = "";
 
     showLogin(service) {
-        if (service.service.hasOwnProperty("@id")) {
+
+
+        let loginService = this.getLoginService(service);
+        if (loginService !== false) {
+            this.getTokenUrlFromService(loginService);
+
+            this.setState({
+                visible: true,
+                id: loginService["@id"],
+                header: loginService.header,
+                description: loginService.description,
+                confirmLabel: loginService.confirmLabel,
+                error: false,
+                errorMessage: loginService.failureDescription
+            });
+        }
+
+    }
+
+
+    getLoginService(service) {
+
+
+        if (service.hasOwnProperty("profile") ) {
+
+            if (service.profile !== "http://iiif.io/api/auth/1/login") {
+                return false;
+            }
+
+            return service;
+        }
+
+        if (service.hasOwnProperty(0)) {
+            let i;
+            for (i = 0; i < service.length; i++) {
+                let iService = service[i];
+
+                if (iService.hasOwnProperty("profile") && iService.profile === "http://iiif.io/api/auth/1/login") {
+                    return iService
+                }
+            }
+        }
+
+        return false;
+    }
+
+    getTokenUrlFromService(service) {
+        if (service.service.hasOwnProperty("@id") && service.service.hasOwnProperty("profile") && service.service["profile"] === "http://iiif.io/api/auth/1/token") {
             this.tokenUrl = service.service["@id"]
         } else if (Array.isArray(service.service)) {
-            for (let i in service.service) {
+            let i;
+            for (i = 0; i < service.service.length; i++) {
                 let iService = service.service[i];
                 if (iService.hasOwnProperty("@id") && iService.hasOwnProperty("profile") && iService["profile"] === "http://iiif.io/api/auth/1/token" && this.tokenUrl === "") {
                     this.tokenUrl = iService["@id"];
@@ -97,16 +146,32 @@ class Login extends React.Component {
                 }
             }
         }
+    }
 
-        this.setState({
-            visible: true,
-            id: service["@id"],
-            header: service.header,
-            description: service.description,
-            confirmLabel: service.confirmLabel,
-            error: false,
-            errorMessage: service.failureDescription
-        })
+    getExternal(service) {
+
+
+        if (service.hasOwnProperty("profile") ) {
+
+            if (service.profile !== "http://iiif.io/api/auth/1/external") {
+                return false;
+            }
+
+            return service;
+        }
+
+        if (service.hasOwnProperty(0)) {
+            let i;
+            for (i = 0; i < service.length; i++) {
+                let iService = service[i];
+
+                if (iService.hasOwnProperty("profile") && iService.profile === "http://iiif.io/api/auth/1/external") {
+                    return iService
+                }
+            }
+        }
+
+        return false;
     }
 
 
