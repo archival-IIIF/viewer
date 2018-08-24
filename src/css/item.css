@@ -34,3 +34,24 @@
     font-size: 14px;
     margin-top: 4px;
 }
+
+
+.list-view > .item {
+    width: 100%;
+    text-align: left;
+    padding: 4px 8px;
+    margin: 2px;
+    min-height: inherit;
+    display: flex;
+}
+
+.list-view > .item > .item-thumbnail {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+
+.list-view > .item > .item-label {
+    margin: 0 0 0 6px;
+}
