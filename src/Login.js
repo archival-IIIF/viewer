@@ -14,13 +14,19 @@ class Login extends React.Component {
             description: "",
             confirmLabel: "",
             visible: false,
-            tokenUrl: null
+            error: false,
+            errorMessage: ""
         };
     }
 
     render() {
         if (this.state.visible === false) {
             return ""
+        }
+
+        let error = "";
+        if (this.state.error) {
+            error = <div id="modal-error-message">{this.state.errorMessage}</div>
         }
 
         return (
@@ -33,7 +39,9 @@ class Login extends React.Component {
 
                     <div>{this.state.description}</div>
 
-                    <div id="login-button" onClick={() => this.openWindow(this.state.id, this.state.tokenUrl)}>{this.state.confirmLabel}</div>
+                    {error}
+
+                    <div id="login-button" onClick={() => this.openWindow(this.state.id)}>{this.state.confirmLabel}</div>
                 </div>
             </div>
         );
@@ -41,7 +49,7 @@ class Login extends React.Component {
 
     checkIfLoginWindowIsClosedInterval = null;
 
-    openWindow(id, tokenUrl) {
+    openWindow(id) {
 
         let origin = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
         let url = id + "?origin=" + origin;
@@ -52,7 +60,9 @@ class Login extends React.Component {
             try {
                 if (win == null || win.closed) {
                     window.clearInterval(t.checkIfLoginWindowIsClosedInterval);
-                    document.getElementById('messageFrame').src = tokenUrl + '?messageId=1&origin=' + origin;
+                    window.addEventListener("message", t.receiveToken);
+                    document.getElementById('messageFrame').src = t.tokenUrl + '?messageId=1&origin=' + origin;
+                    window.removeListener("message", t.receiveToken);
                 }
             }
             catch (e) {
@@ -67,8 +77,25 @@ class Login extends React.Component {
         })
     }
 
+    logoutUrl = "";
+    tokenUrl = "";
 
     showLogin(service) {
+        if (service.service.hasOwnProperty("@id")) {
+            this.tokenUrl = service.service["@id"]
+        } else if (Array.isArray(service.service)) {
+            for (let i in service.service) {
+                let iService = service.service[i];
+                if (iService.hasOwnProperty("@id") && iService.hasOwnProperty("profile") && iService["profile"] === "http://iiif.io/api/auth/1/token" && this.tokenUrl === "") {
+                    this.tokenUrl = iService["@id"];
+                    continue;
+                }
+
+                if (iService.hasOwnProperty("@id") && iService.hasOwnProperty("profile") && iService["profile"] === "http://iiif.io/api/auth/1/logout" && this.logoutUrl === "") {
+                    this.logoutUrl = iService["@id"];
+                }
+            }
+        }
 
         this.setState({
             visible: true,
@@ -76,7 +103,8 @@ class Login extends React.Component {
             header: service.header,
             description: service.description,
             confirmLabel: service.confirmLabel,
-            tokenUrl: service.service["@id"]
+            error: false,
+            errorMessage: service.failureDescription
         })
     }
 
@@ -85,18 +113,23 @@ class Login extends React.Component {
     receiveToken = this.receiveToken.bind(this);
 
     componentDidMount() {
-        window.addEventListener("message", this.receiveToken);
         global.ee.addListener('show-login', this.showLogin);
     }
 
     componentWillUnmount() {
-        window.removeListener("message", this.receiveToken.bind(this));
         global.ee.removeListener('show-login', this.showLogin);
     }
 
 
 
     receiveToken(event) {
+
+        if (!event.data.hasOwnProperty('error')) {
+            this.setState({
+                error: true
+            });
+            return;
+        }
 
         if (!event.data.hasOwnProperty('accessToken')) {
             return;
