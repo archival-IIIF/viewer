@@ -2,7 +2,7 @@
 
 ## Components
 
-![](https://github.com/archival-IIIF/server/blob/master/doc/components/components.png)
+![](https://raw.githubusercontent.com/archival-IIIF/server/master/components.png)
 
 ## Installation
 
