@@ -1,6 +1,7 @@
 import React from "react";
 import './css/modal.css';
 import Manifest from "./lib/Manifest";
+import InfoJson from "./lib/InfoJson";
 
 class Login extends React.Component {
 
@@ -109,11 +110,22 @@ class Login extends React.Component {
     }
 
 
+    logout() {
+        window.open(this.logoutUrl, "_blank");
+        global.token = "";
+        Manifest.clearCache();
+        InfoJson.clearCache();
+        let id = Manifest.getIdFromCurrentUrl();
+        global.ee.emitEvent('open-folder', [id]);
+    }
+
     showLogin = this.showLogin.bind(this);
+    logout = this.logout.bind(this);
     receiveToken = this.receiveToken.bind(this);
 
     componentDidMount() {
         global.ee.addListener('show-login', this.showLogin);
+        global.ee.addListener('logout', this.logout);
     }
 
     componentWillUnmount() {
@@ -124,19 +136,16 @@ class Login extends React.Component {
 
     receiveToken(event) {
 
-        if (!event.data.hasOwnProperty('error')) {
+        if (!event.data.hasOwnProperty('accessToken') || event.data.hasOwnProperty('error')) {
             this.setState({
                 error: true
             });
             return;
         }
 
-        if (!event.data.hasOwnProperty('accessToken')) {
-            return;
-        }
-
         let token = event.data.accessToken;
         global.token = token;
+        global.ee.emitEvent('token-received');
         let id = Manifest.getIdFromCurrentUrl();
         global.ee.emitEvent('open-folder', [id]);
 

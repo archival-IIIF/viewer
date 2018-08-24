@@ -67,6 +67,10 @@ class Manifest {
         }
         return manifestUri;
     }
+
+    static clearCache() {
+        this.cache = {};
+    }
 }
 
 export default Manifest;

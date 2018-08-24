@@ -9,15 +9,22 @@
     text-align: center;
 }
 
-#show-list-view {
+#show-list-view-button {
     background-image: url("../icons/fa/list-solid.svg");
+    background-repeat: no-repeat;
+    padding-left: 24px;
+    margin-left: 32px;
+}
+
+#show-icon-view-button {
+    background-image: url("../icons/fa/th-solid.svg");
     background-repeat: no-repeat;
     padding-left: 24px;
 }
 
-#show-icon-view {
-    background-image: url("../icons/fa/th-solid.svg");
+#logout-button {
+    background-image: url("../icons/fa/sign-out-alt-solid.svg");
     background-repeat: no-repeat;
     padding-left: 24px;
-    margin-right: 32px;
+    margin-left: 32px;
 }
