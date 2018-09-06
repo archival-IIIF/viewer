@@ -14,12 +14,14 @@
     background-repeat: no-repeat;
     padding-left: 24px;
     margin-left: 32px;
+    cursor: pointer;
 }
 
 #show-icon-view-button {
     background-image: url("../icons/fa/th-solid.svg");
     background-repeat: no-repeat;
     padding-left: 24px;
+    cursor: pointer;
 }
 
 #logout-button {
@@ -27,4 +29,5 @@
     background-repeat: no-repeat;
     padding-left: 24px;
     margin-left: 32px;
+    cursor: pointer;
 }
