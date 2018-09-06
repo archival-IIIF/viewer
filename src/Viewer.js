@@ -3,7 +3,6 @@ import './css/viewer.css';
 import Nested from "./lib/Nested";
 import OpenSeadragon from "./OpenSeadragon";
 import MediaElement from "./MediaElement";
-import PdfViewer from "./PdfViewer";
 import InfoJson from "./lib/InfoJson";
 
 
@@ -109,40 +108,6 @@ class Viewer extends React.Component {
         return true;
     }
 
-
-    renderPdf(data) {
-
-        let element = data.mediaSequences[0].elements[0];
-        let file = element["@id"];
-
-
-        return (
-            <div id="viewer">
-                <PdfViewer file={file} key={file}/>
-            </div>
-        );
-    }
-
-
-
-    isPdf(data) {
-
-        if (!Nested.has(data, "mediaSequences", 0, "elements", 0)) {
-            return false;
-        }
-
-        let element = data.mediaSequences[0].elements[0];
-
-        if (!element.hasOwnProperty("format") || element.format !== "application/pdf") {
-            return false;
-        }
-
-        if (!element.hasOwnProperty("@id")) {
-            return false;
-        }
-
-        return true;
-    }
 
 
     open(data) {
