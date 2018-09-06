@@ -10,14 +10,6 @@
     background-color: lightgray;
 }
 
-.file .item-thumbnail {
-    background-image: url("../icons/fa/file.svg");
-}
-
-.folder .item-thumbnail {
-    background-image: url("../icons/fa/folder.svg");
-}
-
 .item-thumbnail {
     background-size: contain;
     background-repeat: no-repeat;

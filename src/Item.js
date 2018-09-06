@@ -1,9 +1,9 @@
 import React from "react";
 import Manifest from "./lib/Manifest";
 import ManifestHistory from "./lib/ManifestHistory";
-import Nested from "./lib/Nested";
-import InfoJson from "./lib/InfoJson";
 import './css/item.css';
+import FolderImage from './icons/fa/folder.svg';
+import FileImage from './icons/fa/file.svg';
 
 class Item extends React.Component {
 
@@ -12,7 +12,7 @@ class Item extends React.Component {
         super(props);
 
         let itemType = "";
-        if (props.item["@type"] === "sc:Collection") {
+        if (props.item.type === "sc:Collection") {
             itemType = "folder";
         } else {
             itemType = "file";
@@ -22,19 +22,16 @@ class Item extends React.Component {
             itemType: itemType,
             item: props.item,
             selected: props.selected,
-            backgroundImage: "",
         };
     }
 
 
     render() {
 
-        let id = this.state.item["@id"];
+        let id = this.state.item.id;
         let className = "item " + this.state.itemType;
         let label = this.state.item.label;
-        let style = {
-            backgroundImage: this.state.backgroundImage
-        };
+        let style = {backgroundImage: this.getThumbnail()};
         if (id === this.state.selected) {
             className += " active";
         }
@@ -50,61 +47,46 @@ class Item extends React.Component {
         </div>
     }
 
+    getThumbnail() {
+
+        if (this.state.item.thumbnail === undefined || !this.state.item.thumbnail.hasOwnProperty('id')) {
+            if (this.state.item.type === "sc:Collection") {
+                return `url(${FolderImage})`
+            }
+
+            return `url(${FileImage})`
+        }
+
+        let thumbnailUrl;
+        if (this.state.item.thumbnail.hasOwnProperty('service')) {
+            let width = "72",
+                height = "72";
+            let serviceUrl = this.state.item.thumbnail.service;
+            thumbnailUrl = serviceUrl.replace("/info.json", "") + "/full/!" + width + "," + height + "/0/default.jpg";
+        } else {
+            thumbnailUrl = this.state.item.thumbnail.id
+        }
+
+        return `url(${thumbnailUrl})`
+    }
 
     open() {
         if (this.state.itemType === "folder") {
-            global.ee.emitEvent('open-folder', [this.state.item["@id"]]);
+            global.ee.emitEvent('open-folder', [this.state.item.id]);
         } else {
             this.openFile(this.state.item)
         }
     }
 
-    getThumbnail() {
-
-        let width = "72",
-            height = "72",
-            file = this.state.item;
-
-        let t = this;
-
-        if (file.hasOwnProperty("thumbnail")) {
-            if (file.thumbnail.hasOwnProperty("service")) {
-
-                this.hasThumbnailService = true;
-
-                let url = file.thumbnail.service["@id"];
-                InfoJson.get(url, function (url) {
-                    let thumbnailUrl = url.replace("/info.json", "") + "/full/!" + width + "," + height + "/0/default.jpg";
-                    t.setState({
-                        backgroundImage: "url(" + thumbnailUrl + ")",
-                    });
-                });
-
-
-            } else if (file.thumbnail.hasOwnProperty("@id")) {
-                this.setState({
-                    backgroundImage: "url(" + file.thumbnail["@id"] + ")",
-                });
-            }
-        }
-    }
-
-    hasThumbnailService = false;
-
-
     activateItem() {
 
-        let data = this.state.item;
-
-        this.setState({
-            selected: data["@id"]
-        });
+        let manifestData = this.state.item;
 
         Manifest.get(
-            data["@id"],
-            function (data) {
-                ManifestHistory.pageChanged(data["@id"], data["label"]);
-                global.ee.emitEvent('update-file-info', [data]);
+            manifestData.id,
+            function (manifestData) {
+                ManifestHistory.pageChanged(manifestData.id, manifestData.label);
+                global.ee.emitEvent('update-file-info', [manifestData]);
             }
         );
 
@@ -114,60 +96,36 @@ class Item extends React.Component {
 
     openFile(file) {
 
-        let manifest = file["@id"];
+        let manifestId = file.id;
 
         Manifest.get(
-            manifest,
+            manifestId,
             function (file) {
-
-                if (typeof file === "string") {
-                    alert(file);
-                    return;
-                }
-
-                // audio/video
-                if (Nested.has(file, "mediaSequences", 0, "elements", 0, "format")) {
-
-                    let format = file.mediaSequences[0].elements[0].format;
-
-                    if (format.substr(0, 5) === "audio" || format.substr(0, 5) === "video") {
-                        let audioFile = file.mediaSequences[0].elements[0]["@id"];
-                        global.ee.emitEvent('play-audio', [audioFile]);
-                        return;
-                    }
-                }
-
-                // open unsupported file
-                let url = Nested.get(file, 'mediaSequences', 0, 'elements', 0, '@id');
-                if (url) {
-                    let win = window.open(url, "_target");
+                const type = file.resource.type;
+                if (type === 'audioVideo') {
+                    global.ee.emitEvent('play-audio', [file.resource.source]);
+                } else if (type === 'file') {
+                    let win = window.open(file.resource.source, "_target");
                     win.focus();
                 }
+
             }
         );
 
 
     }
 
-    openFolder(file) {
-        if (this.hasThumbnailService && this.state.backgroundImage === "") {
-            this.getThumbnail();
-        }
-    }
 
     updateFileInfo = this.updateFileInfo.bind(this);
-    openFolder = this.openFolder.bind(this);
 
-    updateFileInfo(data) {
+    updateFileInfo(manifestData) {
         this.setState({
-            selected: data["@id"]
+            selected: manifestData.id
         });
     }
 
     componentDidMount() {
-        this.getThumbnail();
         global.ee.addListener('update-file-info', this.updateFileInfo);
-        global.ee.addListener('open-folder', this.openFolder);
     }
 
     componentWillUnmount() {

@@ -1,5 +1,4 @@
 import React from "react";
-import filesize from "file-size";
 import iifLogo from "./icons/iiif.png";
 import Interweave from 'interweave';
 
@@ -25,61 +24,47 @@ class FileInfo extends React.Component {
             return <div id="file-info">{this.state.data}</div>;
         }
 
-        let data = this.state.data;
-        let metadata = data.metadata;
+        let manifestData = this.state.data;
+
         let metadataView = [];
-        if (this.state.data.hasOwnProperty("metadata")) {
-
-            for (let i in metadata) {
-
-                if (!metadata[i].hasOwnProperty("label") || !metadata[i].hasOwnProperty("value")) {
-                    continue;
-                }
-
-                let label = metadata[i].label;
-                let value = metadata[i].value;
-                if (label === "Size") {
-                    value = filesize(parseInt(value, 10)).human('si');
-                }
-                value = this.addBlankTarget(value);
-
-
-                metadataView.push(<div key={i}>
+        if (manifestData.metadata !== undefined) {
+            for (let label in manifestData.metadata) {
+                metadataView.push(<div key={label}>
                     <div className="label">{label}</div>
                     <div className="value">
                         <Interweave
                             tagName="div"
-                            content={value}
+                            content={manifestData.metadata[label]}
                         />
                     </div>
                 </div>);
             }
         }
 
-        if (this.state.data.hasOwnProperty("license")) {
-
-            let license = this.state.data.license;
-            if (this.isURL(license)) {
-                license = <a href={license}>{license}</a>;
-            }
-
-            metadataView.push(<div key="termsOfUsage">
-                <div className="label">License</div>
-                <div className="value">{license}</div>
+        if (manifestData.attribution) {
+            metadataView.push(<div key="attribution">
+                <div className="label">Attribution</div>
+                <div className="value">{manifestData.attribution}</div>
             </div>);
         }
 
-        if (this.state.data.hasOwnProperty("logo")) {
-            metadataView.push(<img key="providerLogo" id="provider-logo" src={this.state.data.logo} alt="Logo" title="Logo" />);
+        if (manifestData.license !== undefined) {
+            metadataView.push(<div key="termsOfUsage">
+                <div className="label">License</div>
+                <div className="value"><a href={manifestData.license}>{manifestData.license}</a></div>
+            </div>);
         }
 
-        let manifestUrl = data["@id"];
+        let logo = manifestData.logo;
+        if (logo !== null) {
+            metadataView.push(<img key="providerLogo" id="provider-logo" src={logo} alt="Logo" title="Logo" />);
+        }
 
         return (
             <div id="file-info">
-                <h3>{data["label"]}</h3>
+                <h3>{manifestData.label}</h3>
                 {metadataView}
-                <a id="iiif-logo"  href={manifestUrl} target="_blank">
+                <a id="iiif-logo"  href={manifestData.id} target="_blank">
                     <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
                 </a>
             </div>

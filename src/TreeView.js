@@ -52,41 +52,44 @@ class TreeView extends React.Component {
         }
 
         let url = folderId;
-        let data = Manifest.fetchFromCache(url);
-        data.opened = true;
+        let manifestData = Manifest.fetchFromCache(url);
+        manifestData.opened = true;
+
 
         if (this.treeInProgress !== null) {
 
-            for (let collection in data["collections"]) {
-                if (data.collections[collection]["@id"] === this.treeInProgress["@id"]) {
-                    data.collections[collection] = this.treeInProgress;
+            let collections = manifestData.collections;
+            for (let collection in collections) {
+                if (collections[collection].id === this.treeInProgress.id) {
+                    collections[collection] = this.treeInProgress;
                 }
             }
         }
 
-        if (!data.hasOwnProperty("within")) {
+        if (manifestData.parentId === undefined) {
             this.setState({
-                tree: data
+                tree: manifestData
             });
 
-            document.title = data["label"];
+            document.title = manifestData.label;
 
             return;
         }
 
-        this.treeInProgress = data;
-        url = data.within;
+        this.treeInProgress = manifestData;
+        url = manifestData.parentId;
+
         let t = this;
         Manifest.get(
             url,
-            function (data) {
+            function (manifestData) {
 
-                if (typeof data === "string") {
-                    alert(data);
+                if (typeof manifestData === "string") {
+                    alert(manifestData);
                     return;
                 }
 
-                t.buildTree(data["@id"]);
+                t.buildTree(manifestData.id);
             }
         );
     }

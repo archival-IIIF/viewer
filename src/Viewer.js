@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 import './css/viewer.css';
-import Nested from "./lib/Nested";
-import OpenSeadragon from "./OpenSeadragon";
-import MediaElement from "./MediaElement";
-import InfoJson from "./lib/InfoJson";
+import OpenSeadragon from './OpenSeadragon';
+import MediaElement from './MediaElement';
 
 
 class Viewer extends React.Component {
@@ -14,62 +12,47 @@ class Viewer extends React.Component {
 
         this.state = {
             data: null,
-            itemType: null,
-            source: null
         };
     }
 
     render() {
 
-        let data = this.state.data;
+        let manifestData = this.state.data;
 
-        if (data === null) {
-            return "";
+        if (!manifestData || !manifestData.hasOwnProperty('resource')) {
+            return '';
         }
 
-        if (this.state.itemType === "image") {
-            return this.renderImage(data);
+        if (manifestData.resource.type === 'imageService') {
+            return this.renderImage();
         }
 
-        if (this.state.itemType === "audioVideo") {
-            return this.renderAudioVideo(data);
+        if (manifestData.resource.type === 'audioVideo') {
+            return this.renderAudioVideo();
         }
 
-        if (this.state.itemType === "pdf") {
-            return this.renderPdf(data);
-        }
-
-        return "";
+        return '';
     }
 
-    renderImage(data) {
+    renderImage() {
         return (
             <div id="viewer">
-                <OpenSeadragon source={this.state.source} key={this.state.source} />
+                <OpenSeadragon source={this.state.data.resource.source} key={this.state.data.resource.source} />
             </div>
         );
     }
 
+    renderAudioVideo() {
 
-    isImage(data) {
-        if (!Nested.has(data, "sequences", 0, "canvases", 0, "images", 0, "resource", "service", "@id")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    renderAudioVideo(data) {
-
-
-        let mime = data.mediaSequences[0].elements[0]["format"];
+        let element0 = this.state.data.resource.source;
+        let mime = element0.format;
         let mediaType = mime.substr(0, 5);
-        let file = data.mediaSequences[0].elements[0]["@id"];
+        let file = element0['@id'];
         let sources = [{src: file, type: mime}];
         let config = {};
         let tracks = {};
 
-        this.type = "audioVideo";
+        this.type = 'audioVideo';
 
         return (
             <div id="viewer" style={{left: this.state.left}}>
@@ -88,60 +71,14 @@ class Viewer extends React.Component {
         );
     }
 
-
-
-    isAudioVideo(data) {
-        if (!Nested.has(data, "mediaSequences", 0, "elements", 0, "format")) {
-            return false;
-        }
-
-        let mime = data.mediaSequences[0].elements[0]["format"];
-        let mediaType = mime.substr(0, 5);
-        if (mediaType !== "audio" && mediaType !== "video") {
-            return false;
-        }
-
-        if (data.mediaSequences[0].elements[0]["@id"] === null) {
-            return false;
-        }
-
-        return true;
-    }
-
-
-
-    open(data) {
-
-        let t = this;
-        if (this.isImage(data)) {
-            let infoJsonUrl = data.sequences[0].canvases[0].images[0].resource.service["@id"];
-            InfoJson.get(infoJsonUrl, function (url) {
-                t.setState({
-                    data: data,
-                    itemType: "image",
-                    source: url
-                });
-            });
-            return;
-        }
-
-        let itemType = "";
-        if (this.isAudioVideo(data)) {
-            itemType = "audioVideo";
-
-        } else if (this.isPdf(data)) {
-            itemType = "pdf";
-        }
-        this.setState({
-            data: data,
-            itemType: itemType
-        });
+    open(manifestData) {
+        this.setState({data: manifestData});
     }
 
     play(data) {
 
-        if (this.type === "audioVideo") {
-            document.getElementById("player1_html5").play();
+        if (this.type === 'audioVideo') {
+            document.getElementById('player1_html5').play();
 
         }
     }
