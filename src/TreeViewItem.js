@@ -53,15 +53,15 @@ class TreeViewItem extends React.Component {
         let classNameCaret = "treeview-caret";
 
 
-        if (data.collections === undefined) {
+        if (data.collections.length === 0) {
             classNameCaret += " no-caret";
         } else if (this.state.opened === true) {
             classNameCaret += " opened";
         }
-        if (data["@id"] === this.state.currentFolderId) {
+        let id = data.id;
+        if (id === this.state.currentFolderId) {
             className += " current";
         }
-        let id = data["@id"];
         let label = data.label;
 
 
@@ -76,7 +76,7 @@ class TreeViewItem extends React.Component {
                 if (folder.hasOwnProperty("opened") && folder.opened) {
                     opened = true;
                 }
-                let id = folder["@id"];
+                let id = folder.id;
                 children.push(
                     <TreeViewItem level={childrenLevel} opened={opened} key={id} id={id} currentFolderId={this.state.currentFolderId} />
                 );

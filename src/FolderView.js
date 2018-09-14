@@ -31,7 +31,7 @@ class FolderView extends React.Component {
         let files = this.state.data.manifests;
         let folders = this.state.data.collections;
 
-        if (files === undefined && folders === undefined) {
+        if (files.length === 0 && folders.length === 0) {
             return (
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
@@ -46,15 +46,14 @@ class FolderView extends React.Component {
 
             let folder = folders[key];
             content.push(
-                <Item item={folder} selected={this.state.selected} key={folder["@id"]} />
+                <Item item={folder} selected={this.state.selected} key={folder.id} />
             );
         }
         for (let key in files) {
 
             let file = files[key];
-
             content.push(
-                <Item item={file} selected={this.state.selected} key={file["@id"]} />
+                <Item item={file} selected={this.state.selected} key={file.id} />
             );
         }
 
@@ -80,36 +79,34 @@ class FolderView extends React.Component {
 
         Manifest.get(
             url,
-            function(data) {
+            function(manifestData) {
 
 
-                if (typeof data === "string") {
-                    alert(data);
+                if (typeof manifestData === "string") {
+                    alert(manifestData);
                     return;
                 }
 
-                let id = data["@id"];
-                if (data["@type"] !== "sc:Collection") {
-                    t.openFolder(data["within"], data, false);
+                if (manifestData.type !== "sc:Collection") {
+                    t.openFolder(manifestData.parentId, manifestData, false);
                     return;
                 }
 
                 let selected = null;
                 if (selectedData !== undefined) {
-                    selected = selectedData["@id"];
+                    selected = selectedData.id;
                 } else {
-                    selectedData = data;
+                    selectedData = manifestData;
                 }
 
-                let label = data["label"];
                 t.setState({
-                    data: data,
+                    data: manifestData,
                     selected: selected
                 });
                 if (pageReload !== false) {
-                    ManifestHistory.pageChanged(id, label);
+                    ManifestHistory.pageChanged(manifestData.id, manifestData.label);
                 }
-                global.ee.emitEvent('update-current-folder-id', [id]);
+                global.ee.emitEvent('update-current-folder-id', [manifestData.id]);
                 global.ee.emitEvent('update-file-info', [selectedData]);
             }
         );

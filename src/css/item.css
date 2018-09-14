@@ -4,18 +4,11 @@
     padding: 8px;
     margin: 8px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .item.active {
     background-color: lightgray;
-}
-
-.file .item-thumbnail {
-    background-image: url("../icons/fa/file.svg");
-}
-
-.folder .item-thumbnail {
-    background-image: url("../icons/fa/folder.svg");
 }
 
 .item-thumbnail {
