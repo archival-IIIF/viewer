@@ -71,7 +71,7 @@ class Manifest {
                 manifestData.logo = manifestoData.getLogo();
                 manifestData.attribution = this.getAttribution(manifestoData);
                 manifestData.parentId = manifestoData.getProperty('within');
-                if (manifestData.type === "sc:Collection") {
+                if (manifestData.type === 'sc:Collection') {
                     manifestData.manifests = this.getManifests(manifestoData);
                     manifestData.collections = this.getCollections(manifestoData);
                 } else {
@@ -186,17 +186,17 @@ class Manifest {
             return false;
         }
 
-        if (!element0.hasOwnProperty("format")) {
+        if (!element0.hasOwnProperty('format')) {
             return false;
         }
 
         let mime = element0.format;
         let mediaType = mime.substr(0, 5);
-        if (mediaType !== "audio" && mediaType !== "video") {
+        if (mediaType !== 'audio' && mediaType !== 'video') {
             return false;
         }
 
-        if (element0["@id"] === null) {
+        if (element0['@id'] === null) {
             return false;
         }
 
@@ -222,17 +222,17 @@ class Manifest {
             return false;
         }
 
-        if (!element0.hasOwnProperty("format")) {
+        if (!element0.hasOwnProperty('format')) {
             return false;
         }
 
-        if (element0["@id"] === null) {
+        if (element0['@id'] === null) {
             return false;
         }
 
         return {
             type: 'file',
-            source: element0["@id"]
+            source: element0['@id']
         }
     }
 
@@ -256,7 +256,7 @@ class Manifest {
             return false;
         }
 
-        let service = resource.getService("http://iiif.io/api/image/2/level2.json");
+        let service = resource.getService('http://iiif.io/api/image/2/level2.json');
 
         if (service === undefined) {
             return false;

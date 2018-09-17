@@ -1,5 +1,5 @@
-import React from "react";
-import OpenSeadragonLoader from "openseadragon"
+import React from 'react';
+import OpenSeadragonLoader from 'openseadragon'
 
 
 class OpenSeadragon extends React.Component {
@@ -28,7 +28,7 @@ class OpenSeadragon extends React.Component {
     componentDidMount() {
 
         let options = {
-            id: "openseadragon",
+            id: 'openseadragon',
             defaultZoomLevel: 0,
             tileSources: [this.state.source],
             showNavigationControl: true,
@@ -37,19 +37,19 @@ class OpenSeadragon extends React.Component {
             maxZoomPixelRatio: 2,
             controlsFadeDelay: 250,
             controlsFadeLength: 250,
-            navigatorPosition: "BOTTOM_RIGHT",
+            navigatorPosition: 'BOTTOM_RIGHT',
             animationTime:  1.2,
             visibilityRatio:  0.5,
             blendTime:  0,
-            zoomInButton: "zoom-in-button",
-            zoomOutButton: "zoom-out-button",
-            homeButton: "home-button",
-            fullPageButton: "fullpage-button",
-            rotateRightButton: "rotate-right-button",
+            zoomInButton: 'zoom-in-button',
+            zoomOutButton: 'zoom-out-button',
+            homeButton: 'home-button',
+            fullPageButton: 'fullpage-button',
+            rotateRightButton: 'rotate-right-button',
             ajaxWithCredentials: false
         };
 
-        if (global.token !== "") {
+        if (global.token !== '') {
             options.ajaxHeaders = {
                 'Authorization': 'Bearer ' + global.token
             }

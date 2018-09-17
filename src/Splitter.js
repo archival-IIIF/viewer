@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import './css/splitter.css';
 
 class Splitter extends React.Component {
@@ -15,12 +15,12 @@ class Splitter extends React.Component {
 
         let t = this;
 
-        document.addEventListener("mouseup", function (event) {
+        document.addEventListener('mouseup', function (event) {
             t.isMoving = false;
             global.ee.emitEvent('splitter-move-end', []);
         });
 
-        document.addEventListener("mousemove", function (event) {
+        document.addEventListener('mousemove', function (event) {
             if (t.isMoving) {
                 global.ee.emitEvent('splitter-move', [event.clientX]);
             }
@@ -29,7 +29,7 @@ class Splitter extends React.Component {
 
     render() {
 
-        return <div id="splitter"  onMouseDown={() => this.moveEnde() } onDoubleClick={() => this.hideTreeView()} style={{"left": this.state.left}} />
+        return <div id="splitter"  onMouseDown={() => this.moveEnde() } onDoubleClick={() => this.hideTreeView()} style={{'left': this.state.left}} />
     }
 
 

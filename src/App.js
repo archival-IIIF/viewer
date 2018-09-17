@@ -4,11 +4,11 @@ import FolderView from './FolderView';
 import TreeView from './TreeView';
 import Splitter from './Splitter';
 import FileInfo from './FileInfo';
-import EventEmitter from "wolfy87-eventemitter/EventEmitter";
-import Viewer from "./Viewer";
-import TopBar from "./TopBar";
-import ManifestHistory from "./lib/ManifestHistory";
-import Login from "./Login";
+import EventEmitter from 'wolfy87-eventemitter/EventEmitter';
+import Viewer from './Viewer';
+import TopBar from './TopBar';
+import ManifestHistory from './lib/ManifestHistory';
+import Login from './Login';
 
 
 class App extends Component {
@@ -20,11 +20,11 @@ class App extends Component {
         global.ee = new EventEmitter();
         global.intialWidth = 300;
         global.splitterWidth = 8;
-        global.token = "";
+        global.token = '';
 
 
         this.state = {
-            className: "",
+            className: '',
             contentLeft: global.intialWidth +  global.splitterWidth,
         }
 
@@ -56,7 +56,7 @@ class App extends Component {
     splitterMove(width) {
         this.setState(
             {
-                className: "no-select",
+                className: 'no-select',
                 contentLeft: width + global.splitterWidth
             }
         );
@@ -64,7 +64,7 @@ class App extends Component {
 
     splitterMoveEnd() {
         this.setState(
-            {className: ""}
+            {className: ''}
         );
     }
 

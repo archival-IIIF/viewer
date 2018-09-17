@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import './css/treeview.css';
-import Loading from "./Loading";
-import TreeViewItem from "./TreeViewItem";
-import Manifest from "./lib/Manifest";
+import Loading from './Loading';
+import TreeViewItem from './TreeViewItem';
+import Manifest from './lib/Manifest';
 
 class TreeView extends React.Component {
 
@@ -26,7 +26,7 @@ class TreeView extends React.Component {
     render() {
 
         if (this.state.width < this.minWidth ) {
-            return "";
+            return '';
         }
 
         if (this.state.tree === false) {
@@ -84,7 +84,7 @@ class TreeView extends React.Component {
             url,
             function (manifestData) {
 
-                if (typeof manifestData === "string") {
+                if (typeof manifestData === 'string') {
                     alert(manifestData);
                     return;
                 }

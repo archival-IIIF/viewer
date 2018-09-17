@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import './css/treeview.css';
-import Manifest from "./lib/Manifest";
-import Loading from "./Loading";
+import Manifest from './lib/Manifest';
+import Loading from './Loading';
 
 class TreeViewItem extends React.Component {
 
@@ -48,19 +48,19 @@ class TreeViewItem extends React.Component {
         }
 
 
-        let style = {"marginLeft": (this.props.level-1)*10};
-        let className = "treeview-item level-" + this.props.level;
-        let classNameCaret = "treeview-caret";
+        let style = {'marginLeft': (this.props.level-1)*10};
+        let className = 'treeview-item level-' + this.props.level;
+        let classNameCaret = 'treeview-caret';
 
 
         if (data.collections.length === 0) {
-            classNameCaret += " no-caret";
+            classNameCaret += ' no-caret';
         } else if (this.state.opened === true) {
-            classNameCaret += " opened";
+            classNameCaret += ' opened';
         }
         let id = data.id;
         if (id === this.state.currentFolderId) {
-            className += " current";
+            className += ' current';
         }
         let label = data.label;
 
@@ -73,7 +73,7 @@ class TreeViewItem extends React.Component {
 
                 let folder = folders[key];
                 let opened = false;
-                if (folder.hasOwnProperty("opened") && folder.opened) {
+                if (folder.hasOwnProperty('opened') && folder.opened) {
                     opened = true;
                 }
                 let id = folder.id;
