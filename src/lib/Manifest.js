@@ -46,11 +46,13 @@ class Manifest {
             if (json !== undefined) {
 
                 if(!this.lang) {
-                    console.log(responseHeaderContentLanguage);
                     if (responseHeaderContentLanguage) {
                         this.lang = responseHeaderContentLanguage;
-                        i18n.changeLanguage(this.lang);
+                    } else {
+                        this.lang = window.navigator.language;
                     }
+
+                    i18n.changeLanguage(this.lang);
                 }
 
                 if (statusCode === 401) {

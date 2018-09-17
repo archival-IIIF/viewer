@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import Item from "./Item";
 import Manifest from "./lib/Manifest";
 import ManifestHistory from "./lib/ManifestHistory";
+import {translate, Trans} from 'react-i18next';
 
 
 class FolderView extends React.Component {
@@ -35,7 +36,7 @@ class FolderView extends React.Component {
             return (
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
-                    <div className="empty">This folder is empty</div>
+                    <div className="empty"><Trans i18nKey="emptyFolder"/></div>
                 </div>
             );
         }
@@ -147,4 +148,4 @@ class FolderView extends React.Component {
 
 }
 
-export default FolderView;
+export default translate('common')(FolderView);
