@@ -3,5 +3,6 @@
   "listView": "Listen-Ansicht",
   "attribution": "Attribution",
   "license": "Lizenz",
-  "logout": "Ausloggen"
+  "logout": "Ausloggen",
+  "emptyFolder": "Dieser Ordner ist leer"
 }

@@ -9,7 +9,7 @@ import common_en from "./translations/en/common.json";
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
-    lng: 'en',                              // language to use
+    fallbackLng: 'en',
     resources: {
         en: {
             common: common_en

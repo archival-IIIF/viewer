@@ -3,5 +3,6 @@
   "listView": "List view",
   "attribution": "Attribution",
   "license": "License",
-  "logout": "Logout"
+  "logout": "Logout",
+  "emptyFolder": "This folder is empty"
 }
