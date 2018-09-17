@@ -1,5 +1,5 @@
-import React from "react";
-import iifLogo from "./icons/iiif.png";
+import React from 'react';
+import iifLogo from './icons/iiif.png';
 import Interweave from 'interweave';
 import { translate, Trans } from 'react-i18next';
 
@@ -18,10 +18,10 @@ class FileInfo extends React.Component {
     render() {
 
         if (this.state.data === null || this.state.data === undefined) {
-            return "";
+            return '';
         }
 
-        if (typeof this.state.data === "string") {
+        if (typeof this.state.data === 'string') {
             return <div id="file-info">{this.state.data}</div>;
         }
 
@@ -44,14 +44,14 @@ class FileInfo extends React.Component {
 
         if (manifestData.attribution) {
             metadataView.push(<div key="attribution">
-                <div className="label"><Trans i18nKey='attribution' /></div>
+                <div className="label"><Trans i18nKey="attribution" /></div>
                 <div className="value">{manifestData.attribution}</div>
             </div>);
         }
 
         if (manifestData.license !== undefined) {
             metadataView.push(<div key="termsOfUsage">
-                <div className="label"><Trans i18nKey='license' /></div>
+                <div className="label"><Trans i18nKey="license" /></div>
                 <div className="value"><a href={manifestData.license}>{manifestData.license}</a></div>
             </div>);
         }
@@ -84,11 +84,11 @@ class FileInfo extends React.Component {
     }
 
     addBlankTarget(input){
-        let tmp = document.createElement("div");
+        let tmp = document.createElement('div');
         tmp.innerHTML = input;
         for (let i = 0; i < tmp.children.length; i++) {
-            if (tmp.children[i].nodeName === "A") {
-                tmp.children[i].target = "_blank"
+            if (tmp.children[i].nodeName === 'A') {
+                tmp.children[i].target = '_blank'
             }
         }
         return tmp.innerHTML;

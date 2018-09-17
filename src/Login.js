@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import './css/modal.css';
-import Manifest from "./lib/Manifest";
-import InfoJson from "./lib/InfoJson";
+import Manifest from './lib/Manifest';
+import InfoJson from './lib/InfoJson';
 
 class Login extends React.Component {
 
@@ -10,22 +10,22 @@ class Login extends React.Component {
         super(props);
 
         this.state = {
-            id: "",
-            header: "",
-            description: "",
-            confirmLabel: "",
+            id: '',
+            header: '',
+            description: '',
+            confirmLabel: '',
             visible: false,
             error: false,
-            errorMessage: ""
+            errorMessage: ''
         };
     }
 
     render() {
         if (this.state.visible === false) {
-            return ""
+            return ''
         }
 
-        let error = "";
+        let error = '';
         if (this.state.error) {
             error = <div id="modal-error-message">{this.state.errorMessage}</div>
         }
@@ -52,7 +52,7 @@ class Login extends React.Component {
 
     openWindow(id) {
 
-        let url = id + "?origin=" + this.origin;
+        let url = id + '?origin=' + this.origin;
 
         let t = this;
         let win = window.open(url);
@@ -60,9 +60,9 @@ class Login extends React.Component {
             try {
                 if (win == null || win.closed) {
                     window.clearInterval(t.checkIfLoginWindowIsClosedInterval);
-                    window.addEventListener("message", t.receiveToken);
+                    window.addEventListener('message', t.receiveToken);
                     document.getElementById('messageFrame').src = t.tokenUrl + '?messageId=1&origin=' + t.origin;
-                    window.removeListener("message", t.receiveToken);
+                    window.removeListener('message', t.receiveToken);
                 }
             }
             catch (e) {
@@ -79,8 +79,8 @@ class Login extends React.Component {
         })
     }
 
-    logoutUrl = "";
-    tokenUrl = "";
+    logoutUrl = '';
+    tokenUrl = '';
 
     showLogin(service) {
 
@@ -91,7 +91,7 @@ class Login extends React.Component {
 
             this.setState({
                 visible: true,
-                id: loginService["@id"],
+                id: loginService['@id'],
                 header: loginService.header,
                 description: loginService.description,
                 confirmLabel: loginService.confirmLabel,
@@ -106,9 +106,9 @@ class Login extends React.Component {
     getLoginService(service) {
 
 
-        if (service.hasOwnProperty("profile") ) {
+        if (service.hasOwnProperty('profile') ) {
 
-            if (service.profile !== "http://iiif.io/api/auth/1/login") {
+            if (service.profile !== 'http://iiif.io/api/auth/1/login') {
                 return false;
             }
 
@@ -120,7 +120,7 @@ class Login extends React.Component {
             for (i = 0; i < service.length; i++) {
                 let iService = service[i];
 
-                if (iService.hasOwnProperty("profile") && iService.profile === "http://iiif.io/api/auth/1/login") {
+                if (iService.hasOwnProperty('profile') && iService.profile === 'http://iiif.io/api/auth/1/login') {
                     return iService
                 }
             }
@@ -130,19 +130,19 @@ class Login extends React.Component {
     }
 
     getTokenUrlFromService(service) {
-        if (service.service.hasOwnProperty("@id") && service.service.hasOwnProperty("profile") && service.service["profile"] === "http://iiif.io/api/auth/1/token") {
-            this.tokenUrl = service.service["@id"]
+        if (service.service.hasOwnProperty('@id') && service.service.hasOwnProperty('profile') && service.service['profile'] === 'http://iiif.io/api/auth/1/token') {
+            this.tokenUrl = service.service['@id']
         } else if (Array.isArray(service.service)) {
             let i;
             for (i = 0; i < service.service.length; i++) {
                 let iService = service.service[i];
-                if (iService.hasOwnProperty("@id") && iService.hasOwnProperty("profile") && iService["profile"] === "http://iiif.io/api/auth/1/token" && this.tokenUrl === "") {
-                    this.tokenUrl = iService["@id"];
+                if (iService.hasOwnProperty('@id') && iService.hasOwnProperty('profile') && iService['profile'] === 'http://iiif.io/api/auth/1/token' && this.tokenUrl === '') {
+                    this.tokenUrl = iService['@id'];
                     continue;
                 }
 
-                if (iService.hasOwnProperty("@id") && iService.hasOwnProperty("profile") && iService["profile"] === "http://iiif.io/api/auth/1/logout" && this.logoutUrl === "") {
-                    this.logoutUrl = iService["@id"];
+                if (iService.hasOwnProperty('@id') && iService.hasOwnProperty('profile') && iService['profile'] === 'http://iiif.io/api/auth/1/logout' && this.logoutUrl === '') {
+                    this.logoutUrl = iService['@id'];
                 }
             }
         }
@@ -151,9 +151,9 @@ class Login extends React.Component {
     getExternal(service) {
 
 
-        if (service.hasOwnProperty("profile") ) {
+        if (service.hasOwnProperty('profile') ) {
 
-            if (service.profile !== "http://iiif.io/api/auth/1/external") {
+            if (service.profile !== 'http://iiif.io/api/auth/1/external') {
                 return false;
             }
 
@@ -165,7 +165,7 @@ class Login extends React.Component {
             for (i = 0; i < service.length; i++) {
                 let iService = service[i];
 
-                if (iService.hasOwnProperty("profile") && iService.profile === "http://iiif.io/api/auth/1/external") {
+                if (iService.hasOwnProperty('profile') && iService.profile === 'http://iiif.io/api/auth/1/external') {
                     return iService
                 }
             }
@@ -176,8 +176,8 @@ class Login extends React.Component {
 
 
     logout() {
-        window.open(this.logoutUrl, "_blank");
-        global.token = "";
+        window.open(this.logoutUrl, '_blank');
+        global.token = '';
         Manifest.clearCache();
         InfoJson.clearCache();
         let id = Manifest.getIdFromCurrentUrl();

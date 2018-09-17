@@ -42,8 +42,8 @@ export default class MediaElement extends Component {
         }
 
         const
-            mediaBody = `${sourceTags.join("\n")}
-				${tracksTags.join("\n")}`,
+            mediaBody = `${sourceTags.join('\n')}
+				${tracksTags.join('\n')}`,
             mediaHtml = props.mediaType === 'video' ?
                 `<video id="${props.id}" width="${props.width}" height="${props.height}"${(props.poster ? ` poster=${props.poster}` : '')}
 					${(props.controls ? ' controls' : '')}${(props.preload ? ` preload="${props.preload}"` : '')}>

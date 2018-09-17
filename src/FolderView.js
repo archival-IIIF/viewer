@@ -1,8 +1,8 @@
-import React from "react";
-import Loading from "./Loading";
-import Item from "./Item";
-import Manifest from "./lib/Manifest";
-import ManifestHistory from "./lib/ManifestHistory";
+import React from 'react';
+import Loading from './Loading';
+import Item from './Item';
+import Manifest from './lib/Manifest';
+import ManifestHistory from './lib/ManifestHistory';
 import {translate, Trans} from 'react-i18next';
 
 
@@ -16,7 +16,7 @@ class FolderView extends React.Component {
         this.state = {
             data: false,
             selected: null,
-            mode: "icon-view"
+            mode: 'icon-view'
         };
     }
 
@@ -58,7 +58,7 @@ class FolderView extends React.Component {
             );
         }
 
-        let folderViewClassNames = "folder-view " + this.state.mode;
+        let folderViewClassNames = 'folder-view ' + this.state.mode;
 
         return (
             <div id="folder-view-container">
@@ -71,7 +71,7 @@ class FolderView extends React.Component {
     openFolder(itemId, selectedData, pageReload) {
 
         if (itemId === false) {
-            alert("No manifest ID given!");
+            alert('No manifest ID given!');
             return;
         }
 
@@ -83,12 +83,12 @@ class FolderView extends React.Component {
             function(manifestData) {
 
 
-                if (typeof manifestData === "string") {
+                if (typeof manifestData === 'string') {
                     alert(manifestData);
                     return;
                 }
 
-                if (manifestData.type !== "sc:Collection") {
+                if (manifestData.type !== 'sc:Collection') {
                     t.openFolder(manifestData.parentId, manifestData, false);
                     return;
                 }
@@ -118,11 +118,11 @@ class FolderView extends React.Component {
 
 
     showListView() {
-        this.setState({mode: "list-view"});
+        this.setState({mode: 'list-view'});
     }
 
     showIconView() {
-        this.setState({mode: "icon-view"});
+        this.setState({mode: 'icon-view'});
     }
 
     openFolder = this.openFolder.bind(this);

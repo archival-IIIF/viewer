@@ -4,7 +4,7 @@ class ManifestHistory {
 
     static pageChanged(id, label) {
 
-        let previousId = "";
+        let previousId = '';
         if (this.previousIds.length > 0) {
             previousId = this.previousIds.slice(-1)[0];
         }
@@ -12,7 +12,7 @@ class ManifestHistory {
             this.previousIds.push(id);
         }
 
-        window.history.pushState({}, label, "?manifest=" + id);
+        window.history.pushState({}, label, '?manifest=' + id);
 
     }
 

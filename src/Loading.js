@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * three-dots.svg:
@@ -10,7 +10,7 @@ class Loading extends React.Component {
 
     render() {
 
-        return "";
+        return '';
 
         /*return <svg width="40" height="10" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#000">
             <circle cx="15" cy="15" r="15">

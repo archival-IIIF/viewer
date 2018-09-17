@@ -21,7 +21,7 @@ class InfoJson {
 
         let t  = this;
         let headers = {};
-        if (global.token !== "") {
+        if (global.token !== '') {
             headers.Authorization = 'Bearer ' + global.token;
         }
 

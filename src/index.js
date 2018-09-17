@@ -4,8 +4,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
-import common_de from "./translations/de/common.json";
-import common_en from "./translations/en/common.json";
+import common_de from './translations/de/common.json';
+import common_en from './translations/en/common.json';
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping

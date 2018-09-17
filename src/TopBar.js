@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import './css/topbar.css';
 import { translate, Trans } from 'react-i18next';
 
@@ -15,9 +15,9 @@ class TopBar extends React.Component {
 
     render() {
 
-        let login = "";
+        let login = '';
         if (this.state.logoutButtonIsVisible) {
-            login = <span id="logout-button" onClick={() => this.logout()}><Trans i18nKey='logout' /></span>
+            login = <span id="logout-button" onClick={() => this.logout()}><Trans i18nKey="logout" /></span>
         }
 
         return <div id="topbar">
