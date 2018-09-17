@@ -1,7 +1,10 @@
 import manifesto from 'manifesto.js';
 import filesize from 'file-size';
+import i18n from 'i18next';
 
 class Manifest {
+
+    static lang;
 
     static cache = {};
 
@@ -27,6 +30,7 @@ class Manifest {
         let t  = this;
         let headers = {};
         let statusCode = 0;
+        let responseHeaderContentLanguage ;
         if (global.token !== '') {
             headers.Authorization = 'Bearer ' + global.token;
         }
@@ -36,9 +40,18 @@ class Manifest {
             }
         ).then((response) => {
             statusCode = response.status;
+            responseHeaderContentLanguage = response.headers.get('content-language');
             return response.json();
         }).then((json) => {
             if (json !== undefined) {
+
+                if(!this.lang) {
+                    console.log(responseHeaderContentLanguage);
+                    if (responseHeaderContentLanguage) {
+                        this.lang = responseHeaderContentLanguage;
+                        i18n.changeLanguage(this.lang);
+                    }
+                }
 
                 if (statusCode === 401) {
                     global.ee.emitEvent('show-login', [json.service]);

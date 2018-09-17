@@ -1,6 +1,7 @@
 import React from "react";
 import iifLogo from "./icons/iiif.png";
 import Interweave from 'interweave';
+import { translate, Trans } from 'react-i18next';
 
 class FileInfo extends React.Component {
 
@@ -43,14 +44,14 @@ class FileInfo extends React.Component {
 
         if (manifestData.attribution) {
             metadataView.push(<div key="attribution">
-                <div className="label">Attribution</div>
+                <div className="label"><Trans i18nKey='attribution' /></div>
                 <div className="value">{manifestData.attribution}</div>
             </div>);
         }
 
         if (manifestData.license !== undefined) {
             metadataView.push(<div key="termsOfUsage">
-                <div className="label">License</div>
+                <div className="label"><Trans i18nKey='license' /></div>
                 <div className="value"><a href={manifestData.license}>{manifestData.license}</a></div>
             </div>);
         }
@@ -115,4 +116,4 @@ class FileInfo extends React.Component {
 
 }
 
-export default FileInfo;
+export default translate('common')(FileInfo);

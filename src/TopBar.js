@@ -1,5 +1,6 @@
 import React from "react";
 import './css/topbar.css';
+import { translate, Trans } from 'react-i18next';
 
 class TopBar extends React.Component {
 
@@ -16,12 +17,16 @@ class TopBar extends React.Component {
 
         let login = "";
         if (this.state.logoutButtonIsVisible) {
-            login = <span id="logout-button" onClick={() => this.logout()}>Logout</span>
+            login = <span id="logout-button" onClick={() => this.logout()}><Trans i18nKey='logout' /></span>
         }
 
         return <div id="topbar">
-            <span id="show-icon-view-button" onClick={() => this.showIconView()}>Icon view</span>&nbsp;
-            <span id="show-list-view-button" onClick={() => this.showListView()}>List view</span>
+            <span id="show-icon-view-button" onClick={() => this.showIconView()}>
+                <Trans i18nKey='iconView' />
+            </span>&nbsp;
+            <span id="show-list-view-button" onClick={() => this.showListView()}>
+                <Trans i18nKey='listView' />
+            </span>
             {login}
         </div>
     }
@@ -59,4 +64,4 @@ class TopBar extends React.Component {
 
 }
 
-export default TopBar;
+export default translate('common')(TopBar);
