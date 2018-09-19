@@ -82,70 +82,31 @@ class Login extends React.Component {
     logoutUrl = '';
     tokenUrl = '';
 
-    showLogin(service) {
+    showLogin(manifestoData) {
 
-
-        let loginService = this.getLoginService(service);
+        const loginService = manifestoData.getService('http://iiif.io/api/auth/1/login');
         if (loginService !== false) {
             this.getTokenUrlFromService(loginService);
 
             this.setState({
                 visible: true,
-                id: loginService['@id'],
-                header: loginService.header,
-                description: loginService.description,
-                confirmLabel: loginService.confirmLabel,
+                id: loginService.id,
+                header: loginService.getHeader(),
+                description: loginService.getDescription(),
+                confirmLabel: loginService.getConfirmLabel(),
                 error: false,
-                errorMessage: loginService.failureDescription
+                errorMessage: loginService.getFailureDescription()
             });
         }
 
     }
 
+    getTokenUrlFromService(loginService) {
+        const tokenService = loginService.getService('http://iiif.io/api/auth/1/token');
+        this.tokenUrl = tokenService.id;
 
-    getLoginService(service) {
-
-
-        if (service.hasOwnProperty('profile') ) {
-
-            if (service.profile !== 'http://iiif.io/api/auth/1/login') {
-                return false;
-            }
-
-            return service;
-        }
-
-        if (service.hasOwnProperty(0)) {
-            let i;
-            for (i = 0; i < service.length; i++) {
-                let iService = service[i];
-
-                if (iService.hasOwnProperty('profile') && iService.profile === 'http://iiif.io/api/auth/1/login') {
-                    return iService
-                }
-            }
-        }
-
-        return false;
-    }
-
-    getTokenUrlFromService(service) {
-        if (service.service.hasOwnProperty('@id') && service.service.hasOwnProperty('profile') && service.service['profile'] === 'http://iiif.io/api/auth/1/token') {
-            this.tokenUrl = service.service['@id']
-        } else if (Array.isArray(service.service)) {
-            let i;
-            for (i = 0; i < service.service.length; i++) {
-                let iService = service.service[i];
-                if (iService.hasOwnProperty('@id') && iService.hasOwnProperty('profile') && iService['profile'] === 'http://iiif.io/api/auth/1/token' && this.tokenUrl === '') {
-                    this.tokenUrl = iService['@id'];
-                    continue;
-                }
-
-                if (iService.hasOwnProperty('@id') && iService.hasOwnProperty('profile') && iService['profile'] === 'http://iiif.io/api/auth/1/logout' && this.logoutUrl === '') {
-                    this.logoutUrl = iService['@id'];
-                }
-            }
-        }
+        const logoutService = loginService.getService('http://iiif.io/api/auth/1/logout');
+        this.logoutUrl = logoutService.id;
     }
 
     getExternal(service) {
@@ -196,6 +157,7 @@ class Login extends React.Component {
 
     componentWillUnmount() {
         global.ee.removeListener('show-login', this.showLogin);
+        global.ee.removeListener('logout', this.logout);
     }
 
 

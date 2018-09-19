@@ -68,7 +68,7 @@ class Manifest {
                 manifestData.parentId = manifestoData.getProperty('within');
 
                 if (statusCode === 401) {
-                    global.ee.emitEvent('show-login', [json.service]);
+                    global.ee.emitEvent('show-login', [manifestoData]);
                     manifestData.collections = [];
                     manifestData.manifests = [];
                     manifestData.restricted = true;
