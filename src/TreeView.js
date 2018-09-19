@@ -53,6 +53,9 @@ class TreeView extends React.Component {
 
         let url = folderId;
         let manifestData = Manifest.fetchFromCache(url);
+        if (manifestData === false) {
+            return;
+        }
         manifestData.opened = true;
 
 
@@ -110,20 +113,31 @@ class TreeView extends React.Component {
 
     }
 
+
+    clearTree() {
+        this.setState({tree: false})
+    }
+
     splitterMove = this.splitterMove.bind(this);
     splitterDoubleClick = this.splitterDoubleClick.bind(this);
     updateCurrentFolderId = this.buildTree.bind(this);
+    logoutDone = this.clearTree.bind(this);
+    loginDone = this.clearTree.bind(this);
 
     componentDidMount() {
         global.ee.addListener('splitter-move', this.splitterMove);
         global.ee.addListener('splitter-double-click', this.splitterDoubleClick);
         global.ee.addListener('update-current-folder-id', this.updateCurrentFolderId);
+        global.ee.addListener('logout-done', this.logoutDone);
+        global.ee.addListener('token-received', this.loginDone);
     }
 
     componentWillUnmount() {
         global.ee.removeListener('splitter-move', this.splitterMove);
         global.ee.removeListener('splitter-move-end', this.splitterDoubleClick);
         global.ee.removeListener('update-current-folder-id', this.updateCurrentFolderId);
+        global.ee.removeListener('logout-done', this.logoutDone);
+        global.ee.removeListener('token-received', this.loginDone);
     }
 
 

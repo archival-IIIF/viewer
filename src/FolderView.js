@@ -29,10 +29,15 @@ class FolderView extends React.Component {
             );
         }
 
+        if (this.state.data.restricted) {
+            return <div id="folder-view-container" />;
+        }
+
         let files = this.state.data.manifests;
         let folders = this.state.data.collections;
 
         if (files.length === 0 && folders.length === 0) {
+
             return (
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
@@ -40,7 +45,6 @@ class FolderView extends React.Component {
                 </div>
             );
         }
-
 
         let content = [];
         for (let key in folders) {
@@ -82,7 +86,6 @@ class FolderView extends React.Component {
             url,
             function(manifestData) {
 
-
                 if (typeof manifestData === 'string') {
                     alert(manifestData);
                     return;
@@ -107,6 +110,11 @@ class FolderView extends React.Component {
                 if (pageReload !== false) {
                     ManifestHistory.pageChanged(manifestData.id, manifestData.label);
                 }
+
+                if (manifestData.restricted === true) {
+                    document.title = manifestData.label;
+                }
+
                 global.ee.emitEvent('update-current-folder-id', [manifestData.id]);
                 global.ee.emitEvent('update-file-info', [selectedData]);
             }
@@ -133,7 +141,7 @@ class FolderView extends React.Component {
        global.ee.addListener('show-list-view', this.showListView);
        global.ee.addListener('show-icon-view', this.showIconView);
        global.ee.addListener('open-folder', this.openFolder);
-
+       global.ee.addListener('update-file-info', this.updateFileInfo);
 
         let id = Manifest.getIdFromCurrentUrl();
         this.openFolder(id);
@@ -143,8 +151,24 @@ class FolderView extends React.Component {
         global.ee.removeListener('show-list-view', this.showListView);
         global.ee.removeListener('show-icon-view', this.showIconView);
         global.ee.removeListener('open-folder', this.openFolder);
-
+        global.ee.removeListener('update-file-info', this.updateFileInfo);
     }
+
+
+
+
+    updateFileInfo = this.updateFileInfo.bind(this);
+
+    updateFileInfo(manifestData) {
+        if (this.state.selected === manifestData.id) {
+            return;
+        }
+
+        this.setState({
+            selected: manifestData.id
+        });
+    }
+
 
 }
 

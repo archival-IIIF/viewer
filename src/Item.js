@@ -26,6 +26,10 @@ class Item extends React.Component {
     }
 
 
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps)
+    }
+
     render() {
 
         let id = this.state.item.id;
@@ -115,23 +119,6 @@ class Item extends React.Component {
 
     }
 
-
-    updateFileInfo = this.updateFileInfo.bind(this);
-
-    updateFileInfo(manifestData) {
-        this.setState({
-            selected: manifestData.id
-        });
-    }
-
-    componentDidMount() {
-        global.ee.addListener('update-file-info', this.updateFileInfo);
-    }
-
-    componentWillUnmount() {
-        global.ee.removeListener('update-file-info', this.updateFileInfo);
-        global.ee.removeListener('open-folder', this.openFolder);
-    }
 
 }
 

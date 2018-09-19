@@ -10,6 +10,10 @@ class Manifest {
 
     static get(url, callback) {
 
+        if (url === undefined) {
+            return;
+        }
+
         let data = this.fetchFromCache(url);
 
         if (data !== false) {
@@ -55,31 +59,35 @@ class Manifest {
                     i18n.changeLanguage(this.lang);
                 }
 
-                if (statusCode === 401) {
-                    global.ee.emitEvent('show-login', [json.service]);
-                    return;
-                }
-
                 let manifestoData =  manifesto.create(json);
-
                 let manifestData = {};
-                manifestData.id = manifestoData.id;
-                manifestData.metadata = this.getMetadata(manifestoData);
-                manifestData.license = this.getLicense(manifestoData);
-                manifestData.label = manifestoData.getDefaultLabel();
-                manifestData.type = manifestoData.getProperty('type');
-                manifestData.logo = manifestoData.getLogo();
-                manifestData.attribution = this.getAttribution(manifestoData);
-                manifestData.parentId = manifestoData.getProperty('within');
-                if (manifestData.type === 'sc:Collection') {
-                    manifestData.manifests = this.getManifests(manifestoData);
-                    manifestData.collections = this.getCollections(manifestoData);
-                } else {
-                    manifestData.resource = this.getResource(manifestoData);
-                }
-                manifestData.thumbnail = this.getThumbnail(manifestoData);
 
-                t.cache[url] = manifestData;
+                manifestData.id = manifestoData.id;
+                manifestData.type = manifestoData.getProperty('type');
+                manifestData.label = manifestoData.getDefaultLabel();
+                manifestData.parentId = manifestoData.getProperty('within');
+
+                if (statusCode === 401) {
+                    global.ee.emitEvent('show-login', [manifestoData]);
+                    manifestData.collections = [];
+                    manifestData.manifests = [];
+                    manifestData.restricted = true;
+                } else {
+                    manifestData.metadata = this.getMetadata(manifestoData);
+                    manifestData.license = this.getLicense(manifestoData);
+                    manifestData.logo = manifestoData.getLogo();
+                    manifestData.attribution = this.getAttribution(manifestoData);
+                    manifestData.restricted = false;
+                    if (manifestData.type === 'sc:Collection') {
+                        manifestData.manifests = this.getManifests(manifestoData);
+                        manifestData.collections = this.getCollections(manifestoData);
+                    } else {
+                        manifestData.resource = this.getResource(manifestoData);
+                    }
+                    manifestData.thumbnail = this.getThumbnail(manifestoData);
+
+                    t.cache[url] = manifestData;
+                }
 
                 if (callback !== undefined) {
                     callback(manifestData);
