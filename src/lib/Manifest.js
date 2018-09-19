@@ -31,7 +31,7 @@ class Manifest {
 
     static fetchFromUrl(url, callback) {
 
-        let t  = this;
+        let t = this;
         let headers = {};
         let statusCode = 0;
         let responseHeaderContentLanguage ;
@@ -45,11 +45,15 @@ class Manifest {
         ).then((response) => {
             statusCode = response.status;
             responseHeaderContentLanguage = response.headers.get('content-language');
-            return response.json();
-        }).then((json) => {
-            if (json !== undefined) {
 
-                if(!this.lang) {
+            if (statusCode !== 401 && statusCode >= 400) {
+                alert('Could not fetch manifest!\n' + url);
+                return;
+            }
+
+            response.json().then((json) => {
+
+                if (!this.lang) {
                     if (responseHeaderContentLanguage) {
                         this.lang = responseHeaderContentLanguage;
                     } else {
@@ -59,13 +63,25 @@ class Manifest {
                     i18n.changeLanguage(this.lang);
                 }
 
-                let manifestoData =  manifesto.create(json);
+                let manifestoData;
+                manifestoData = manifesto.create(json);
+
                 let manifestData = {};
 
                 manifestData.id = manifestoData.id;
                 manifestData.type = manifestoData.getProperty('type');
                 manifestData.label = manifestoData.getDefaultLabel();
                 manifestData.parentId = manifestoData.getProperty('within');
+
+                if (!manifestData.label) {
+                    alert('Manifest file does not contain a label!\n' + url);
+                    return;
+                }
+
+                if (!manifestData.id) {
+                    alert('Manifest file does not contain an id!\n' + url);
+                    return;
+                }
 
                 if (statusCode === 401) {
                     global.ee.emitEvent('show-login', [manifestoData]);
@@ -81,8 +97,11 @@ class Manifest {
                     if (manifestData.type === 'sc:Collection') {
                         manifestData.manifests = this.getManifests(manifestoData);
                         manifestData.collections = this.getCollections(manifestoData);
-                    } else {
+                    } else if (manifestData.type === 'sc:Manifest') {
                         manifestData.resource = this.getResource(manifestoData);
+                    } else {
+                        alert('Manifest type must be a collection or a manifest!\n' + url);
+                        return;
                     }
                     manifestData.thumbnail = this.getThumbnail(manifestoData);
 
@@ -92,9 +111,10 @@ class Manifest {
                 if (callback !== undefined) {
                     callback(manifestData);
                 }
-            }
+            }).catch(err => {
+                alert('Could not read manifest!\n' + url);
+            });
         });
-
     }
 
     static getAttribution(manifestoData) {
@@ -102,9 +122,7 @@ class Manifest {
 
         try {
             return manifestoAttribution.value[0].value;
-        } catch (e) {
-
-        }
+        } catch (e) {}
 
         return undefined;
     }
