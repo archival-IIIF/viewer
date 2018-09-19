@@ -17,7 +17,7 @@ class FileInfo extends React.Component {
 
     render() {
 
-        if (this.state.data === null || this.state.data === undefined) {
+        if (this.state.data === null || this.state.data === undefined || this.state.data.restricted === '') {
             return '';
         }
 

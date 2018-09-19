@@ -180,6 +180,7 @@ class Login extends React.Component {
         global.token = '';
         Manifest.clearCache();
         InfoJson.clearCache();
+        global.ee.emitEvent('logout-done');
         let id = Manifest.getIdFromCurrentUrl();
         global.ee.emitEvent('open-folder', [id]);
     }
@@ -207,7 +208,7 @@ class Login extends React.Component {
             });
             return;
         }
-
+        Manifest.clearCache();
         let token = event.data.accessToken;
         global.token = token;
         global.ee.emitEvent('token-received');
