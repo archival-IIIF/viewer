@@ -57,7 +57,7 @@ class FileInfo extends React.Component {
         }
 
         let logo = manifestData.logo;
-        if (logo !== null) {
+        if (logo) {
             metadataView.push(<img key="providerLogo" id="provider-logo" src={logo} alt="Logo" title="Logo" />);
         }
 
