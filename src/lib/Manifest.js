@@ -129,7 +129,7 @@ class Manifest {
 
     static getMetadata(manifestoData) {
         let manifestoMetadata = manifestoData.getMetadata();
-        let metadata = {};
+        let metadata = [];
 
         if (manifestoMetadata === undefined || manifestoMetadata === null) {
             return undefined;
@@ -137,18 +137,23 @@ class Manifest {
 
         for (let i in manifestoMetadata) {
 
-            if (!manifestoMetadata[i].hasOwnProperty('label') || !manifestoMetadata[i].hasOwnProperty('value')) {
-                continue;
-            }
+            let label, value;
+            try {
+                label = manifestoMetadata[i].label[0].value;
+            } catch (e) {}
+            try {
+                value = manifestoMetadata[i].value[0].value;
+            } catch (e) {}
 
-            let label = manifestoMetadata[i].label[0].value;
-            let value = manifestoMetadata[i].value[0].value;
             if (label === 'Size') {
                 value = filesize(parseInt(value, 10)).human('si');
             }
             value = this.addBlankTarget(value);
 
-            metadata[label] = value;
+            metadata.push({
+                label: label,
+                value: value
+            });
         }
 
         return metadata;
@@ -283,9 +288,11 @@ class Manifest {
         }
 
         let service = resource.getService('http://iiif.io/api/image/2/level2.json');
-
-        if (service === undefined) {
-            return false;
+        if (!service) {
+            service = resource.getService('http://iiif.io/api/image/2/level1.json');
+            if (!service) {
+                return false;
+            }
         }
 
         if (service.hasOwnProperty('id') === undefined) {
