@@ -29,13 +29,14 @@ class FileInfo extends React.Component {
 
         let metadataView = [];
         if (manifestData.metadata !== undefined) {
-            for (let label in manifestData.metadata) {
-                metadataView.push(<div key={label}>
-                    <div className="label">{label}</div>
+            for (let key in manifestData.metadata) {
+                let metadataItem = manifestData.metadata[key];
+                metadataView.push(<div key={key}>
+                    <div className="label">{metadataItem.label}</div>
                     <div className="value">
                         <Interweave
                             tagName="div"
-                            content={manifestData.metadata[label]}
+                            content={metadataItem.value}
                         />
                     </div>
                 </div>);
