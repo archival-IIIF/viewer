@@ -2,9 +2,9 @@ class InfoJson {
 
     static cache = {};
 
-    static get(url, callback) {
+    static get(id, callback) {
 
-        let data = this.fetchFromCache(url);
+        let data = this.fetchFromCache(id);
         if (data !== false) {
             if (callback !== undefined) {
                 callback(data);
@@ -13,44 +13,50 @@ class InfoJson {
             return;
         }
 
-        this.fetchFromUrl(url, callback)
+        this.fetchFromUrl(id, callback)
 
     }
 
-    static fetchFromUrl(url, callback) {
+    static fetchFromUrl(id, callback) {
 
-        let t  = this;
+        let t = this;
         let headers = {};
         if (global.token !== '') {
             headers.Authorization = 'Bearer ' + global.token;
         }
 
+        let url = id + '/info.json';
         fetch(url, {
                 headers: headers
             }
         ).then((response) => {
 
-            if (response.status !== 401) {
-                t.cache[url] = response.url;
-                if (callback !== undefined) {
-                    callback(response.url);
-                }
+            let statusCode = response.status;
 
+            if (statusCode !== 401 && statusCode >= 400) {
+                alert('Could not fetch manifest!\n' + url);
                 return;
             }
 
-            return response.json();
-        }).then((json) => {
-            if (json !== undefined) {
-                global.ee.emitEvent('show-login', [json.service]);
-            }
+            response.json().then((json) => {
+
+                t.cache[id] = json;
+
+                if (callback !== undefined) {
+                    callback(json);
+                }
+
+            });
+        }).catch(err => {
+            console.log(err);
+            alert('Could not read manifest!\n' + url);
         });
     }
 
-    static fetchFromCache(url) {
+    static fetchFromCache(id) {
 
-        if (this.cache.hasOwnProperty(url)) {
-            return this.cache[url];
+        if (this.cache.hasOwnProperty(id)) {
+            return this.cache[id];
         }
 
         return false;
