@@ -34,7 +34,7 @@ class InfoJson {
             let statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {
-                alert('Could not fetch manifest!\n' + url);
+                alert('Could not fetch info.json!\n' + url);
                 return;
             }
 
@@ -49,7 +49,7 @@ class InfoJson {
             });
         }).catch(err => {
             console.log(err);
-            alert('Could not read manifest!\n' + url);
+            alert('Could not read info.json!\n' + url);
         });
     }
 
