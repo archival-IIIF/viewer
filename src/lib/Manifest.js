@@ -69,7 +69,15 @@ class Manifest {
                 let manifestData = {};
 
                 manifestData.id = manifestoData.id;
-                manifestData.type = manifestoData.getProperty('type');
+                let type = manifestoData.getProperty('type');
+                if (type === 'sc:Manifest' || type === 'Manifest') {
+                    manifestData.type = 'sc:Manifest';
+                } else if (type === 'sc:Collection' || type === 'Collection') {
+                    manifestData.type = 'sc:Collection';
+                } else {
+                    alert('Manifest type must be a collection or a manifest!\n' + url);
+                    return;
+                }
                 manifestData.label = manifestoData.getDefaultLabel();
                 manifestData.parentId = manifestoData.getProperty('within');
 
@@ -99,9 +107,6 @@ class Manifest {
                         manifestData.collections = this.getCollections(manifestoData);
                     } else if (manifestData.type === 'sc:Manifest') {
                         manifestData.resource = this.getResource(manifestoData);
-                    } else {
-                        alert('Manifest type must be a collection or a manifest!\n' + url);
-                        return;
                     }
                     manifestData.thumbnail = this.getThumbnail(manifestoData);
 
