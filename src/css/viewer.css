@@ -47,6 +47,10 @@
     background-size: 24px;
 }
 
+.openseadragon-message {
+    color: white
+}
+
 #zoom-out2 {
     position: relative;
     top: 0;
