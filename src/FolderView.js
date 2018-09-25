@@ -92,6 +92,11 @@ class FolderView extends React.Component {
                 }
 
                 if (manifestData.type !== 'sc:Collection') {
+                    if (!manifestData.parentId) {
+                        t.openImaginaryRootFolder(manifestData);
+                        return;
+                    }
+
                     t.openFolder(manifestData.parentId, manifestData, false);
                     return;
                 }
@@ -120,6 +125,22 @@ class FolderView extends React.Component {
             }
         );
 
+    }
+
+    openImaginaryRootFolder(manifestData) {
+        let imaginaryRootManifestData = {
+            id: '-',
+            type: 'sc:Collection',
+            manifests: [manifestData],
+            collections: []
+        };
+
+        this.setState({
+            data: imaginaryRootManifestData,
+            selected: manifestData.id
+        });
+
+        global.ee.emitEvent('update-file-info', [manifestData]);
     }
 
     openFolder = this.openFolder.bind(this);
