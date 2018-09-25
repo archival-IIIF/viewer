@@ -244,32 +244,23 @@ class Manifest {
 
 
     static getFileResource(sequence0) {
-        if (!sequence0.hasOwnProperty('__jsonld')) {
-            return false;
-        }
 
-        let jsonld = sequence0['__jsonld'];
-        if (!jsonld.hasOwnProperty('elements')) {
-            return false;
-        }
 
-        let element0 = jsonld.elements[0];
-        if (element0 === undefined) {
-            return false;
-        }
+        try {
+            let source = sequence0.getCanvasByIndex(0).getContent()[0].getBody()[0].id;
+            return {
+                type: 'file',
+                source: source
+            }
+        } catch (e) {}
 
-        if (!element0.hasOwnProperty('format')) {
-            return false;
-        }
-
-        if (element0['@id'] === null) {
-            return false;
-        }
-
-        return {
-            type: 'file',
-            source: element0['@id']
-        }
+        try {
+            let source = sequence0.getCanvasByIndex(0).id;
+            return {
+                type: 'file',
+                source: source
+            }
+        } catch (e) {}
     }
 
 
