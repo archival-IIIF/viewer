@@ -17,6 +17,7 @@ class Viewer extends React.Component {
 
     render() {
 
+        global.viewerHeight = 0;
         let manifestData = this.state.data;
 
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
@@ -24,10 +25,12 @@ class Viewer extends React.Component {
         }
 
         if (manifestData.resource.type === 'imageService') {
+            global.viewerHeight = 349;
             return this.renderImage();
         }
 
         if (manifestData.resource.type === 'audioVideo') {
+            global.viewerHeight = 349;
             return this.renderAudioVideo();
         }
 

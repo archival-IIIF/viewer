@@ -3,6 +3,8 @@
     max-width: 200px;
     margin: 0 20px 20px;
     flex-wrap: wrap-reverse;
+    position: fixed;
+    right: 0;
 }
 
 #file-info * {
@@ -11,9 +13,4 @@
 
 #file-info .label {
     font-weight: bold;
-}
-
-#file-info-content {
-    position: sticky;
-    top: 18px;
 }

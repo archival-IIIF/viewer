@@ -24,7 +24,7 @@ html, body, #root
     top: 40px;
     bottom: 0;
     right: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 #folder-and-info {
@@ -40,7 +40,7 @@ html, body, #root
 
 #folder-view-container {
     flex: auto;
-    margin: 0 24px;
+    margin: 0 224px 0 24px;
 }
 
 .no-select {
