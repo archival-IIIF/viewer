@@ -19,6 +19,7 @@ class App extends Component {
 
         global.ee = new EventEmitter();
         global.intialWidth = 300;
+        global.viewerHeight = 18;
         global.splitterWidth = 8;
         global.token = '';
 

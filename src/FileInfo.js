@@ -65,13 +65,11 @@ class FileInfo extends React.Component {
 
         return (
             <div id="file-info">
-                <div id="file-info-content">
-                    <h3>{manifestData.label}</h3>
-                    {metadataView}
-                    <a id="iiif-logo"  href={manifestData.id} target="_blank">
-                        <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
-                    </a>
-                </div>
+                <h3>{manifestData.label}</h3>
+                {metadataView}
+                <a id="iiif-logo"  href={manifestData.id} target="_blank">
+                    <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
+                </a>
             </div>
         );
     }
