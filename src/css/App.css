@@ -55,20 +55,6 @@ h3 {
     margin: 0 0 20px 0 !important;
 }
 
-#file-info {
-    min-width: 200px;
-    max-width: 200px;
-    margin: 0 20px 20px;
-    flex-wrap: wrap-reverse;
-}
-
-#file-info * {
-    word-wrap:break-word;
-}
-
-#file-info .label {
-    font-weight: bold;
-}
 
 #iiif-logo {
     display: inline-block;

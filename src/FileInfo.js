@@ -2,6 +2,7 @@ import React from 'react';
 import iifLogo from './icons/iiif.png';
 import Interweave from 'interweave';
 import { translate, Trans } from 'react-i18next';
+import './css/file-info.css';
 
 class FileInfo extends React.Component {
 
@@ -64,11 +65,13 @@ class FileInfo extends React.Component {
 
         return (
             <div id="file-info">
-                <h3>{manifestData.label}</h3>
-                {metadataView}
-                <a id="iiif-logo"  href={manifestData.id} target="_blank">
-                    <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
-                </a>
+                <div id="file-info-content">
+                    <h3>{manifestData.label}</h3>
+                    {metadataView}
+                    <a id="iiif-logo"  href={manifestData.id} target="_blank">
+                        <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
+                    </a>
+                </div>
             </div>
         );
     }
