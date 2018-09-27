@@ -96,7 +96,7 @@ class Viewer extends React.Component {
 
     componentWillUnmount() {
         global.ee.removeListener('update-file-info', this.openListener);
-        global.ee.addListener('play-audio', this.playListener);
+        global.ee.removeListener('play-audio', this.playListener);
     }
 
 }
