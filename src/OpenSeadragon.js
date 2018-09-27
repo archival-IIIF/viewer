@@ -77,6 +77,7 @@ class OpenSeadragon extends React.Component {
     }
 
     componentWillUnmount() {
+        this.viewer.removeAllHandlers()
     }
 
     getWindowHeight() {
