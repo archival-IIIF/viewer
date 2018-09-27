@@ -2,6 +2,7 @@ import React from 'react';
 import './css/modal.css';
 import Manifest from './lib/Manifest';
 import InfoJson from './lib/InfoJson';
+import manifesto from "manifesto.js";
 
 class Login extends React.Component {
 
@@ -84,7 +85,11 @@ class Login extends React.Component {
 
     showLogin(manifestoData) {
 
-        const loginService = manifestoData.getService('http://iiif.io/api/auth/1/login');
+        const loginService = manifesto.Utils.getService(manifestoData, 'http://iiif.io/api/auth/1/login');
+        if (!loginService.options) {
+            loginService.options = {locale: Manifest.lang};
+        }
+
         if (loginService !== false) {
             this.getTokenUrlFromService(loginService);
 
@@ -138,12 +143,10 @@ class Login extends React.Component {
 
     logout() {
         window.open(this.logoutUrl, '_blank');
-        global.token = '';
-        Manifest.clearCache();
-        InfoJson.clearCache();
-        global.ee.emitEvent('logout-done');
         let id = Manifest.getIdFromCurrentUrl();
-        global.ee.emitEvent('open-folder', [id]);
+        let currentUrl = window.location.href;
+        let viewerUrl = currentUrl.substring(0, currentUrl.indexOf('?manifest='));
+        window.location.href = viewerUrl + '?manifest=' + id;
     }
 
     showLogin = this.showLogin.bind(this);
@@ -171,6 +174,7 @@ class Login extends React.Component {
             return;
         }
         Manifest.clearCache();
+        InfoJson.clearCache();
         let token = event.data.accessToken;
         global.token = token;
         global.ee.emitEvent('token-received');

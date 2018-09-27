@@ -74,10 +74,19 @@ class OpenSeadragon extends React.Component {
                 });
             });
         });
+
+        global.ee.addListener('token-received', this.tokenReceived);
+    }
+
+    tokenReceived = this.update.bind(this);
+
+    update() {
+        this.viewer.forceRedraw();
     }
 
     componentWillUnmount() {
-        this.viewer.removeAllHandlers()
+        this.viewer.removeAllHandlers();
+        global.ee.addListener('token-received', this.tokenReceived);
     }
 
     getWindowHeight() {
