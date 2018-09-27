@@ -11,10 +11,18 @@ class OpenSeadragon extends React.Component {
 
         this.state = {
             source: props.source,
+            spinner: true,
         };
     }
 
     render() {
+
+        let spinner = '';
+        if (this.state.spinner) {
+            spinner = <div id="spinner" className="lds-ripple" style={{top: this.getWindowHeight()/4 + 32}}>
+                <div /><div />
+            </div>
+        }
 
         return <div id="openseadragon" key={this.state.source} style={{height: this.getWindowHeight()/2}}>
             <div id="zoom-in-button" className="openseadragon-icon" />
@@ -22,6 +30,7 @@ class OpenSeadragon extends React.Component {
             <div id="rotate-right-button" className="openseadragon-icon" />
             <div id="home-button" className="openseadragon-icon" />
             <div id="fullpage-button" className="openseadragon-icon" />
+            {spinner}
         </div>
     }
 
@@ -57,7 +66,12 @@ class OpenSeadragon extends React.Component {
                 }
             }
 
-            OpenSeadragonLoader(options);
+            t.viewer = OpenSeadragonLoader(options);
+            t.viewer.addHandler('tile-drawn', () => {
+                t.setState({
+                    spinner: false
+                });
+            });
         });
     }
 
