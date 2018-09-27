@@ -37,6 +37,7 @@ class OpenSeadragon extends React.Component {
 
     componentDidMount() {
 
+        let t = this;
         InfoJson.get(this.state.source, function (data) {
             let options = {
                 id: 'openseadragon',
