@@ -3,6 +3,6 @@
 | Bug fix?      | yes/no
 | New feature?  | yes/no
 | BC breaks?    | no
-| Deprecations? | yes/no
+| Deprecations? | no
 | Fixed tickets | #...   <!-- #-prefixed issue number(s), if any -->
 | License       | MIT
