@@ -4,5 +4,7 @@
   "attribution": "Attribution",
   "license": "Lizenz",
   "logout": "Ausloggen",
-  "emptyFolder": "Dieser Ordner ist leer"
+  "emptyFolder": "Dieser Ordner ist leer",
+  "showFile": "Datei anzeigen",
+  "fileManifestations": "Manifestationen der Datei"
 }

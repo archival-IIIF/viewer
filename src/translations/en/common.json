@@ -4,5 +4,7 @@
   "attribution": "Attribution",
   "license": "License",
   "logout": "Logout",
-  "emptyFolder": "This folder is empty"
+  "emptyFolder": "This folder is empty",
+  "showFile": "Show file",
+  "fileManifestations": "File manifestations"
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import iifLogo from './icons/iiif.png';
+import ManifestationsModal from './ManifestationsModal';
 import Interweave from 'interweave';
-import { translate, Trans } from 'react-i18next';
+import {translate, Trans} from 'react-i18next';
 import './css/file-info.css';
 
 class FileInfo extends React.Component {
@@ -10,14 +11,15 @@ class FileInfo extends React.Component {
 
         super(props);
 
+        this.hideManifestationsModal = this.hideManifestationsModal.bind(this);
 
         this.state = {
             data: null,
+            showManifestationsModal: false
         };
     }
 
     render() {
-
         if (this.state.data === null || this.state.data === undefined || this.state.data.restricted) {
             return '';
         }
@@ -63,6 +65,16 @@ class FileInfo extends React.Component {
             metadataView.push(<img key="providerLogo" id="provider-logo" src={logo} alt="Logo" title="Logo" />);
         }
 
+        if (manifestData.manifestations.length > 0) {
+            metadataView.push(
+                <div key="manifestation">
+                    <div id="show-manifestation" onClick={() => this.showManifestationsModal()}>
+                        <Trans i18nKey='showFile' />
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div id="file-info">
                 <h3>{manifestData.label}</h3>
@@ -70,9 +82,13 @@ class FileInfo extends React.Component {
                 <a id="iiif-logo"  href={manifestData.id} target="_blank">
                     <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest" />
                 </a>
+                <ManifestationsModal visible={this.state.showManifestationsModal} manifestations={manifestData.manifestations} closeHandler={this.hideManifestationsModal}/>
             </div>
         );
     }
+
+
+
 
     updateFileInfo = this.updateFileInfo.bind(this);
 
@@ -103,7 +119,17 @@ class FileInfo extends React.Component {
         });
     }
 
+    showManifestationsModal() {
+        this.setState({
+            showManifestationsModal: true
+        });
+    }
 
+    hideManifestationsModal() {
+        this.setState({
+            showManifestationsModal: false
+        });
+    }
 
     isURL(str) {
         let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol

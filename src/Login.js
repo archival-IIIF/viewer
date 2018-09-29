@@ -1,52 +1,22 @@
+import Modal from './Modal';
 import React from 'react';
-import './css/modal.css';
 import Manifest from './lib/Manifest';
 import InfoJson from './lib/InfoJson';
 import manifesto from "manifesto.js";
 
-class Login extends React.Component {
+class Login extends Modal {
 
     constructor(props) {
 
         super(props);
 
         this.state = {
-            id: '',
-            header: '',
-            description: '',
-            confirmLabel: '',
             visible: false,
-            error: false,
-            errorMessage: ''
         };
     }
 
-    render() {
-        if (this.state.visible === false) {
-            return ''
-        }
-
-        let error = '';
-        if (this.state.error) {
-            error = <div id="modal-error-message">{this.state.errorMessage}</div>
-        }
-
-        return (
-            <div id="login" className="modal">
-                <iframe id="messageFrame" title="messageFrame" />
-                <div className="modal-content">
-                    <span className="close"  onClick={() => this.closeModal()}>&times;</span>
-
-                    <div className="title">{this.state.header}</div>
-
-                    <div>{this.state.description}</div>
-
-                    {error}
-
-                    <div id="login-button" onClick={() => this.openWindow(this.state.id)}>{this.state.confirmLabel}</div>
-                </div>
-            </div>
-        );
+    button1() {
+        return <div className="modal-button" onClick={() => this.openWindow(this.state.id)}>{this.state.confirmLabel}</div>
     }
 
     checkIfLoginWindowIsClosedInterval = null;
@@ -75,9 +45,7 @@ class Login extends React.Component {
 
     closeModal(service) {
         window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
-        this.setState({
-            visible: false
-        })
+        super.closeModal();
     }
 
     logoutUrl = '';
@@ -96,7 +64,7 @@ class Login extends React.Component {
             this.setState({
                 visible: true,
                 id: loginService.id,
-                header: loginService.getHeader(),
+                title: loginService.getHeader(),
                 description: loginService.getDescription(),
                 confirmLabel: loginService.getConfirmLabel(),
                 error: false,
@@ -104,6 +72,18 @@ class Login extends React.Component {
             });
         }
 
+    }
+
+    body() {
+        let body = [];
+        body.push(<iframe id="messageFrame" title="messageFrame" key="messageFrame" />);
+        body.push(<div key="description">{this.state.description}</div>);
+
+        if (this.state.error) {
+            body.push(<div id="modal-error-message" key="error">{this.state.errorMessage}</div>)
+        }
+
+        return body;
     }
 
     getTokenUrlFromService(loginService) {
@@ -154,11 +134,15 @@ class Login extends React.Component {
     receiveToken = this.receiveToken.bind(this);
 
     componentDidMount() {
+        super.componentDidMount();
+
         global.ee.addListener('show-login', this.showLogin);
         global.ee.addListener('logout', this.logout);
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
+
         global.ee.removeListener('show-login', this.showLogin);
         global.ee.removeListener('logout', this.logout);
     }
