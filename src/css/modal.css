@@ -35,7 +35,7 @@
     cursor: pointer;
 }
 
-.modal .title {
+.modal-title {
     font-size: 1.2em;
     font-weight: bold;
     margin-bottom: 18px;
@@ -45,7 +45,7 @@
     display: none;
 }
 
-#login-button {
+.modal-button {
     margin-top: 12px;
     background: #f1f1f1;
     border: 0;
@@ -55,7 +55,7 @@
     display: inline-block;
 }
 
-#modal-error-message {
+.modal-error-message {
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;

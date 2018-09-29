@@ -101,6 +101,7 @@ class Manifest {
                     manifestData.license = this.getLicense(manifestoData);
                     manifestData.logo = manifestoData.getLogo();
                     manifestData.attribution = this.getAttribution(manifestoData);
+                    manifestData.manifestations = this.getManifestations(manifestoData);
                     manifestData.restricted = false;
                     if (manifestData.type === 'sc:Collection') {
                         manifestData.manifests = this.getManifests(manifestoData);
@@ -117,6 +118,7 @@ class Manifest {
                     callback(manifestData);
                 }
             }).catch(err => {
+                console.log(err);
                 alert('Could not read manifest!\n' + url);
             });
         });
@@ -205,6 +207,23 @@ class Manifest {
         }
 
         return resource;
+    }
+
+    static getManifestations(manifestoData) {
+
+        let manifestations = [];
+
+        let renderings = manifestoData.getRenderings();
+        for (let i in renderings) {
+            let rendering = renderings[i];
+            let manifestation = {
+                label: rendering.getDefaultLabel(),
+                url: rendering.id,
+            };
+            manifestations.push(manifestation);
+        }
+
+        return manifestations;
     }
 
     static getAudioVideoResource(sequence0) {
