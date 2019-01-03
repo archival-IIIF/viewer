@@ -37,16 +37,14 @@ class Login extends Modal {
 
         const url = id + '?origin=' + this.origin;
 
-        const t = this;
         const win = window.open(url);
-        this.checkIfLoginWindowIsClosedInterval = window.setInterval(function() {
+        this.checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
             try {
                 if (win == null || win.closed) {
-                    window.clearInterval(t.checkIfLoginWindowIsClosedInterval);
-                    window.addEventListener('message', t.receiveToken);
-                    const src = t.tokenUrl + '?messageId=1&origin=' + t.origin;
+                    window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
+                    window.addEventListener('message', (event) => this.receiveToken(event), {once: true});
+                    const src = this.tokenUrl + '?messageId=1&origin=' + this.origin;
                     document.getElementById('messageFrame')['src'] = src;
-                    window.removeEventListener('message', t.receiveToken);
                 }
             } catch (e) {
             }
@@ -62,27 +60,23 @@ class Login extends Modal {
     showLogin(manifestoData) {
 
         const loginService = manifesto.Utils.getService(manifestoData, 'http://iiif.io/api/auth/1/login');
-        // ToDo
-        /*
         if (!loginService.options) {
             loginService['options'] = {locale: Manifest.lang};
         }
-        */
 
-        // ToDo
-        // if (loginService !== false) {
-        this.getTokenUrlFromService(loginService);
+        if (loginService !== false) {
+            this.getTokenUrlFromService(loginService);
 
-        this.setState({
-            confirmLabel: loginService.getConfirmLabel(),
-            description: loginService.getDescription(),
-            error: false,
-            errorMessage: loginService.getFailureDescription(),
-            id: loginService.id,
-            title: loginService.getHeader(),
-            visible: true
-        });
-        // }
+            this.setState({
+                confirmLabel: loginService.getConfirmLabel(),
+                description: loginService.getDescription(),
+                error: false,
+                errorMessage: loginService.getFailureDescription(),
+                id: loginService.id,
+                title: loginService.getHeader(),
+                visible: true
+            });
+        }
 
     }
 
