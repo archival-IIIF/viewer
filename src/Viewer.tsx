@@ -1,8 +1,9 @@
 import * as React from 'react';
 require('./css/viewer.css');
 import OpenSeadragon from './OpenSeadragon';
-import MediaElement from './MediaElement';
+import MediaPlayer from './MediaPlayer';
 import Cache from './lib/Cache';
+import videojs from 'video.js';
 
 class Viewer extends React.Component<{}, any> {
 
@@ -56,24 +57,20 @@ class Viewer extends React.Component<{}, any> {
         const mime = element0.format;
         const mediaType = mime.substr(0, 5);
         const file = element0['@id'];
-        const sources = [{src: file, type: mime}];
-        const config = {};
-        const tracks = {};
+        const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
 
         this.type = 'audioVideo';
 
         return (
             <div id="viewer" style={{left: this.state.left}}>
-                <MediaElement
+                <MediaPlayer
                     id="player1"
                     key={file}
                     mediaType={mediaType}
                     preload="metadata"
                     controls={true}
-                    height="360"
-                    sources={JSON.stringify(sources)}
-                    options={JSON.stringify(config)}
-                    tracks={JSON.stringify(tracks)}
+                    height={360}
+                    sources={sources}
                 />
             </div>
         );
