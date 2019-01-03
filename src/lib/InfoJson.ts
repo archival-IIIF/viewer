@@ -1,10 +1,12 @@
+import Cache from './Cache';
+
 class InfoJson {
 
     static cache = {};
 
     static get(id, callback) {
 
-        let data = this.fetchFromCache(id);
+        const data = this.fetchFromCache(id);
         if (data !== false) {
             if (callback !== undefined) {
                 callback(data);
@@ -13,25 +15,24 @@ class InfoJson {
             return;
         }
 
-        this.fetchFromUrl(id, callback)
-
+        this.fetchFromUrl(id, callback);
     }
 
     static fetchFromUrl(id, callback) {
 
-        let t = this;
-        let headers = {};
-        if (global.token !== '') {
-            headers.Authorization = 'Bearer ' + global.token;
+        const t = this;
+        const authHeader: Headers = new Headers();
+        if (Cache.token !== '') {
+            authHeader.set('Authorization', 'Bearer ' + Cache.token);
         }
 
-        let url = id + '/info.json';
+        const url = id + '/info.json';
         fetch(url, {
-                headers: headers
+                headers: authHeader
             }
         ).then((response) => {
 
-            let statusCode = response.status;
+            const statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {
                 alert('Could not fetch info.json!\n' + url);
@@ -41,7 +42,7 @@ class InfoJson {
             response.json().then((json) => {
 
                 if (statusCode === 401) {
-                    global.ee.emitEvent('show-login', [json]);
+                    Cache.ee.emitEvent('show-login', [json]);
                 } else {
                     t.cache[id] = json;
                 }
@@ -51,7 +52,7 @@ class InfoJson {
                 }
 
             });
-        }).catch(err => {
+        }).catch((err) => {
             console.log(err);
             alert('Could not read info.json!\n' + url);
         });
@@ -72,4 +73,3 @@ class InfoJson {
 }
 
 export default InfoJson;
-
