@@ -52,15 +52,12 @@ class FolderView extends React.Component<{}, any> {
         }
 
         const content = [];
-        for (const key of folders) {
-
-            const folder = folders[key];
+        for (const folder of folders) {
             content.push(
                 <Item item={folder} selected={this.state.selected} key={folder.id} />
             );
         }
-        for (const key of files) {
-            const file = files[key];
+        for (const file of files) {
             content.push(
                 <Item item={file} selected={this.state.selected} key={file.id} />
             );

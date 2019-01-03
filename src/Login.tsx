@@ -119,14 +119,10 @@ class Login extends Modal {
         }
 
         if (service.hasOwnProperty(0)) {
-            for (const i of service) {
-                if (service.hasOwnProperty(i)) {
-                    const iService = service[i];
-
-                    if (iService.hasOwnProperty('profile') &&
-                        iService.profile === 'http://iiif.io/api/auth/1/external') {
-                        return iService;
-                    }
+            for (const iService of service) {
+                if (iService.hasOwnProperty('profile') &&
+                    iService.profile === 'http://iiif.io/api/auth/1/external') {
+                    return iService;
                 }
             }
         }
