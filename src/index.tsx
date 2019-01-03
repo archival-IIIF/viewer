@@ -1,23 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
-import common_de from './translations/de/common.json';
-import common_en from './translations/en/common.json';
+const commonEn = require('./translations/en/common.json');
+const commonDe = require('./translations/de/common.json');
 
 i18next.init({
-    interpolation: { escapeValue: false },  // React already does escaping
     fallbackLng: 'en',
+    interpolation: { escapeValue: false },  // React already does escaping
     resources: {
-        en: {
-            common: common_en
-        },
         de: {
-            common: common_de
+            common: commonDe
+        },
+        en: {
+            common: commonEn
         }
-    },
+    }
 });
 
 ReactDOM.render(
