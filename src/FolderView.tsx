@@ -1,12 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import Loading from './Loading';
 import Item from './Item';
 import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
 import {translate, Trans} from 'react-i18next';
+import Cache from './lib/Cache';
 
-
-class FolderView extends React.Component {
+class FolderView extends React.Component<{}, any> {
 
     constructor(props) {
 
@@ -15,9 +15,14 @@ class FolderView extends React.Component {
 
         this.state = {
             data: false,
-            selected: null,
-            mode: 'icon-view'
+            mode: 'icon-view',
+            selected: null
         };
+
+        this.openFolder = this.openFolder.bind(this);
+        this.showListView = this.showListView.bind(this);
+        this.showIconView = this.showIconView.bind(this);
+        this.updateFileInfo = this.updateFileInfo.bind(this);
     }
 
 
@@ -33,8 +38,8 @@ class FolderView extends React.Component {
             return <div id="folder-view-container" />;
         }
 
-        let files = this.state.data.manifests;
-        let folders = this.state.data.collections;
+        const files = this.state.data.manifests;
+        const folders = this.state.data.collections;
 
         if (files.length === 0 && folders.length === 0) {
 
@@ -46,23 +51,22 @@ class FolderView extends React.Component {
             );
         }
 
-        let content = [];
-        for (let key in folders) {
+        const content = [];
+        for (const key of folders) {
 
-            let folder = folders[key];
+            const folder = folders[key];
             content.push(
                 <Item item={folder} selected={this.state.selected} key={folder.id} />
             );
         }
-        for (let key in files) {
-
-            let file = files[key];
+        for (const key of files) {
+            const file = files[key];
             content.push(
                 <Item item={file} selected={this.state.selected} key={file.id} />
             );
         }
 
-        let folderViewClassNames = 'folder-view ' + this.state.mode;
+        const folderViewClassNames = 'folder-view ' + this.state.mode;
 
         return (
             <div id="folder-view-container">
@@ -79,12 +83,12 @@ class FolderView extends React.Component {
             return;
         }
 
-        let url = itemId;
-        let t = this;
+        const t = this;
+        const url = itemId;
 
         Manifest.get(
             url,
-            function(manifestData) {
+            (manifestData) =>  {
 
                 if (typeof manifestData === 'string') {
                     alert(manifestData);
@@ -110,7 +114,7 @@ class FolderView extends React.Component {
 
                 t.setState({
                     data: manifestData,
-                    selected: selected
+                    selected
                 });
                 if (pageReload !== false) {
                     ManifestHistory.pageChanged(manifestData.id, manifestData.label);
@@ -120,19 +124,19 @@ class FolderView extends React.Component {
                     document.title = manifestData.label;
                 }
 
-                global.ee.emitEvent('update-current-folder-id', [manifestData.id]);
-                global.ee.emitEvent('update-file-info', [selectedData]);
+                Cache.ee.emitEvent('update-current-folder-id', [manifestData.id]);
+                Cache.ee.emitEvent('update-file-info', [selectedData]);
             }
         );
 
     }
 
     openImaginaryRootFolder(manifestData) {
-        let imaginaryRootManifestData = {
+        const imaginaryRootManifestData = {
+            collections: [],
             id: '-',
-            type: 'sc:Collection',
             manifests: [manifestData],
-            collections: []
+            type: 'sc:Collection'
         };
 
         this.setState({
@@ -140,11 +144,8 @@ class FolderView extends React.Component {
             selected: manifestData.id
         });
 
-        global.ee.emitEvent('update-file-info', [manifestData]);
+        Cache.ee.emitEvent('update-file-info', [manifestData]);
     }
-
-    openFolder = this.openFolder.bind(this);
-
 
     showListView() {
         this.setState({mode: 'list-view'});
@@ -154,31 +155,22 @@ class FolderView extends React.Component {
         this.setState({mode: 'icon-view'});
     }
 
-    openFolder = this.openFolder.bind(this);
-    showListView = this.showListView.bind(this);
-    showIconView = this.showIconView.bind(this);
-
     componentDidMount() {
-       global.ee.addListener('show-list-view', this.showListView);
-       global.ee.addListener('show-icon-view', this.showIconView);
-       global.ee.addListener('open-folder', this.openFolder);
-       global.ee.addListener('update-file-info', this.updateFileInfo);
+        Cache.ee.addListener('show-list-view', this.showListView);
+        Cache.ee.addListener('show-icon-view', this.showIconView);
+        Cache.ee.addListener('open-folder', this.openFolder);
+        Cache.ee.addListener('update-file-info', this.updateFileInfo);
 
-        let id = Manifest.getIdFromCurrentUrl();
-        this.openFolder(id);
+        const id = Manifest.getIdFromCurrentUrl();
+        this.openFolder(id, null, null);
     }
 
     componentWillUnmount() {
-        global.ee.removeListener('show-list-view', this.showListView);
-        global.ee.removeListener('show-icon-view', this.showIconView);
-        global.ee.removeListener('open-folder', this.openFolder);
-        global.ee.removeListener('update-file-info', this.updateFileInfo);
+        Cache.ee.removeListener('show-list-view', this.showListView);
+        Cache.ee.removeListener('show-icon-view', this.showIconView);
+        Cache.ee.removeListener('open-folder', this.openFolder);
+        Cache.ee.removeListener('update-file-info', this.updateFileInfo);
     }
-
-
-
-
-    updateFileInfo = this.updateFileInfo.bind(this);
 
     updateFileInfo(manifestData) {
         if (this.state.selected === manifestData.id) {
