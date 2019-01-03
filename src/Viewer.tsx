@@ -1,10 +1,12 @@
-import React from 'react';
-import './css/viewer.css';
+import * as React from 'react';
+require('./css/viewer.css');
 import OpenSeadragon from './OpenSeadragon';
 import MediaElement from './MediaElement';
+import Cache from './lib/Cache';
 
+class Viewer extends React.Component<{}, any> {
 
-class Viewer extends React.Component {
+    private type = '';
 
     constructor(props) {
 
@@ -13,24 +15,27 @@ class Viewer extends React.Component {
         this.state = {
             data: null,
         };
+
+        this.open = this.open.bind(this); // click
+        this.play = this.play.bind(this); // doubleClick
     }
 
     render() {
 
-        global.viewerHeight = 0;
-        let manifestData = this.state.data;
+        Cache.viewerHeight = 0;
+        const manifestData = this.state.data;
 
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return '';
         }
 
         if (manifestData.resource.type === 'imageService') {
-            global.viewerHeight = 349;
+            Cache.viewerHeight = 349;
             return this.renderImage();
         }
 
         if (manifestData.resource.type === 'audioVideo') {
-            global.viewerHeight = 349;
+            Cache.viewerHeight = 349;
             return this.renderAudioVideo();
         }
 
@@ -47,13 +52,13 @@ class Viewer extends React.Component {
 
     renderAudioVideo() {
 
-        let element0 = this.state.data.resource.source;
-        let mime = element0.format;
-        let mediaType = mime.substr(0, 5);
-        let file = element0['@id'];
-        let sources = [{src: file, type: mime}];
-        let config = {};
-        let tracks = {};
+        const element0 = this.state.data.resource.source;
+        const mime = element0.format;
+        const mediaType = mime.substr(0, 5);
+        const file = element0['@id'];
+        const sources = [{src: file, type: mime}];
+        const config = {};
+        const tracks = {};
 
         this.type = 'audioVideo';
 
@@ -64,7 +69,7 @@ class Viewer extends React.Component {
                     key={file}
                     mediaType={mediaType}
                     preload="metadata"
-                    controls
+                    controls={true}
                     height="360"
                     sources={JSON.stringify(sources)}
                     options={JSON.stringify(config)}
@@ -80,25 +85,21 @@ class Viewer extends React.Component {
 
     play(data) {
 
-        if (this.type === 'audioVideo') {
-            document.getElementById('player1_html5').play();
-
+        if (this['type'] === 'audioVideo') {
+            // ToDo
+            // document.getElementById('player1_html5').play();
         }
     }
 
-    openListener = this.open.bind(this); // click
-    playListener = this.play.bind(this); // doubleClick
-
     componentDidMount() {
-        global.ee.addListener('update-file-info', this.openListener);
-        global.ee.addListener('play-audio', this.playListener);
+        Cache.ee.addListener('update-file-info', this.open);
+        Cache.ee.addListener('play-audio', this.play);
     }
 
     componentWillUnmount() {
-        global.ee.removeListener('update-file-info', this.openListener);
-        global.ee.removeListener('play-audio', this.playListener);
+        Cache.ee.removeListener('update-file-info', this.open);
+        Cache.ee.removeListener('play-audio', this.play);
     }
-
 }
 
 export default Viewer;
