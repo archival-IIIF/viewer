@@ -103,7 +103,7 @@ class FolderView extends React.Component<{}, any> {
                 }
 
                 let selected = null;
-                if (selectedData !== undefined) {
+                if (selectedData) {
                     selected = selectedData.id;
                 } else {
                     selectedData = manifestData;

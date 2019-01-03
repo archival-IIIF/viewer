@@ -207,10 +207,9 @@ class Manifest {
         }
 
         const fileResource = this.getFileResource(sequence0);
-        // ToDo
-        // if (fileResource !== false) {
-        return fileResource;
-        // }
+        if (fileResource) {
+            return fileResource;
+        }
 
         return resource;
     }
@@ -290,6 +289,8 @@ class Manifest {
             };
         } catch (e) {
         }
+
+        return null;
     }
 
 
