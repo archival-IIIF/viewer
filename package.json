@@ -8,19 +8,31 @@
     "i18next": "^11.9.0",
     "interweave": "^8.0.2",
     "manifesto.js": "^3.0.3",
-    "mediaelement": "^4.2.9",
     "openseadragon": "^2.3.1",
     "react": "^16.2.0",
+    "react-app-rewired": "^1.6.2",
     "react-dom": "^16.2.0",
     "react-i18next": "^7.12.0",
-    "react-scripts": "1.1.1",
+    "react-scripts-ts": "^3.1.0",
+    "tslint": "^5.12.0",
     "universalviewer": "^3.0.16",
+    "video.js": "^7.4.1",
     "wolfy87-eventemitter": "^5.2.4"
   },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.6",
+    "@types/react-router-dom": "^4.3.1",
+    "@types/video.js": "^7.2.5",
+    "awesome-typescript-loader": "^5.2.1",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.2.2"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
   }
 }

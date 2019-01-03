@@ -1,9 +1,16 @@
-import React from 'react';
-import OpenSeadragonLoader from 'openseadragon'
+import * as React from 'react';
+import * as OpenSeadragonLoader from 'openseadragon';
 import InfoJson from './lib/InfoJson';
+import Cache from './lib/Cache';
+
+interface IProps {
+    source: string;
+}
 
 
-class OpenSeadragon extends React.Component {
+class OpenSeadragon extends React.Component<IProps, any> {
+
+    private tokenReceived = this.update.bind(this);
 
     constructor(props) {
 
@@ -17,29 +24,28 @@ class OpenSeadragon extends React.Component {
 
     render() {
 
-        let spinner = '';
+        let spinner = <div />;
         if (this.state.spinner) {
-            spinner = <div id="spinner" className="lds-ripple" style={{top: this.getWindowHeight()/4 + 32}}>
+            spinner = <div id="spinner" className="lds-ripple" style={{top: this.getWindowHeight() / 4 + 32}}>
                 <div /><div />
-            </div>
+            </div>;
         }
 
-        return <div id="openseadragon" key={this.state.source} style={{height: this.getWindowHeight()/2}}>
+        return <div id="openseadragon" key={this.state.source} style={{height: this.getWindowHeight() / 2}}>
             <div id="zoom-in-button" className="openseadragon-icon" />
             <div id="zoom-out-button" className="openseadragon-icon" />
             <div id="rotate-right-button" className="openseadragon-icon" />
             <div id="home-button" className="openseadragon-icon" />
             <div id="fullpage-button" className="openseadragon-icon" />
             {spinner}
-        </div>
+        </div>;
     }
 
 
     componentDidMount() {
-
-        let t = this;
-        InfoJson.get(this.state.source, function (data) {
-            let options = {
+        const t = this;
+        InfoJson.get(this.state.source, function(data) {
+            const options = {
                 id: 'openseadragon',
                 defaultZoomLevel: 0,
                 tileSources: data,
@@ -61,41 +67,39 @@ class OpenSeadragon extends React.Component {
                 ajaxWithCredentials: false
             };
 
-            if (global.token !== '') {
-                options.ajaxHeaders = {
-                    'Authorization': 'Bearer ' + global.token
-                }
+            if (Cache.token !== '') {
+                options['ajaxHeaders'] = {
+                    Authorization: 'Bearer ' + Cache.token
+                };
             }
 
-            t.viewer = OpenSeadragonLoader(options);
-            t.viewer.addHandler('tile-drawn', () => {
+            t['viewer'] = OpenSeadragonLoader(options);
+            t['viewer'].addHandler('tile-drawn', () => {
                 t.setState({
                     spinner: false
                 });
             });
         });
 
-        global.ee.addListener('token-received', this.tokenReceived);
+        Cache.ee.addListener('token-received', this.tokenReceived);
     }
 
-    tokenReceived = this.update.bind(this);
-
     update() {
-        this.viewer.forceRedraw();
+        this['viewer'].forceRedraw();
     }
 
     componentWillUnmount() {
-        this.viewer.removeAllHandlers();
-        global.ee.addListener('token-received', this.tokenReceived);
+        this['viewer'].removeAllHandlers();
+        Cache.ee.addListener('token-received', this.tokenReceived);
     }
 
     getWindowHeight() {
-        var w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0];
+        const w = window;
+        const d = document;
+        const e = d.documentElement;
+        const g = d.getElementsByTagName('body')[0];
 
-        return w.innerHeight|| e.clientHeight|| g.clientHeight;
+        return w.innerHeight || e.clientHeight || g.clientHeight;
     }
 
 }

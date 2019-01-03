@@ -1,41 +1,42 @@
-import React from 'react';
+import * as React from 'react';
 import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
-import './css/item.css';
-import FolderImage from './icons/fa/folder.svg';
-import FileImage from './icons/fa/file.svg';
+import Cache from './lib/Cache';
+require('./css/item.css');
+const FolderImage = require('./icons/fa/folder.svg');
+const FileImage = require('./icons/fa/file.svg');
 
-class Item extends React.Component {
+interface IProps {
+    item: object;
+    selected: object;
+}
+
+class Item extends React.Component<IProps, any> {
 
     constructor(props) {
 
         super(props);
 
-        let itemType = '';
-        if (props.item.type === 'sc:Collection') {
-            itemType = 'folder';
-        } else {
-            itemType = 'file';
-        }
+        const itemType = props.item.type === 'sc:Collection' ? 'folder' : 'file';
 
         this.state = {
-            itemType: itemType,
             item: props.item,
+            itemType,
             selected: props.selected,
         };
     }
 
 
     componentWillReceiveProps(nextProps) {
-        this.setState(nextProps)
+        this.setState(nextProps);
     }
 
     render() {
 
-        let id = this.state.item.id;
+        const id = this.state.item.id;
         let className = 'item ' + this.state.itemType;
-        let label = this.state.item.label;
-        let style = {backgroundImage: this.getThumbnail()};
+        const label = this.state.item.label;
+        const style = {backgroundImage: this.getThumbnail()};
         if (id === this.state.selected) {
             className += ' active';
         }
@@ -48,49 +49,49 @@ class Item extends React.Component {
         >
             <div className="item-thumbnail" style={style} />
             <div className="item-label">{label}</div>
-        </div>
+        </div>;
     }
 
     getThumbnail() {
 
         if (this.state.item.thumbnail === undefined || !this.state.item.thumbnail.hasOwnProperty('id')) {
             if (this.state.item.type === 'sc:Collection') {
-                return `url(${FolderImage})`
+                return `url(${FolderImage})`;
             }
 
-            return `url(${FileImage})`
+            return `url(${FileImage})`;
         }
 
         let thumbnailUrl;
         if (this.state.item.thumbnail.hasOwnProperty('service')) {
-            let width = '72',
-                height = '72';
-            let serviceUrl = this.state.item.thumbnail.service;
+            const width = '72';
+            const height = '72';
+            const serviceUrl = this.state.item.thumbnail.service;
             thumbnailUrl = serviceUrl.replace('/info.json', '') + '/full/!' + width + ',' + height + '/0/default.jpg';
         } else {
-            thumbnailUrl = this.state.item.thumbnail.id
+            thumbnailUrl = this.state.item.thumbnail.id;
         }
 
-        return `url(${thumbnailUrl})`
+        return `url(${thumbnailUrl})`;
     }
 
     open() {
         if (this.state.itemType === 'folder') {
-            global.ee.emitEvent('open-folder', [this.state.item.id]);
+            Cache.ee.emitEvent('open-folder', [this.state.item.id]);
         } else {
-            this.openFile(this.state.item)
+            this.openFile(this.state.item);
         }
     }
 
     activateItem() {
 
-        let manifestData = this.state.item;
+        const manifestDataId = this.state.item.id;
 
         Manifest.get(
-            manifestData.id,
-            function (manifestData) {
+            manifestDataId,
+            function(manifestData) {
                 ManifestHistory.pageChanged(manifestData.id, manifestData.label);
-                global.ee.emitEvent('update-file-info', [manifestData]);
+                Cache.ee.emitEvent('update-file-info', [manifestData]);
             }
         );
 
@@ -98,21 +99,20 @@ class Item extends React.Component {
     }
 
 
-    openFile(file) {
+    openFile(file0) {
 
-        let manifestId = file.id;
+        const manifestId = file0.id;
 
         Manifest.get(
             manifestId,
-            function (file) {
+            function(file) {
                 const type = file.resource.type;
                 if (type === 'audioVideo') {
-                    global.ee.emitEvent('play-audio', [file.resource.source]);
+                    Cache.ee.emitEvent('play-audio', [file.resource.source]);
                 } else if (type === 'file') {
-                    let win = window.open(file.resource.source, '_target');
+                    const win = window.open(file.resource.source, '_target');
                     win.focus();
                 }
-
             }
         );
 

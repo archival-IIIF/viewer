@@ -1,7 +1,8 @@
-import React from 'react';
-import './css/modal.css';
+import * as React from 'react';
+require('./css/modal.css');
 
-class Modal extends React.Component {
+
+class Modal extends React.Component<{}, any> {
 
     render() {
 
@@ -23,7 +24,7 @@ class Modal extends React.Component {
 
     title() {
         if (this.state.title) {
-            return <div className="modal-title">{this.state.title}</div>
+            return <div className="modal-title">{this.state.title}</div>;
         }
 
         return '';
@@ -31,40 +32,43 @@ class Modal extends React.Component {
 
     body() {
 
+        const output = [];
         if (this.state.body) {
-            return <div className="modal-body">{this.state.body}</div>
+            output.push(<div className="modal-body" key={1}>{this.state.body}</div>);
+
+            return output;
         }
 
-        return '';
+        return [];
     }
 
     button1() {
         if (this.state.button1) {
-            return <div className="modal-button">{this.state.button1}</div>
+            return <div className="modal-button">{this.state.button1}</div>;
         }
 
         return '';
     }
 
-    closeModal() {
+    closeModal(service?) {
         this.setState({
             visible: false
-        })
+        });
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
     componentDidMount() {
         this.escFunction = this.escFunction.bind(this);
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener('keydown', this.escFunction, false);
     }
 
     componentWillUnmount() {
-        document.removeEventListener("keydown", this.escFunction, false);
+        document.removeEventListener('keydown', this.escFunction, false);
     }
 
     componentWillReceiveProps(nextProps) {
