@@ -1,9 +1,19 @@
-import React from 'react';
-import './css/treeview.css';
+import * as React from 'react';
+require('./css/treeview.css');
 import Manifest from './lib/Manifest';
 import Loading from './Loading';
+import Cache from './lib/Cache';
 
-class TreeViewItem extends React.Component {
+interface IProps {
+    id?: string;
+    level: number;
+    opened: boolean;
+    data?: object;
+    currentFolderId?: string;
+}
+
+class TreeViewItem extends React.Component<IProps, any> {
+
 
     constructor(props) {
 
@@ -17,15 +27,15 @@ class TreeViewItem extends React.Component {
             currentFolderId: props.currentFolderId
         };
 
+        this.updateCurrentFolder = this.updateCurrentFolder.bind(this);
     }
 
     render() {
 
         let data;
         if (this.state.data === undefined) {
-
-            let url = this.state.id;
-            let t = this;
+            const url = this.state.id;
+            const t = this;
 
             data = Manifest.fetchFromCache(url);
 
@@ -33,9 +43,9 @@ class TreeViewItem extends React.Component {
 
                 Manifest.get(
                     url,
-                    function (data) {
+                    function(data2) {
                         t.setState({
-                            data: data,
+                            data: data2,
                             selected: null
                         });
                     }
@@ -48,7 +58,7 @@ class TreeViewItem extends React.Component {
         }
 
 
-        let style = {'marginLeft': (this.props.level-1)*10};
+        const style = {marginLeft: (this.props.level - 1) * 10};
         let className = 'treeview-item level-' + this.props.level;
         let classNameCaret = 'treeview-caret';
 
@@ -58,28 +68,31 @@ class TreeViewItem extends React.Component {
         } else if (this.state.opened === true) {
             classNameCaret += ' opened';
         }
-        let id = data.id;
+        const id = data.id;
         if (id === this.state.currentFolderId) {
             className += ' current';
         }
-        let label = data.label;
+        const label = data.label;
 
 
-        let children = [];
+        const children = [];
         if (this.state.opened) {
-            let childrenLevel = this.state.level + 1;
-            let folders = data.collections;
-            for (let key in folders) {
-
-                let folder = folders[key];
-                let opened = false;
-                if (folder.hasOwnProperty('opened') && folder.opened) {
-                    opened = true;
+            const childrenLevel = this.state.level + 1;
+            const folders = data.collections;
+            for (const key in folders) {
+                if (folders.hasOwnProperty(key)) {
+                    const folder = folders[key];
+                    let opened = false;
+                    if (folder.hasOwnProperty('opened') && folder.opened) {
+                        opened = true;
+                    }
+                    const folderId = folder.id;
+                    children.push(
+                        <TreeViewItem level={childrenLevel} opened={opened} key={folderId} id={folderId}
+                                      currentFolderId={this.state.currentFolderId} />
+                    );
                 }
-                let id = folder.id;
-                children.push(
-                    <TreeViewItem level={childrenLevel} opened={opened} key={id} id={id} currentFolderId={this.state.currentFolderId} />
-                );
+
             }
         }
 
@@ -104,7 +117,7 @@ class TreeViewItem extends React.Component {
 
 
     openFolder(itemId) {
-        global.ee.emitEvent('open-folder', [itemId]);
+        Cache.ee.emitEvent('open-folder', [itemId]);
     }
 
     updateCurrentFolder(folderId) {
@@ -113,14 +126,13 @@ class TreeViewItem extends React.Component {
         });
     }
 
-    updateCurrentFolderId = this.updateCurrentFolder.bind(this);
 
     componentDidMount() {
-        global.ee.addListener('update-current-folder-id', this.updateCurrentFolderId);
+        Cache.ee.addListener('update-current-folder-id', this.updateCurrentFolder);
     }
 
     componentWillUnmount() {
-        global.ee.removeListener('update-current-folder-id', this.updateCurrentFolderId);
+        Cache.ee.removeListener('update-current-folder-id', this.updateCurrentFolder);
     }
 
 
