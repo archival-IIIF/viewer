@@ -1,5 +1,6 @@
 import * as React from 'react';
 import videojs from 'video.js';
+import Cache from './lib/Cache';
 require('video.js/dist/video-js.css');
 
 declare const MediaElementPlayer: any;
@@ -24,9 +25,16 @@ export default class MediaPlayer extends React.Component<IProps, any> {
     private player;
     private videoNode;
 
+    constructor(props) {
+        super(props);
+        this.play = this.play.bind(this);
+    }
+
     componentDidMount() {
         // instantiate Video.js
         this.player = videojs(this.videoNode, this.props, function onPlayerReady() {});
+
+        Cache.ee.addListener('play-audio', this.play);
     }
 
     // destroy player on unmount
@@ -34,6 +42,8 @@ export default class MediaPlayer extends React.Component<IProps, any> {
         if (this.player) {
             this.player.dispose();
         }
+
+        Cache.ee.removeListener('play-audio', this.play);
     }
 
     render() {
@@ -52,5 +62,9 @@ export default class MediaPlayer extends React.Component<IProps, any> {
                        preload={this.props.preload}/> ;
             </div>
         </div>;
+    }
+
+    play(data) {
+        this.player.play();
     }
 }

@@ -18,7 +18,6 @@ class Viewer extends React.Component<{}, any> {
         };
 
         this.open = this.open.bind(this); // click
-        this.play = this.play.bind(this); // doubleClick
     }
 
     render() {
@@ -80,22 +79,12 @@ class Viewer extends React.Component<{}, any> {
         this.setState({data: manifestData});
     }
 
-    play(data) {
-
-        if (this['type'] === 'audioVideo') {
-            // ToDo
-            // document.getElementById('player1_html5').play();
-        }
-    }
-
     componentDidMount() {
         Cache.ee.addListener('update-file-info', this.open);
-        Cache.ee.addListener('play-audio', this.play);
     }
 
     componentWillUnmount() {
         Cache.ee.removeListener('update-file-info', this.open);
-        Cache.ee.removeListener('play-audio', this.play);
     }
 }
 
