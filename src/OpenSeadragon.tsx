@@ -1,5 +1,5 @@
 import * as React from 'react';
-import OpenSeadragonLoader from 'openseadragon';
+import * as OpenSeadragonLoader from 'openseadragon';
 import InfoJson from './lib/InfoJson';
 import Cache from './lib/Cache';
 
