@@ -67,7 +67,7 @@ class TreeView extends React.Component<{}, any> {
 
             const collections = manifestData.collections;
             for (const collection in collections) {
-                if (collections.has(collection)) {
+                if (collections.hasOwnProperty(collection)) {
                     if (collections[collection].id === this.treeInProgress.id) {
                         collections[collection] = this.treeInProgress;
                     }
