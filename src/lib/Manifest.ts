@@ -428,9 +428,7 @@ class Manifest {
     }
 
     static getIdFromCurrentUrl() {
-
-        const url = new URL(window.location.href);
-        const manifestUri = url.searchParams.get('manifest');
+        const manifestUri = this.getGetParameter('manifest', window.location.href);
 
         if (manifestUri === '') {
             return false;
@@ -441,6 +439,23 @@ class Manifest {
 
     static clearCache() {
         this.cache = {};
+    }
+
+    static getGetParameter(name, url) {
+
+        if (typeof URL === 'function') {
+            const urlObject = new URL(window.location.href);
+            return urlObject.searchParams.get(name);
+        }
+
+
+        // polyfill for ie11
+        name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+        const regexS = '[\\?&]' + name + '=([^&#]*)';
+        const regex = new RegExp(regexS);
+        const results = regex.exec(url);
+
+        return results == null ? null : results[1];
     }
 }
 
