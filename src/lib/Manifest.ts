@@ -145,27 +145,18 @@ class Manifest {
             return undefined;
         }
 
-        for (const i in manifestoMetadata) {
 
-            if (manifestoData.hasOwnProperty(i)) {
-                let label;
-                let value;
-                try {
-                    label = manifestoMetadata[i].label[0].value;
-                } catch (e) {
-                }
-                try {
-                    value = manifestoMetadata[i].value[0].value;
-                } catch (e) {
-                }
-
+        for (const element of manifestoMetadata) {
+            try {
+                const label = element.label[0].value;
+                let value = element.value[0].value;
                 if (label === 'Size') {
                     value = filesize(parseInt(value, 10)).human('si');
                 }
                 value = this.addBlankTarget(value);
 
                 metadata.push({label, value});
-            }
+            } catch (e) {}
         }
 
         return metadata;
