@@ -43,7 +43,7 @@ class Splitter extends React.Component<{}, any> {
     }
 
     hideTreeView() {
-        Cache.ee.emitEvent('splitter-double-click');
+        Cache.ee.emitEvent('splitter-double-click', []);
     }
 
     splitterMove(width) {
