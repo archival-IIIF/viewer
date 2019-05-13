@@ -11,8 +11,15 @@ import ManifestHistory from './lib/ManifestHistory';
 import Login from './Login';
 import Cache from './lib/Cache';
 
+interface IState {
+    className: string;
+    contentLeft: number;
+    folderAndInfoLeft?: number;
+    folderAndInfoTop?: number;
+    width?: number;
+}
 
-class App extends React.Component<{}, any> {
+class App extends React.Component<{}, IState> {
 
     private minWidth = 60;
 
