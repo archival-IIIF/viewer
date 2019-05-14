@@ -14,6 +14,7 @@ interface IManifestData {
     restricted: boolean;
     metadata: any;
     license: string;
+    description: string;
     thumbnail?: IManifestDataThumbnail;
 }
 

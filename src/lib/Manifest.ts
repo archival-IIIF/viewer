@@ -100,6 +100,7 @@ class Manifest {
                     manifestData.restricted = true;
                 } else {
                     manifestData.metadata = t.getMetadata(manifestoData);
+                    manifestData.description = t.getDescription(manifestoData);
                     manifestData.license = t.getLicense(manifestoData);
                     manifestData.logo = manifestoData.getLogo();
                     manifestData.attribution = t.getAttribution(manifestoData);
@@ -131,6 +132,17 @@ class Manifest {
 
         try {
             return manifestoAttribution.value[0].value;
+        } catch (e) {
+        }
+
+        return undefined;
+    }
+
+    static getDescription(manifestoData) {
+        const description = manifestoData.getDescription();
+
+        try {
+            return description[0].value;
         } catch (e) {
         }
 

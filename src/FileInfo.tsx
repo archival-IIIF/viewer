@@ -39,8 +39,15 @@ class FileInfo extends React.Component<{}, any> {
         }
 
         const manifestData = this.state.data;
-
         const metadataView = [];
+
+        if (manifestData.description !== undefined) {
+            metadataView.push(<div key="description">
+                <div className="label"><Trans i18nKey="description"/></div>
+                <div className="value">{manifestData.description}</div>
+            </div>);
+        }
+
         if (manifestData.metadata !== undefined) {
             for (const key in manifestData.metadata) {
                 if (manifestData.metadata.hasOwnProperty(key)) {
