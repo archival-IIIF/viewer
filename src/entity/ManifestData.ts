@@ -15,6 +15,7 @@ class ManifestData implements IManifestData {
     restricted: false;
     metadata: '';
     license: '';
+    description: '';
     thumbnail: null;
 
 }
