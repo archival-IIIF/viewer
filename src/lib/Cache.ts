@@ -1,5 +1,4 @@
-import EventEmitter = require('wolfy87-eventemitter/EventEmitter');
-
+import * as  EventEmitter from 'events';
 class Cache {
 
     static token: string = '';

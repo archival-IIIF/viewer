@@ -117,7 +117,7 @@ class TreeViewItem extends React.Component<IProps, any> {
 
 
     openFolder(itemId) {
-        Cache.ee.emitEvent('open-folder', [itemId]);
+        Cache.ee.emit('open-folder', itemId);
     }
 
     updateCurrentFolder(folderId) {

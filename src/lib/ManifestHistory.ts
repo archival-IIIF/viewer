@@ -25,7 +25,7 @@ class ManifestHistory {
         const backId = this.previousIds.slice(-1)[0];
 
         if (backId !== undefined) {
-            Cache.ee.emitEvent('open-folder', [backId]);
+            Cache.ee.emit('open-folder', backId);
         }
     }
 

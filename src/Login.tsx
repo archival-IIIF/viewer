@@ -160,9 +160,9 @@ class Login extends Modal {
         Manifest.clearCache();
         InfoJson.clearCache();
         Cache.token = event.data.accessToken;
-        Cache.ee.emitEvent('token-received', []);
+        Cache.ee.emit('token-received');
         const id = Manifest.getIdFromCurrentUrl();
-        Cache.ee.emitEvent('open-folder', [id]);
+        Cache.ee.emit('open-folder', id);
 
         this.setState({
             visible: false

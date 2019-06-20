@@ -121,8 +121,8 @@ class FolderView extends React.Component<{}, any> {
                     document.title = manifestData.label;
                 }
 
-                Cache.ee.emitEvent('update-current-folder-id', [manifestData.id]);
-                Cache.ee.emitEvent('update-file-info', [selectedData]);
+                Cache.ee.emit('update-current-folder-id', manifestData.id);
+                Cache.ee.emit('update-file-info', selectedData);
             }
         );
 
@@ -141,7 +141,7 @@ class FolderView extends React.Component<{}, any> {
             selected: manifestData.id
         });
 
-        Cache.ee.emitEvent('update-file-info', [manifestData]);
+        Cache.ee.emit('update-file-info', manifestData);
     }
 
     showListView() {

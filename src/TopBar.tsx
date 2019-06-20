@@ -36,15 +36,15 @@ class TopBar extends React.Component<{}, any> {
 
 
     showListView() {
-        Cache.ee.emitEvent('show-list-view', []);
+        Cache.ee.emit('show-list-view');
     }
 
     logout() {
-        Cache.ee.emitEvent('logout', []);
+        Cache.ee.emit('logout');
     }
 
     showIconView() {
-        Cache.ee.emitEvent('show-icon-view', []);
+        Cache.ee.emit('show-icon-view');
     }
 
 

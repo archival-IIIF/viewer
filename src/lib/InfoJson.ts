@@ -42,7 +42,7 @@ class InfoJson {
             response.json().then((json) => {
 
                 if (statusCode === 401) {
-                    Cache.ee.emitEvent('show-login', [json]);
+                    Cache.ee.emit('show-login', json);
                 } else {
                     t.cache[id] = json;
                 }

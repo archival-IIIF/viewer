@@ -19,23 +19,23 @@ class Splitter extends React.Component<{}, any> {
 
         document.addEventListener('mouseup', function(event) {
             t.isMoving = false;
-            Cache.ee.emitEvent('splitter-move-end', []);
+            Cache.ee.emit('splitter-move-end');
         });
 
         document.addEventListener('mousemove', function(event) {
             if (t.isMoving) {
-                Cache.ee.emitEvent('splitter-move', [event.clientX]);
+                Cache.ee.emit('splitter-move', event.clientX);
             }
         });
 
         document.addEventListener('touchmove', function(event) {
             if (t.isMoving) {
-                Cache.ee.emitEvent('splitter-move', [event.touches[0].clientX]);
+                Cache.ee.emit('splitter-move', event.touches[0].clientX);
             }
         });
         document.addEventListener('touchend', function(event) {
             t.isMoving = false;
-            Cache.ee.emitEvent('splitter-move-end', []);
+            Cache.ee.emit('splitter-move-end');
         });
 
         this.splitterMove = this.splitterMove.bind(this);
@@ -53,7 +53,7 @@ class Splitter extends React.Component<{}, any> {
     }
 
     hideTreeView() {
-        Cache.ee.emitEvent('splitter-double-click', []);
+        Cache.ee.emit('splitter-double-click');
     }
 
     splitterMove(width) {

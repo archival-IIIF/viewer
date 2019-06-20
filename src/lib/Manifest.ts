@@ -94,7 +94,7 @@ class Manifest {
                 }
 
                 if (statusCode === 401) {
-                    Cache.ee.emitEvent('show-login', [manifestoData]);
+                    Cache.ee.emit('show-login', manifestoData);
                     manifestData.collections = [];
                     manifestData.manifests = [];
                     manifestData.restricted = true;

@@ -84,7 +84,7 @@ class Item extends React.Component<IProps, IState> {
 
     open() {
         if (this.state.itemType === 'folder') {
-            Cache.ee.emitEvent('open-folder', [this.state.item.id]);
+            Cache.ee.emit('open-folder', this.state.item.id);
         } else {
             this.openFile(this.state.item);
         }
@@ -103,7 +103,7 @@ class Item extends React.Component<IProps, IState> {
             manifestDataId,
             function(manifestData) {
                 ManifestHistory.pageChanged(manifestData.id, manifestData.label);
-                Cache.ee.emitEvent('update-file-info', [manifestData]);
+                Cache.ee.emit('update-file-info', manifestData);
             }
         );
 
@@ -120,7 +120,7 @@ class Item extends React.Component<IProps, IState> {
             function(file) {
                 const type = file.resource.type;
                 if (type === 'audioVideo') {
-                    Cache.ee.emitEvent('play-audio', [file.resource.source]);
+                    Cache.ee.emit('play-audio', file.resource.source);
                 } else if (type === 'file') {
                     const win = window.open(file.resource.source, '_target');
                     win.focus();
