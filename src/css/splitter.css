@@ -8,3 +8,10 @@
     top: 40px;
     bottom: 0;
 }
+
+@media (hover: none) and (pointer: coarse) {
+    #splitter {
+        max-width: 16px;
+        min-width: 16px;
+    }
+}

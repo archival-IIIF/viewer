@@ -28,13 +28,23 @@ class Splitter extends React.Component<{}, any> {
             }
         });
 
+        document.addEventListener('touchmove', function(event) {
+            if (t.isMoving) {
+                Cache.ee.emitEvent('splitter-move', [event.touches[0].clientX]);
+            }
+        });
+        document.addEventListener('touchend', function(event) {
+            t.isMoving = false;
+            Cache.ee.emitEvent('splitter-move-end', []);
+        });
+
         this.splitterMove = this.splitterMove.bind(this);
         this.splitterDoubleClick = this.splitterDoubleClick.bind(this);
     }
 
     render() {
 
-        return <div id="splitter"  onMouseDown={() => this.moveEnde() }
+        return <div id="splitter"  onMouseDown={() => this.moveEnde()} onTouchStart={() => this.moveEnde()}
                     onDoubleClick={() => this.hideTreeView()} style={{left: this.state.left}} />;
     }
 
