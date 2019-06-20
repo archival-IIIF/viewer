@@ -2,6 +2,7 @@ import * as React from 'react';
 import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
+import TouchDetection from './lib/TouchDetection';
 require('./css/item.css');
 const FolderImage = require('./icons/fa/folder.svg');
 const FileImage = require('./icons/fa/file.svg');
@@ -11,7 +12,13 @@ interface IProps {
     selected: object;
 }
 
-class Item extends React.Component<IProps, any> {
+interface IState {
+    item: any;
+    itemType: any;
+    selected: any;
+}
+
+class Item extends React.Component<IProps, IState> {
 
     constructor(props) {
 
@@ -86,6 +93,11 @@ class Item extends React.Component<IProps, any> {
     activateItem() {
 
         const manifestDataId = this.state.item.id;
+
+        if (TouchDetection.isTouchDevice() && manifestDataId === this.state.selected) {
+            this.open();
+            return;
+        }
 
         Manifest.get(
             manifestDataId,
