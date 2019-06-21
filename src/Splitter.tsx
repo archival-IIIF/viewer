@@ -6,7 +6,16 @@ interface IState {
     left: number;
 }
 
-class Splitter extends React.Component<{}, IState> {
+interface IProps {
+    changeWidthFunc?: (width: number) => void;
+    left: number;
+}
+
+interface IState {
+    left: number;
+}
+
+class Splitter extends React.Component<IProps, IState> {
 
     private isMoving: boolean = false;
     private minWidth: number = 60;
@@ -15,68 +24,68 @@ class Splitter extends React.Component<{}, IState> {
 
         super(props);
 
-        this.state = {left: Cache.intialWidth};
+        this.state = {left: this.props.left};
 
         const t = this;
 
         document.addEventListener('mouseup', function(event) {
             t.isMoving = false;
-            Cache.ee.emit('splitter-move-end');
+            t.enableGlobalTextSelect();
         });
 
         document.addEventListener('mousemove', function(event) {
             if (t.isMoving) {
+                t.props.changeWidthFunc(event.clientX);
                 Cache.ee.emit('splitter-move', event.clientX);
+                t.disableGlobalTextSelect();
             }
         });
 
         document.addEventListener('touchmove', function(event) {
             if (t.isMoving) {
+                t.props.changeWidthFunc(event.touches[0].clientX);
                 Cache.ee.emit('splitter-move', event.touches[0].clientX);
+                t.disableGlobalTextSelect();
             }
         });
         document.addEventListener('touchend', function(event) {
             t.isMoving = false;
-            Cache.ee.emit('splitter-move-end');
-        });
+            t.enableGlobalTextSelect();
 
-        this.splitterMove = this.splitterMove.bind(this);
-        this.splitterDoubleClick = this.splitterDoubleClick.bind(this);
+        });
     }
 
     render() {
         return <div className="splitter" onMouseDown={() => this.moveEnd()} onTouchStart={() => this.moveEnd()}
-                    onDoubleClick={() => this.hideTreeView()} style={{left: this.state.left}} />;
+                    onDoubleClick={() => this.splitterDoubleClick()} style={{left: this.state.left}} />;
     }
 
     moveEnd() {
         this.isMoving = true;
     }
 
-    hideTreeView() {
-        Cache.ee.emit('splitter-double-click');
-    }
-
-    splitterMove(width) {
-        this.setState({left: width});
-    }
-
     splitterDoubleClick() {
         if (this.state.left > this.minWidth) {
-            this.setState({left: 0});
+            this.props.changeWidthFunc(0);
         } else {
-            this.setState({left: Cache.intialWidth});
+            this.props.changeWidthFunc(Cache.intialWidth);
         }
     }
 
-    componentDidMount() {
-        Cache.ee.addListener('splitter-move', this.splitterMove);
-        Cache.ee.addListener('splitter-double-click', this.splitterDoubleClick);
+
+    componentWillReceiveProps(nextProps) {
+        // You don't have to do this check first, but it can help prevent an unneeded render
+        if (nextProps.left !== this.state.left) {
+            this.setState({ left: nextProps.left });
+        }
     }
 
-    componentWillUnmount() {
-        Cache.ee.removeListener('splitter-move', this.splitterMove);
-        Cache.ee.removeListener('splitter-move-end', this.splitterDoubleClick);
+    enableGlobalTextSelect() {
+        document.body.style.userSelect = 'auto';
+    }
+
+    disableGlobalTextSelect() {
+        document.body.style.userSelect = 'none';
     }
 }
 

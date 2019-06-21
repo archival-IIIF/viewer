@@ -5,7 +5,17 @@ import TreeViewItem from './TreeViewItem';
 import Manifest from './lib/Manifest';
 import Cache from './lib/Cache';
 
-class TreeView extends React.Component<{}, any> {
+interface IProps {
+    width: number;
+}
+
+interface IState {
+    opened: object;
+    tree?: object;
+    width: number;
+}
+
+class TreeView extends React.Component<IProps, IState> {
 
     private minWidth = 60;
     private treeInProgress = null;
@@ -18,12 +28,10 @@ class TreeView extends React.Component<{}, any> {
 
         this.state = {
             opened: {},
-            tree: false,
-            width: Cache.intialWidth,
+            tree: null,
+            width: this.props.width,
         };
 
-        this.splitterMove = this.splitterMove.bind(this);
-        this.splitterDoubleClick = this.splitterDoubleClick.bind(this);
         this.buildTree = this.buildTree.bind(this);
         this.clearTree = this.clearTree.bind(this);
     }
@@ -34,7 +42,7 @@ class TreeView extends React.Component<{}, any> {
             return '';
         }
 
-        if (this.state.tree === false) {
+        if (this.state.tree === null) {
             return <Loading/>;
         }
 
@@ -48,7 +56,7 @@ class TreeView extends React.Component<{}, any> {
 
     buildTree(folderId) {
 
-        if (this.state.tree !== false) {
+        if (this.state.tree !== null) {
             return;
         }
 
@@ -103,38 +111,25 @@ class TreeView extends React.Component<{}, any> {
         );
     }
 
-
-    splitterMove(width) {
-        this.setState(
-            {width}
-        );
-    }
-
-    splitterDoubleClick() {
-        if (this.state.width > this.minWidth) {
-            this.setState({width: 0});
-        } else {
-            this.setState({width: Cache.intialWidth});
-        }
-    }
-
-
     clearTree() {
-        this.setState({tree: false});
+        this.setState({tree: null});
     }
 
     componentDidMount() {
-        Cache.ee.addListener('splitter-move', this.splitterMove);
-        Cache.ee.addListener('splitter-double-click', this.splitterDoubleClick);
         Cache.ee.addListener('update-current-folder-id', this.buildTree);
         Cache.ee.addListener('token-received', this.clearTree);
     }
 
     componentWillUnmount() {
-        Cache.ee.removeListener('splitter-move', this.splitterMove);
-        Cache.ee.removeListener('splitter-move-end', this.splitterDoubleClick);
         Cache.ee.removeListener('update-current-folder-id', this.buildTree);
         Cache.ee.removeListener('token-received', this.clearTree);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // You don't have to do this check first, but it can help prevent an unneeded render
+        if (nextProps.width !== this.state.width) {
+            this.setState({ width: nextProps.width });
+        }
     }
 }
 

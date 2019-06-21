@@ -43,10 +43,6 @@ html, body, #root
     margin: 0 224px 0 24px;
 }
 
-.no-select {
-    user-select: none;
-}
-
 h1 {
     margin-top: 0;
 }
