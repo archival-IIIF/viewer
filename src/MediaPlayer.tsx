@@ -18,9 +18,7 @@ interface IProps {
     id?: string;
 }
 
-export default class MediaPlayer extends React.Component<IProps, any> {
-
-    state = {};
+export default class MediaPlayer extends React.Component<IProps, {}> {
 
     private player;
     private videoNode;

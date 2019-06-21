@@ -1,8 +1,20 @@
 import * as React from 'react';
 require('./css/modal.css');
 
+interface IState {
+    visible?: boolean;
+    id?: string;
+    title?: JSX.Element;
+    body?: string;
+    button1?: string;
+    confirmLabel?: string;
+    manifestations?: any;
+    description?: string;
+    error?: boolean;
+    errorMessage?: string;
+}
 
-class Modal extends React.Component<{}, any> {
+class Modal extends React.Component<{}, IState> {
 
     render() {
 
