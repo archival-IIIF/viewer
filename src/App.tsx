@@ -13,7 +13,7 @@ import TreeViewContainer from './TreeViewContainer';
 interface IState {
     folderAndInfoLeft?: number;
     folderAndInfoTop?: number;
-    treeViewWidth?: number;
+    treeViewWidth: number;
 }
 
 class App extends React.Component<{}, IState> {
