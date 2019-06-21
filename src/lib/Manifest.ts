@@ -40,7 +40,6 @@ class Manifest {
         const t = this;
         const authHeader: Headers = new Headers();
         let statusCode = 0;
-        let responseHeaderContentLanguage;
         if (Cache.token !== '') {
             authHeader.set('Authorization', 'Bearer ' + Cache.token);
         }
