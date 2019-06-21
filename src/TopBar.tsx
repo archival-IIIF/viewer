@@ -3,7 +3,12 @@ require('./css/topbar.css');
 import { translate, Trans } from 'react-i18next';
 import Cache from './lib/Cache';
 
-class TopBar extends React.Component<{}, any> {
+
+interface IState {
+    logoutButtonIsVisible: boolean;
+}
+
+class TopBar extends React.Component<{}, IState> {
 
     constructor(props) {
 

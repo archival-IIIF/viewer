@@ -7,8 +7,13 @@ interface IProps {
     source: string;
 }
 
+interface IState {
+    source: string;
+    spinner: boolean;
+}
 
-class OpenSeadragon extends React.Component<IProps, any> {
+
+class OpenSeadragon extends React.Component<IProps, IState> {
 
     private tokenReceived = this.update.bind(this);
 

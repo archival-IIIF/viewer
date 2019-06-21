@@ -12,7 +12,15 @@ interface IProps {
     currentFolderId?: string;
 }
 
-class TreeViewItem extends React.Component<IProps, any> {
+interface IState {
+    data?: object;
+    opened: boolean;
+    id?: string;
+    level: number;
+    currentFolderId?: string;
+}
+
+class TreeViewItem extends React.Component<IProps, IState> {
 
 
     constructor(props) {
@@ -45,8 +53,7 @@ class TreeViewItem extends React.Component<IProps, any> {
                     url,
                     function(data2) {
                         t.setState({
-                            data: data2,
-                            selected: null
+                            data: data2
                         });
                     }
                 );

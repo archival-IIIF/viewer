@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class Loading extends React.Component<{}, any> {
+class Loading extends React.Component<{}, {}> {
 
     render() {
         return '';
