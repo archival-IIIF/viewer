@@ -48,7 +48,6 @@ class Splitter extends React.Component<IProps, IState> {
     globalMoveStart(x) {
         if (this.isMoving) {
             this.props.widthChangedFunc(x);
-            console.log('gg');
         }
     }
 
