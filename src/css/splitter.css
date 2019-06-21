@@ -1,4 +1,4 @@
-#splitter {
+.splitter {
     max-width: 8px;
     min-width: 8px;
     background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
@@ -10,7 +10,7 @@
 }
 
 @media (hover: none) and (pointer: coarse) {
-    #splitter {
+    .splitter {
         max-width: 16px;
         min-width: 16px;
     }
