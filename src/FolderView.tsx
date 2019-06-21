@@ -5,8 +5,16 @@ import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
 import {translate, Trans} from 'react-i18next';
 import Cache from './lib/Cache';
+import IManifestData from './interface/IManifestData';
 
-class FolderView extends React.Component<{}, any> {
+interface IState {
+    data?: IManifestData;
+    selected?: string;
+    mode: string;
+}
+
+
+class FolderView extends React.Component<{}, IState> {
 
     constructor(props) {
 
@@ -14,7 +22,7 @@ class FolderView extends React.Component<{}, any> {
 
 
         this.state = {
-            data: false,
+            data: null,
             mode: 'icon-view',
             selected: null
         };
@@ -129,11 +137,21 @@ class FolderView extends React.Component<{}, any> {
     }
 
     openImaginaryRootFolder(manifestData) {
-        const imaginaryRootManifestData = {
+        const imaginaryRootManifestData: IManifestData = {
             collections: [],
             id: '-',
             manifests: [manifestData],
-            type: 'sc:Collection'
+            type: 'sc:Collection',
+            label: '',
+            logo: '',
+            attribution: '',
+            manifestations: [],
+            parentId: '',
+            resource: [],
+            restricted: false,
+            metadata: [],
+            license: '',
+            description: ''
         };
 
         this.setState({

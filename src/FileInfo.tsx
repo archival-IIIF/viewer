@@ -4,6 +4,7 @@ import ManifestationsModal from './ManifestationsModal';
 import Interweave from 'interweave';
 import {translate, Trans} from 'react-i18next';
 import Cache from './lib/Cache';
+import IManifestData from './interface/IManifestData';
 require('./css/file-info.css');
 
 interface IHTMLAnchorElement {
@@ -11,9 +12,13 @@ interface IHTMLAnchorElement {
     target?: string;
 }
 
+interface IState {
+    data: IManifestData;
+    showManifestationsModal: boolean;
+}
 
 
-class FileInfo extends React.Component<{}, any> {
+class FileInfo extends React.Component<{}, IState> {
 
     constructor(props) {
 

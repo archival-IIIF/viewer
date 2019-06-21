@@ -9,13 +9,13 @@ const FileImage = require('./icons/fa/file.svg');
 
 interface IProps {
     item: object;
-    selected: object;
+    selected: string;
 }
 
 interface IState {
     item: any;
     itemType: any;
-    selected: any;
+    selected: string;
 }
 
 class Item extends React.Component<IProps, IState> {

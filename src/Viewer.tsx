@@ -4,8 +4,14 @@ import OpenSeadragon from './OpenSeadragon';
 import MediaPlayer from './MediaPlayer';
 import Cache from './lib/Cache';
 import videojs from 'video.js';
+import IManifestData from './interface/IManifestData';
 
-class Viewer extends React.Component<{}, any> {
+interface IState {
+    data?: IManifestData;
+}
+
+
+class Viewer extends React.Component<{}, IState> {
 
     private type = '';
 
@@ -61,7 +67,7 @@ class Viewer extends React.Component<{}, any> {
         this.type = 'audioVideo';
 
         return (
-            <div id="viewer" style={{left: this.state.left}}>
+            <div id="viewer">
                 <MediaPlayer
                     id="player1"
                     key={file}
