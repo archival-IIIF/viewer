@@ -15,3 +15,7 @@
         min-width: 16px;
     }
 }
+
+body.no-select {
+    user-select: none;
+}

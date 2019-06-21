@@ -18,7 +18,6 @@ interface IState {
 class Splitter extends React.Component<IProps, IState> {
 
     private isMoving: boolean = false;
-    private minWidth: number = 60;
 
     constructor(props) {
 
@@ -27,43 +26,44 @@ class Splitter extends React.Component<IProps, IState> {
         this.state = {left: this.props.left};
 
         const t = this;
-
-        document.addEventListener('mouseup', function(event) {
-            t.isMoving = false;
-            t.enableGlobalTextSelect();
-        });
+        this.globalMoveStart = this.globalMoveStart.bind(this);
+        this.globalMoveEnd = this.globalMoveEnd.bind(this);
 
         document.addEventListener('mousemove', function(event) {
-            if (t.isMoving) {
-                t.props.widthChangedFunc(event.clientX);
-                t.disableGlobalTextSelect();
-            }
+            t.globalMoveStart(event.clientX);
         });
-
         document.addEventListener('touchmove', function(event) {
-            if (t.isMoving) {
-                t.props.widthChangedFunc(event.touches[0].clientX);
-                t.disableGlobalTextSelect();
-            }
+            t.globalMoveStart(event.touches[0].clientX);
         });
-        document.addEventListener('touchend', function(event) {
-            t.isMoving = false;
-            t.enableGlobalTextSelect();
 
-        });
+        document.addEventListener('mouseup', this.globalMoveEnd);
+        document.addEventListener('touchend', this.globalMoveEnd);
     }
 
     render() {
-        return <div className="splitter" onMouseDown={() => this.moveEnd()} onTouchStart={() => this.moveEnd()}
+        return <div className="splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
                     onDoubleClick={() => this.splitterDoubleClick()} style={{left: this.state.left}} />;
     }
 
-    moveEnd() {
+    globalMoveStart(x) {
+        if (this.isMoving) {
+            this.props.widthChangedFunc(x);
+            console.log('gg');
+        }
+    }
+
+    globalMoveEnd() {
+        this.isMoving = false;
+        document.body.classList.remove('no-select');
+    }
+
+    movingStart() {
+        document.body.classList.add('no-select');
         this.isMoving = true;
     }
 
     splitterDoubleClick() {
-        if (this.state.left > this.minWidth) {
+        if (this.state.left > 0) {
             this.props.widthChangedFunc(0);
         } else {
             this.props.widthChangedFunc(Cache.intialWidth);
@@ -75,14 +75,6 @@ class Splitter extends React.Component<IProps, IState> {
         if (nextProps.left !== this.state.left) {
             this.setState({ left: nextProps.left });
         }
-    }
-
-    enableGlobalTextSelect() {
-        document.body.style.userSelect = 'auto';
-    }
-
-    disableGlobalTextSelect() {
-        document.body.style.userSelect = 'none';
     }
 }
 
