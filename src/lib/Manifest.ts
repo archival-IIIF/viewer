@@ -50,7 +50,6 @@ class Manifest {
             }
         ).then((response) => {
             statusCode = response.status;
-            responseHeaderContentLanguage = response.headers.get('content-language');
 
             if (statusCode !== 401 && statusCode >= 400) {
                 alert('Could not fetch manifest!\n' + url);
@@ -60,8 +59,7 @@ class Manifest {
             response.json().then((json) => {
 
                 if (!t.lang) {
-                    t.lang = responseHeaderContentLanguage ? responseHeaderContentLanguage :
-                        window.navigator.language;
+                    t.lang = window.navigator.language;
                     i18n.changeLanguage(t.lang);
                 }
 
