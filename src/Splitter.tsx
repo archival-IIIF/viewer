@@ -2,18 +2,20 @@ import * as React from 'react';
 require('./css/splitter.css');
 import Cache from './lib/Cache';
 
-class Splitter extends React.Component<{}, any> {
+interface IState {
+    left: number;
+}
 
-    private isMoving = false;
-    private minWidth = 60;
+class Splitter extends React.Component<{}, IState> {
+
+    private isMoving: boolean = false;
+    private minWidth: number = 60;
 
     constructor(props) {
 
         super(props);
 
-        this.state = {
-            left: Cache.intialWidth
-        };
+        this.state = {left: Cache.intialWidth};
 
         const t = this;
 
@@ -43,7 +45,6 @@ class Splitter extends React.Component<{}, any> {
     }
 
     render() {
-
         return <div id="splitter"  onMouseDown={() => this.moveEnde()} onTouchStart={() => this.moveEnde()}
                     onDoubleClick={() => this.hideTreeView()} style={{left: this.state.left}} />;
     }
@@ -57,19 +58,16 @@ class Splitter extends React.Component<{}, any> {
     }
 
     splitterMove(width) {
-        this.setState(
-            {left: width}
-        );
+        this.setState({left: width});
     }
 
     splitterDoubleClick() {
-        if (this.state.width > this.minWidth) {
+        if (this.state.left > this.minWidth) {
             this.setState({left: 0});
         } else {
             this.setState({left: Cache.intialWidth});
         }
     }
-
 
     componentDidMount() {
         Cache.ee.addListener('splitter-move', this.splitterMove);
