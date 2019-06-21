@@ -69,7 +69,6 @@ class Splitter extends React.Component<IProps, IState> {
         }
     }
 
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.left !== this.state.left) {
             this.setState({ left: nextProps.left });
