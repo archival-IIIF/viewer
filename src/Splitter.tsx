@@ -45,11 +45,11 @@ class Splitter extends React.Component<{}, IState> {
     }
 
     render() {
-        return <div id="splitter"  onMouseDown={() => this.moveEnde()} onTouchStart={() => this.moveEnde()}
+        return <div id="splitter"  onMouseDown={() => this.moveEnd()} onTouchStart={() => this.moveEnd()}
                     onDoubleClick={() => this.hideTreeView()} style={{left: this.state.left}} />;
     }
 
-    moveEnde() {
+    moveEnd() {
         this.isMoving = true;
     }
 
