@@ -7,7 +7,12 @@ interface IState {
     width: number;
 }
 
-class TreeViewContainer extends React.Component<{}, IState> {
+interface IProps {
+    width: number;
+    widthChangedFunc: (width: number) => void;
+}
+
+class TreeViewContainer extends React.Component<IProps, IState> {
 
     constructor(props) {
         super(props);
@@ -15,19 +20,19 @@ class TreeViewContainer extends React.Component<{}, IState> {
         this.state = {
             width: Cache.intialWidth
         };
+    }
 
-        this.changeWidth = this.changeWidth.bind(this);
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.left !== this.state.width) {
+            this.setState({ width: nextProps.width });
+        }
     }
 
     render() {
         return <>
-            <TreeView width={this.state.width}/>
-            <Splitter left={this.state.width} changeWidthFunc={this.changeWidth} />
+            <TreeView width={this.props.width}/>
+            <Splitter left={this.state.width} widthChangedFunc={this.props.widthChangedFunc} />
         </>;
-    }
-
-    changeWidth(width: number) {
-        this.setState({width});
     }
 
 }

@@ -11,15 +11,14 @@ import Cache from './lib/Cache';
 import TreeViewContainer from './TreeViewContainer';
 
 interface IState {
-    contentLeft: number;
     folderAndInfoLeft?: number;
     folderAndInfoTop?: number;
-    width?: number;
+    treeViewWidth?: number;
 }
 
 class App extends React.Component<{}, IState> {
 
-    private minWidth = 60;
+    private minWidth: number = 60;
 
     constructor(props) {
 
@@ -27,20 +26,26 @@ class App extends React.Component<{}, IState> {
 
 
         this.state = {
-            contentLeft: Cache.intialWidth + Cache.splitterWidth,
+            treeViewWidth: Cache.intialWidth
         };
 
+        this.treeViewWidthChanged = this.treeViewWidthChanged.bind(this);
     }
 
     render() {
+
+        const contentStyle = {
+            left: this.state.treeViewWidth + Cache.splitterWidth
+        };
 
         return (
             <div id="app">
                 <TopBar/>
                 <Login/>
                 <div id="main">
-                    <TreeViewContainer />
-                    <div id="content" style={{left: this.state.contentLeft}}>
+                    <TreeViewContainer width={this.state.treeViewWidth}
+                                       widthChangedFunc={this.treeViewWidthChanged} />
+                    <div id="content" style={contentStyle}>
                         <Viewer/>
                         <div id="folder-and-info" style={{
                             left: this.state.folderAndInfoLeft,
@@ -55,20 +60,17 @@ class App extends React.Component<{}, IState> {
         );
     }
 
-    splitterMove(width) {
-        this.setState(
-            {
-                contentLeft: width + Cache.splitterWidth
-            }
-        );
-    }
+    treeViewWidthChanged(width) {
 
-
-    splitterDoubleClick() {
-        if (this.state.width <= this.minWidth) {
-            this.setState({contentLeft: Cache.splitterWidth});
+        if (width < this.minWidth) {
+            width = 0;
         }
 
+        this.setState(
+            {
+                treeViewWidth: width
+            }
+        );
     }
 
     componentDidMount() {
@@ -76,8 +78,6 @@ class App extends React.Component<{}, IState> {
         window.addEventListener('popstate', function(event) {
             ManifestHistory.goBack();
         });
-
-        Cache.ee.addListener('splitter-move', this.splitterMove.bind(this));
     }
 
 }

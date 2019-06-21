@@ -7,7 +7,7 @@ interface IState {
 }
 
 interface IProps {
-    changeWidthFunc?: (width: number) => void;
+    widthChangedFunc?: (width: number) => void;
     left: number;
 }
 
@@ -35,16 +35,14 @@ class Splitter extends React.Component<IProps, IState> {
 
         document.addEventListener('mousemove', function(event) {
             if (t.isMoving) {
-                t.props.changeWidthFunc(event.clientX);
-                Cache.ee.emit('splitter-move', event.clientX);
+                t.props.widthChangedFunc(event.clientX);
                 t.disableGlobalTextSelect();
             }
         });
 
         document.addEventListener('touchmove', function(event) {
             if (t.isMoving) {
-                t.props.changeWidthFunc(event.touches[0].clientX);
-                Cache.ee.emit('splitter-move', event.touches[0].clientX);
+                t.props.widthChangedFunc(event.touches[0].clientX);
                 t.disableGlobalTextSelect();
             }
         });
@@ -66,15 +64,14 @@ class Splitter extends React.Component<IProps, IState> {
 
     splitterDoubleClick() {
         if (this.state.left > this.minWidth) {
-            this.props.changeWidthFunc(0);
+            this.props.widthChangedFunc(0);
         } else {
-            this.props.changeWidthFunc(Cache.intialWidth);
+            this.props.widthChangedFunc(Cache.intialWidth);
         }
     }
 
 
     componentWillReceiveProps(nextProps) {
-        // You don't have to do this check first, but it can help prevent an unneeded render
         if (nextProps.left !== this.state.left) {
             this.setState({ left: nextProps.left });
         }
