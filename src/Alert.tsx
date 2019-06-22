@@ -114,10 +114,7 @@ class Alert extends React.Component<{}, IState> {
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.escFunction, false);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState(nextProps);
+        Cache.ee.removeListener('alert', this.open);
     }
 }
 
