@@ -78,13 +78,6 @@ class Manifest {
                     manifestData.type = 'sc:Manifest';
                 } else if (type === 'sc:Collection' || type === 'Collection') {
                     manifestData.type = 'sc:Collection';
-                } else {
-                    const alertArgs = {
-                        title: 'Error',
-                        body: 'Manifest type must be a collection or a manifest!\n\n' + url
-                    };
-                    Cache.ee.emit('alert', alertArgs);
-                    return;
                 }
                 manifestData.label = manifestoData.getDefaultLabel();
                 manifestData.parentId = manifestoData.getProperty('within');
@@ -164,7 +157,7 @@ class Manifest {
                 console.log(err);
                 const alertArgs = {
                     title: 'Error',
-                    body: 'Could not read manifest!\n\n'  + url
+                    body: 'Could not read manifest!\n\n' + url
                 };
                 Cache.ee.emit('alert', alertArgs);
             });
