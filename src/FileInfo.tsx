@@ -1,6 +1,6 @@
 import * as React from 'react';
 const iifLogo = require('./icons/iiif.png');
-import ManifestationsModal from './ManifestationsModal';
+require('./css/manifestations-modal.css');
 import Interweave from 'interweave';
 import {translate, Trans} from 'react-i18next';
 import Cache from './lib/Cache';
@@ -14,7 +14,6 @@ interface IHTMLAnchorElement {
 
 interface IState {
     data: IManifestData;
-    showManifestationsModal: boolean;
 }
 
 
@@ -24,14 +23,12 @@ class FileInfo extends React.Component<{}, IState> {
 
         super(props);
 
-        this.hideManifestationsModal = this.hideManifestationsModal.bind(this);
-
         this.state = {
             data: null,
-            showManifestationsModal: false
         };
 
         this.updateFileInfo = this.updateFileInfo.bind(this);
+        this.showManifestationsModal = this.showManifestationsModal.bind(this);
     }
 
     render() {
@@ -92,7 +89,7 @@ class FileInfo extends React.Component<{}, IState> {
         if (manifestData.manifestations.length > 0) {
             metadataView.push(
                 <div key="manifestation">
-                    <div id="show-manifestation" onClick={() => this.showManifestationsModal()}>
+                    <div id="show-manifestation" onClick={this.showManifestationsModal}>
                         <Trans i18nKey="showFile"/>
                     </div>
                 </div>
@@ -106,9 +103,6 @@ class FileInfo extends React.Component<{}, IState> {
                 <a id="iiif-logo" href={manifestData.id} target="_blank">
                     <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest"/>
                 </a>
-                <ManifestationsModal visible={this.state.showManifestationsModal}
-                                     manifestations={manifestData.manifestations}
-                                     closeHandler={this.hideManifestationsModal}/>
             </div>
         );
     }
@@ -139,15 +133,30 @@ class FileInfo extends React.Component<{}, IState> {
     }
 
     showManifestationsModal() {
-        this.setState({
-            showManifestationsModal: true
-        });
+
+        const manifestations = this.state.data.manifestations;
+        const bodyJsx = [];
+        for (const i in manifestations) {
+            if (manifestations.hasOwnProperty(i)) {
+                const manifestation = manifestations[i];
+                bodyJsx.push(
+                    <div key={i} className="file-manifestation" onClick={() => this.openFile(manifestation.url)}>
+                        {manifestation.label}
+                    </div>
+                );
+            }
+        }
+
+        const alertArgs = {
+            titleJsx: <Trans i18nKey="fileManifestations" />,
+            bodyJsx
+        };
+        Cache.ee.emit('alert', alertArgs);
     }
 
-    hideManifestationsModal() {
-        this.setState({
-            showManifestationsModal: false
-        });
+    openFile(url) {
+        const win = window.open(url, '_target');
+        win.focus();
     }
 }
 

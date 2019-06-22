@@ -2,11 +2,14 @@ import * as React from 'react';
 import Cache from './lib/Cache';
 import UrlValidation from './lib/UrlValidation';
 require('./css/modal.css');
+import {translate} from 'react-i18next';
 
 interface IState {
     visible: boolean;
     title?: string;
+    titleJsx?: JSX.Element;
     body?: string;
+    bodyJsx?: JSX.Element;
     button1?: string;
 }
 
@@ -46,18 +49,25 @@ class Alert extends React.Component<{}, IState> {
         if (this.state.title) {
             return <div className="modal-title">{this.state.title}</div>;
         }
+        if (this.state.titleJsx) {
+            return <div className="modal-title">{this.state.titleJsx}</div>;
+        }
     }
 
     renderBody() {
         if (this.state.body) {
             return <div className="modal-body">{this.nl2br(this.state.body)}</div>;
         }
+        if (this.state.bodyJsx) {
+            return <div className="modal-body">{this.state.bodyJsx}</div>;
+        }
     }
 
     nl2br(input) {
-        return input.split('\n').map(function(item) {
+
+        return input.split('\n').map(function(item, i) {
             if (UrlValidation.isURL(item)) {
-                return <><a href={item} target="_blank">{item}</a><br /></>;
+                return <div key={i}><a href={item} target="_blank">{item}</a></div>;
             }
 
             return <>{item}<br /></>;
@@ -83,7 +93,9 @@ class Alert extends React.Component<{}, IState> {
         };
 
         state['title'] = args['title'] ? args['title'] : null;
+        state['titleJsx'] = args['titleJsx'] ? args['titleJsx'] : null;
         state['body'] = args['body'] ? args['body'] : null;
+        state['bodyJsx'] = args['bodyJsx'] ? args['bodyJsx'] : null;
 
         this.setState(state);
     }
@@ -109,4 +121,5 @@ class Alert extends React.Component<{}, IState> {
     }
 }
 
-export default Alert;
+export default translate('common')(Alert);
+
