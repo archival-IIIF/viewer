@@ -29,7 +29,7 @@ class Item extends React.Component<IProps, IState> {
 
         this.state = {
             item: props.item,
-            itemType: '',
+            itemType,
             selected: props.selected,
         };
     }
