@@ -7,6 +7,7 @@ import IManifestData from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
+import InfoJson from './InfoJson';
 
 class Manifest {
 
@@ -91,6 +92,28 @@ class Manifest {
                 }
 
                 if (statusCode === 401) {
+
+                    const external = manifestoData.getService('http://iiif.io/api/auth/1/external');
+                    if (external) {
+                        const token = external.getService('http://iiif.io/api/auth/1/token');
+                        fetch(token.id)
+                            .then((externalTokenResponse) => {
+
+                                statusCode = externalTokenResponse.status;
+                                if (statusCode !== 200) {
+                                    alert(external.getFailureHeader() + '\n\n' + external.getFailureDescription());
+                                    return;
+                                }
+
+                                externalTokenResponse.json()
+                                    .then((externalTokenJson) => {
+                                        Cache.token = externalTokenJson.accessToken;
+                                        return this.fetchFromUrl(url, callback);
+                                    });
+                            });
+                        return;
+                    }
+
                     Cache.ee.emit('show-login', manifestoData);
                     manifestData.collections = [];
                     manifestData.manifests = [];
