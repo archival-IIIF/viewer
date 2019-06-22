@@ -164,7 +164,7 @@ class Manifest {
                 console.log(err);
                 const alertArgs = {
                     title: 'Error',
-                    body: 'Could not read manifest!\n'  + url
+                    body: 'Could not read manifest!\n\n'  + url
                 };
                 Cache.ee.emit('alert', alertArgs);
             });
