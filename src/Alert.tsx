@@ -65,12 +65,12 @@ class Alert extends React.Component<{}, IState> {
 
     nl2br(input) {
 
-        return input.split('\n').map(function(item, i) {
+        return input.split('\n').map(function(item: string, i: number) {
             if (UrlValidation.isURL(item)) {
-                return <div key={i}><a href={item} target="_blank">{item}</a></div>;
+                return <span key={i}><a href={item} target="_blank">{item}</a><br /></span>;
             }
 
-            return <>{item}<br /></>;
+            return <span key={i}>{item}<br /></span>;
         });
     }
 
