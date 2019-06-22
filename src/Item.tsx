@@ -3,18 +3,19 @@ import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import TouchDetection from './lib/TouchDetection';
+import IManifestData from './interface/IManifestData';
 require('./css/item.css');
 const FolderImage = require('./icons/fa/folder.svg');
 const FileImage = require('./icons/fa/file.svg');
 
 interface IProps {
-    item: object;
+    item: IManifestData;
     selected: string;
 }
 
 interface IState {
-    item: any;
-    itemType: any;
+    item: IManifestData;
+    itemType: string;
     selected: string;
 }
 
@@ -28,7 +29,7 @@ class Item extends React.Component<IProps, IState> {
 
         this.state = {
             item: props.item,
-            itemType,
+            itemType: '',
             selected: props.selected,
         };
     }

@@ -3,8 +3,6 @@ import videojs from 'video.js';
 import Cache from './lib/Cache';
 require('video.js/dist/video-js.css');
 
-declare const MediaElementPlayer: any;
-
 interface IProps {
     sources?: videojs.Tech.SourceObject[];
     tracks?: videojs.TextTrackOptions[];
