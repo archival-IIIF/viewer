@@ -9,6 +9,7 @@ import ManifestHistory from './lib/ManifestHistory';
 import Login from './Login';
 import Cache from './lib/Cache';
 import TreeViewContainer from './TreeViewContainer';
+import Alert from './Alert';
 
 interface IState {
     folderAndInfoLeft?: number;
@@ -56,6 +57,7 @@ class App extends React.Component<{}, IState> {
                         </div>
                     </div>
                 </div>
+                <Alert />
             </div>
         );
     }

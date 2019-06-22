@@ -7,7 +7,7 @@ import IManifestData from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
-import InfoJson from './InfoJson';
+import UrlValidation from './UrlValidation';
 
 class Manifest {
 
@@ -52,7 +52,11 @@ class Manifest {
             statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {
-                alert('Could not fetch manifest!\n' + url);
+                const alertArgs = {
+                    title: 'Error',
+                    body: 'Could not fetch manifest!\n\n'  + url
+                };
+                Cache.ee.emit('alert', alertArgs);
                 return;
             }
 
@@ -75,19 +79,31 @@ class Manifest {
                 } else if (type === 'sc:Collection' || type === 'Collection') {
                     manifestData.type = 'sc:Collection';
                 } else {
-                    alert('Manifest type must be a collection or a manifest!\n' + url);
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Manifest type must be a collection or a manifest!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
                     return;
                 }
                 manifestData.label = manifestoData.getDefaultLabel();
                 manifestData.parentId = manifestoData.getProperty('within');
 
                 if (!manifestData.label) {
-                    alert('Manifest file does not contain a label!\n' + url);
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Manifest file does not contain a label!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
                     return;
                 }
 
                 if (!manifestData.id) {
-                    alert('Manifest file does not contain an id!\n' + url);
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Manifest file does not contain an id!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
                     return;
                 }
 
@@ -101,7 +117,11 @@ class Manifest {
 
                                 statusCode = externalTokenResponse.status;
                                 if (statusCode !== 200) {
-                                    alert(external.getFailureHeader() + '\n\n' + external.getFailureDescription());
+                                    const alertArgs = {
+                                        title: external.getFailureHeader(),
+                                        body: external.getFailureDescription()
+                                    };
+                                    Cache.ee.emit('alert', alertArgs);
                                     return;
                                 }
 
@@ -142,7 +162,11 @@ class Manifest {
                 }
             }).catch((err) => {
                 console.log(err);
-                alert('Could not read manifest!\n' + url);
+                const alertArgs = {
+                    title: 'Error',
+                    body: 'Could not read manifest!\n'  + url
+                };
+                Cache.ee.emit('alert', alertArgs);
             });
         });
     }
@@ -196,7 +220,7 @@ class Manifest {
 
     static getLicense(manifestoData) {
         const license = manifestoData.getLicense();
-        if (license === undefined || !this.isURL(license)) {
+        if (license === undefined || !UrlValidation.isURL(license)) {
             return undefined;
         }
 
@@ -428,18 +452,6 @@ class Manifest {
         }
         return tmp.innerHTML;
     }
-
-
-    static isURL(str) {
-        const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-        return pattern.test(str);
-    }
-
 
     static fetchFromCache(url) {
 

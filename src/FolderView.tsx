@@ -84,7 +84,11 @@ class FolderView extends React.Component<{}, IState> {
     openFolder(itemId, selectedData, pageReload) {
 
         if (itemId === false) {
-            alert('No manifest ID given!');
+            const alertArgs = {
+                title: 'Error',
+                body: 'No manifest ID given!'
+            };
+            Cache.ee.emit('alert', alertArgs);
             return;
         }
 

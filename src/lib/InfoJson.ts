@@ -35,7 +35,11 @@ class InfoJson {
             const statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {
-                alert('Could not fetch info.json!\n' + url);
+                const alertArgs = {
+                    title: 'Error',
+                    body: 'Could not fetch info.json!\n\n'  + url
+                };
+                Cache.ee.emit('alert', alertArgs);
                 return;
             }
 
@@ -54,7 +58,11 @@ class InfoJson {
             });
         }).catch((err) => {
             console.log(err);
-            alert('Could not read info.json!\n' + url);
+            const alertArgs = {
+                title: 'Error',
+                body: 'Could not read info.json!\n\n'  + url
+            };
+            Cache.ee.emit('alert', alertArgs);
         });
     }
 
