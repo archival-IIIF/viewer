@@ -34,7 +34,6 @@ class Item extends React.Component<IProps, IState> {
         };
     }
 
-
     componentWillReceiveProps(nextProps) {
         this.setState(nextProps);
     }
@@ -111,7 +110,6 @@ class Item extends React.Component<IProps, IState> {
 
     }
 
-
     openFile(file0) {
 
         const manifestId = file0.id;
@@ -128,11 +126,7 @@ class Item extends React.Component<IProps, IState> {
                 }
             }
         );
-
-
     }
-
-
 }
 
 export default Item;
