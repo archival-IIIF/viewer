@@ -1,4 +1,3 @@
-import Modal from './Modal';
 import * as React from 'react';
 import Manifest from './lib/Manifest';
 import InfoJson from './lib/InfoJson';
@@ -6,7 +5,18 @@ import Cache from './lib/Cache';
 
 const manifesto = require('manifesto.js');
 
-class Login extends Modal {
+interface IState {
+    visible?: boolean;
+    id?: string;
+    title?: JSX.Element;
+    confirmLabel?: string;
+    manifestations?: any;
+    description?: string;
+    error?: boolean;
+    errorMessage?: string;
+}
+
+class Login extends React.Component<{}, IState> {
 
     private checkIfLoginWindowIsClosedInterval = null;
     private logoutUrl = '';
@@ -23,14 +33,29 @@ class Login extends Modal {
         };
 
         this.showLogin = this.showLogin.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.logout = this.logout.bind(this);
         this.receiveToken = this.receiveToken.bind(this);
     }
 
-    button1() {
-        return <div className="modal-button" onClick={() => this.openWindow(this.state.id)}>
-            {this.state.confirmLabel}
-        </div>;
+    render() {
+
+        if (!this.state.visible) {
+            return '';
+        }
+
+        return (
+            <div id={this.state.id} className="modal">
+                <div className="modal-content">
+                    <span className="close"  onClick={this.closeModal}>&times;</span>
+                    <div className="modal-title">{this.state.title}</div>
+                    {this.body()}
+                    <div className="modal-button" onClick={() => this.openWindow(this.state.id)}>
+                        {this.state.confirmLabel}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     openWindow(id) {
@@ -52,9 +77,16 @@ class Login extends Modal {
         }, 1000);
     }
 
-    closeModal(service) {
-        window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
-        super.closeModal();
+    closeModal() {
+        this.setState({
+            visible: false
+        });
+    }
+
+    escFunction(event) {
+        if (event.keyCode === 27) {
+            this.closeModal();
+        }
     }
 
     showLogin(manifestoData) {
@@ -100,31 +132,6 @@ class Login extends Modal {
         this.logoutUrl = logoutService.id;
     }
 
-    getExternal(service) {
-
-
-        if (service.hasOwnProperty('profile')) {
-
-            if (service.profile !== 'http://iiif.io/api/auth/1/external') {
-                return false;
-            }
-
-            return service;
-        }
-
-        if (service.hasOwnProperty(0)) {
-            for (const iService of service) {
-                if (iService.hasOwnProperty('profile') &&
-                    iService.profile === 'http://iiif.io/api/auth/1/external') {
-                    return iService;
-                }
-            }
-        }
-
-        return false;
-    }
-
-
     logout() {
         window.open(this.logoutUrl, '_blank');
         const id = Manifest.getIdFromCurrentUrl();
@@ -133,21 +140,20 @@ class Login extends Modal {
         window.location.href = viewerUrl + '?manifest=' + id;
     }
 
-
     componentDidMount() {
-        super.componentDidMount();
+        this.escFunction = this.escFunction.bind(this);
+        document.addEventListener('keydown', this.escFunction, false);
 
         Cache.ee.addListener('show-login', this.showLogin);
         Cache.ee.addListener('logout', this.logout);
     }
 
     componentWillUnmount() {
-        super.componentWillUnmount();
+        document.removeEventListener('keydown', this.escFunction, false);
 
         Cache.ee.removeListener('show-login', this.showLogin);
         Cache.ee.removeListener('logout', this.logout);
     }
-
 
     receiveToken(event) {
 
@@ -168,8 +174,6 @@ class Login extends Modal {
             visible: false
         });
     }
-
-
 }
 
 export default Login;
