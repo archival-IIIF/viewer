@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Cache from './lib/Cache';
 import UrlValidation from './lib/UrlValidation';
-require('./css/modal.css');
 import {translate} from 'react-i18next';
+require('./css/modal.css');
 
 interface IState {
     visible: boolean;
@@ -11,8 +11,6 @@ interface IState {
     body?: string;
     bodyJsx?: JSX.Element;
 }
-
-
 
 class Alert extends React.Component<{}, IState> {
 
@@ -111,4 +109,3 @@ class Alert extends React.Component<{}, IState> {
 }
 
 export default translate('common')(Alert);
-
