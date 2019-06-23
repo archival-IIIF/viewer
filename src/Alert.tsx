@@ -10,7 +10,6 @@ interface IState {
     titleJsx?: JSX.Element;
     body?: string;
     bodyJsx?: JSX.Element;
-    button1?: string;
 }
 
 
@@ -39,7 +38,6 @@ class Alert extends React.Component<{}, IState> {
                     <span className="close"  onClick={() => this.close()}>&times;</span>
                     {this.renderTitle()}
                     {this.renderBody()}
-                    {this.renderButton1()}
                 </div>
             </div>
         );
@@ -72,12 +70,6 @@ class Alert extends React.Component<{}, IState> {
 
             return <span key={i}>{item}<br /></span>;
         });
-    }
-
-    renderButton1() {
-        if (this.state.button1) {
-            return <div className="modal-button">{this.state.button1}</div>;
-        }
     }
 
     close() {
