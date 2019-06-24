@@ -10,6 +10,12 @@ class Cache {
 
     static viewerHeight = 18;
 
+    // Presentation API 2 suggestion.
+    static sanitzeRulesSet = {
+        ALLOWED_ATTR: ['href', 'src', 'alt'],
+        ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span'],
+    };
+
     static getSplitterWidth(folded: boolean) {
 
         if (TouchDetection.isTouchDevice()) {

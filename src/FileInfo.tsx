@@ -50,12 +50,6 @@ class FileInfo extends React.Component<{}, IState> {
             </div>);
         }
 
-        // Presentation API 2 suggestion.
-        const sanitzeRulesSet = {
-            ALLOWED_ATTR: ['href', 'src', 'alt'],
-            ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span'],
-        };
-
         if (manifestData.metadata !== undefined) {
             for (const key in manifestData.metadata) {
                 if (manifestData.metadata.hasOwnProperty(key)) {
@@ -64,7 +58,7 @@ class FileInfo extends React.Component<{}, IState> {
                         <div className="label">{metadataItem.label}</div>
                         <div className="value">
                             <div  dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                                __html: DOMPurify.sanitize(metadataItem.value, sanitzeRulesSet)
+                                __html: DOMPurify.sanitize(metadataItem.value, Cache.sanitzeRulesSet)
                             }} />
                         </div>
                     </div>);
