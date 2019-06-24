@@ -16,6 +16,7 @@ interface IState {
 class OpenSeadragon extends React.Component<IProps, IState> {
 
     private tokenReceived = this.update.bind(this);
+    private viewer;
 
     constructor(props) {
 
@@ -78,8 +79,8 @@ class OpenSeadragon extends React.Component<IProps, IState> {
                 };
             }
 
-            t['viewer'] = OpenSeadragonLoader(options);
-            t['viewer'].addHandler('tile-drawn', () => {
+            t.viewer = OpenSeadragonLoader(options);
+            t.viewer.addHandler('tile-drawn', () => {
                 t.setState({
                     spinner: false
                 });
@@ -90,11 +91,15 @@ class OpenSeadragon extends React.Component<IProps, IState> {
     }
 
     update() {
-        this['viewer'].forceRedraw();
+        if (this.viewer) {
+            this.viewer.forceRedraw();
+        }
     }
 
     componentWillUnmount() {
-        this['viewer'].removeAllHandlers();
+        if (this.viewer) {
+            this.viewer.removeAllHandlers();
+        }
         Cache.ee.addListener('token-received', this.tokenReceived);
     }
 
