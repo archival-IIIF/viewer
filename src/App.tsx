@@ -36,7 +36,7 @@ class App extends React.Component<{}, IState> {
     render() {
 
         const contentStyle = {
-            left: this.state.treeViewWidth + Cache.splitterWidth
+            left: this.state.treeViewWidth + Cache.getSplitterWidth(this.state.treeViewWidth === 0)
         };
 
         return (

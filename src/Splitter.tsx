@@ -1,6 +1,7 @@
 import * as React from 'react';
 require('./css/splitter.css');
 import Cache from './lib/Cache';
+import TouchDetection from './lib/TouchDetection';
 
 interface IState {
     left: number;
@@ -41,8 +42,16 @@ class Splitter extends React.Component<IProps, IState> {
     }
 
     render() {
+
+        const splitterWidth = Cache.getSplitterWidth(this.state.left === 0);
+        const style = {
+            maxWidth: splitterWidth,
+            minWidth: splitterWidth,
+            left: this.state.left
+        };
+
         return <div className="splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
-                    onDoubleClick={() => this.splitterDoubleClick()} style={{left: this.state.left}} />;
+                    onDoubleClick={() => this.splitterDoubleClick()} style={style} />;
     }
 
     globalMoveStart(x) {
@@ -69,7 +78,7 @@ class Splitter extends React.Component<IProps, IState> {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: IProps) {
         if (nextProps.left !== this.state.left) {
             this.setState({ left: nextProps.left });
         }
