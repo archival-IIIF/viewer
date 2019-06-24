@@ -4,12 +4,12 @@
   "license": "MIT",
   "homepage": ".",
   "dependencies": {
+    "dompurify": "^1.0.11",
     "file-size": "^1.0.0",
     "i18next": "^11.9.0",
-    "interweave": "^8.0.2",
     "manifesto.js": "^3.0.3",
     "openseadragon": "^2.3.1",
-    "react": "^16.2.0",
+    "react": "^16.8.6",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.2.0",
     "react-i18next": "^7.12.0",
@@ -19,8 +19,10 @@
     "video.js": "^7.4.1"
   },
   "devDependencies": {
+    "@types/dompurify": "^0.0.32",
     "@types/node": "^10.12.18",
     "@types/react": "^16.7.6",
+    "@types/react-i18next": "^8.1.0",
     "@types/react-router-dom": "^4.3.1",
     "@types/video.js": "^7.2.5",
     "awesome-typescript-loader": "^5.2.1",
