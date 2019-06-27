@@ -1,6 +1,6 @@
 {
-  "short_name": "iiif-file-storage-viewer",
-  "name": "IIIF file storage viewer",
+  "short_name": "archival-iiif-viewer",
+  "name": "Archival IIIF viewer",
   "icons": [
     {
       "src": "favicon.ico",
