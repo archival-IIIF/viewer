@@ -7,6 +7,10 @@
     bottom: 0;
 }
 
+.splitter:hover {
+    background-color: black;
+}
+
 body.no-select {
     user-select: none;
 }
