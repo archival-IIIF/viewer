@@ -7,9 +7,14 @@ import Viewer from './Viewer';
 import TopBar from './TopBar';
 import ManifestHistory from './lib/ManifestHistory';
 import Login from './Login';
-import Cache from './lib/Cache';
 import TreeViewContainer from './TreeViewContainer';
 import Alert from './Alert';
+import {I18nextProvider} from 'react-i18next';
+import i18next from 'i18next';
+import IConfigParameter from './interface/IConfigParameter';
+import Config from './lib/Config';
+const commonEn = require('./translations/en/common.json');
+const commonDe = require('./translations/de/common.json');
 
 interface IState {
     folderAndInfoLeft?: number;
@@ -17,7 +22,16 @@ interface IState {
     treeViewWidth: number;
 }
 
-class App extends React.Component<{}, IState> {
+interface IProps {
+    config?: IConfigParameter;
+}
+
+declare let global: {
+    config: Config;
+};
+
+
+class App extends React.Component<IProps, IState> {
 
     private minWidth: number = 60;
 
@@ -25,9 +39,24 @@ class App extends React.Component<{}, IState> {
 
         super(props);
 
+        global.config = new Config(this.props.config);
+
+        i18next.init({
+            lng: global.config.getLanguage(),
+            fallbackLng: global.config.getFallbackLanguage(),
+            interpolation: { escapeValue: false },  // React already does escaping
+            resources: {
+                de: {
+                    common: commonDe
+                },
+                en: {
+                    common: commonEn
+                }
+            }
+        });
 
         this.state = {
-            treeViewWidth: Cache.intialWidth
+            treeViewWidth: global.config.getDefaultNavBarWith()
         };
 
         this.treeViewWidthChanged = this.treeViewWidthChanged.bind(this);
@@ -36,29 +65,31 @@ class App extends React.Component<{}, IState> {
     render() {
 
         const contentStyle = {
-            left: this.state.treeViewWidth + Cache.getSplitterWidth(this.state.treeViewWidth === 0)
+            left: this.state.treeViewWidth + global.config.getSplitterWidth(this.state.treeViewWidth === 0)
         };
 
         return (
-            <div id="app">
-                <TopBar/>
-                <Login/>
-                <div id="main">
-                    <TreeViewContainer width={this.state.treeViewWidth}
-                                       widthChangedFunc={this.treeViewWidthChanged} />
-                    <div id="content" style={contentStyle}>
-                        <Viewer/>
-                        <div id="folder-and-info" style={{
-                            left: this.state.folderAndInfoLeft,
-                            top: this.state.folderAndInfoTop
-                        }}>
-                            <FolderView/>
-                            <FileInfo/>
+            <I18nextProvider i18n={i18next}>
+                <div id="app">
+                    <TopBar/>
+                    <Login/>
+                    <div id="main">
+                        <TreeViewContainer width={this.state.treeViewWidth}
+                                           widthChangedFunc={this.treeViewWidthChanged} />
+                        <div id="content" style={contentStyle}>
+                            <Viewer/>
+                            <div id="folder-and-info" style={{
+                                left: this.state.folderAndInfoLeft,
+                                top: this.state.folderAndInfoTop
+                            }}>
+                                <FolderView/>
+                                <FileInfo/>
+                            </div>
                         </div>
                     </div>
+                    <Alert />
                 </div>
-                <Alert />
-            </div>
+            </I18nextProvider>
         );
     }
 

@@ -5,6 +5,7 @@ import * as DOMPurify from 'dompurify';
 import {translate, Trans} from 'react-i18next';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
+import Config from './lib/Config';
 require('./css/file-info.css');
 
 interface IHTMLAnchorElement {
@@ -16,6 +17,9 @@ interface IState {
     data: IManifestData;
 }
 
+declare let global: {
+    config: Config;
+};
 
 class FileInfo extends React.Component<{}, IState> {
 
@@ -58,7 +62,7 @@ class FileInfo extends React.Component<{}, IState> {
                         <div className="label">{metadataItem.label}</div>
                         <div className="value">
                             <div  dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                                __html: DOMPurify.sanitize(metadataItem.value, Cache.sanitzeRulesSet)
+                                __html: DOMPurify.sanitize(metadataItem.value, global.config.getSanitizeRulesSet())
                             }} />
                         </div>
                     </div>);

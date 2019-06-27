@@ -1,7 +1,6 @@
 import * as React from 'react';
 require('./css/splitter.css');
-import Cache from './lib/Cache';
-import TouchDetection from './lib/TouchDetection';
+import Config from './lib/Config';
 
 interface IState {
     left: number;
@@ -15,6 +14,10 @@ interface IProps {
 interface IState {
     left: number;
 }
+
+declare let global: {
+    config: Config;
+};
 
 class Splitter extends React.Component<IProps, IState> {
 
@@ -43,7 +46,7 @@ class Splitter extends React.Component<IProps, IState> {
 
     render() {
 
-        const splitterWidth = Cache.getSplitterWidth(this.state.left === 0);
+        const splitterWidth = global.config.getSplitterWidth(this.state.left === 0);
         const style = {
             maxWidth: splitterWidth,
             minWidth: splitterWidth,
@@ -74,7 +77,7 @@ class Splitter extends React.Component<IProps, IState> {
         if (this.state.left > 0) {
             this.props.widthChangedFunc(0);
         } else {
-            this.props.widthChangedFunc(Cache.intialWidth);
+            this.props.widthChangedFunc(global.config.getDefaultNavBarWith());
         }
     }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import TreeView from './TreeView';
 import Splitter from './Splitter';
-import Cache from './lib/Cache';
+import Config from './lib/Config';
 
 interface IState {
     width: number;
@@ -12,13 +12,17 @@ interface IProps {
     widthChangedFunc: (width: number) => void;
 }
 
+declare let global: {
+    config: Config;
+};
+
 class TreeViewContainer extends React.Component<IProps, IState> {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            width: Cache.intialWidth
+            width: global.config.getDefaultNavBarWith()
         };
     }
 

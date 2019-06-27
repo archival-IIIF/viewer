@@ -64,7 +64,6 @@ class Manifest {
 
                 if (!t.lang) {
                     t.lang = window.navigator.language;
-                    i18n.changeLanguage(t.lang);
                 }
 
                 let manifestoData;
