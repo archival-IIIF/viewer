@@ -72,3 +72,7 @@ h3 {
     display: block;
     margin-bottom: 20px;
 }
+
+.fullpage {
+    height: 100% !important;
+}
