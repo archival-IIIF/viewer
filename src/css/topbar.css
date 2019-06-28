@@ -6,28 +6,18 @@
     height: 40px;
     padding: 10px;
     background-color: lightgrey;
-    text-align: center;
+    justify-content: center;
+    display: flex;
 }
 
-#show-list-view-button {
-    background-image: url("../icons/fa/list-solid.svg");
-    background-repeat: no-repeat;
-    padding-left: 24px;
-    margin-left: 32px;
+.icon-button {
+    margin: 0 6px;
     cursor: pointer;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
 }
 
-#show-icon-view-button {
-    background-image: url("../icons/fa/th-solid.svg");
-    background-repeat: no-repeat;
-    padding-left: 24px;
-    cursor: pointer;
-}
-
-#logout-button {
-    background-image: url("../icons/fa/sign-out-alt-solid.svg");
-    background-repeat: no-repeat;
-    padding-left: 24px;
-    margin-left: 32px;
-    cursor: pointer;
+.icon-button  > svg {
+    margin-right: 2px;
 }

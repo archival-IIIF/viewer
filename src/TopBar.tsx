@@ -2,7 +2,9 @@ import * as React from 'react';
 require('./css/topbar.css');
 import { translate, Trans } from 'react-i18next';
 import Cache from './lib/Cache';
-
+import ViewSymbolsIcon from '@material-ui/icons/ViewModule';
+import ViewListIcon from '@material-ui/icons/ViewList';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 interface IState {
     logoutButtonIsVisible: boolean;
@@ -23,20 +25,26 @@ class TopBar extends React.Component<{}, IState> {
 
     render() {
 
-        let login = <span />;
-        if (this.state.logoutButtonIsVisible) {
-            login = <span id="logout-button" onClick={() => this.logout()}><Trans i18nKey="logout" /></span>;
-        }
-
         return <div id="topbar">
-            <span id="show-icon-view-button" onClick={() => this.showIconView()}>
+            <div className="icon-button" onClick={() => this.showIconView()}>
+                <ViewSymbolsIcon />
                 <Trans i18nKey="iconView" />
-            </span>&nbsp;
-            <span id="show-list-view-button" onClick={() => this.showListView()}>
+            </div>
+            <div className="icon-button" onClick={() => this.showListView()}>
+                <ViewListIcon />
                 <Trans i18nKey="listView" />
-            </span>
-            {login}
+            </div>
+            {this.renderLogin()}
         </div>;
+    }
+
+    renderLogin() {
+        if (this.state.logoutButtonIsVisible) {
+            return <div className="icon-button" onClick={() => this.logout()}>
+                <LogoutIcon />
+                <Trans i18nKey="logout" />
+            </div>;
+        }
     }
 
 
