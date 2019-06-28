@@ -440,6 +440,7 @@ class Manifest {
         for (let i = 0; i < tmp.children.length; i++) {
             if (tmp.children[i].nodeName === 'A') {
                 tmp.children[i]['target'] = '_blank';
+                tmp.children[i]['rel'] = 'noopener';
             }
         }
         return tmp.innerHTML;
