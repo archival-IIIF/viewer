@@ -13,6 +13,7 @@ import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
+import Cache from './lib/Cache';
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
 
@@ -32,8 +33,6 @@ declare let global: {
 
 
 class App extends React.Component<IProps, IState> {
-
-    private minWidth: number = 60;
 
     constructor(props) {
 
@@ -60,6 +59,7 @@ class App extends React.Component<IProps, IState> {
         };
 
         this.treeViewWidthChanged = this.treeViewWidthChanged.bind(this);
+        this.toggleNavBar = this.toggleNavBar.bind(this);
     }
 
     render() {
@@ -95,7 +95,7 @@ class App extends React.Component<IProps, IState> {
 
     treeViewWidthChanged(width) {
 
-        if (width < this.minWidth) {
+        if (width < global.config.getMinimalNavBarWidth()) {
             width = 0;
         }
 
@@ -106,11 +106,23 @@ class App extends React.Component<IProps, IState> {
         );
     }
 
+    toggleNavBar() {
+
+        const treeViewWidth = this.state.treeViewWidth > 0 ? 0 : global.config.getDefaultNavBarWith();
+
+        this.setState({treeViewWidth});
+    }
+
     componentDidMount() {
 
         window.addEventListener('popstate', function(event) {
             ManifestHistory.goBack();
         });
+        Cache.ee.addListener('toggle-nav-bar', this.toggleNavBar);
+    }
+
+    componentWillUnmount() {
+        Cache.ee.removeListener('toggle-nav-bar', this.toggleNavBar);
     }
 
 }

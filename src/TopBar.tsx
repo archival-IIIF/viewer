@@ -2,9 +2,10 @@ import * as React from 'react';
 require('./css/topbar.css');
 import { translate, Trans } from 'react-i18next';
 import Cache from './lib/Cache';
-import ViewSymbolsIcon from '@material-ui/icons/ViewModule';
+import ViewSymbolsIcon from '@material-ui/icons/ViewComfy';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
+import NavBarIcon from '@material-ui/icons/VerticalSplit';
 
 interface IState {
     logoutButtonIsVisible: boolean;
@@ -26,6 +27,10 @@ class TopBar extends React.Component<{}, IState> {
     render() {
 
         return <div id="topbar">
+            <div className="icon-button" onClick={() => this.toggleNavigationBar()}>
+                <NavBarIcon />
+                <Trans i18nKey="navBar" />
+            </div>
             <div className="icon-button" onClick={() => this.showIconView()}>
                 <ViewSymbolsIcon />
                 <Trans i18nKey="iconView" />
@@ -56,10 +61,13 @@ class TopBar extends React.Component<{}, IState> {
         Cache.ee.emit('logout');
     }
 
+    toggleNavigationBar() {
+        Cache.ee.emit('toggle-nav-bar');
+    }
+
     showIconView() {
         Cache.ee.emit('show-icon-view');
     }
-
 
     tokenReceived() {
         this.setState({

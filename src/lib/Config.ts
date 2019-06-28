@@ -3,7 +3,9 @@ import IConfigParameter from '../interface/IConfigParameter';
 
 class Config {
 
-    private readonly defaultNavBarWidth = 300;
+    private readonly defaultNavBarWidth: number = 300;
+
+    private minimalNavBarWidth: number = 120;
 
     private readonly language: string;
 
@@ -23,7 +25,7 @@ class Config {
 
         if (TouchDetection.isTouchDevice()) {
             if (folded === true) {
-                return 32;
+                return 0;
             }
 
             return 16;
@@ -34,6 +36,10 @@ class Config {
 
     getDefaultNavBarWith() {
         return this.defaultNavBarWidth;
+    }
+
+    getMinimalNavBarWidth() {
+        return this.minimalNavBarWidth;
     }
 
     getSanitizeRulesSet() {
