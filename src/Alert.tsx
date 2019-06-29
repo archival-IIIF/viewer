@@ -2,6 +2,10 @@ import * as React from 'react';
 import Cache from './lib/Cache';
 import UrlValidation from './lib/UrlValidation';
 import {translate} from 'react-i18next';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 require('./css/modal.css');
 
 interface IState {
@@ -22,40 +26,47 @@ class Alert extends React.Component<{}, IState> {
         };
 
         this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
     }
 
     render() {
 
-        if (!this.state.visible) {
-            return '';
-        }
 
-        return (
-            <div className="modal">
-                <div className="modal-content">
-                    <span className="close"  onClick={() => this.close()}>&times;</span>
-                    {this.renderTitle()}
+        return <Dialog
+            open={this.state.visible}
+            onClose={this.close}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth={true}
+        >
+            <DialogTitle >
+                {this.renderTitle()}
+                <span className="close" onClick={this.close}>&times;</span>
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText color="textPrimary">
                     {this.renderBody()}
-                </div>
-            </div>
-        );
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>;
+
     }
 
     renderTitle() {
         if (this.state.title) {
-            return <div className="modal-title">{this.state.title}</div>;
+            return this.state.title;
         }
         if (this.state.titleJsx) {
-            return <div className="modal-title">{this.state.titleJsx}</div>;
+            return this.state.titleJsx;
         }
     }
 
     renderBody() {
         if (this.state.body) {
-            return <div className="modal-body">{this.nl2br(this.state.body)}</div>;
+            return this.nl2br(this.state.body);
         }
         if (this.state.bodyJsx) {
-            return <div className="modal-body">{this.state.bodyJsx}</div>;
+            return this.state.bodyJsx;
         }
     }
 
@@ -90,20 +101,11 @@ class Alert extends React.Component<{}, IState> {
         this.setState(state);
     }
 
-    escFunction(event) {
-        if (event.keyCode === 27) {
-            this.close();
-        }
-    }
-
     componentDidMount() {
-        this.escFunction = this.escFunction.bind(this);
-        document.addEventListener('keydown', this.escFunction, false);
         Cache.ee.addListener('alert', this.open);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.escFunction, false);
         Cache.ee.removeListener('alert', this.open);
     }
 }

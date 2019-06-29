@@ -2,6 +2,12 @@ import * as React from 'react';
 import Manifest from './lib/Manifest';
 import InfoJson from './lib/InfoJson';
 import Cache from './lib/Cache';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
 const manifesto = require('manifesto.js');
 
@@ -40,22 +46,28 @@ class Login extends React.Component<{}, IState> {
 
     render() {
 
-        if (!this.state.visible) {
-            return '';
-        }
-
-        return (
-            <div id={this.state.id} className="modal">
-                <div className="modal-content">
-                    <span className="close"  onClick={this.closeModal}>&times;</span>
-                    <div className="modal-title">{this.state.title}</div>
+        return <Dialog
+            id={this.state.id}
+            open={this.state.visible}
+            onClose={this.closeModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle >
+                {this.state.title}
+                <span className="close" onClick={this.closeModal}>&times;</span>
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText color="textPrimary">
                     {this.body()}
-                    <div className="modal-button" onClick={() => this.openWindow(this.state.id)}>
+                </DialogContentText>
+                <DialogActions>
+                    <Button onClick={() => this.openWindow(this.state.id)} color="primary">
                         {this.state.confirmLabel}
-                    </div>
-                </div>
-            </div>
-        );
+                    </Button>
+                </DialogActions>
+            </DialogContent>
+        </Dialog>;
     }
 
     openWindow(id) {
@@ -118,7 +130,7 @@ class Login extends React.Component<{}, IState> {
         body.push(<div key="description">{this.state.description}</div>);
 
         if (this.state.error) {
-            body.push(<div id="modal-error-message" key="error">{this.state.errorMessage}</div>);
+            body.push(<div className="modal-error-message" key="error">{this.state.errorMessage}</div>);
         }
 
         return body;
