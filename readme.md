@@ -10,3 +10,16 @@
 1. Install [yarn](https://yarnpkg.com) or [npm](https://www.npmjs.com/)
 1. ```yarn install``` or ```npm install```
 1. ```yarn run start``` or  ```npm run start```
+
+## Supported Browsers
+
+| IE | Edge  | Firefox | Chrome | Safari |
+|----|-------|---------|--------|--------|
+| 11 | ≥ 14  | ≥ 52    | ≥ 49   | ≥ 10   |
+
+
+## See also
+
+* [Material UI](https://next.material-ui.com/)
+* [Material icons](https://material.io/tools/icons/)
+* [Material colors](https://material.io/tools/color/)
