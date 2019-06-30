@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Nl2br from './Nl2br';
 require('./css/modal.css');
 
 interface IState {
@@ -63,22 +64,11 @@ class Alert extends React.Component<{}, IState> {
 
     renderBody() {
         if (this.state.body) {
-            return this.nl2br(this.state.body);
+            return <Nl2br text={this.state.body} urlTranformation={true}/>;
         }
         if (this.state.bodyJsx) {
             return this.state.bodyJsx;
         }
-    }
-
-    nl2br(input) {
-
-        return input.split('\n').map(function(item: string, i: number) {
-            if (UrlValidation.isURL(item)) {
-                return <span key={i}><a href={item} target="_blank" rel="noopener">{item}</a><br /></span>;
-            }
-
-            return <span key={i}>{item}<br /></span>;
-        });
     }
 
     close() {

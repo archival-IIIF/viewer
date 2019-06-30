@@ -114,3 +114,16 @@
 .mejs__overlay-play {
     width: 100%;
 }
+
+.plain-text {
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+    background-color: #ffffff;
+    padding: 30px;
+    max-width: 540px;
+    margin: 0 auto;
+    overflow-y: auto;
+}

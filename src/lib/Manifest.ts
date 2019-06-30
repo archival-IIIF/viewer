@@ -2,7 +2,6 @@ import Cache from './Cache';
 
 const manifesto = require('manifesto.js');
 import filesize from 'file-size';
-import i18n from 'i18next';
 import IManifestData from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
@@ -322,9 +321,11 @@ class Manifest {
 
         try {
             const source = sequence0.getCanvasByIndex(0).id;
+            const format = sequence0.getCanvasByIndex(0).__jsonld.format;
             return {
                 source,
-                type: 'file'
+                type: 'file',
+                format
             };
         } catch (e) {
         }

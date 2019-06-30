@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as OpenSeadragonLoader from 'openseadragon';
 import InfoJson from './lib/InfoJson';
 import Cache from './lib/Cache';
+import ViewerSpinner from './ViewerSpinner';
+import WindowInfo from './lib/WindowInfo';
 
 interface IProps {
     source: string;
@@ -29,21 +31,13 @@ class OpenSeadragon extends React.Component<IProps, IState> {
     }
 
     render() {
-
-        let spinner = <div />;
-        if (this.state.spinner) {
-            spinner = <div id="spinner" className="lds-ripple" style={{top: this.getWindowHeight() / 4 + 32}}>
-                <div /><div />
-            </div>;
-        }
-
-        return <div id="openseadragon" key={this.state.source} style={{height: this.getWindowHeight() / 2}}>
+        return <div id="openseadragon" key={this.state.source} style={{height: WindowInfo.getHeight() / 2}}>
             <div id="zoom-in-button" className="openseadragon-icon" />
             <div id="zoom-out-button" className="openseadragon-icon" />
             <div id="rotate-right-button" className="openseadragon-icon" />
             <div id="home-button" className="openseadragon-icon" />
             <div id="fullpage-button" className="openseadragon-icon" />
-            {spinner}
+            <ViewerSpinner show={this.state.spinner} />
         </div>;
     }
 
@@ -102,16 +96,6 @@ class OpenSeadragon extends React.Component<IProps, IState> {
         }
         Cache.ee.addListener('token-received', this.tokenReceived);
     }
-
-    getWindowHeight() {
-        const w = window;
-        const d = document;
-        const e = d.documentElement;
-        const g = d.getElementsByTagName('body')[0];
-
-        return w.innerHeight || e.clientHeight || g.clientHeight;
-    }
-
 }
 
 export default OpenSeadragon;

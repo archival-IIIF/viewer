@@ -5,6 +5,7 @@ import MediaPlayer from './MediaPlayer';
 import Cache from './lib/Cache';
 import videojs from 'video.js';
 import IManifestData from './interface/IManifestData';
+import PlainTextViewer from './PlainTextViewer';
 
 interface IState {
     data?: IManifestData;
@@ -42,6 +43,10 @@ class Viewer extends React.Component<{}, IState> {
             return this.renderAudioVideo();
         }
 
+        if (manifestData.resource.format === 'text/plain') {
+            return this.renderPlainText();
+        }
+
         return '';
     }
 
@@ -49,6 +54,14 @@ class Viewer extends React.Component<{}, IState> {
         return (
             <div id="viewer">
                 <OpenSeadragon source={this.state.data.resource.source} key={this.state.data.resource.source} />
+            </div>
+        );
+    }
+
+    renderPlainText() {
+        return (
+            <div id="viewer">
+                <PlainTextViewer source={this.state.data.resource.source} key={this.state.data.resource.source} />
             </div>
         );
     }
