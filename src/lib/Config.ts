@@ -11,6 +11,11 @@ class Config {
 
     private readonly fallbackLanguage: string = 'en';
 
+    private readonly translations: object = {
+        en: 'English',
+        de: 'Deutsch'
+    };
+
     // See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
     private sanitizeRulesSet = {
         ALLOWED_ATTR: ['href', 'src', 'alt'],
@@ -52,6 +57,10 @@ class Config {
 
     getFallbackLanguage() {
         return this.fallbackLanguage;
+    }
+
+    getTranslations() {
+        return this.translations;
     }
 }
 

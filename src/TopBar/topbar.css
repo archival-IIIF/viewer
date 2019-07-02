@@ -8,6 +8,7 @@
     background-color: lightgrey;
     justify-content: center;
     display: flex;
+    z-index: 1;
 }
 
 .icon-button {

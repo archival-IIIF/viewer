@@ -1,11 +1,12 @@
 import * as React from 'react';
-require('./css/topbar.css');
+require('./topbar.css');
 import { translate, Trans } from 'react-i18next';
-import Cache from './lib/Cache';
+import Cache from '../lib/Cache';
 import ViewSymbolsIcon from '@material-ui/icons/ViewComfy';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface IState {
     logoutButtonIsVisible: boolean;
@@ -39,6 +40,8 @@ class TopBar extends React.Component<{}, IState> {
                 <ViewListIcon />
                 <Trans i18nKey="listView" />
             </div>
+            <LanguageSwitcher />
+
             {this.renderLogin()}
         </div>;
     }
