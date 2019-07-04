@@ -47,10 +47,22 @@ class FileInfo extends React.Component<{}, IState> {
         const manifestData = this.state.data;
         const metadataView = [];
 
+        // Add a hook to make all links open a new window
+        DOMPurify.addHook('afterSanitizeAttributes', (node: any) => {
+            // set all elements owning target to target=_blank
+            if ('target' in node) {
+                node.setAttribute('target', '_blank');
+                // prevent https://www.owasp.org/index.php/Reverse_Tabnabbing
+                node.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
+
         if (manifestData.description !== undefined) {
             metadataView.push(<div key="description">
                 <div className="label"><Trans i18nKey="description"/></div>
-                <div className="value">{manifestData.description}</div>
+                <div className="value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                    __html: DOMPurify.sanitize(manifestData.description, global.config.getSanitizeRulesSet())
+                }} />
             </div>);
         }
 
@@ -60,11 +72,9 @@ class FileInfo extends React.Component<{}, IState> {
                     const metadataItem = manifestData.metadata[key];
                     metadataView.push(<div key={key}>
                         <div className="label">{metadataItem.label}</div>
-                        <div className="value">
-                            <div  dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                        <div className="value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                                 __html: DOMPurify.sanitize(metadataItem.value, global.config.getSanitizeRulesSet())
                             }} />
-                        </div>
                     </div>);
                 }
             }
@@ -73,7 +83,9 @@ class FileInfo extends React.Component<{}, IState> {
         if (manifestData.attribution) {
             metadataView.push(<div key="attribution">
                 <div className="label"><Trans i18nKey="attribution"/></div>
-                <div className="value">{manifestData.attribution}</div>
+                <div className="value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                    __html: DOMPurify.sanitize(manifestData.attribution, global.config.getSanitizeRulesSet())
+                }} />
             </div>);
         }
 
