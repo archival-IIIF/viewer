@@ -18,7 +18,7 @@ declare let global: {
 
 class TreeViewContainer extends React.Component<IProps, IState> {
 
-    constructor(props) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -26,8 +26,8 @@ class TreeViewContainer extends React.Component<IProps, IState> {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.left !== this.state.width) {
+    componentWillReceiveProps(nextProps: IProps) {
+        if (nextProps.width !== this.state.width) {
             this.setState({ width: nextProps.width });
         }
     }
