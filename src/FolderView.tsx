@@ -6,7 +6,7 @@ import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
 import ManifestData from './entity/ManifestData';
-import {useTranslation} from 'react-i18next';
+import {Translation, useTranslation} from 'react-i18next';
 
 const {t} = useTranslation();
 
@@ -56,7 +56,9 @@ class FolderView extends React.Component<any, IState> {
             return (
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
-                    <div className="empty">{t('emptyFolder')}</div>
+                    <div className="empty">
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>,
+                    </div>
                 </div>
             );
         }

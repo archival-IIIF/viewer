@@ -5,7 +5,8 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
-import {useTranslation} from 'react-i18next';
+import {Translation, useTranslation} from 'react-i18next';
+
 
 require('./topbar.css');
 
@@ -33,15 +34,15 @@ class TopBar extends React.Component<any, IState> {
         return <div id="topbar">
             <div className="icon-button" onClick={() => this.toggleNavigationBar()}>
                 <NavBarIcon />
-                {t('navBar')}
+                <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
             </div>
             <div className="icon-button" onClick={() => this.showIconView()}>
                 <ViewSymbolsIcon />
-                {t('iconView')}
+                <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
             </div>
             <div className="icon-button" onClick={() => this.showListView()}>
                 <ViewListIcon />
-                {t('listView')}
+                <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
             </div>
             <LanguageSwitcher />
 
@@ -54,7 +55,7 @@ class TopBar extends React.Component<any, IState> {
         if (this.state.logoutButtonIsVisible) {
             return <div className="icon-button" onClick={() => this.logout()}>
                 <LogoutIcon />
-                {t('logout')}
+                <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>;
         }
     }

@@ -3,13 +3,11 @@ import * as DOMPurify from 'dompurify';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
 import Config from './lib/Config';
-import {useTranslation} from 'react-i18next';
+import {Translation} from 'react-i18next';
 
 const iifLogo = require('./icons/iiif.png');
 require('./css/manifestations-modal.css');
 require('./css/file-info.css');
-
-const {t} = useTranslation();
 
 interface IHTMLAnchorElement {
     nodeName: string;
@@ -62,7 +60,9 @@ class FileInfo extends React.Component<any, IState> {
 
         if (manifestData.description !== undefined) {
             metadataView.push(<div key="description">
-                <div className="label">{t('description')}</div>
+                <div className="label">
+                    <Translation ns="common">{(t, { i18n }) => <p>{t('description')}</p>}</Translation>
+                </div>
                 <div className="value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                     __html: DOMPurify.sanitize(manifestData.description, global.config.getSanitizeRulesSet())
                 }} />
@@ -85,7 +85,9 @@ class FileInfo extends React.Component<any, IState> {
 
         if (manifestData.attribution) {
             metadataView.push(<div key="attribution">
-                <div className="label">{t('attribution')}</div>
+                <div className="label">
+                    <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>
+                </div>
                 <div className="value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                     __html: DOMPurify.sanitize(manifestData.attribution, global.config.getSanitizeRulesSet())
                 }} />
@@ -94,7 +96,9 @@ class FileInfo extends React.Component<any, IState> {
 
         if (manifestData.license !== undefined) {
             metadataView.push(<div key="termsOfUsage">
-                <div className="label">{t('license')}</div>
+                <div className="label">
+                    <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>
+                </div>
                 <div className="value"><a href={manifestData.license}>{manifestData.license}</a></div>
             </div>);
         }
@@ -108,7 +112,7 @@ class FileInfo extends React.Component<any, IState> {
             metadataView.push(
                 <div key="manifestation">
                     <div id="show-manifestation" onClick={this.showManifestationsModal}>
-                        {t('showFile')}
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('showFile')}</p>}</Translation>
                     </div>
                 </div>
             );
@@ -168,7 +172,7 @@ class FileInfo extends React.Component<any, IState> {
         }
 
         const alertArgs = {
-            titleJsx: <span>{t('license')}</span>,
+            titleJsx: <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>,
             bodyJsx
         };
         Cache.ee.emit('alert', alertArgs);

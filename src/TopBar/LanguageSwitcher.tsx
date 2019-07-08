@@ -17,8 +17,6 @@ declare let global: {
 
 class LanguageSwitcher extends React.Component<any, IState> {
 
-
-
     constructor(props: any) {
 
         super(props);
@@ -37,11 +35,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
             <div className="icon-button" onClick={this.open} aria-controls="language-switch-menu"
                      aria-haspopup="true">
                     <LanguageIcon/>
-                    <Translation ns="common">
-                        {
-                            (t, { i18n }) => <p>{t('language')}</p>
-                        }
-                    </Translation>
+                    <Translation ns="common">{(t, { i18n }) => <p>{t('language')}</p>}</Translation>
                 </div>
                 {this.renderPopUp()}
             </>;
