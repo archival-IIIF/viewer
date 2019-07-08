@@ -17,7 +17,7 @@ interface IState {
     id: string | null;
     level: number;
     opened: boolean;
-    data: object | null;
+    data: object | undefined;
     currentFolderId: string | undefined;
 }
 
@@ -31,7 +31,7 @@ class TreeViewItem extends React.Component<IProps, IState> {
         this.state = {
             level: props.level,
             opened: props.opened,
-            data: this.props.data || null,
+            data: this.props.data || undefined,
             id: this.props.id || null,
             currentFolderId: this.props.currentFolderId || undefined,
         };
@@ -40,8 +40,6 @@ class TreeViewItem extends React.Component<IProps, IState> {
     }
 
     render() {
-
-        console.log(this.state.data);
 
         let data;
         if (this.state.data === undefined) {
@@ -65,8 +63,9 @@ class TreeViewItem extends React.Component<IProps, IState> {
 
                     return <Loading/>;
                 }
+            } else {
+                return '';
             }
-            return '';
         } else {
             data = this.state.data;
         }
