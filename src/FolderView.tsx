@@ -6,9 +6,7 @@ import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
 import ManifestData from './entity/ManifestData';
-import {Translation, useTranslation} from 'react-i18next';
-
-const {t} = useTranslation();
+import {Translation} from 'react-i18next';
 
 interface IState {
     data: IManifestData | null;

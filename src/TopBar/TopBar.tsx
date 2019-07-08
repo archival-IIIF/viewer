@@ -5,7 +5,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
-import {Translation, useTranslation} from 'react-i18next';
+import {Translation} from 'react-i18next';
 
 require('./topbar.css');
 
