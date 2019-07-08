@@ -16,7 +16,7 @@ interface IProps {
 interface IState {
     item: IManifestData;
     itemType: string;
-    selected?: string;
+    selected: string | undefined;
 }
 
 class Item extends React.Component<IProps, IState> {
@@ -25,17 +25,22 @@ class Item extends React.Component<IProps, IState> {
 
         super(props);
 
-        const itemType = props.item.type === 'sc:Collection' ? 'folder' : 'file';
 
-        this.state = {
-            item: props.item,
-            itemType,
-            selected: props.selected,
-        };
+        this.state = this.propsToState(props);
     }
 
     componentWillReceiveProps(nextProps: IProps) {
-        this.setState(nextProps);
+        this.setState(this.propsToState(nextProps));
+    }
+
+    propsToState(props: IProps): IState {
+        const itemType = props.item.type === 'sc:Collection' ? 'folder' : 'file';
+
+        return {
+            item: props.item,
+            itemType,
+            selected: props.selected || undefined,
+        };
     }
 
     render() {
@@ -70,7 +75,7 @@ class Item extends React.Component<IProps, IState> {
         }
 
         let thumbnailUrl;
-        if (this.state.item.thumbnail.hasOwnProperty('service')) {
+        if (this.state.item.thumbnail.hasOwnProperty('service') && this.state.item.thumbnail.service) {
             const width = '72';
             const height = '72';
             const serviceUrl = this.state.item.thumbnail.service;
