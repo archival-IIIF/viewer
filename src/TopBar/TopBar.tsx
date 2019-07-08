@@ -7,14 +7,11 @@ import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
 import {Translation, useTranslation} from 'react-i18next';
 
-
 require('./topbar.css');
 
 interface IState {
     logoutButtonIsVisible: boolean;
 }
-
-const {t} = useTranslation('common');
 
 class TopBar extends React.Component<any, IState> {
 
