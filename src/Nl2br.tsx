@@ -12,7 +12,7 @@ class Nl2br extends React.Component<IProps, {}> {
         const t = this;
         return this.props.text.split('\n').map(function(item: string, i: number) {
             if (t.props.urlTranformation === true && UrlValidation.isURL(item)) {
-                return <span key={i}><a href={item} target="_blank" rel="noopener">{item}</a><br /></span>;
+                return <span key={i}><a href={item} target="_blank" rel="noopener noreferrer">{item}</a><br /></span>;
             }
 
             return <span key={i}>{item}<br /></span>;
