@@ -1,9 +1,10 @@
 import * as React from 'react';
-require('./css/treeview.css');
 import Loading from './Loading';
 import TreeViewItem from './TreeViewItem';
 import Manifest from './lib/Manifest';
 import Cache from './lib/Cache';
+
+require('./css/treeview.css');
 
 interface IProps {
     width: number;
@@ -11,18 +12,18 @@ interface IProps {
 
 interface IState {
     opened: object;
-    tree?: object;
+    tree: object | null;
     width: number;
 }
 
 class TreeView extends React.Component<IProps, IState> {
 
     private minWidth = 60;
-    private treeInProgress = null;
-    private currentFolderId = null;
+    private treeInProgress: any = null;
+    private currentFolderId = '';
 
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
@@ -45,7 +46,6 @@ class TreeView extends React.Component<IProps, IState> {
         if (this.state.tree === null) {
             return <Loading/>;
         }
-
         return (
             <div id="treeview" style={{maxWidth: this.state.width, minWidth: this.state.width}}>
                 <TreeViewItem data={this.state.tree} level={1} opened={true} currentFolderId={this.currentFolderId}/>
@@ -54,11 +54,7 @@ class TreeView extends React.Component<IProps, IState> {
     }
 
 
-    buildTree(folderId) {
-
-        if (this.state.tree !== null) {
-            return;
-        }
+    buildTree(folderId: string) {
 
         if (this.treeInProgress === null) {
             this.currentFolderId = folderId;
@@ -76,14 +72,17 @@ class TreeView extends React.Component<IProps, IState> {
             const collections = manifestData.collections;
             for (const collection in collections) {
                 if (collections.hasOwnProperty(collection)) {
-                    if (collections[collection].id === this.treeInProgress.id) {
-                        collections[collection] = this.treeInProgress;
+                    if (this.treeInProgress) {
+                        if (collections[collection].id === this.treeInProgress.id) {
+                            collections[collection] = this.treeInProgress;
+                        }
                     }
                 }
             }
         }
 
         if (manifestData.parentId === undefined) {
+
             this.setState({
                 tree: manifestData
             });
@@ -99,7 +98,7 @@ class TreeView extends React.Component<IProps, IState> {
         const t = this;
         Manifest.get(
             url,
-            function(manifestData2) {
+            function(manifestData2: any) {
 
                 if (typeof manifestData2 === 'string') {
                     alert(manifestData2);
@@ -125,7 +124,7 @@ class TreeView extends React.Component<IProps, IState> {
         Cache.ee.removeListener('token-received', this.clearTree);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: IProps) {
         // You don't have to do this check first, but it can help prevent an unneeded render
         if (nextProps.width !== this.state.width) {
             this.setState({ width: nextProps.width });

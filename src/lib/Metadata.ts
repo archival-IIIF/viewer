@@ -1,6 +1,6 @@
 class Metadata {
 
-    get(data, key) {
+    get(data: any, key: string) {
         if (!data.hasOwnProperty('metadata')) {
             return null;
         }

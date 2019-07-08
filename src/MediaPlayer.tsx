@@ -18,10 +18,10 @@ interface IProps {
 
 export default class MediaPlayer extends React.Component<IProps, {}> {
 
-    private player;
-    private videoNode;
+    private player: any;
+    private videoNode: any;
 
-    constructor(props) {
+    constructor(props: IProps) {
         super(props);
         this.play = this.play.bind(this);
     }
@@ -60,7 +60,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
         </div>;
     }
 
-    play(data) {
+    play(data: any) {
         this.player.play();
     }
 }

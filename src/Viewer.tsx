@@ -1,22 +1,23 @@
 import * as React from 'react';
-require('./css/viewer.css');
-import OpenSeadragon from './OpenSeadragon';
+import ReactOpenSeadragon from './ReactOpenSeadragon';
 import MediaPlayer from './MediaPlayer';
 import Cache from './lib/Cache';
 import videojs from 'video.js';
 import IManifestData from './interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 
+require('./css/viewer.css');
+
 interface IState {
-    data?: IManifestData;
+    data: IManifestData | null;
 }
 
 
-class Viewer extends React.Component<{}, IState> {
+class Viewer extends React.Component<any, IState> {
 
     private type = '';
 
-    constructor(props) {
+    constructor(props: any) {
 
         super(props);
 
@@ -29,7 +30,7 @@ class Viewer extends React.Component<{}, IState> {
 
     render() {
 
-        const manifestData = this.state.data;
+        const manifestData: any = this.state.data;
 
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return '';
@@ -51,47 +52,57 @@ class Viewer extends React.Component<{}, IState> {
     }
 
     renderImage() {
-        return (
-            <div id="viewer">
-                <OpenSeadragon source={this.state.data.resource.source} key={this.state.data.resource.source} />
-            </div>
-        );
+        if (this.state.data) {
+            const resource: any = this.state.data.resource;
+            return (
+                <div id="viewer">
+                    <ReactOpenSeadragon source={resource.source} key={resource.source} />
+                </div>
+            );
+        }
+
     }
 
     renderPlainText() {
-        return (
-            <div id="viewer">
-                <PlainTextViewer source={this.state.data.resource.source} key={this.state.data.resource.source} />
-            </div>
-        );
+        if (this.state.data) {
+            const resource: any = this.state.data.resource;
+            return (
+                <div id="viewer">
+                    <PlainTextViewer source={resource.source} key={resource.source}/>
+                </div>
+            );
+        }
     }
 
     renderAudioVideo() {
 
-        const element0 = this.state.data.resource.source;
-        const mime = element0.format;
-        const mediaType = mime.substr(0, 5);
-        const file = element0['@id'];
-        const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
+        if (this.state.data) {
+            const resource: any = this.state.data.resource;
+            const element0 = resource.source;
+            const mime = element0.format;
+            const mediaType = mime.substr(0, 5);
+            const file = element0['@id'];
+            const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
 
-        this.type = 'audioVideo';
+            this.type = 'audioVideo';
 
-        return (
-            <div id="viewer">
-                <MediaPlayer
-                    id="player1"
-                    key={file}
-                    mediaType={mediaType}
-                    preload="metadata"
-                    controls={true}
-                    height={360}
-                    sources={sources}
-                />
-            </div>
-        );
+            return (
+                <div id="viewer">
+                    <MediaPlayer
+                        id="player1"
+                        key={file}
+                        mediaType={mediaType}
+                        preload="metadata"
+                        controls={true}
+                        height={360}
+                        sources={sources}
+                    />
+                </div>
+            );
+        }
     }
 
-    open(manifestData) {
+    open(manifestData: any) {
         this.setState({data: manifestData});
     }
 

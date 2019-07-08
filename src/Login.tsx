@@ -8,12 +8,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import ManifestData from './entity/ManifestData';
 
 const manifesto = require('manifesto.js');
 
 interface IState {
-    visible?: boolean;
-    id?: string;
+    visible: boolean;
+    id: string;
     title?: JSX.Element;
     confirmLabel?: string;
     manifestations?: any;
@@ -22,20 +23,21 @@ interface IState {
     errorMessage?: string;
 }
 
-class Login extends React.Component<{}, IState> {
+class Login extends React.Component<any, IState> {
 
-    private checkIfLoginWindowIsClosedInterval = null;
+    private checkIfLoginWindowIsClosedInterval = 0;
     private logoutUrl = '';
     private tokenUrl = '';
     private origin = window.location.protocol + '//' + window.location.hostname
         + (window.location.port ? ':' + window.location.port : '');
 
-    constructor(props) {
+    constructor(props: any) {
 
         super(props);
 
         this.state = {
             visible: false,
+            id: ''
         };
 
         this.showLogin = this.showLogin.bind(this);
@@ -70,7 +72,7 @@ class Login extends React.Component<{}, IState> {
         </Dialog>;
     }
 
-    openWindow(id) {
+    openWindow(id: string) {
 
         const url = id + '?origin=' + this.origin;
 
@@ -81,7 +83,10 @@ class Login extends React.Component<{}, IState> {
                     window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
                     window.addEventListener('message', (event) => this.receiveToken(event), {once: true});
                     const src = this.tokenUrl + '?messageId=1&origin=' + this.origin;
-                    document.getElementById('messageFrame')['src'] = src;
+                    const messageFrame: any = document.getElementById('messageFrame');
+                    if (messageFrame) {
+                        messageFrame.src = src;
+                    }
                 }
             } catch (e) {
             }
@@ -95,13 +100,13 @@ class Login extends React.Component<{}, IState> {
         });
     }
 
-    escFunction(event) {
+    escFunction(event: any) {
         if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
-    showLogin(manifestoData) {
+    showLogin(manifestoData: ManifestData) {
 
         const loginService = manifesto.Utils.getService(manifestoData, 'http://iiif.io/api/auth/1/login');
         if (!loginService.options) {
@@ -136,7 +141,7 @@ class Login extends React.Component<{}, IState> {
         return body;
     }
 
-    getTokenUrlFromService(loginService) {
+    getTokenUrlFromService(loginService: any) {
         const tokenService = loginService.getService('http://iiif.io/api/auth/1/token');
         this.tokenUrl = tokenService.id;
 
@@ -167,7 +172,7 @@ class Login extends React.Component<{}, IState> {
         Cache.ee.removeListener('logout', this.logout);
     }
 
-    receiveToken(event) {
+    receiveToken(event: any) {
 
         if (!event.data.hasOwnProperty('accessToken') || event.data.hasOwnProperty('error')) {
             this.setState({

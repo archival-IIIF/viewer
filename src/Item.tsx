@@ -10,18 +10,18 @@ const FileImage = require('./icons/fa/file.svg');
 
 interface IProps {
     item: IManifestData;
-    selected: string;
+    selected?: string;
 }
 
 interface IState {
     item: IManifestData;
     itemType: string;
-    selected: string;
+    selected?: string;
 }
 
 class Item extends React.Component<IProps, IState> {
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
@@ -34,7 +34,7 @@ class Item extends React.Component<IProps, IState> {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: IProps) {
         this.setState(nextProps);
     }
 
@@ -101,7 +101,7 @@ class Item extends React.Component<IProps, IState> {
 
         Manifest.get(
             manifestDataId,
-            function(manifestData) {
+            function(manifestData: any) {
                 ManifestHistory.pageChanged(manifestData.id, manifestData.label);
                 Cache.ee.emit('update-file-info', manifestData);
             }
@@ -110,19 +110,21 @@ class Item extends React.Component<IProps, IState> {
 
     }
 
-    openFile(file0) {
+    openFile(file0: any) {
 
         const manifestId = file0.id;
 
         Manifest.get(
             manifestId,
-            function(file) {
+            function(file: any) {
                 const type = file.resource.type;
                 if (type === 'audioVideo') {
                     Cache.ee.emit('play-audio', file.resource.source);
                 } else if (type === 'file') {
                     const win = window.open(file.resource.source, '_target');
-                    win.focus();
+                    if (win) {
+                        win.focus();
+                    }
                 }
             }
         );

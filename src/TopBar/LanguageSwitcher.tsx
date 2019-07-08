@@ -1,22 +1,25 @@
 import * as React from 'react';
-import {translate, Trans} from 'react-i18next';
+import { Translation } from 'react-i18next';
 import LanguageIcon from '@material-ui/icons/Language';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Config from '../lib/Config';
+import {ReactElement} from 'react';
 import * as i18n from 'i18next';
 
 interface IState {
-    anchorEl?: HTMLDivElement;
+    anchorEl: HTMLDivElement | null;
 }
 
 declare let global: {
     config: Config;
 };
 
-class LanguageSwitcher extends React.Component<{}, IState> {
+class LanguageSwitcher extends React.Component<any, IState> {
 
-    constructor(props) {
+
+
+    constructor(props: any) {
 
         super(props);
 
@@ -30,16 +33,18 @@ class LanguageSwitcher extends React.Component<{}, IState> {
 
     render() {
 
-        return <div>
-            <div>
-                <div className="icon-button" onClick={this.open} aria-controls="language-switch-menu"
+        return <>
+            <div className="icon-button" onClick={this.open} aria-controls="language-switch-menu"
                      aria-haspopup="true">
                     <LanguageIcon/>
-                    <Trans i18nKey="language"/>
+                    <Translation ns="common">
+                        {
+                            (t, { i18n }) => <p>{t('language')}</p>
+                        }
+                    </Translation>
                 </div>
                 {this.renderPopUp()}
-            </div>
-        </div>;
+            </>;
     }
 
     open(event: React.MouseEvent<HTMLDivElement>) {
@@ -51,8 +56,8 @@ class LanguageSwitcher extends React.Component<{}, IState> {
     }
 
     renderPopUp() {
-        const languages = [];
-        const translations = global.config.getTranslations();
+        const languages: ReactElement[] = [];
+        const translations: any = global.config.getTranslations();
         for (const i in translations) {
 
             if (!translations.hasOwnProperty(i)) {
@@ -79,4 +84,4 @@ class LanguageSwitcher extends React.Component<{}, IState> {
     }
 }
 
-export default translate('common')(LanguageSwitcher);
+export default LanguageSwitcher;

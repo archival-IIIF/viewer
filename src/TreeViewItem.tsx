@@ -1,8 +1,9 @@
 import * as React from 'react';
-require('./css/treeview.css');
 import Manifest from './lib/Manifest';
 import Loading from './Loading';
 import Cache from './lib/Cache';
+
+require('./css/treeview.css');
 
 interface IProps {
     id?: string;
@@ -13,26 +14,26 @@ interface IProps {
 }
 
 interface IState {
-    data?: object;
-    opened: boolean;
-    id?: string;
+    id: string | null;
     level: number;
-    currentFolderId?: string;
+    opened: boolean;
+    data: object | null;
+    currentFolderId: string | undefined;
 }
 
 class TreeViewItem extends React.Component<IProps, IState> {
 
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
         this.state = {
-            data: props.data,
             level: props.level,
             opened: props.opened,
-            id: props.id,
-            currentFolderId: props.currentFolderId
+            data: this.props.data || null,
+            id: this.props.id || null,
+            currentFolderId: this.props.currentFolderId || undefined,
         };
 
         this.updateCurrentFolder = this.updateCurrentFolder.bind(this);
@@ -40,39 +41,44 @@ class TreeViewItem extends React.Component<IProps, IState> {
 
     render() {
 
+        console.log(this.state.data);
+
         let data;
         if (this.state.data === undefined) {
-            const url = this.state.id;
-            const t = this;
+            if (typeof this.state.id === 'string') {
 
-            data = Manifest.fetchFromCache(url);
+                const url: string = this.state.id;
+                const t = this;
 
-            if (data === false) {
+                data = Manifest.fetchFromCache(url);
 
-                Manifest.get(
-                    url,
-                    function(data2) {
-                        t.setState({
-                            data: data2
-                        });
-                    }
-                );
+                if (!data) {
 
-                return <Loading/>;
+                    Manifest.get(
+                        url,
+                        function (data2: any) {
+                            t.setState({
+                                data: data2
+                            });
+                        }
+                    );
+
+                    return <Loading/>;
+                }
             }
+            return '';
         } else {
             data = this.state.data;
         }
-
 
         const style = {marginLeft: (this.props.level - 1) * 10};
         let className = 'treeview-item level-' + this.props.level;
         let classNameCaret = 'treeview-caret';
 
 
-        if (data.collections.length === 0) {
+        if (data && data.collections && data.collections.length === 0) {
             classNameCaret += ' no-caret';
-        } else if (this.state.opened === true) {
+        } else if (this.state.opened) {
             classNameCaret += ' opened';
         }
         const id = data.id;
@@ -123,11 +129,11 @@ class TreeViewItem extends React.Component<IProps, IState> {
     }
 
 
-    openFolder(itemId) {
+    openFolder(itemId: any) {
         Cache.ee.emit('open-folder', itemId);
     }
 
-    updateCurrentFolder(folderId) {
+    updateCurrentFolder(folderId: string) {
         this.setState({
             currentFolderId: folderId
         });

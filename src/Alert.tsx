@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Cache from './lib/Cache';
-import UrlValidation from './lib/UrlValidation';
-import {translate} from 'react-i18next';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -17,9 +15,9 @@ interface IState {
     bodyJsx?: JSX.Element;
 }
 
-class Alert extends React.Component<{}, IState> {
+class Alert extends React.Component<any, IState> {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -77,9 +75,9 @@ class Alert extends React.Component<{}, IState> {
         });
     }
 
-    open(args) {
+    open(args: any) {
 
-        const state = {
+        const state: any = {
             visible: true
         };
 
@@ -100,4 +98,4 @@ class Alert extends React.Component<{}, IState> {
     }
 }
 
-export default translate('common')(Alert);
+export default Alert;

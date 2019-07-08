@@ -1,4 +1,4 @@
-import * as  EventEmitter from 'events';
+import EventEmitter from 'events';
 class Cache {
 
     static token: string = '';

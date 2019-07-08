@@ -1,20 +1,23 @@
 import * as React from 'react';
-require('./topbar.css');
-import { translate, Trans } from 'react-i18next';
 import Cache from '../lib/Cache';
 import ViewSymbolsIcon from '@material-ui/icons/ViewComfy';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
+import {useTranslation} from 'react-i18next';
+
+require('./topbar.css');
 
 interface IState {
     logoutButtonIsVisible: boolean;
 }
 
-class TopBar extends React.Component<{}, IState> {
+const {t} = useTranslation('common');
 
-    constructor(props) {
+class TopBar extends React.Component<any, IState> {
+
+    constructor(props: any) {
 
         super(props);
 
@@ -30,15 +33,15 @@ class TopBar extends React.Component<{}, IState> {
         return <div id="topbar">
             <div className="icon-button" onClick={() => this.toggleNavigationBar()}>
                 <NavBarIcon />
-                <Trans i18nKey="navBar" />
+                {t('navBar')}
             </div>
             <div className="icon-button" onClick={() => this.showIconView()}>
                 <ViewSymbolsIcon />
-                <Trans i18nKey="iconView" />
+                {t('iconView')}
             </div>
             <div className="icon-button" onClick={() => this.showListView()}>
                 <ViewListIcon />
-                <Trans i18nKey="listView" />
+                {t('listView')}
             </div>
             <LanguageSwitcher />
 
@@ -47,10 +50,11 @@ class TopBar extends React.Component<{}, IState> {
     }
 
     renderLogin() {
+
         if (this.state.logoutButtonIsVisible) {
             return <div className="icon-button" onClick={() => this.logout()}>
                 <LogoutIcon />
-                <Trans i18nKey="logout" />
+                {t('logout')}
             </div>;
         }
     }
@@ -88,4 +92,4 @@ class TopBar extends React.Component<{}, IState> {
 
 }
 
-export default translate('common')(TopBar);
+export default TopBar;

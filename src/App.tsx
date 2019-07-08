@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-const s = require('./css/App.css');
+import React from 'react';
 import FolderView from './FolderView';
 import FileInfo from './FileInfo';
 import Viewer from './Viewer';
@@ -9,13 +7,15 @@ import ManifestHistory from './lib/ManifestHistory';
 import Login from './Login';
 import TreeViewContainer from './TreeViewContainer';
 import Alert from './Alert';
-import {I18nextProvider} from 'react-i18next';
-import * as i18next from 'i18next';
+import {I18nextProvider, initReactI18next} from 'react-i18next';
+import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
 import Cache from './lib/Cache';
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
+
+require('./css/App.css');
 
 interface IState {
     folderAndInfoLeft?: number;
@@ -24,7 +24,7 @@ interface IState {
 }
 
 interface IProps {
-    config?: IConfigParameter;
+    config: IConfigParameter;
 }
 
 declare let global: {
@@ -34,13 +34,13 @@ declare let global: {
 
 class App extends React.Component<IProps, IState> {
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
         global.config = new Config(this.props.config);
 
-        i18next.init({
+        i18n.use(initReactI18next).init({
             lng: global.config.getLanguage(),
             fallbackLng: global.config.getFallbackLanguage(),
             interpolation: { escapeValue: false },  // React already does escaping
@@ -69,7 +69,7 @@ class App extends React.Component<IProps, IState> {
         };
 
         return (
-            <I18nextProvider i18n={i18next}>
+            <I18nextProvider i18n={i18n}>
                 <div id="app">
                     <TopBar/>
                     <Login/>
@@ -93,7 +93,7 @@ class App extends React.Component<IProps, IState> {
         );
     }
 
-    treeViewWidthChanged(width) {
+    treeViewWidthChanged(width: number) {
 
         if (width < global.config.getMinimalNavBarWidth()) {
             width = 0;

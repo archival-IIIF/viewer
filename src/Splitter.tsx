@@ -1,13 +1,14 @@
 import * as React from 'react';
-require('./css/splitter.css');
 import Config from './lib/Config';
+
+require('./css/splitter.css');
 
 interface IState {
     left: number;
 }
 
 interface IProps {
-    widthChangedFunc?: (width: number) => void;
+    widthChangedFunc: (width: number) => void;
     left: number;
 }
 
@@ -23,7 +24,7 @@ class Splitter extends React.Component<IProps, IState> {
 
     private isMoving: boolean = false;
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
@@ -57,7 +58,7 @@ class Splitter extends React.Component<IProps, IState> {
                     onDoubleClick={() => this.splitterDoubleClick()} style={style} />;
     }
 
-    globalMoveStart(x) {
+    globalMoveStart(x: number) {
         if (this.isMoving) {
             this.props.widthChangedFunc(x);
         }

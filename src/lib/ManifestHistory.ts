@@ -2,9 +2,9 @@ import Cache from './Cache';
 
 class ManifestHistory {
 
-    static previousIds = [];
+    static previousIds: string[] = [];
 
-    static pageChanged(id, label) {
+    static pageChanged(id: string, label: string) {
 
         let previousId = '';
         if (this.previousIds.length > 0) {
@@ -24,7 +24,7 @@ class ManifestHistory {
 
         const backId = this.previousIds.slice(-1)[0];
 
-        if (backId !== undefined) {
+        if (backId) {
             Cache.ee.emit('open-folder', backId);
         }
     }

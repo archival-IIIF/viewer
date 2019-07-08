@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as OpenSeadragonLoader from 'openseadragon';
+import * as OpenSeadragon from 'openseadragon';
 import InfoJson from './lib/InfoJson';
 import Cache from './lib/Cache';
 import ViewerSpinner from './ViewerSpinner';
@@ -15,12 +15,12 @@ interface IState {
 }
 
 
-class OpenSeadragon extends React.Component<IProps, IState> {
+class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     private tokenReceived = this.update.bind(this);
-    private viewer;
+    private viewer: any;
 
-    constructor(props) {
+    constructor(props: IProps) {
 
         super(props);
 
@@ -44,8 +44,8 @@ class OpenSeadragon extends React.Component<IProps, IState> {
 
     componentDidMount() {
         const t = this;
-        InfoJson.get(this.state.source, function(data) {
-            const options = {
+        InfoJson.get(this.state.source, function(data: any) {
+            const options: any = {
                 id: 'openseadragon',
                 defaultZoomLevel: 0,
                 tileSources: data,
@@ -73,7 +73,7 @@ class OpenSeadragon extends React.Component<IProps, IState> {
                 };
             }
 
-            t.viewer = OpenSeadragonLoader(options);
+            t.viewer = new OpenSeadragon.Viewer(options);
             t.viewer.addHandler('tile-drawn', () => {
                 t.setState({
                     spinner: false
@@ -98,4 +98,4 @@ class OpenSeadragon extends React.Component<IProps, IState> {
     }
 }
 
-export default OpenSeadragon;
+export default ReactOpenSeadragon;

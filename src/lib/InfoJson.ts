@@ -2,9 +2,9 @@ import Cache from './Cache';
 
 class InfoJson {
 
-    static cache = {};
+    static cache: any = {};
 
-    static get(id, callback) {
+    static get(id: string, callback: any) {
 
         const data = this.fetchFromCache(id);
         if (data !== false) {
@@ -18,7 +18,7 @@ class InfoJson {
         this.fetchFromUrl(id, callback);
     }
 
-    static fetchFromUrl(id, callback) {
+    static fetchFromUrl(id: string, callback: any) {
 
         const t = this;
         const authHeader: Headers = new Headers();
@@ -66,7 +66,7 @@ class InfoJson {
         });
     }
 
-    static fetchFromCache(id) {
+    static fetchFromCache(id: string) {
 
         if (this.cache.hasOwnProperty(id)) {
             return this.cache[id];

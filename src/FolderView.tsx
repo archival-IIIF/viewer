@@ -3,20 +3,23 @@ import Loading from './Loading';
 import Item from './Item';
 import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
-import {translate, Trans} from 'react-i18next';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
+import ManifestData from './entity/ManifestData';
+import {useTranslation} from 'react-i18next';
+
+const {t} = useTranslation();
 
 interface IState {
-    data?: IManifestData;
-    selected?: string;
+    data: IManifestData | null;
+    selected: string | undefined;
     mode: string;
 }
 
 
-class FolderView extends React.Component<{}, IState> {
+class FolderView extends React.Component<any, IState> {
 
-    constructor(props) {
+    constructor(props: any) {
 
         super(props);
 
@@ -24,7 +27,7 @@ class FolderView extends React.Component<{}, IState> {
         this.state = {
             data: null,
             mode: 'icon-view',
-            selected: null
+            selected: undefined
         };
 
         this.openFolder = this.openFolder.bind(this);
@@ -35,7 +38,6 @@ class FolderView extends React.Component<{}, IState> {
 
 
     render() {
-
         if (!this.state.data) {
             return (
                 <Loading/>
@@ -54,7 +56,7 @@ class FolderView extends React.Component<{}, IState> {
             return (
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
-                    <div className="empty"><Trans i18nKey="emptyFolder"/></div>
+                    <div className="empty">{t('emptyFolder')}</div>
                 </div>
             );
         }
@@ -81,9 +83,9 @@ class FolderView extends React.Component<{}, IState> {
         );
     }
 
-    openFolder(itemId, selectedData, pageReload) {
+    openFolder(itemId: string | boolean | null, selectedData: any, pageReload: Boolean | null) {
 
-        if (itemId === false) {
+        if (typeof itemId !== 'string') {
             const alertArgs = {
                 title: 'Error',
                 body: 'No manifest ID given!'
@@ -93,11 +95,11 @@ class FolderView extends React.Component<{}, IState> {
         }
 
         const t = this;
-        const url = itemId;
+        const url: string = itemId;
 
         Manifest.get(
             url,
-            (manifestData) =>  {
+            (manifestData: any) =>  {
 
                 if (typeof manifestData === 'string') {
                     alert(manifestData);
@@ -140,7 +142,7 @@ class FolderView extends React.Component<{}, IState> {
 
     }
 
-    openImaginaryRootFolder(manifestData) {
+    openImaginaryRootFolder(manifestData: IManifestData) {
         const imaginaryRootManifestData: IManifestData = {
             collections: [],
             id: '-',
@@ -191,7 +193,7 @@ class FolderView extends React.Component<{}, IState> {
         Cache.ee.removeListener('update-file-info', this.updateFileInfo);
     }
 
-    updateFileInfo(manifestData) {
+    updateFileInfo(manifestData: ManifestData) {
         if (this.state.selected === manifestData.id) {
             return;
         }
@@ -204,4 +206,4 @@ class FolderView extends React.Component<{}, IState> {
 
 }
 
-export default translate('common')(FolderView);
+export default FolderView;

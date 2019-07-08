@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 import IConfigParameter from './interface/IConfigParameter';
 
 class Init {
@@ -12,7 +12,7 @@ class Init {
             <App config={config}/>,
             document.getElementById(config.id)
         );
-        registerServiceWorker();
+        serviceWorker.unregister();
     }
 }
 

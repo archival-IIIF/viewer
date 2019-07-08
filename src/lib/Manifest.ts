@@ -1,20 +1,19 @@
 import Cache from './Cache';
-
-const manifesto = require('manifesto.js');
-import filesize from 'file-size';
+import filesize from 'filesize';
 import IManifestData from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
 import UrlValidation from './UrlValidation';
+const manifesto = require('manifesto.js');
 
 class Manifest {
 
-    static lang;
+    static lang: string = 'en';
 
-    static cache = {};
+    static cache: any = {};
 
-    static get(url, callback) {
+    static get(url?: string, callback?: any) {
 
         if (url === undefined) {
             return;
@@ -35,7 +34,7 @@ class Manifest {
 
     }
 
-    static fetchFromUrl(url, callback) {
+    static fetchFromUrl(url: string, callback: any) {
 
         const t = this;
         const authHeader: Headers = new Headers();
@@ -60,10 +59,6 @@ class Manifest {
             }
 
             response.json().then((json) => {
-
-                if (!t.lang) {
-                    t.lang = window.navigator.language;
-                }
 
                 let manifestoData;
                 manifestoData = manifesto.create(json);
@@ -117,7 +112,7 @@ class Manifest {
                                 }
 
                                 externalTokenResponse.json()
-                                    .then((externalTokenJson) => {
+                                    .then((externalTokenJson: any) => {
                                         Cache.token = externalTokenJson.accessToken;
                                         return this.fetchFromUrl(url, callback);
                                     });
@@ -162,7 +157,7 @@ class Manifest {
         });
     }
 
-    static getAttribution(manifestoData) {
+    static getAttribution(manifestoData: any) {
         const manifestoAttribution = manifestoData.getRequiredStatement();
 
         try {
@@ -173,7 +168,7 @@ class Manifest {
         return undefined;
     }
 
-    static getDescription(manifestoData) {
+    static getDescription(manifestoData: any) {
         const description = manifestoData.getDescription();
 
         try {
@@ -184,7 +179,7 @@ class Manifest {
         return undefined;
     }
 
-    static getMetadata(manifestoData) {
+    static getMetadata(manifestoData: any) {
         const manifestoMetadata = manifestoData.getMetadata();
         const metadata = [];
 
@@ -198,7 +193,7 @@ class Manifest {
                 const label = element.label[0].value;
                 let value = element.value[0].value;
                 if (label === 'Size') {
-                    value = filesize(parseInt(value, 10)).human('si');
+                    value = filesize(parseInt(value, 10));
                 }
                 value = this.addBlankTarget(value);
 
@@ -209,7 +204,7 @@ class Manifest {
         return metadata;
     }
 
-    static getLicense(manifestoData) {
+    static getLicense(manifestoData: any) {
         const license = manifestoData.getLicense();
         if (license === undefined || !UrlValidation.isURL(license)) {
             return undefined;
@@ -218,7 +213,7 @@ class Manifest {
         return license;
     }
 
-    static getResource(manifestoData) {
+    static getResource(manifestoData: any) {
 
         const resource = {
             source: null,
@@ -252,7 +247,7 @@ class Manifest {
         return resource;
     }
 
-    static getManifestations(manifestoData) {
+    static getManifestations(manifestoData: any) {
 
         const manifestations = [];
 
@@ -276,12 +271,12 @@ class Manifest {
             return false;
         }
 
-        const jsonld = sequence0.__jsonld;
+        const jsonld: any = sequence0.__jsonld;
         if (!jsonld.hasOwnProperty('elements')) {
             return false;
         }
 
-        const element0 = jsonld['elements'][0];
+        const element0: any = jsonld['elements'][0];
         if (element0 === undefined) {
             return false;
         }
@@ -307,7 +302,7 @@ class Manifest {
     }
 
 
-    static getFileResource(sequence0) {
+    static getFileResource(sequence0: any) {
 
 
         try {
@@ -334,7 +329,7 @@ class Manifest {
     }
 
 
-    static getImageResource(sequence0) {
+    static getImageResource(sequence0: any) {
 
         const canvases0 = sequence0.getCanvasByIndex(0);
         if (canvases0 === undefined) {
@@ -370,7 +365,7 @@ class Manifest {
         };
     }
 
-    static getThumbnail(manifestoData) {
+    static getThumbnail(manifestoData: any) {
 
         const manifestoThumbnail = manifestoData.getThumbnail();
         if (manifestoThumbnail === undefined ||
@@ -390,7 +385,7 @@ class Manifest {
         return thumbnail;
     }
 
-    static getManifests(manifestoData) {
+    static getManifests(manifestoData: any) {
 
         const manifestoManifests = manifestoData.getManifests();
         if (manifestoManifests.length === 0) {
@@ -413,7 +408,7 @@ class Manifest {
         return manifests;
     }
 
-    static getCollections(manifestoData) {
+    static getCollections(manifestoData: any) {
         const manifestoCollections = manifestoData.getCollections();
         if (manifestoCollections.length === 0) {
             return [];
@@ -435,19 +430,22 @@ class Manifest {
         return collections;
     }
 
-    static addBlankTarget(input) {
-        const tmp = document.createElement('div');
+    static addBlankTarget(input: string) {
+        const tmp: HTMLDivElement = document.createElement('div');
         tmp.innerHTML = input;
-        for (let i = 0; i < tmp.children.length; i++) {
-            if (tmp.children[i].nodeName === 'A') {
-                tmp.children[i]['target'] = '_blank';
-                tmp.children[i]['rel'] = 'noopener';
+        for (let i: number = 0; i < tmp.children.length; i++) {
+            let child: Element | null = tmp.children.item(i);
+            if (child) {
+                if (child.nodeName === 'A') {
+                    child.setAttribute('target', '_blank');
+                    child.setAttribute('rel', 'noopener');
+                }
             }
         }
         return tmp.innerHTML;
     }
 
-    static fetchFromCache(url) {
+    static fetchFromCache(url: string) {
 
         if (this.cache.hasOwnProperty(url)) {
             return this.cache[url];
@@ -470,7 +468,7 @@ class Manifest {
         this.cache = {};
     }
 
-    static getGetParameter(name, url) {
+    static getGetParameter(name: string, url: string) {
 
         if (typeof URL === 'function') {
             const urlObject = new URL(window.location.href);
@@ -479,7 +477,7 @@ class Manifest {
 
 
         // polyfill for ie11
-        name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+        name = name.replace(/[[]/, '\\[').replace(/[]]/, '\\]');
         const regexS = '[\\?&]' + name + '=([^&#]*)';
         const regex = new RegExp(regexS);
         const results = regex.exec(url);
