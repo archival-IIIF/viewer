@@ -469,20 +469,8 @@ class Manifest {
     }
 
     static getGetParameter(name: string, url: string) {
-
-        if (typeof URL === 'function') {
-            const urlObject = new URL(window.location.href);
-            return urlObject.searchParams.get(name);
-        }
-
-
-        // polyfill for ie11
-        name = name.replace(/[[]/, '\\[').replace(/[]]/, '\\]');
-        const regexS = '[\\?&]' + name + '=([^&#]*)';
-        const regex = new RegExp(regexS);
-        const results = regex.exec(url);
-
-        return results == null ? null : results[1];
+        const urlObject = new URL(window.location.href);
+        return urlObject.searchParams.get(name);
     }
 }
 

@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Config from '../lib/Config';
 import {ReactElement} from 'react';
-import * as i18n from 'i18next';
+import i18n from 'i18next';
 
 interface IState {
     anchorEl: HTMLDivElement | null;
