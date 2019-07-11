@@ -14,6 +14,7 @@ import Config from './lib/Config';
 import Cache from './lib/Cache';
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
+const commonNl = require('./translations/nl/common.json');
 
 require('./css/App.css');
 
@@ -50,6 +51,9 @@ class App extends React.Component<IProps, IState> {
                 },
                 en: {
                     common: commonEn
+                },
+                nl: {
+                    common: commonNl
                 }
             }
         });

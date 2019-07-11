@@ -13,7 +13,8 @@ class Config {
 
     private readonly translations: object = {
         en: 'English',
-        de: 'Deutsch'
+        de: 'Deutsch',
+        nl: 'Nederlands'
     };
 
     // See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
