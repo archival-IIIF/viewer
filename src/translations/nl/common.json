@@ -1,0 +1,12 @@
+{
+  "iconView": "Symboolweergave",
+  "listView": "Lijstweergave",
+  "navBar": "Navigatiebalk",
+  "language": "Taal",
+  "attribution": "Naamsvermelding",
+  "license": "Licentie",
+  "logout": "Uitloggen",
+  "emptyFolder": "Deze folder is leeg",
+  "showFile": "Toon bestand",
+  "fileManifestations": "Bestandsmanifestaties"
+}
