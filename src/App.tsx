@@ -74,6 +74,7 @@ class App extends React.Component<IProps, IState> {
 
         return (
             <I18nextProvider i18n={i18n}>
+                <Alert />
                 <div id="app">
                     <TopBar/>
                     <Login/>
@@ -91,7 +92,6 @@ class App extends React.Component<IProps, IState> {
                             </div>
                         </div>
                     </div>
-                    <Alert />
                 </div>
             </I18nextProvider>
         );
