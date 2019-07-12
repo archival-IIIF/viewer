@@ -5,7 +5,12 @@ import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
 import UrlValidation from './UrlValidation';
+import Config from './Config';
 const manifesto = require('manifesto.js');
+
+declare let global: {
+    config: Config;
+};
 
 class Manifest {
 
@@ -455,9 +460,13 @@ class Manifest {
     }
 
     static getIdFromCurrentUrl() {
-        const manifestUri = this.getGetParameter('manifest', window.location.href);
+        let manifestUri = this.getGetParameter('manifest', window.location.href);
 
-        if (manifestUri === '') {
+        if (!manifestUri || manifestUri === '') {
+            manifestUri = global.config.getManifest();
+        }
+
+        if (!manifestUri || manifestUri === '') {
             return false;
         }
 

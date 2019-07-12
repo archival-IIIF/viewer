@@ -9,6 +9,8 @@ class Config {
 
     private readonly language: string;
 
+    private readonly manifest: string;
+
     private readonly fallbackLanguage: string = 'en';
 
     private readonly translations: object = {
@@ -25,6 +27,7 @@ class Config {
 
     constructor(config: IConfigParameter) {
         this.language = config.language ? config.language : window.navigator.language;
+        this.manifest = config.manifest ? config.manifest : '';
     }
 
     getSplitterWidth(folded: boolean) {
@@ -62,6 +65,10 @@ class Config {
 
     getTranslations() {
         return this.translations;
+    }
+
+    getManifest() {
+        return this.manifest;
     }
 }
 
