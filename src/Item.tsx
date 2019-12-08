@@ -4,7 +4,7 @@ import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import TouchDetection from './lib/TouchDetection';
 import IManifestData from './interface/IManifestData';
-require('./css/item.css');
+import './css/item.css';
 const FolderImage = require('./icons/fa/folder.svg');
 const FileImage = require('./icons/fa/file.svg');
 
