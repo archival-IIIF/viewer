@@ -13,43 +13,17 @@ interface IProps {
     selected?: string;
 }
 
-interface IState {
-    item: IManifestData;
-    itemType: string;
-    selected: string | undefined;
-}
+class Item extends React.Component<IProps, {}> {
 
-class Item extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-
-        super(props);
-
-
-        this.state = this.propsToState(props);
-    }
-
-    componentWillReceiveProps(nextProps: IProps) {
-        this.setState(this.propsToState(nextProps));
-    }
-
-    propsToState(props: IProps): IState {
-        const itemType = props.item.type === 'sc:Collection' ? 'folder' : 'file';
-
-        return {
-            item: props.item,
-            itemType,
-            selected: props.selected || undefined,
-        };
-    }
 
     render() {
 
-        const id = this.state.item.id;
-        let className = 'item ' + this.state.itemType;
-        const label = this.state.item.label;
+        const itemType = this.props.item.type === 'sc:Collection' ? 'folder' : 'file';
+        const id = this.props.item.id;
+        let className = 'item ' + itemType;
+        const label = this.props.item.label;
         const style = {backgroundImage: this.getThumbnail()};
-        if (id === this.state.selected) {
+        if (id === this.props.selected) {
             className += ' active';
         }
 
@@ -66,8 +40,8 @@ class Item extends React.Component<IProps, IState> {
 
     getThumbnail() {
 
-        if (this.state.item.thumbnail === undefined || !this.state.item.thumbnail.hasOwnProperty('id')) {
-            if (this.state.item.type === 'sc:Collection') {
+        if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
+            if (this.props.item.type === 'sc:Collection') {
                 return `url(${FolderImage})`;
             }
 
@@ -75,31 +49,31 @@ class Item extends React.Component<IProps, IState> {
         }
 
         let thumbnailUrl;
-        if (this.state.item.thumbnail.hasOwnProperty('service') && this.state.item.thumbnail.service) {
+        if (this.props.item.thumbnail.hasOwnProperty('service') && this.props.item.thumbnail.service) {
             const width = '72';
             const height = '72';
-            const serviceUrl = this.state.item.thumbnail.service;
+            const serviceUrl = this.props.item.thumbnail.service;
             thumbnailUrl = serviceUrl.replace('/info.json', '') + '/full/!' + width + ',' + height + '/0/default.jpg';
         } else {
-            thumbnailUrl = this.state.item.thumbnail.id;
+            thumbnailUrl = this.props.item.thumbnail.id;
         }
 
         return `url(${thumbnailUrl})`;
     }
 
     open() {
-        if (this.state.itemType === 'folder') {
-            Cache.ee.emit('open-folder', this.state.item.id);
+        if (this.props.item.type === 'sc:Collection') {
+            Cache.ee.emit('open-folder', this.props.item.id);
         } else {
-            this.openFile(this.state.item);
+            this.openFile(this.props.item);
         }
     }
 
     activateItem() {
 
-        const manifestDataId = this.state.item.id;
+        const manifestDataId = this.props.item.id;
 
-        if (TouchDetection.isTouchDevice() && manifestDataId === this.state.selected) {
+        if (TouchDetection.isTouchDevice() && manifestDataId === this.props.selected) {
             this.open();
             return;
         }
