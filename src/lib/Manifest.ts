@@ -6,7 +6,8 @@ import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
 import UrlValidation from './UrlValidation';
 import Config from './Config';
-const manifesto = require('manifesto.js');
+import * as manifesto from 'manifesto.js';
+import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 
 declare let global: {
     config: Config;
@@ -66,7 +67,15 @@ class Manifest {
             response.json().then((json) => {
 
                 let manifestoData;
-                manifestoData = manifesto.create(json);
+                manifestoData = manifesto.parseManifest(json);
+                if (!manifestoData) {
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Manifest could not load!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
+                    return;
+                }
 
                 const manifestData: IManifestData = new ManifestData();
 
@@ -100,29 +109,31 @@ class Manifest {
 
                 if (statusCode === 401) {
 
-                    const external = manifestoData.getService('http://iiif.io/api/auth/1/external');
+                    const external = manifestoData.getService(ServiceProfile.AUTH_1_EXTERNAL);
                     if (external) {
-                        const token = external.getService('http://iiif.io/api/auth/1/token');
-                        fetch(token.id)
-                            .then((externalTokenResponse) => {
+                        const token = external.getService(ServiceProfile.AUTH_1_TOKEN);
+                        if (token) {
+                            fetch(token.id)
+                                .then((externalTokenResponse) => {
 
-                                statusCode = externalTokenResponse.status;
-                                if (statusCode !== 200) {
-                                    const alertArgs = {
-                                        title: external.getFailureHeader(),
-                                        body: external.getFailureDescription()
-                                    };
-                                    Cache.ee.emit('alert', alertArgs);
-                                    return;
-                                }
+                                    statusCode = externalTokenResponse.status;
+                                    if (statusCode !== 200) {
+                                        const alertArgs = {
+                                            title: external.getFailureHeader(),
+                                            body: external.getFailureDescription()
+                                        };
+                                        Cache.ee.emit('alert', alertArgs);
+                                        return;
+                                    }
 
-                                externalTokenResponse.json()
-                                    .then((externalTokenJson: any) => {
-                                        Cache.token = externalTokenJson.accessToken;
-                                        return this.fetchFromUrl(url, callback);
-                                    });
-                            });
-                        return;
+                                    externalTokenResponse.json()
+                                        .then((externalTokenJson: any) => {
+                                            Cache.token = externalTokenJson.accessToken;
+                                            return this.fetchFromUrl(url, callback);
+                                        });
+                                });
+                            return;
+                        }
                     }
 
                     Cache.ee.emit('show-login', manifestoData);
