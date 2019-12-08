@@ -3,8 +3,7 @@ import Loading from './Loading';
 import TreeViewItem from './TreeViewItem';
 import Manifest from './lib/Manifest';
 import Cache from './lib/Cache';
-
-require('./css/treeview.css');
+import './css/treeview.css';
 
 interface IProps {
     width: number;
@@ -122,13 +121,6 @@ class TreeView extends React.Component<IProps, IState> {
     componentWillUnmount() {
         Cache.ee.removeListener('update-current-folder-id', this.buildTree);
         Cache.ee.removeListener('token-received', this.clearTree);
-    }
-
-    componentWillReceiveProps(nextProps: IProps) {
-        // You don't have to do this check first, but it can help prevent an unneeded render
-        if (nextProps.width !== this.state.width) {
-            this.setState({ width: nextProps.width });
-        }
     }
 }
 
