@@ -1,18 +1,9 @@
 import * as React from 'react';
 import Config from './lib/Config';
-
-require('./css/splitter.css');
-
-interface IState {
-    left: number;
-}
+import './css/splitter.css';
 
 interface IProps {
     widthChangedFunc: (width: number) => void;
-    left: number;
-}
-
-interface IState {
     left: number;
 }
 
@@ -20,15 +11,13 @@ declare let global: {
     config: Config;
 };
 
-class Splitter extends React.Component<IProps, IState> {
+class Splitter extends React.Component<IProps, {}> {
 
     private isMoving: boolean = false;
 
     constructor(props: IProps) {
 
         super(props);
-
-        this.state = {left: this.props.left};
 
         const t = this;
         this.globalMoveStart = this.globalMoveStart.bind(this);
@@ -47,11 +36,11 @@ class Splitter extends React.Component<IProps, IState> {
 
     render() {
 
-        const splitterWidth = global.config.getSplitterWidth(this.state.left === 0);
+        const splitterWidth = global.config.getSplitterWidth(this.props.left === 0);
         const style = {
             maxWidth: splitterWidth,
             minWidth: splitterWidth,
-            left: this.state.left
+            left: this.props.left
         };
 
         return <div className="splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
@@ -75,16 +64,10 @@ class Splitter extends React.Component<IProps, IState> {
     }
 
     splitterDoubleClick() {
-        if (this.state.left > 0) {
+        if (this.props.left > 0) {
             this.props.widthChangedFunc(0);
         } else {
             this.props.widthChangedFunc(global.config.getDefaultNavBarWith());
-        }
-    }
-
-    componentWillReceiveProps(nextProps: IProps) {
-        if (nextProps.left !== this.state.left) {
-            this.setState({ left: nextProps.left });
         }
     }
 }
