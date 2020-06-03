@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Cache from '../lib/Cache';
-import ViewSymbolsIcon from '@material-ui/icons/ViewComfy';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -33,14 +31,6 @@ class TopBar extends React.Component<any, IState> {
                 <NavBarIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
             </div>
-            <div className="icon-button" onClick={() => this.showIconView()}>
-                <ViewSymbolsIcon />
-                <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
-            </div>
-            <div className="icon-button" onClick={() => this.showListView()}>
-                <ViewListIcon />
-                <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
-            </div>
             <LanguageSwitcher />
 
             {this.renderLogin()}
@@ -57,21 +47,12 @@ class TopBar extends React.Component<any, IState> {
         }
     }
 
-
-    showListView() {
-        Cache.ee.emit('show-list-view');
-    }
-
     logout() {
         Cache.ee.emit('logout');
     }
 
     toggleNavigationBar() {
         Cache.ee.emit('toggle-nav-bar');
-    }
-
-    showIconView() {
-        Cache.ee.emit('show-icon-view');
     }
 
     tokenReceived() {

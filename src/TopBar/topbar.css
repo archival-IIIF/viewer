@@ -8,6 +8,13 @@
     width: 100%;
 }
 
+.bar {
+    display: flex;
+    height: 40px;
+    background-color: lightgrey;
+    position: sticky;
+}
+
 .icon-button {
     margin: 0 6px;
     cursor: pointer;

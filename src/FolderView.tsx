@@ -7,6 +7,8 @@ import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
 import ManifestData from './entity/ManifestData';
 import {Translation} from 'react-i18next';
+import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
+import ViewListIcon from "@material-ui/icons/ViewList";
 
 interface IState {
     data: IManifestData | null;
@@ -77,8 +79,21 @@ class FolderView extends React.Component<any, IState> {
 
         return (
             <div id="folder-view-container">
-                <h1>{this.state.data.label}</h1>
-                <div className={folderViewClassNames}>{content}</div>
+                <nav className="bar">
+                    <div className="icon-button" onClick={this.showIconView}>
+                        <ViewSymbolsIcon />
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
+                    </div>
+                    <div className="icon-button" onClick={this.showListView}>
+                        <ViewListIcon />
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
+                    </div>
+                </nav>
+                <div>
+                    <h1>{this.state.data.label}</h1>
+                    <div className={folderViewClassNames}>{content}</div>
+                </div>
+
             </div>
         );
     }
@@ -177,8 +192,6 @@ class FolderView extends React.Component<any, IState> {
     }
 
     componentDidMount() {
-        Cache.ee.addListener('show-list-view', this.showListView);
-        Cache.ee.addListener('show-icon-view', this.showIconView);
         Cache.ee.addListener('open-folder', this.openFolder);
         Cache.ee.addListener('update-file-info', this.updateFileInfo);
 
@@ -187,8 +200,6 @@ class FolderView extends React.Component<any, IState> {
     }
 
     componentWillUnmount() {
-        Cache.ee.removeListener('show-list-view', this.showListView);
-        Cache.ee.removeListener('show-icon-view', this.showIconView);
         Cache.ee.removeListener('open-folder', this.openFolder);
         Cache.ee.removeListener('update-file-info', this.updateFileInfo);
     }

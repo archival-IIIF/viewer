@@ -30,9 +30,18 @@ html, body, #root
 }
 
 #folder-view-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#folder-view-container h1 {
+    font-size: 1.4em;
+}
+
+#folder-view-container > div {
     overflow-y: auto;
     padding: 8px;
-    width: 100%;
 }
 
 h1 {
@@ -72,4 +81,9 @@ h3 {
 /* wired firefox workaround */
 #content > .b {
     height: 1px;
+}
+
+
+.vjs-has-started {
+    width: 100%;
 }
