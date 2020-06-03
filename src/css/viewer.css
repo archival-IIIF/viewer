@@ -63,6 +63,7 @@
 #sources img {
     display: block;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .openseadragon-icon {
