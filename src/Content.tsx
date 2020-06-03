@@ -11,7 +11,7 @@ class Content extends React.Component<{}, {}> {
             id="content"
             aSize={50}
             a={<Viewer />}
-            b={<Folder/>}
+            b={<Folder />}
             direction="horizontal"
         />
     }
