@@ -1,7 +1,9 @@
 #viewer {
-   background-color: #404346;
-    position: sticky;
-    top:0;
+    background-color: #404346;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
 }
 
 #openseadragon {
@@ -145,11 +147,6 @@
 }
 
 .plain-text {
-    position: absolute;
-    top: 30px;
-    bottom: 30px;
-    left: 30px;
-    right: 30px;
     background-color: #ffffff;
     padding: 30px;
     max-width: 540px;

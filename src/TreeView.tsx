@@ -5,31 +5,24 @@ import Manifest from './lib/Manifest';
 import Cache from './lib/Cache';
 import './css/treeview.css';
 
-interface IProps {
-    width: number;
-}
-
 interface IState {
     opened: object;
     tree: object | null;
-    width: number;
 }
 
-class TreeView extends React.Component<IProps, IState> {
+class TreeView extends React.Component<{}, IState> {
 
-    private minWidth = 60;
     private treeInProgress: any = null;
     private currentFolderId = '';
 
 
-    constructor(props: IProps) {
+    constructor(props: {}) {
 
         super(props);
 
         this.state = {
             opened: {},
             tree: null,
-            width: this.props.width,
         };
 
         this.buildTree = this.buildTree.bind(this);
@@ -38,15 +31,11 @@ class TreeView extends React.Component<IProps, IState> {
 
     render() {
 
-        if (this.state.width < this.minWidth) {
-            return '';
-        }
-
         if (this.state.tree === null) {
             return <Loading/>;
         }
         return (
-            <div id="treeview" style={{maxWidth: this.state.width, minWidth: this.state.width}}>
+            <div id="treeview">
                 <TreeViewItem data={this.state.tree} level={1} opened={true} currentFolderId={this.currentFolderId}/>
             </div>
         );

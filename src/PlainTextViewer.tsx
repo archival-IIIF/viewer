@@ -27,12 +27,6 @@ class PlainTextViewer extends React.Component<IProps, IState> {
     }
 
     render() {
-        return <div style={{height: WindowInfo.getHeight() / 2}}>
-            {this.renderText()}
-        </div>;
-    }
-
-    renderText() {
         if (this.state.loading) {
             return <ViewerSpinner show={this.state.loading} />;
         }

@@ -1,14 +1,11 @@
 #topbar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
     height: 40px;
     padding: 10px;
     background-color: lightgrey;
     justify-content: center;
     display: flex;
     z-index: 1;
+    width: 100%;
 }
 
 .icon-button {

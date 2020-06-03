@@ -33,7 +33,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     }
 
     render() {
-        return <div id="openseadragon" key={this.state.source[0]} style={{height: WindowInfo.getHeight() / 2}}>
+        return <div id="openseadragon" key={this.state.source[0]}>
             <div id="zoom-in-button" className="openseadragon-icon" />
             <div id="zoom-out-button" className="openseadragon-icon" />
             <div id="rotate-right-button" className="openseadragon-icon" />

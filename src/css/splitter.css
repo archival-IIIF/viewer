@@ -1,11 +1,19 @@
 .splitter {
     background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
     z-index: 999;
-    cursor: col-resize;
-    position: fixed;
-    top: 40px;
-    bottom: 0;
 }
+
+
+.splitter-vertical > .splitter {
+    cursor: col-resize;
+    min-width: 8px;
+}
+
+.splitter-horizontal > .splitter {
+    min-height: 8px;
+    cursor: row-resize;
+}
+
 
 .splitter:hover {
     background-color: black;
@@ -14,3 +22,23 @@
 body.no-select {
     user-select: none;
 }
+
+.splitter-container {
+    display: flex;
+    flex-grow: 2;
+}
+
+.splitter-horizontal {
+    flex-direction: column;
+    height: 100%;
+}
+
+.splitter-container > div {
+    display: flex;
+    align-items: stretch;
+}
+
+.splitter-container > div.b {
+    flex-grow: 2;
+}
+

@@ -5,26 +5,17 @@ html, body, #root
     margin: 0;
     padding: 0;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    overflow: hidden;
 }
 
 * {
     box-sizing: border-box;
 }
 
-#app {
-    width: 100%;
-    height: 100%;
-
+#root {
     display: flex;
     flex-direction: column;
-}
-
-#content {
-    position: fixed;
-    top: 40px;
-    bottom: 0;
-    right: 0;
-    overflow-y: scroll;
+    height: 100vh;
 }
 
 #folder-and-info {
@@ -39,8 +30,9 @@ html, body, #root
 }
 
 #folder-view-container {
-    flex: auto;
-    margin: 0 224px 0 24px;
+    overflow-y: auto;
+    padding: 8px;
+    width: 100%;
 }
 
 h1 {
@@ -75,4 +67,9 @@ h3 {
 
 .fullpage {
     height: 100% !important;
+}
+
+/* wired firefox workaround */
+#content > .b {
+    height: 1px;
 }
