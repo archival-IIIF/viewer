@@ -71,7 +71,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
         </div>;
     }
 
-    play(data: any) {
+    play() {
         this.player.play();
     }
 }
