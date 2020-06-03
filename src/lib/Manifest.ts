@@ -245,9 +245,9 @@ class Manifest {
             return resource;
         }
 
-        const imageResource = this.getImageResource(sequence0);
-        if (imageResource !== false) {
-            return imageResource;
+        const imageResources = this.getImageResources(sequence0);
+        if (imageResources !== false) {
+            return imageResources;
         }
 
         const audioVideoResource = this.getAudioVideoResource(sequence0);
@@ -345,38 +345,43 @@ class Manifest {
     }
 
 
-    static getImageResource(sequence0: any) {
+    static getImageResources(sequence0: any) {
 
-        const canvases0 = sequence0.getCanvasByIndex(0);
-        if (canvases0 === undefined) {
-            return false;
-        }
+        const sources: any = [];
+        for (const canvases of sequence0.getCanvases()) {
 
-        const images = canvases0.getImages();
-        if (images === undefined || images.length === 0) {
-            return false;
-        }
-        const image0 = images[0];
-
-        const resource = image0.getResource();
-        if (resource === undefined) {
-            return false;
-        }
-
-        let service = resource.getService('http://iiif.io/api/image/2/level2.json');
-        if (!service) {
-            service = resource.getService('http://iiif.io/api/image/2/level1.json');
-            if (!service) {
-                return false;
+            const images = canvases.getImages();
+            if (images === undefined || images.length === 0) {
+                continue;
             }
+            const image0 = images[0];
+
+            const resource = image0.getResource();
+            if (resource === undefined) {
+                continue;
+            }
+
+            let service = resource.getService('http://iiif.io/api/image/2/level2.json');
+            if (!service) {
+                service = resource.getService('http://iiif.io/api/image/2/level1.json');
+                if (!service) {
+                    continue;
+                }
+            }
+
+            if (service.hasOwnProperty('id') === undefined) {
+                continue;
+            }
+
+            sources.push(service.id);
         }
 
-        if (service.hasOwnProperty('id') === undefined) {
+        if (sources.length === 0) {
             return false;
         }
 
         return {
-            source: service.id,
+            source: sources,
             type: 'imageService'
         };
     }

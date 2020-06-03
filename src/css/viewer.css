@@ -37,6 +37,34 @@
     background-image: url("../icons/fa/arrows-alt-solid.svg");
 }
 
+#previous-button {
+    left:148px;
+    background-image: url("../icons/fa/chevron-circle-left-solid.svg");
+}
+
+#next-button {
+    left:176px;
+    background-image: url("../icons/fa/chevron-circle-right-solid.svg");
+}
+
+#sources {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 130px;
+    overflow: hidden;
+}
+
+#sources:hover {
+    overflow: auto;
+}
+
+#sources img {
+    display: block;
+    margin: 10px 0;
+}
+
 .openseadragon-icon {
     top: 8px;
     position: absolute !important;

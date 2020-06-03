@@ -6,11 +6,11 @@ import ViewerSpinner from './ViewerSpinner';
 import WindowInfo from './lib/WindowInfo';
 
 interface IProps {
-    source: string;
+    source: string[];
 }
 
 interface IState {
-    source: string;
+    source: string[];
     spinner: boolean;
 }
 
@@ -19,6 +19,8 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     private tokenReceived = this.update.bind(this);
     private viewer: any;
+    private data: any = [];
+    private i = 0;
 
     constructor(props: IProps) {
 
@@ -26,31 +28,80 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
         this.state = {
             source: props.source,
-            spinner: true,
+            spinner: true
         };
     }
 
     render() {
-        return <div id="openseadragon" key={this.state.source} style={{height: WindowInfo.getHeight() / 2}}>
+        return <div id="openseadragon" key={this.state.source[0]} style={{height: WindowInfo.getHeight() / 2}}>
             <div id="zoom-in-button" className="openseadragon-icon" />
             <div id="zoom-out-button" className="openseadragon-icon" />
             <div id="rotate-right-button" className="openseadragon-icon" />
             <div id="home-button" className="openseadragon-icon" />
             <div id="fullpage-button" className="openseadragon-icon" />
+            {this.renderPreviousButton()}
+            {this.renderNextButton()}
             <ViewerSpinner show={this.state.spinner} />
+            {this.renderSources()}
         </div>;
+    }
+
+    renderPreviousButton() {
+        if (this.data.length > 1 && this.i > 0) {
+            return <div id="previous-button" className="openseadragon-icon"
+                        onClick={() => this.changeSource(this.i - 1)} />
+        }
+    }
+
+    renderNextButton() {
+        if (this.data.length > 1 && this.i + 1 < this.data.length) {
+            return  <div id="next-button" className="openseadragon-icon"
+                         onClick={() => this.changeSource(this.i + 1)} />
+        }
+    }
+
+    renderSources() {
+        if (this.data.length > 1) {
+            const sourceThumbs = [];
+            for (let i = 0; i < this.data.length; i++) {
+                const source = this.data[i];
+                sourceThumbs.push(
+                    <img key={source['@id']} src={source['@id']+'/full/,140/0/default.jpg'} alt={source['@id']}
+                    onClick={() => this.changeSource(i)}/>
+                );
+            }
+
+            return <div id="sources">{sourceThumbs}</div>
+        }
+    }
+
+    changeSource(i: number) {
+        const t = this;
+
+        if (this.data.hasOwnProperty(i)) {
+            const oldImage = this.viewer.world.getItemAt(0);
+            this.viewer.addTiledImage({
+                tileSource: this.data[i],
+                success: function() {
+                    t.viewer.world.removeItem(oldImage);
+                }
+            });
+            this.i = i;
+        }
     }
 
 
     componentDidMount() {
         const t = this;
-        InfoJson.get(this.state.source, function(data: any) {
+
+        InfoJson.getMulti(this.state.source, function(data: any) {
+            t.data = data;
             const options: any = {
                 id: 'openseadragon',
                 defaultZoomLevel: 0,
-                tileSources: data,
+                tileSources: data[0],
                 showNavigationControl: true,
-                showNavigator: true,
+                showNavigator: data.length === 1,
                 showRotationControl: true,
                 maxZoomPixelRatio: 2,
                 controlsFadeDelay: 250,
