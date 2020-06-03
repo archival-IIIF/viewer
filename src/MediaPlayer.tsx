@@ -1,5 +1,5 @@
 import * as React from 'react';
-import videojs from 'video.js';
+import videojs, {VideoJsPlayerOptions} from 'video.js';
 import Cache from './lib/Cache';
 require('video.js/dist/video-js.css');
 
@@ -28,7 +28,18 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
 
     componentDidMount() {
         // instantiate Video.js
-        this.player = videojs(this.videoNode, this.props, function onPlayerReady() {});
+
+        const videoJsPlayerOptions: VideoJsPlayerOptions = {
+            sources: this.props.sources,
+            tracks: this.props.tracks,
+            width: this.props.width,
+            height: this.props.height,
+            poster: this.props.poster,
+            preload: this.props.preload,
+            controls: this.props.controls
+        }
+
+        this.player = videojs(this.videoNode, videoJsPlayerOptions, function onPlayerReady() {});
 
         Cache.ee.addListener('play-audio', this.play);
     }
