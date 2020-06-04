@@ -137,23 +137,6 @@
     left: 30px;
 }
 
-.mejs__container, .mejs__controls {
-    background: transparent !important;
-}
-
-.mejs__audio {
-    width: 100% !important;
-}
-
-.mejs__video {
-    margin: 0 auto;
-    text-align: center !important;
-}
-
-.mejs__overlay-play {
-    width: 100%;
-}
-
 .plain-text {
     background-color: #ffffff;
     padding: 30px;
