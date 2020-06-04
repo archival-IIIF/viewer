@@ -47,7 +47,6 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     renderPreviousButton() {
         if (this.data.length > 1) {
-            console.log(this.i === 0);
             return <button id="previous-button" className="openseadragon-icon" disabled={(this.i === 0)}
                         onClick={() => this.changeSource(this.i - 1)} />
         }
