@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Viewer from "./Viewer";
+import Viewer from "./viewer/Viewer";
 import Splitter from "./splitter/Splitter";
 import Folder from "./Folder";
 

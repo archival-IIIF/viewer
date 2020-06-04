@@ -7,7 +7,7 @@ import {I18nextProvider, initReactI18next} from 'react-i18next';
 import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
-import TreeView from "./TreeView";
+import TreeView from "./treeView/TreeView";
 import Splitter from "./splitter/Splitter";
 import Content from "./Content";
 const commonEn = require('./translations/en/common.json');

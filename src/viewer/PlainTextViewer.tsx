@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ViewerSpinner from './ViewerSpinner';
-import WindowInfo from './lib/WindowInfo';
 import Nl2br from './Nl2br';
 
 interface IProps {

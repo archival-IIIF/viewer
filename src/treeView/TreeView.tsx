@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Loading from './Loading';
+import Loading from '../Loading';
 import TreeViewItem from './TreeViewItem';
-import Manifest from './lib/Manifest';
-import Cache from './lib/Cache';
-import './css/treeview.css';
+import Manifest from '../lib/Manifest';
+import Cache from '../lib/Cache';
+import './treeview.css';
 
 interface IState {
     opened: object;

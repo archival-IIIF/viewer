@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ReactOpenSeadragon from './ReactOpenSeadragon';
 import MediaPlayer from './MediaPlayer';
-import Cache from './lib/Cache';
+import Cache from '../lib/Cache';
 import videojs from 'video.js';
-import IManifestData from './interface/IManifestData';
+import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 
-require('./css/viewer.css');
+require('./viewer.css');
 
 interface IState {
     data: IManifestData | null;

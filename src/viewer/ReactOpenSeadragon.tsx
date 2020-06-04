@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as OpenSeadragon from 'openseadragon';
-import InfoJson from './lib/InfoJson';
-import Cache from './lib/Cache';
+import InfoJson from '../lib/InfoJson';
+import Cache from '../lib/Cache';
 import ViewerSpinner from './ViewerSpinner';
-import WindowInfo from './lib/WindowInfo';
 
 interface IProps {
     source: string[];

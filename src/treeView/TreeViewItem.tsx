@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Manifest from './lib/Manifest';
-import Loading from './Loading';
-import Cache from './lib/Cache';
+import Manifest from '../lib/Manifest';
+import Loading from '../Loading';
+import Cache from '../lib/Cache';
 
-require('./css/treeview.css');
+require('./treeview.css');
 
 interface IProps {
     id?: string;

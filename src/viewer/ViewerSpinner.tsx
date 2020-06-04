@@ -1,5 +1,5 @@
 import * as React from 'react';
-import WindowInfo from './lib/WindowInfo';
+import WindowInfo from '../lib/WindowInfo';
 
 interface IProps {
     show: boolean;
