@@ -1,7 +1,6 @@
 import * as React from 'react';
-import './css/splitter.css';
 import Viewer from "./Viewer";
-import Splitter from "./Splitter";
+import Splitter from "./splitter/Splitter";
 import Folder from "./Folder";
 
 class Content extends React.Component<{}, {}> {

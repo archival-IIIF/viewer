@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './css/splitter.css';
+import './splitter.css';
 
 interface IProps {
     a: JSX.Element;

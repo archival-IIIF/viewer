@@ -8,7 +8,7 @@ import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
 import TreeView from "./TreeView";
-import Splitter from "./Splitter";
+import Splitter from "./splitter/Splitter";
 import Content from "./Content";
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
