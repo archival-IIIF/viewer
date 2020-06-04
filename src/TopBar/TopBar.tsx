@@ -10,13 +10,9 @@ interface IState {
     logoutButtonIsVisible: boolean;
 }
 
-interface IProps {
-    toggleTreeViewBar: () => void;
-}
+class TopBar extends React.Component<{}, IState> {
 
-class TopBar extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
+    constructor(props: {}) {
 
         super(props);
 
@@ -25,12 +21,13 @@ class TopBar extends React.Component<IProps, IState> {
         };
 
         this.tokenReceived = this.tokenReceived.bind(this);
+        this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
     }
 
     render() {
 
         return <div id="topbar">
-            <div className="icon-button" onClick={() => this.props.toggleTreeViewBar()}>
+            <div className="icon-button" onClick={this.toggleTreeViewBar}>
                 <NavBarIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
             </div>
@@ -52,6 +49,10 @@ class TopBar extends React.Component<IProps, IState> {
 
     logout() {
         Cache.ee.emit('logout');
+    }
+
+    toggleTreeViewBar() {
+        Cache.ee.emit('toggle-splitter-main');
     }
 
     tokenReceived() {

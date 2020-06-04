@@ -27,7 +27,6 @@ declare let global: {
 };
 
 interface IState {
-    showNavBar: boolean;
     data: IManifestData | null;
 }
 
@@ -39,7 +38,7 @@ class App extends React.Component<IProps, IState> {
 
         global.config = new Config(this.props.config);
 
-        this.state = {showNavBar: true, data: null}
+        this.state = {data: null}
 
         i18n.use(initReactI18next).init({
             lng: global.config.getLanguage(),
@@ -58,7 +57,6 @@ class App extends React.Component<IProps, IState> {
             }
         });
 
-        this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
         this.open = this.open.bind(this);
     }
 
@@ -67,7 +65,7 @@ class App extends React.Component<IProps, IState> {
             <I18nextProvider i18n={i18n}>
                 <Alert />
                 <Login/>
-                <TopBar toggleTreeViewBar={this.toggleTreeViewBar}/>
+                <TopBar />
                 {this.renderMain()}
             </I18nextProvider>
         );
@@ -75,9 +73,9 @@ class App extends React.Component<IProps, IState> {
 
     renderMain() {
         return <Splitter
+            id="main"
             a={<TreeView />}
             b={<Content data={this.state.data}/>}
-            hideA={!this.state.showNavBar}
             direction="vertical"
         />;
     }
@@ -87,10 +85,6 @@ class App extends React.Component<IProps, IState> {
             ManifestHistory.goBack();
         });
         Cache.ee.addListener('update-file-info', this.open);
-    }
-
-    toggleTreeViewBar() {
-        this.setState({showNavBar: !this.state.showNavBar});
     }
 
     open(manifestData: any) {

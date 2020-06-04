@@ -1,13 +1,13 @@
 import * as React from 'react';
 import './splitter.css';
 import {CSSProperties} from "react";
+import Cache from "../lib/Cache";
 
 interface IProps {
     a: JSX.Element;
     b: JSX.Element;
     id?: string;
     aSize?: number;
-    hideA?: boolean;
     direction: "horizontal"|"vertical";
 }
 
@@ -19,6 +19,8 @@ class Splitter extends React.Component<IProps, IState> {
 
     private isMoving: boolean = false;
     private readonly myRef: React.RefObject<HTMLDivElement>;
+    private lastSize = 0;
+    private readonly defaultSize = 20;
 
     constructor(props: IProps) {
 
@@ -27,7 +29,7 @@ class Splitter extends React.Component<IProps, IState> {
         const t = this;
         this.globalMoveStart = this.globalMoveStart.bind(this);
         this.globalMoveEnd = this.globalMoveEnd.bind(this);
-        let size = 20;
+        let size = this.defaultSize;
         if (this.props.aSize !== undefined && this.props.aSize < 100) {
             size = this.props.aSize;
         }
@@ -52,14 +54,11 @@ class Splitter extends React.Component<IProps, IState> {
 
         document.addEventListener('mouseup', this.globalMoveEnd);
         document.addEventListener('touchend', this.globalMoveEnd);
+
+        this.toggleSplitter = this.toggleSplitter.bind(this);
     }
 
     render() {
-
-        if (this.props.hideA === true) {
-            return <>{this.props.b}</>;
-        }
-
         const containerClassName = 'splitter-container splitter-' + this.props.direction;
         return <div className={containerClassName} id={this.props.id} ref={this.myRef}>
             <div className="a" style={this.getAStyle()}>{this.props.a}</div>
@@ -111,6 +110,34 @@ class Splitter extends React.Component<IProps, IState> {
         } else {
             this.props.widthChangedFunc(global.config.getDefaultNavBarWith());
         }*/
+    }
+
+    componentDidMount() {
+        if (this.props.id) {
+            Cache.ee.addListener('toggle-splitter-'+this.props.id, this.toggleSplitter);
+        }
+    }
+
+
+    componentWillUnmount() {
+        if (this.props.id) {
+            Cache.ee.removeListener('toggle-splitter-' + this.props.id, this.toggleSplitter);
+        }
+    }
+
+    toggleSplitter() {
+        if (this.state.size > 0) {
+            this.lastSize = this.state.size;
+            this.setState({size: 0})
+        } else {
+            if (this.lastSize > 0) {
+                this.setState({size: this.lastSize})
+            } else if (this.props.aSize !== undefined && this.props.aSize < 100) {
+                this.setState({size: this.props.aSize})
+            } else {
+                this.setState({size: this.defaultSize})
+            }
+        }
     }
 }
 
