@@ -35,6 +35,10 @@ class Viewer extends React.Component<IProps, {}> {
             return this.renderPlainText();
         }
 
+        if (manifestData.resource.format === 'application/pdf') {
+            return this.renderPdf();
+        }
+
         return '';
     }
 
@@ -58,6 +62,13 @@ class Viewer extends React.Component<IProps, {}> {
                     <PlainTextViewer source={resource.source} key={resource.source}/>
                 </div>
             );
+        }
+    }
+
+    renderPdf() {
+        if (this.props.data) {
+            const resource: any = this.props.data.resource;
+            return <iframe id="viewer" src={resource.source} title={resource.source}/>;
         }
     }
 

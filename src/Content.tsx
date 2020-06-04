@@ -65,7 +65,8 @@ class Content extends React.Component<IPros, {}> {
         if (
             manifestData.resource.type === 'imageService' ||
             manifestData.resource.type === 'audioVideo' ||
-            manifestData.resource.format === 'text/plain'
+            manifestData.resource.format === 'text/plain' ||
+            manifestData.resource.format === 'application/pdf'
         ) {
             return 50;
         }
