@@ -13,9 +13,9 @@
 
 ## Supported Browsers
 
-| IE | Edge  | Firefox | Chrome | Safari |
-|----|-------|---------|--------|--------|
-| 11 | ≥ 14  | ≥ 52    | ≥ 49   | ≥ 10   |
+| Edge | Firefox | Chrome | Safari |
+|------|---------|--------|--------|
+| ≥ 14 | ≥ 52    | ≥ 49   | ≥ 10   |
 
 
 ## See also
