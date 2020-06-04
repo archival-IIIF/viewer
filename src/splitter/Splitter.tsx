@@ -1,11 +1,13 @@
 import * as React from 'react';
 import './splitter.css';
+import {CSSProperties} from "react";
 
 interface IProps {
     a: JSX.Element;
     b: JSX.Element;
     id?: string;
     aSize?: number
+    aMaxSize?: number;
     direction: "horizontal"|"vertical"
 }
 
@@ -26,7 +28,7 @@ class Splitter extends React.Component<IProps, IState> {
         this.globalMoveStart = this.globalMoveStart.bind(this);
         this.globalMoveEnd = this.globalMoveEnd.bind(this);
         let size = 20;
-        if (this.props.aSize && this.props.aSize < 100) {
+        if (this.props.aSize !== undefined && this.props.aSize < 100) {
             size = this.props.aSize;
         }
         this.state = {size};
@@ -55,22 +57,30 @@ class Splitter extends React.Component<IProps, IState> {
     render() {
         const containerClassName = 'splitter-container splitter-' + this.props.direction;
         return <div className={containerClassName} id={this.props.id} ref={this.myRef}>
-            {this.renderA()}
+            <div className="a" style={this.getAStyle()}>{this.props.a}</div>
             <div className="splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
                     onDoubleClick={() => this.splitterDoubleClick()} />
             <div className="b">{this.props.b}</div>
         </div>;
     }
 
-    renderA() {
-        let aStyle = {};
+
+    getAStyle(): CSSProperties {
         const size = (this.state.size).toString() + '%';
         if (this.props.direction === 'vertical') {
-            aStyle = {minWidth: size, maxWidth: size};
-        } else {
-            aStyle = {minHeight: size, maxHeight: size};
+            if (this.props.aMaxSize) {
+                return {maxWidth: this.props.aMaxSize};
+            } else {
+                return {minWidth: size, maxWidth: size};
+            }
         }
-        return <div className="a" style={aStyle}>{this.props.a}</div>;
+
+
+        if (this.props.aMaxSize) {
+            return {maxHeight: this.props.aMaxSize};
+        }
+
+        return {minHeight: size, maxHeight: size};
     }
 
     globalMoveStart(size: number) {

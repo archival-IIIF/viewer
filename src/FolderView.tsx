@@ -5,7 +5,6 @@ import Manifest from './lib/Manifest';
 import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
-import ManifestData from './entity/ManifestData';
 import {Translation} from 'react-i18next';
 import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
 import ViewListIcon from "@material-ui/icons/ViewList";
@@ -16,24 +15,25 @@ interface IState {
     mode: string;
 }
 
+interface IProps {
+    data: IManifestData | null;
+}
 
-class FolderView extends React.Component<any, IState> {
+class FolderView extends React.Component<IProps, IState> {
 
     constructor(props: any) {
 
         super(props);
 
-
         this.state = {
             data: null,
             mode: 'icon-view',
-            selected: undefined
+            selected: this.props.data ? this.props.data.id : undefined
         };
 
         this.openFolder = this.openFolder.bind(this);
         this.showListView = this.showListView.bind(this);
         this.showIconView = this.showIconView.bind(this);
-        this.updateFileInfo = this.updateFileInfo.bind(this);
     }
 
 
@@ -193,7 +193,6 @@ class FolderView extends React.Component<any, IState> {
 
     componentDidMount() {
         Cache.ee.addListener('open-folder', this.openFolder);
-        Cache.ee.addListener('update-file-info', this.updateFileInfo);
 
         const id = Manifest.getIdFromCurrentUrl();
         this.openFolder(id, null, null);
@@ -201,20 +200,7 @@ class FolderView extends React.Component<any, IState> {
 
     componentWillUnmount() {
         Cache.ee.removeListener('open-folder', this.openFolder);
-        Cache.ee.removeListener('update-file-info', this.updateFileInfo);
     }
-
-    updateFileInfo(manifestData: ManifestData) {
-        if (this.state.selected === manifestData.id) {
-            return;
-        }
-
-        this.setState({
-            selected: manifestData.id
-        });
-    }
-
-
 }
 
 export default FolderView;

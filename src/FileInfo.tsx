@@ -14,7 +14,7 @@ interface IHTMLAnchorElement {
     target?: string;
 }
 
-interface IState {
+interface IProps {
     data: IManifestData | null;
 }
 
@@ -22,30 +22,25 @@ declare let global: {
     config: Config;
 };
 
-class FileInfo extends React.Component<any, IState> {
+class FileInfo extends React.Component<IProps, {}> {
 
     constructor(props: any) {
 
         super(props);
 
-        this.state = {
-            data: null,
-        };
-
-        this.updateFileInfo = this.updateFileInfo.bind(this);
         this.showManifestationsModal = this.showManifestationsModal.bind(this);
     }
 
     render() {
-        if (this.state.data === null || this.state.data.restricted) {
+        if (this.props.data === null || this.props.data.restricted) {
             return '';
         }
 
-        if (typeof this.state.data === 'string') {
-            return <div id="file-info">{this.state.data}</div>;
+        if (typeof this.props.data === 'string') {
+            return <div id="file-info">{this.props.data}</div>;
         }
 
-        const manifestData = this.state.data;
+        const manifestData = this.props.data;
         const metadataView = [];
 
         // Add a hook to make all links open a new window
@@ -129,15 +124,6 @@ class FileInfo extends React.Component<any, IState> {
         );
     }
 
-    componentDidMount() {
-        Cache.ee.addListener('update-file-info', this.updateFileInfo);
-    }
-
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('update-file-info', this.updateFileInfo);
-    }
-
     addBlankTarget(input: string) {
         const tmp = document.createElement('div');
         tmp.innerHTML = input;
@@ -150,15 +136,11 @@ class FileInfo extends React.Component<any, IState> {
         return tmp.innerHTML;
     }
 
-    updateFileInfo(data: IManifestData) {
-        this.setState({data});
-    }
-
     showManifestationsModal() {
 
         const bodyJsx = [];
-        if (this.state.data !== null) {
-            const manifestations = this.state.data.manifestations;
+        if (this.props.data !== null) {
+            const manifestations = this.props.data.manifestations;
             for (const i in manifestations) {
                 if (manifestations.hasOwnProperty(i)) {
                     const manifestation = manifestations[i];

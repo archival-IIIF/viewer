@@ -1,36 +1,24 @@
 import * as React from 'react';
 import ReactOpenSeadragon from './ReactOpenSeadragon';
 import MediaPlayer from './MediaPlayer';
-import Cache from '../lib/Cache';
 import videojs from 'video.js';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 
 require('./viewer.css');
 
-interface IState {
+interface IProps {
     data: IManifestData | null;
 }
 
 
-class Viewer extends React.Component<any, IState> {
+class Viewer extends React.Component<IProps, {}> {
 
     private type = '';
 
-    constructor(props: any) {
-
-        super(props);
-
-        this.state = {
-            data: null,
-        };
-
-        this.open = this.open.bind(this); // click
-    }
-
     render() {
 
-        const manifestData: any = this.state.data;
+        const manifestData: any = this.props.data;
 
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return '';
@@ -52,8 +40,8 @@ class Viewer extends React.Component<any, IState> {
     }
 
     renderImage() {
-        if (this.state.data) {
-            const resource: any = this.state.data.resource;
+        if (this.props.data) {
+            const resource: any = this.props.data.resource;
             return (
                 <div id="viewer">
                     <ReactOpenSeadragon source={resource.source} key={resource.source} />
@@ -64,8 +52,8 @@ class Viewer extends React.Component<any, IState> {
     }
 
     renderPlainText() {
-        if (this.state.data) {
-            const resource: any = this.state.data.resource;
+        if (this.props.data) {
+            const resource: any = this.props.data.resource;
             return (
                 <div id="viewer">
                     <PlainTextViewer source={resource.source} key={resource.source}/>
@@ -76,8 +64,8 @@ class Viewer extends React.Component<any, IState> {
 
     renderAudioVideo() {
 
-        if (this.state.data) {
-            const resource: any = this.state.data.resource;
+        if (this.props.data) {
+            const resource: any = this.props.data.resource;
             const element0 = resource.source;
             const mime = element0.format;
             const mediaType = mime.substr(0, 5);
@@ -100,18 +88,6 @@ class Viewer extends React.Component<any, IState> {
                 </div>
             );
         }
-    }
-
-    open(manifestData: any) {
-        this.setState({data: manifestData});
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('update-file-info', this.open);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('update-file-info', this.open);
     }
 }
 
