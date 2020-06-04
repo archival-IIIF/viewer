@@ -57,7 +57,7 @@ class FolderView extends React.Component<IProps, IState> {
                 <div id="folder-view-container">
                     <h1>{this.state.data.label}</h1>
                     <div className="empty">
-                        <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>,
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
                     </div>
                 </div>
             );
