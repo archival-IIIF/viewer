@@ -41,7 +41,7 @@ class Content extends React.Component<{}, IState> {
             return <div id="content-audio">
                 <Viewer data={this.state.data}/>
                 <Folder data={this.state.data}/>
-            </div>
+            </div>;
         }
 
         return <Splitter
