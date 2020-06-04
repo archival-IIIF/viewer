@@ -76,6 +76,14 @@
     background-repeat: no-repeat;
     z-index: 999;
     background-size: 24px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.openseadragon-icon:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .openseadragon-message {

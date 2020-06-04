@@ -46,15 +46,16 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     }
 
     renderPreviousButton() {
-        if (this.data.length > 1 && this.i > 0) {
-            return <div id="previous-button" className="openseadragon-icon"
+        if (this.data.length > 1) {
+            console.log(this.i === 0);
+            return <button id="previous-button" className="openseadragon-icon" disabled={(this.i === 0)}
                         onClick={() => this.changeSource(this.i - 1)} />
         }
     }
 
     renderNextButton() {
-        if (this.data.length > 1 && this.i + 1 < this.data.length) {
-            return  <div id="next-button" className="openseadragon-icon"
+        if (this.data.length > 1) {
+            return  <button id="next-button" className="openseadragon-icon" disabled={(this.i + 1 === this.data.length)}
                          onClick={() => this.changeSource(this.i + 1)} />
         }
     }
