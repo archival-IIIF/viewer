@@ -144,3 +144,7 @@
     margin: 0 auto;
     overflow-y: auto;
 }
+
+.vjs_video_3-dimensions {
+    height: 100%;
+}
