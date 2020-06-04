@@ -145,6 +145,10 @@
     overflow-y: auto;
 }
 
-.vjs_video_3-dimensions {
-    height: 100%;
+.vjs-has-started {
+    height: 100% !important;
+}
+
+.vjs-has-started > div {
+    height: inherit;
 }
