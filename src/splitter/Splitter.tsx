@@ -7,7 +7,6 @@ interface IProps {
     b: JSX.Element;
     id?: string;
     aSize?: number
-    aMaxSize?: number;
     direction: "horizontal"|"vertical"
 }
 
@@ -68,16 +67,7 @@ class Splitter extends React.Component<IProps, IState> {
     getAStyle(): CSSProperties {
         const size = (this.state.size).toString() + '%';
         if (this.props.direction === 'vertical') {
-            if (this.props.aMaxSize) {
-                return {maxWidth: this.props.aMaxSize};
-            } else {
-                return {minWidth: size, maxWidth: size};
-            }
-        }
-
-
-        if (this.props.aMaxSize) {
-            return {maxHeight: this.props.aMaxSize};
+            return {minWidth: size, maxWidth: size};
         }
 
         return {minHeight: size, maxHeight: size};

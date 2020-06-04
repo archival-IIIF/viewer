@@ -24,49 +24,68 @@ class Content extends React.Component<{}, IState> {
 
     render() {
 
-        let size = this.getSize();
+        const size = this.getSize();
         let key = "content";
         if(this.state.data && this.state.data.id) {
             key += this.state.data.id;
         }
-        if (size.size) {
-            key += size.size.toString();
+        key += size.toString();
+
+        if (size === 0) {
+            return <Folder data={this.state.data}/>;
         }
 
-        if (size.size === 0) {
-            return <Folder data={this.state.data}/>;
+        console.log(this.isAudio())
+
+        if (this.isAudio()) {
+            return <div id="content-audio">
+                <Viewer data={this.state.data}/>
+                <Folder data={this.state.data}/>
+            </div>
         }
 
         return <Splitter
             id="content"
             key={key}
-            aSize={size.size}
-            aMaxSize={size.max}
+            aSize={size}
             a={<Viewer data={this.state.data}/>}
             b={<Folder data={this.state.data}/>}
             direction="horizontal"
         />
     }
 
-    getSize(): {size?: number, max?: number} {
+    isAudio() {
         const manifestData: any = this.state.data;
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
-            return {size: 0}
+            return false;
         }
 
-        if (manifestData.resource.type === 'imageService' || manifestData.resource.format === 'text/plain') {
-            return {size: 50}
+        if (manifestData.resource.type !== 'audioVideo') {
+            return false;
         }
 
-         if (manifestData.resource.type === 'audioVideo') {
-            if (manifestData.resource.source.format.startsWith('audio')) {
-                return {max: 30}
-            }
-
-            return {size: 50}
+        if (!manifestData.resource.source.format.startsWith('audio')) {
+            return false;
         }
 
-        return {size: 0}
+        return true;
+    }
+
+    getSize(): number {
+        const manifestData: any = this.state.data;
+        if (!manifestData || !manifestData.hasOwnProperty('resource')) {
+            return 0;
+        }
+
+        if (
+            manifestData.resource.type === 'imageService' ||
+            manifestData.resource.type === 'audioVideo' ||
+            manifestData.resource.format === 'text/plain'
+        ) {
+            return 50;
+        }
+
+        return 0;
     }
 
     open(manifestData: any) {
