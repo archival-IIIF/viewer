@@ -25,17 +25,14 @@ class Content extends React.Component<{}, IState> {
     render() {
 
         const size = this.getSize();
-        let key = "content";
+        let key = "content" + size.toString();
         if(this.state.data && this.state.data.id) {
             key += this.state.data.id;
         }
-        key += size.toString();
 
         if (size === 0) {
             return <Folder data={this.state.data}/>;
         }
-
-        console.log(this.isAudio())
 
         if (this.isAudio()) {
             return <div id="content-audio">
