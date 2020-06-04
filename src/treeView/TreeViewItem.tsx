@@ -2,8 +2,7 @@ import * as React from 'react';
 import Manifest from '../lib/Manifest';
 import Loading from '../Loading';
 import Cache from '../lib/Cache';
-
-require('./treeview.css');
+import './treeview.css';
 
 interface IProps {
     id?: string;

@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Nl2br from './viewer/Nl2br';
-require('./css/modal.css');
+import './css/modal.css';
 
 interface IState {
     visible: boolean;

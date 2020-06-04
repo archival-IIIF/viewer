@@ -10,13 +10,11 @@ import Config from './lib/Config';
 import TreeView from "./treeView/TreeView";
 import Splitter from "./splitter/Splitter";
 import Content from "./Content";
+import './css/App.css';
+
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
 const commonNl = require('./translations/nl/common.json');
-
-require('./css/App.css');
-
-
 
 interface IProps {
     config: IConfigParameter;

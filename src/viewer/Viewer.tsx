@@ -4,8 +4,7 @@ import MediaPlayer from './MediaPlayer';
 import videojs from 'video.js';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
-
-require('./viewer.css');
+import './viewer.css';
 
 interface IProps {
     data: IManifestData | null;

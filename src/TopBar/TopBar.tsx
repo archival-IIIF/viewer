@@ -4,8 +4,7 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
-
-require('./topbar.css');
+import './topbar.css';
 
 interface IState {
     logoutButtonIsVisible: boolean;

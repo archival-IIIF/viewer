@@ -4,10 +4,11 @@ import Cache from './lib/Cache';
 import IManifestData from './interface/IManifestData';
 import Config from './lib/Config';
 import {Translation} from 'react-i18next';
+import './css/manifestations-modal.css';
+import './css/file-info.css';
 
 const iifLogo = require('./icons/iiif.png');
-require('./css/manifestations-modal.css');
-require('./css/file-info.css');
+
 
 interface IHTMLAnchorElement {
     nodeName: string;

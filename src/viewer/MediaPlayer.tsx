@@ -1,7 +1,7 @@
 import * as React from 'react';
 import videojs, {VideoJsPlayerOptions} from 'video.js';
 import Cache from '../lib/Cache';
-require('video.js/dist/video-js.css');
+import 'video.js/dist/video-js.css';
 
 interface IProps {
     sources?: videojs.Tech.SourceObject[];
