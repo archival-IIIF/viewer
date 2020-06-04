@@ -11,8 +11,9 @@ interface IProps {
 class Folder extends React.Component<IProps, {}> {
 
     render() {
+        let folderViewKey = this.props.data ? 'folderViewKey' + this.props.data.id : 'folderViewKey';
         return <Splitter
-            a={<FolderView data={this.props.data}/>}
+            a={<FolderView key={folderViewKey}  data={this.props.data}/>}
             b={<FileInfo data={this.props.data}/>}
             aSize={70}
             direction="vertical"
