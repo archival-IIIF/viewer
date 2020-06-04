@@ -155,7 +155,7 @@ class FileInfo extends React.Component<IProps, {}> {
         }
 
         const alertArgs = {
-            titleJsx: <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>,
+            titleJsx: <Translation ns="common">{(t, { i18n }) => <p>{t('fileManifestations')}</p>}</Translation>,
             bodyJsx
         };
         Cache.ee.emit('alert', alertArgs);
