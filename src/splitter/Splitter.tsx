@@ -6,8 +6,9 @@ interface IProps {
     a: JSX.Element;
     b: JSX.Element;
     id?: string;
-    aSize?: number
-    direction: "horizontal"|"vertical"
+    aSize?: number;
+    hideA?: boolean;
+    direction: "horizontal"|"vertical";
 }
 
 interface IState {
@@ -54,6 +55,11 @@ class Splitter extends React.Component<IProps, IState> {
     }
 
     render() {
+
+        if (this.props.hideA === true) {
+            return <>{this.props.b}</>;
+        }
+
         const containerClassName = 'splitter-container splitter-' + this.props.direction;
         return <div className={containerClassName} id={this.props.id} ref={this.myRef}>
             <div className="a" style={this.getAStyle()}>{this.props.a}</div>

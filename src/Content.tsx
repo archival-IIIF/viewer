@@ -3,41 +3,29 @@ import Viewer from "./viewer/Viewer";
 import Splitter from "./splitter/Splitter";
 import Folder from "./Folder";
 import IManifestData from "./interface/IManifestData";
-import Cache from "./lib/Cache";
 
-interface IState {
+interface IPros {
     data: IManifestData | null;
 }
 
-class Content extends React.Component<{}, IState> {
-
-    constructor(props: any) {
-
-        super(props);
-
-        this.state = {
-            data: null,
-        };
-
-        this.open = this.open.bind(this);
-    }
+class Content extends React.Component<IPros, {}> {
 
     render() {
 
         const size = this.getSize();
         let key = "content" + size.toString();
-        if(this.state.data && this.state.data.id) {
-            key += this.state.data.id;
+        if(this.props.data && this.props.data.id) {
+            key += this.props.data.id;
         }
 
         if (size === 0) {
-            return <Folder data={this.state.data}/>;
+            return <Folder data={this.props.data}/>;
         }
 
         if (this.isAudio()) {
             return <div id="content-audio">
-                <Viewer data={this.state.data}/>
-                <Folder data={this.state.data}/>
+                <Viewer data={this.props.data}/>
+                <Folder data={this.props.data}/>
             </div>;
         }
 
@@ -45,14 +33,14 @@ class Content extends React.Component<{}, IState> {
             id="content"
             key={key}
             aSize={size}
-            a={<Viewer data={this.state.data}/>}
-            b={<Folder data={this.state.data}/>}
+            a={<Viewer data={this.props.data}/>}
+            b={<Folder data={this.props.data}/>}
             direction="horizontal"
         />
     }
 
     isAudio() {
-        const manifestData: any = this.state.data;
+        const manifestData: any = this.props.data;
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return false;
         }
@@ -69,7 +57,7 @@ class Content extends React.Component<{}, IState> {
     }
 
     getSize(): number {
-        const manifestData: any = this.state.data;
+        const manifestData: any = this.props.data;
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return 0;
         }
@@ -83,18 +71,6 @@ class Content extends React.Component<{}, IState> {
         }
 
         return 0;
-    }
-
-    open(manifestData: any) {
-        this.setState({data: manifestData});
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('update-file-info', this.open);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('update-file-info', this.open);
     }
 }
 
