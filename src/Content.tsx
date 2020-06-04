@@ -33,6 +33,10 @@ class Content extends React.Component<{}, IState> {
             key += size.size.toString();
         }
 
+        if (size.size === 0) {
+            return <Folder data={this.state.data}/>;
+        }
+
         return <Splitter
             id="content"
             key={key}
