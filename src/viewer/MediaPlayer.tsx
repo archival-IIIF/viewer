@@ -58,7 +58,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
         if (this.props.mediaType === 'video') {
             return <div className="vjs-has-started">
                 <div data-vjs-player style={{width: '100%'}}>
-                    <video ref={(node) => this.videoNode = node} className="video-js" preload={this.props.preload}/> :
+                    <video ref={(node) => this.videoNode = node} className="video-js" preload={this.props.preload}/>
                 </div>
             </div>;
         }
