@@ -24,14 +24,19 @@ declare let global: {
     config: Config;
 };
 
+interface IState {
+    showNavBar: boolean;
+}
 
-class App extends React.Component<IProps, {}> {
+class App extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
 
         super(props);
 
         global.config = new Config(this.props.config);
+
+        this.state = {showNavBar: true}
 
         i18n.use(initReactI18next).init({
             lng: global.config.getLanguage(),
@@ -49,6 +54,8 @@ class App extends React.Component<IProps, {}> {
                 }
             }
         });
+
+        this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
     }
 
     render() {
@@ -56,14 +63,22 @@ class App extends React.Component<IProps, {}> {
             <I18nextProvider i18n={i18n}>
                 <Alert />
                 <Login/>
-                <TopBar/>
-                <Splitter
-                    a={<TreeView />}
-                    b={<Content />}
-                    direction="vertical"
-                />
+                <TopBar toggleTreeViewBar={this.toggleTreeViewBar}/>
+                {this.renderMain()}
             </I18nextProvider>
         );
+    }
+
+    renderMain() {
+        if (this.state.showNavBar) {
+            return <Splitter
+                a={<TreeView />}
+                b={<Content />}
+                direction="vertical"
+            />;
+        } else {
+            return <Content />;
+        }
     }
 
     componentDidMount() {
@@ -71,6 +86,10 @@ class App extends React.Component<IProps, {}> {
         window.addEventListener('popstate', function(event) {
             ManifestHistory.goBack();
         });
+    }
+
+    toggleTreeViewBar() {
+        this.setState({showNavBar: !this.state.showNavBar});
     }
 
 }
