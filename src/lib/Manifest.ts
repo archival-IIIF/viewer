@@ -354,22 +354,37 @@ class Manifest {
         const sources: any = [];
         for (const canvases of sequence0.getCanvases()) {
 
-            const images = canvases.getImages();
+            let images = canvases.getImages();
             if (images === undefined || images.length === 0) {
-                continue;
+                images = canvases.getContent();
+                if (images === undefined || images.length === 0) {
+                    continue;
+                }
             }
             const image0 = images[0];
 
-            const resource = image0.getResource();
-            if (resource === undefined) {
-                continue;
+
+            let resource = image0.getResource();
+
+
+            if (resource === undefined || !resource.id) {
+                resource = image0.getBody()[0];
+                if (resource === undefined) {
+                    continue;
+                }
             }
 
             let service = resource.getService('http://iiif.io/api/image/2/level2.json');
             if (!service) {
                 service = resource.getService('http://iiif.io/api/image/2/level1.json');
                 if (!service) {
-                    continue;
+                    service = resource.getService('level2');
+                    if (!service) {
+                        service = resource.getService('level1');
+                        if (!service) {
+                            continue;
+                        }
+                    }
                 }
             }
 
