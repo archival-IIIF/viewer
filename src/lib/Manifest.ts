@@ -87,7 +87,11 @@ class Manifest {
                     manifestData.type = 'sc:Collection';
                 }
                 manifestData.label = manifestoData.getDefaultLabel();
-                manifestData.parentId = manifestoData.getProperty('within');
+                if (manifestoData.context === 'http://iiif.io/api/collection/2/context.json') {
+                    manifestData.parentId = manifestoData.getProperty('within');
+                } else if (manifestoData.context === 'http://iiif.io/api/presentation/3/context.json') {
+                    manifestData.parentId = manifestoData.getProperty('partOf');
+                }
 
                 if (!manifestData.label) {
                     const alertArgs = {
