@@ -41,7 +41,7 @@ class Item extends React.Component<IProps, {}> {
     getThumbnail() {
 
         if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
-            if (this.props.item.type === 'sc:Collection') {
+            if (this.props.item.type === 'sc:Collection' || this.props.item.type === 'Collection') {
                 return `url(${FolderImage})`;
             }
 

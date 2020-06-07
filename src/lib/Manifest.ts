@@ -427,9 +427,16 @@ class Manifest {
         const thumbnail = new ManifestDataThumnail();
         thumbnail.id = manifestoThumbnail.id;
 
-        const thumbnailService = manifestoThumbnail.getService('http://iiif.io/api/image/2/level2.json');
-        if (thumbnailService !== null && thumbnailService.hasOwnProperty('id')) {
-            thumbnail.service = thumbnailService.id;
+        const services = [
+            'http://iiif.io/api/image/2/level2.json',
+            'level2'
+        ];
+        for (const service of services) {
+            let thumbnailService = manifestoThumbnail.getService(service);
+            if (thumbnailService !== null && thumbnailService.hasOwnProperty('id')) {
+                thumbnail.service = thumbnailService.id;
+                return thumbnail;
+            }
         }
 
         return thumbnail;
