@@ -13,7 +13,7 @@ interface IManifestData {
     resource: any;
     restricted: boolean;
     metadata: any;
-    license: string;
+    license?: string;
     description: string;
     thumbnail?: IManifestDataThumbnail;
 }

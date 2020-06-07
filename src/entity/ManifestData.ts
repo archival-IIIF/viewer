@@ -14,7 +14,7 @@ class ManifestData implements IManifestData {
     resource: '';
     restricted: false;
     metadata: '';
-    license: '';
+    license: undefined;
     description: '';
     thumbnail: undefined;
 
@@ -30,7 +30,6 @@ class ManifestData implements IManifestData {
         this.resource = '';
         this.restricted = false;
         this.metadata = '';
-        this.license = '';
         this.description = '';
     }
 

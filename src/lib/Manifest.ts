@@ -87,13 +87,14 @@ class Manifest {
                     manifestData.type = 'sc:Collection';
                 }
                 manifestData.label = manifestoData.getDefaultLabel();
-                if (manifestoData.context === 'http://iiif.io/api/collection/2/context.json') {
-                    manifestData.parentId = manifestoData.getProperty('within');
-                } else if (manifestoData.context === 'http://iiif.io/api/presentation/3/context.json') {
+                const isV3 = this.isV3(manifestoData);
+                if (isV3) {
                     const partOf = manifestoData.getProperty('partOf');
                     if (partOf && partOf.length > 0) {
                         manifestData.parentId = partOf[0].id;
                     }
+                } else {
+                    manifestData.parentId = manifestoData.getProperty('within');
                 }
 
                 if (!manifestData.label) {
@@ -228,7 +229,13 @@ class Manifest {
     }
 
     static getLicense(manifestoData: any) {
-        const license = manifestoData.getLicense();
+        let license: string|undefined;
+        if (this.isV3(manifestoData)) {
+            license = manifestoData.getProperty('rights');
+        } else {
+            license = manifestoData.getLicense();
+        }
+
         if (license === undefined || !UrlValidation.isURL(license)) {
             return undefined;
         }
@@ -519,6 +526,21 @@ class Manifest {
         const urlObject = new URL(window.location.href);
         return urlObject.searchParams.get(name);
     }
+
+    static isV3(manifestoData: any) {
+        const context = manifestoData.context;
+
+        if (typeof context === 'string') {
+            return context === 'http://iiif.io/api/presentation/3/context.json';
+        }
+
+        if (context && context.hasOwnProperty('includes')) {
+            return context.includes('http://iiif.io/api/presentation/3/context.json');
+        }
+
+        return false;
+    }
+
 }
 
 export default Manifest;
