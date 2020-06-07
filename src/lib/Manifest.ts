@@ -90,7 +90,10 @@ class Manifest {
                 if (manifestoData.context === 'http://iiif.io/api/collection/2/context.json') {
                     manifestData.parentId = manifestoData.getProperty('within');
                 } else if (manifestoData.context === 'http://iiif.io/api/presentation/3/context.json') {
-                    manifestData.parentId = manifestoData.getProperty('partOf');
+                    const partOf = manifestoData.getProperty('partOf');
+                    if (partOf && partOf.length > 0) {
+                        manifestData.parentId = partOf[0].id;
+                    }
                 }
 
                 if (!manifestData.label) {
@@ -167,7 +170,7 @@ class Manifest {
                     callback(manifestData);
                 }
             }).catch((err) => {
-                console.log(err);
+                console.log(err, url);
                 const alertArgs = {
                     title: 'Error',
                     body: 'Could not read manifest!\n\n' + url

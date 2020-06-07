@@ -7,7 +7,7 @@ interface IManifestData {
     logo: string | null;
     attribution: string;
     manifestations: any;
-    parentId: string;
+    parentId?: string;
     collections: any;
     manifests: any;
     resource: any;

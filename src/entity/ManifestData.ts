@@ -8,7 +8,7 @@ class ManifestData implements IManifestData {
     logo: '';
     attribution: '';
     manifestations: '';
-    parentId: '';
+    parentId: undefined;
     collections: '';
     manifests: '';
     resource: '';
@@ -25,7 +25,6 @@ class ManifestData implements IManifestData {
         this.logo = '';
         this.attribution = '';
         this.manifestations = '';
-        this.parentId = '';
         this.collections = '';
         this.manifests = '';
         this.resource = '';
