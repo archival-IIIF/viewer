@@ -534,7 +534,7 @@ class Manifest {
             return context === 'http://iiif.io/api/presentation/3/context.json';
         }
 
-        if (context && context.hasOwnProperty('includes')) {
+        if (context && typeof context.includes === 'function') {
             return context.includes('http://iiif.io/api/presentation/3/context.json');
         }
 
