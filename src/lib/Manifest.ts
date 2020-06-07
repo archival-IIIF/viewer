@@ -270,7 +270,6 @@ class Manifest {
 
         const imageResources = this.getImageResources(sequence0);
         if (imageResources !== false) {
-            console.log(imageResources)
             return imageResources;
         }
 
@@ -348,7 +347,6 @@ class Manifest {
 
         try {
             const source = sequence0.getCanvasByIndex(0).getContent()[0].getBody()[0];
-
             if (source.getType() === 'audio' || source.getType() === 'video') {
                 return {
                     format: source.getFormat(),
