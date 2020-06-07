@@ -27,7 +27,7 @@ class Viewer extends React.Component<IProps, {}> {
             return this.renderImage();
         }
 
-        if (manifestData.resource.type === 'audioVideo') {
+        if (manifestData.resource.type === 'audio' || manifestData.resource.type === 'video') {
             return this.renderAudioVideo();
         }
 
@@ -76,10 +76,9 @@ class Viewer extends React.Component<IProps, {}> {
 
         if (this.props.data) {
             const resource: any = this.props.data.resource;
-            const element0 = resource.source;
-            const mime = element0.format;
-            const mediaType = mime.substr(0, 5);
-            const file = element0['@id'];
+            const mime = resource.format;
+            const mediaType = resource.type;
+            const file = resource.id;
             const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
 
             this.type = 'audioVideo';

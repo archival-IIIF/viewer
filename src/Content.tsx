@@ -45,11 +45,7 @@ class Content extends React.Component<IPros, {}> {
             return false;
         }
 
-        if (manifestData.resource.type !== 'audioVideo') {
-            return false;
-        }
-
-        if (!manifestData.resource.source.format.startsWith('audio')) {
+        if (manifestData.resource.type !== 'audio') {
             return false;
         }
 
@@ -64,7 +60,8 @@ class Content extends React.Component<IPros, {}> {
 
         if (
             manifestData.resource.type === 'imageService' ||
-            manifestData.resource.type === 'audioVideo' ||
+            manifestData.resource.type === 'video' ||
+            manifestData.resource.type === 'audio' ||
             manifestData.resource.format === 'text/plain' ||
             manifestData.resource.format === 'application/pdf'
         ) {

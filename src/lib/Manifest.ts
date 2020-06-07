@@ -250,6 +250,8 @@ class Manifest {
             type: null
         };
 
+
+
         if (typeof manifestoData.getSequenceByIndex !== 'function') {
             return resource;
         }
@@ -259,10 +261,20 @@ class Manifest {
             return resource;
         }
 
+
+        const iiif3Resource = this.getIIF3Resource(sequence0);
+        if (iiif3Resource !== false) {
+            return iiif3Resource;
+        }
+
+
         const imageResources = this.getImageResources(sequence0);
         if (imageResources !== false) {
+            console.log(imageResources)
             return imageResources;
         }
+
+
 
         const audioVideoResource = this.getAudioVideoResource(sequence0);
         if (audioVideoResource !== false) {
@@ -326,9 +338,40 @@ class Manifest {
         }
 
         return {
-            source: element0,
-            type: 'audioVideo'
+            id: element0['@id'],
+            format: mime,
+            type: mediaType
         };
+    }
+
+    static getIIF3Resource(sequence0: any) {
+
+        try {
+            const source = sequence0.getCanvasByIndex(0).getContent()[0].getBody()[0];
+
+            if (source.getType() === 'audio' || source.getType() === 'video') {
+                return {
+                    format: source.getFormat(),
+                    id: source.id,
+                    type: source.getType()
+                };
+            }
+
+            if (source.getType() === 'image') {
+                const service = source.getService('level2');
+                if (service) {
+                    return {
+                        source: [service.id],
+                        type: 'imageService'
+                    };
+                }
+
+            }
+
+            return false;
+        } catch (e) {
+            return false;
+        }
     }
 
 
