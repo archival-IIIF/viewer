@@ -43,7 +43,7 @@ class Alert extends React.Component<any, IState> {
                 <span className="close" onClick={this.close}>&times;</span>
             </DialogTitle>
             <DialogContent>
-                <DialogContentText color="textPrimary">
+                <DialogContentText color="textPrimary" component="div">
                     {this.renderBody()}
                 </DialogContentText>
             </DialogContent>
