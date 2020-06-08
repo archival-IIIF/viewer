@@ -262,22 +262,21 @@ class Manifest {
         }
 
 
-        const iiif3Resource = this.getIIF3Resource(sequence0);
-        if (iiif3Resource !== false) {
-            return iiif3Resource;
-        }
+        if (this.isV3(manifestoData)) {
+            const iiif3Resource = this.getIIF3Resource(sequence0);
+            if (iiif3Resource !== false) {
+                return iiif3Resource;
+            }
+        } else {
+            const imageResources = this.getImageResources(sequence0);
+            if (imageResources !== false) {
+                return imageResources;
+            }
 
-
-        const imageResources = this.getImageResources(sequence0);
-        if (imageResources !== false) {
-            return imageResources;
-        }
-
-
-
-        const audioVideoResource = this.getAudioVideoResource(sequence0);
-        if (audioVideoResource !== false) {
-            return audioVideoResource;
+            const audioVideoResource = this.getAudioVideoResource(sequence0);
+            if (audioVideoResource !== false) {
+                return audioVideoResource;
+            }
         }
 
         const fileResource = this.getFileResource(sequence0);
@@ -345,31 +344,37 @@ class Manifest {
 
     static getIIF3Resource(sequence0: any) {
 
-        try {
-            const source = sequence0.getCanvasByIndex(0).getContent()[0].getBody()[0];
-            if (source.getType() === 'audio' || source.getType() === 'video') {
-                return {
-                    format: source.getFormat(),
-                    id: source.id,
-                    type: source.getType()
-                };
-            }
-
-            if (source.getType() === 'image') {
-                const service = source.getService('level2');
-                if (service) {
+        const images = [];
+        for (const canvas of sequence0.getCanvases()) {
+            try {
+                const source = canvas.getContent()[0].getBody()[0];
+                if (source.getType() === 'audio' || source.getType() === 'video') {
                     return {
-                        source: [service.id],
-                        type: 'imageService'
+                        format: source.getFormat(),
+                        id: source.id,
+                        type: source.getType()
                     };
                 }
 
-            }
+                if (source.getType() === 'image') {
+                    const service = source.getService('level2');
+                    if (service) {
+                        images.push(service.id);
+                    }
 
-            return false;
-        } catch (e) {
-            return false;
+                }
+            } catch (e) {
+                return false;
+            }
         }
+        if (images.length > 0) {
+            return {
+                source: images,
+                type: 'imageService'
+            };
+        }
+
+        return false;
     }
 
 
@@ -407,10 +412,7 @@ class Manifest {
 
             let images = canvases.getImages();
             if (images === undefined || images.length === 0) {
-                images = canvases.getContent();
-                if (images === undefined || images.length === 0) {
-                    continue;
-                }
+                continue;
             }
             const image0 = images[0];
 
@@ -419,23 +421,14 @@ class Manifest {
 
 
             if (resource === undefined || !resource.id) {
-                resource = image0.getBody()[0];
-                if (resource === undefined) {
-                    continue;
-                }
+                continue;
             }
 
             let service = resource.getService('http://iiif.io/api/image/2/level2.json');
             if (!service) {
                 service = resource.getService('http://iiif.io/api/image/2/level1.json');
                 if (!service) {
-                    service = resource.getService('level2');
-                    if (!service) {
-                        service = resource.getService('level1');
-                        if (!service) {
-                            continue;
-                        }
-                    }
+                    continue;
                 }
             }
 
