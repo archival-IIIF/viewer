@@ -64,8 +64,14 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             const sourceThumbs = [];
             for (let i = 0; i < this.data.length; i++) {
                 const source = this.data[i];
+                let id = '';
+                if (source['@context'] === 'http://iiif.io/api/image/2/context.json') {
+                    id = source['@id'];
+                } else {
+                    id = source.id;
+                }
                 sourceThumbs.push(
-                    <img key={source['@id']} src={source['@id']+'/full/,140/0/default.jpg'} alt={source['@id']}
+                    <img key={id} src={id+'/full/,140/0/default.jpg'} alt={id}
                     onClick={() => this.changeSource(i)}/>
                 );
             }
