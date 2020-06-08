@@ -348,11 +348,25 @@ class Manifest {
         for (const canvas of sequence0.getCanvases()) {
             try {
                 const source = canvas.getContent()[0].getBody()[0];
-                if (source.getType() === 'audio' || source.getType() === 'video') {
+                if (
+                    source.getType().toLowerCase() === 'video' ||
+                    source.getFormat().substr(0, 5) === 'video'
+                ) {
                     return {
                         format: source.getFormat(),
                         id: source.id,
-                        type: source.getType()
+                        type: 'video'
+                    };
+                }
+                if (
+                    source.getType().toLocaleLowerCase() === 'sound' ||
+                    source.getType().toLocaleLowerCase() === 'audio' ||
+                    source.getFormat().substr(0, 5) === 'audio'
+                ) {
+                    return {
+                        format: source.getFormat(),
+                        id: source.id,
+                        type: 'audio'
                     };
                 }
 
