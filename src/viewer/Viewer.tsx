@@ -31,11 +31,11 @@ class Viewer extends React.Component<IProps, {}> {
             return this.renderAudioVideo();
         }
 
-        if (manifestData.resource.format === 'text/plain') {
+        if (manifestData.resource.type === 'plainText') {
             return this.renderPlainText();
         }
 
-        if (manifestData.resource.format === 'application/pdf') {
+        if (manifestData.resource.type === 'pdf') {
             return this.renderPdf();
         }
 
@@ -59,16 +59,18 @@ class Viewer extends React.Component<IProps, {}> {
             const resource: any = this.props.data.resource;
             return (
                 <div id="viewer">
-                    <PlainTextViewer source={resource.source} key={resource.source}/>
+                    <PlainTextViewer source={resource.id} key={resource.id}/>
                 </div>
             );
         }
     }
 
     renderPdf() {
-        if (this.props.data) {
-            const resource: any = this.props.data.resource;
-            return <iframe id="viewer" src={resource.source} title={resource.source}/>;
+
+        if (this.props.data && this.props.data.resource) {
+            const id = this.props.data.resource.id
+
+            return <iframe id="viewer" src={id} title={id}/>;
         }
     }
 

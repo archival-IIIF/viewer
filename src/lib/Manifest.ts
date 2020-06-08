@@ -149,6 +149,7 @@ class Manifest {
                     manifestData.manifests = [];
                     manifestData.restricted = true;
                 } else {
+                    const isV3 = this.isV3(manifestoData);
                     manifestData.metadata = t.getMetadata(manifestoData);
                     manifestData.description = t.getDescription(manifestoData);
                     manifestData.license = t.getLicense(manifestoData);
@@ -160,7 +161,7 @@ class Manifest {
                         manifestData.manifests = t.getManifests(manifestoData);
                         manifestData.collections = t.getCollections(manifestoData);
                     } else if (manifestData.type === 'sc:Manifest') {
-                        manifestData.resource = t.getResource(manifestoData);
+                        manifestData.resource = t.getResource(manifestoData, isV3);
                     }
                     manifestData.thumbnail = t.getThumbnail(manifestoData);
 
@@ -243,7 +244,7 @@ class Manifest {
         return license;
     }
 
-    static getResource(manifestoData: any) {
+    static getResource(manifestoData: any, isV3: boolean) {
 
         const resource = {
             source: null,
@@ -262,7 +263,7 @@ class Manifest {
         }
 
 
-        if (this.isV3(manifestoData)) {
+        if (isV3) {
             const iiif3Resource = this.getIIF3Resource(sequence0);
             if (iiif3Resource !== false) {
                 return iiif3Resource;
@@ -369,14 +370,44 @@ class Manifest {
                         type: 'audio'
                     };
                 }
+                if (source.getFormat().toLowerCase() === 'application/pdf') {
+                    return {
+                        format: 'application/pdf',
+                        id: source.id,
+                        type: 'pdf'
+                    };
+                }
+                if (source.getFormat().toLowerCase() === 'text/plain') {
+                    return {
+                        format: 'text/plain',
+                        id: source.id,
+                        type: 'plainText'
+                    };
+                }
 
                 if (source.getType() === 'image') {
-                    const service = source.getService('level2');
-                    if (service) {
-                        images.push(service.id);
+                    const profiles = [
+                        'level2',
+                        'level3',
+                        'http://iiif.io/api/image/2/level2.json',
+                        'http://iiif.io/api/image/2/level2.json'
+                    ]
+                    for(const profile of profiles) {
+                        const service = source.getService(profile);
+                        if (service) {
+                            images.push(service.id);
+                            break;
+                        }
                     }
 
+                } else {
+                    return {
+                        format: source.getFormat(),
+                        id: source.id,
+                        type: 'file'
+                    };
                 }
+
             } catch (e) {
                 return false;
             }
@@ -393,27 +424,30 @@ class Manifest {
 
 
     static getFileResource(sequence0: any) {
-
-
         try {
-            const source = sequence0.getCanvasByIndex(0).getContent()[0].getBody()[0].id;
+            const element = sequence0.getCanvasByIndex(0)
+            const id = sequence0.getCanvasByIndex(0).id;
+            const format = element.__jsonld.format;
+            if (format === 'application/pdf') {
+                return {
+                    id,
+                    type: 'pdf',
+                    format
+                };
+            }
+            if (format === 'text/plain') {
+                return {
+                    id,
+                    type: 'plainText',
+                    format
+                };
+            }
             return {
-                source,
-                type: 'file'
-            };
-        } catch (e) {
-        }
-
-        try {
-            const source = sequence0.getCanvasByIndex(0).id;
-            const format = sequence0.getCanvasByIndex(0).__jsonld.format;
-            return {
-                source,
+                id,
                 type: 'file',
                 format
             };
-        } catch (e) {
-        }
+        } catch (e) {}
 
         return null;
     }

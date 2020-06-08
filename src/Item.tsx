@@ -97,10 +97,10 @@ class Item extends React.Component<IProps, {}> {
             manifestId,
             function(file: any) {
                 const type = file.resource.type;
-                if (type === 'audioVideo') {
+                if (type === 'audio' || type === 'video') {
                     Cache.ee.emit('play-audio', file.resource.source);
                 } else if (type === 'file') {
-                    const win = window.open(file.resource.source, '_target');
+                    const win = window.open(file.resource.id, '_target');
                     if (win) {
                         win.focus();
                     }
