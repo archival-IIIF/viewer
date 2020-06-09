@@ -4,6 +4,7 @@
     width: 100%;
     display: flex;
     align-items: stretch;
+    max-height: 100vh;
 }
 
 #openseadragon {
@@ -141,9 +142,11 @@
 .plain-text {
     background-color: #ffffff;
     padding: 30px;
-    max-width: 540px;
+    width: 540px;
     margin: 0 auto;
     overflow-y: auto;
+    align-self: center;
+    max-height: 90%;
 }
 
 .vjs-has-started {
