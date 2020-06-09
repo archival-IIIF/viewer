@@ -60,7 +60,7 @@ class Login extends React.Component<any, IState> {
                 <span className="close" onClick={this.closeModal}>&times;</span>
             </DialogTitle>
             <DialogContent>
-                <DialogContentText color="textPrimary">
+                <DialogContentText color="textPrimary" component="div">
                     {this.body()}
                 </DialogContentText>
                 <DialogActions>
