@@ -278,12 +278,13 @@ class Manifest {
             if (audioVideoResource !== false) {
                 return audioVideoResource;
             }
+
+            const fileResource = this.getFileResource(sequence0);
+            if (fileResource) {
+                return fileResource;
+            }
         }
 
-        const fileResource = this.getFileResource(sequence0);
-        if (fileResource) {
-            return fileResource;
-        }
 
         return resource;
     }
@@ -356,7 +357,8 @@ class Manifest {
                     return {
                         format: source.getFormat(),
                         id: source.id,
-                        type: 'video'
+                        type: 'video',
+                        manifestations: this.getManifestations(canvas)
                     };
                 }
                 if (
@@ -367,21 +369,23 @@ class Manifest {
                     return {
                         format: source.getFormat(),
                         id: source.id,
-                        type: 'audio'
+                        type: 'audio',
+                        manifestations: this.getManifestations(canvas)
                     };
                 }
                 if (source.getFormat().toLowerCase() === 'application/pdf') {
                     return {
                         format: 'application/pdf',
                         id: source.id,
-                        type: 'pdf'
+                        type: 'pdf',
+                        manifestations: this.getManifestations(canvas)
                     };
                 }
                 if (source.getFormat().toLowerCase() === 'text/plain') {
                     return {
                         format: 'text/plain',
                         id: source.id,
-                        type: 'plainText'
+                        type: 'plainText',
                     };
                 }
 
@@ -426,13 +430,14 @@ class Manifest {
     static getFileResource(sequence0: any) {
         try {
             const element = sequence0.getCanvasByIndex(0)
-            const id = sequence0.getCanvasByIndex(0).id;
+            const id = element.id;
             const format = element.__jsonld.format;
             if (format === 'application/pdf') {
                 return {
                     id,
                     type: 'pdf',
-                    format
+                    format,
+                    manifestations: this.getManifestations(element)
                 };
             }
             if (format === 'text/plain') {
@@ -445,7 +450,8 @@ class Manifest {
             return {
                 id,
                 type: 'file',
-                format
+                format,
+                manifestations: this.getManifestations(element)
             };
         } catch (e) {}
 

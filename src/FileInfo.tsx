@@ -104,7 +104,10 @@ class FileInfo extends React.Component<IProps, {}> {
             metadataView.push(<img key="providerLogo" id="provider-logo" src={logo} alt="Logo" title="Logo"/>);
         }
 
-        if (manifestData.manifestations.length > 0) {
+        if (
+            manifestData.manifestations.length > 0 ||
+            (manifestData.resource.manifestations && manifestData.resource.manifestations.length > 0)
+        ) {
             metadataView.push(
                 <div key="manifestation">
                     <div id="show-manifestation" onClick={this.showManifestationsModal}>
@@ -141,7 +144,13 @@ class FileInfo extends React.Component<IProps, {}> {
 
         const bodyJsx = [];
         if (this.props.data !== null) {
-            const manifestations = this.props.data.manifestations;
+            let manifestations = [];
+            if (this.props.data.manifestations.length > 0) {
+                manifestations = this.props.data.manifestations;
+            } else if (this.props.data.resource.manifestations && this.props.data.resource.manifestations.length > 0) {
+                manifestations = this.props.data.resource.manifestations;
+            }
+
             for (const i in manifestations) {
                 if (manifestations.hasOwnProperty(i)) {
                     const manifestation = manifestations[i];
