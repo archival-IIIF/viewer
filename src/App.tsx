@@ -36,6 +36,8 @@ class App extends React.Component<IProps, IState> {
 
         super(props);
 
+        Cache.ee.setMaxListeners(100);
+
         global.config = new Config(this.props.config);
 
         this.state = {data: null}
