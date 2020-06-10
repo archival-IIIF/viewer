@@ -13,6 +13,7 @@ class Folder extends React.Component<IProps, {}> {
     render() {
         let folderViewKey = this.props.data ? 'folderViewKey' + this.props.data.id : 'folderViewKey';
         return <Splitter
+            id="aiiif-splitter-folder"
             a={<FolderView key={folderViewKey}  data={this.props.data}/>}
             b={<FileInfo data={this.props.data}/>}
             aSize={70}

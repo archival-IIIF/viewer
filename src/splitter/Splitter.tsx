@@ -29,11 +29,8 @@ class Splitter extends React.Component<IProps, IState> {
         const t = this;
         this.globalMoveStart = this.globalMoveStart.bind(this);
         this.globalMoveEnd = this.globalMoveEnd.bind(this);
-        let size = this.defaultSize;
-        if (this.props.aSize !== undefined && this.props.aSize < 100) {
-            size = this.props.aSize;
-        }
-        this.state = {size};
+
+        this.state = {size: this.getSize()};
         this.myRef = React.createRef();
 
         document.addEventListener('mousemove', function(event) {
@@ -68,6 +65,20 @@ class Splitter extends React.Component<IProps, IState> {
         </div>;
     }
 
+    getSize(): number {
+        if (this.props.id) {
+            const storesSize = sessionStorage.getItem('aiiif-splitter-' + this.props.id);
+            if (storesSize && parseInt(storesSize) < 100 && parseInt(storesSize) > 0) {
+                return parseInt(storesSize);
+            }
+        }
+        if (this.props.aSize && this.props.aSize < 100 && this.props.aSize > 0) {
+            return this.props.aSize;
+        }
+
+        return this.defaultSize;
+    }
+
 
     getAStyle(): CSSProperties {
         const size = (this.state.size).toString() + '%';
@@ -90,6 +101,9 @@ class Splitter extends React.Component<IProps, IState> {
                 offset = this.myRef.current.offsetTop;
             }
             size = (size - offset) / totalSize * 100;
+            if (this.props.id) {
+                sessionStorage.setItem('aiiif-splitter-' + this.props.id, size.toString());
+            }
             this.setState({size})
         }
     }
