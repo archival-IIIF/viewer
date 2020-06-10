@@ -4,6 +4,13 @@ import InfoJson from '../lib/InfoJson';
 import Cache from '../lib/Cache';
 import ViewerSpinner from './ViewerSpinner';
 import Token from "../lib/Token";
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import HomeIcon from '@material-ui/icons/Home';
+import RotateIcon from '@material-ui/icons/RotateRight';
+import FullScreenIcon from '@material-ui/icons/Fullscreen';
+import NextIcon from '@material-ui/icons/NavigateNext';
+import PreviousIcon from '@material-ui/icons/NavigateBefore';
 
 interface IProps {
     source: string[];
@@ -14,6 +21,10 @@ interface IState {
     spinner: boolean;
 }
 
+const iconStyle = {
+    color: "white",
+    fontSize: 32
+}
 
 class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
@@ -33,12 +44,24 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     }
 
     render() {
+
+
         return <div id="openseadragon" key={this.state.source[0]}>
-            <div id="zoom-in-button" className="openseadragon-icon" />
-            <div id="zoom-out-button" className="openseadragon-icon" />
-            <div id="rotate-right-button" className="openseadragon-icon" />
-            <div id="home-button" className="openseadragon-icon" />
-            <div id="fullpage-button" className="openseadragon-icon" />
+            <button id="zoom-in-button" className="openseadragon-icon">
+                <ZoomInIcon style={iconStyle} />
+            </button>
+            <button id="zoom-out-button" className="openseadragon-icon">
+                <ZoomOutIcon style={iconStyle} />
+            </button>
+            <button id="rotate-right-button" className="openseadragon-icon">
+                <RotateIcon style={iconStyle} />
+            </button>
+            <button id="home-button" className="openseadragon-icon">
+                <HomeIcon style={iconStyle} />
+            </button>
+            <button id="fullpage-button" className="openseadragon-icon">
+                <FullScreenIcon style={iconStyle} />
+            </button>
             {this.renderPreviousButton()}
             {this.renderNextButton()}
             <ViewerSpinner show={this.state.spinner} />
@@ -49,14 +72,18 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     renderPreviousButton() {
         if (this.data.length > 1) {
             return <button id="previous-button" className="openseadragon-icon" disabled={(this.i === 0)}
-                        onClick={() => this.changeSource(this.i - 1)} />
+                        onClick={() => this.changeSource(this.i - 1)}>
+                <PreviousIcon style={iconStyle} />
+            </button>
         }
     }
 
     renderNextButton() {
         if (this.data.length > 1) {
             return  <button id="next-button" className="openseadragon-icon" disabled={(this.i + 1 === this.data.length)}
-                         onClick={() => this.changeSource(this.i + 1)} />
+                         onClick={() => this.changeSource(this.i + 1)}>
+                <NextIcon style={iconStyle}/>
+            </button>
         }
     }
 

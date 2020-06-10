@@ -6,6 +6,7 @@ import Config from './lib/Config';
 import {Translation} from 'react-i18next';
 import './css/manifestations-modal.css';
 import './css/file-info.css';
+import FileIcon from '@material-ui/icons/DescriptionOutlined';
 
 const iifLogo = require('./icons/iiif.png');
 
@@ -156,6 +157,7 @@ class FileInfo extends React.Component<IProps, {}> {
                     const manifestation = manifestations[i];
                     bodyJsx.push(
                         <div key={i} className="file-manifestation" onClick={() => this.openFile(manifestation.url)}>
+                            <FileIcon />
                             {manifestation.label}
                         </div>
                     );

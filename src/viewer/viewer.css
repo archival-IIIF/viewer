@@ -15,39 +15,32 @@
 
 
 #zoom-in-button {
-    left: 8px;
-    background-image: url("../icons/fa/search-plus-solid.svg");
+    left: 10px;
 }
 
 #zoom-out-button {
-    left:36px;
-    background-image: url("../icons/fa/search-minus-solid.svg");
+    left:40px;
 }
 
 #rotate-right-button {
-    left:64px;
-    background-image: url("../icons/fa/if_rotate-right_1608421.svg");
+    left:70px;
 }
 
 
 #home-button {
-    left:92px;
-    background-image: url("../icons/fa/home-solid.svg");
+    left:100px;
 }
 
 #fullpage-button {
-    left: 120px;
-    background-image: url("../icons/fa/arrows-alt-solid.svg");
+    left: 130px;
 }
 
 #previous-button {
-    left:148px;
-    background-image: url("../icons/fa/chevron-circle-left-solid.svg");
+    left:160px;
 }
 
 #next-button {
-    left:176px;
-    background-image: url("../icons/fa/chevron-circle-right-solid.svg");
+    left:190px;
 }
 
 #sources {
@@ -75,12 +68,9 @@
     position: absolute !important;
     width: 24px;
     height: 24px;
-    background-repeat: no-repeat;
     z-index: 999;
-    background-size: 24px;
     border: none;
     background-color: transparent;
-    cursor: pointer;
 }
 
 .openseadragon-icon:disabled {
