@@ -20,7 +20,7 @@ class Manifest {
 
     static cache: any = {};
 
-    static get(url?: string, callback?: any) {
+    static get(url?: string, callback?: any, skipAuthentication?: boolean) {
 
         if (url === undefined) {
             return;
@@ -37,11 +37,11 @@ class Manifest {
             return;
         }
 
-        this.fetchFromUrl(url, callback);
+        this.fetchFromUrl(url, callback, skipAuthentication);
 
     }
 
-    static fetchFromUrl(url: string, callback: any) {
+    static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean) {
 
         const t = this;
         const authHeader: Headers = new Headers();
@@ -138,17 +138,19 @@ class Manifest {
                                     externalTokenResponse.json()
                                         .then((externalTokenJson: any) => {
                                             Token.set(externalTokenJson.accessToken)
-                                            return this.fetchFromUrl(url, callback);
+                                            return this.fetchFromUrl(url, callback, skipAuthentication);
                                         });
                                 });
                             return;
                         }
                     }
 
-                    Cache.ee.emit('show-login', manifestoData);
-                    manifestData.collections = [];
-                    manifestData.manifests = [];
-                    manifestData.restricted = true;
+                    if (skipAuthentication !== true) {
+                        Cache.ee.emit('show-login', manifestoData);
+                        manifestData.collections = [];
+                        manifestData.manifests = [];
+                        manifestData.restricted = true;
+                    }
                 } else {
                     const isV3 = this.isV3(manifestoData);
                     manifestData.metadata = t.getMetadata(manifestoData);

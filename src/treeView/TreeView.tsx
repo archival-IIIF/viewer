@@ -1,29 +1,23 @@
 import * as React from 'react';
 import Loading from '../Loading';
 import TreeViewItem from './TreeViewItem';
-import Manifest from '../lib/Manifest';
 import Cache from '../lib/Cache';
 import './treeview.css';
+import ITree from "../interface/ITree";
+import TreeBuilder from "./TreeBuilder";
 
 interface IState {
-    opened: object;
-    tree: object | null;
+    tree?: ITree,
+    currentFolderId?: string;
 }
 
 class TreeView extends React.Component<{}, IState> {
 
-    private treeInProgress: any = null;
-    private currentFolderId = '';
-
 
     constructor(props: {}) {
-
         super(props);
 
-        this.state = {
-            opened: {},
-            tree: null,
-        };
+        this.state = {};
 
         this.buildTree = this.buildTree.bind(this);
         this.clearTree = this.clearTree.bind(this);
@@ -36,70 +30,26 @@ class TreeView extends React.Component<{}, IState> {
         }
         return (
             <div id="treeview">
-                <TreeViewItem data={this.state.tree} level={1} opened={true} currentFolderId={this.currentFolderId}/>
+                <TreeViewItem key={this.state.tree ? this.state.tree.id : -1} tree={this.state.tree} level={1}
+                           currentFolderId={this.state.currentFolderId}
+                           isOpen={this.state.tree ? this.state.tree.isOpen : false}/>
             </div>
         );
     }
 
-
-    buildTree(folderId: string) {
-
-        if (this.treeInProgress === null) {
-            this.currentFolderId = folderId;
-        }
-
-        let url = folderId;
-        const manifestData = Manifest.fetchFromCache(url);
-        if (manifestData === false) {
-            return;
-        }
-        manifestData.opened = true;
-
-        if (this.treeInProgress !== null) {
-
-            const collections = manifestData.collections;
-            for (const collection in collections) {
-                if (collections.hasOwnProperty(collection)) {
-                    if (this.treeInProgress) {
-                        if (collections[collection].id === this.treeInProgress.id) {
-                            collections[collection] = this.treeInProgress;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (manifestData.parentId === undefined) {
-
-            this.setState({
-                tree: manifestData
+    buildTree(id: string) {
+        if (!this.state.tree) {
+            const t = this;
+            TreeBuilder.get(id, undefined, (tree) => {
+                t.setState({tree, currentFolderId: id});
             });
-
-            document.title = manifestData.label;
-
-            return;
+        } else {
+            this.setState({currentFolderId: id});
         }
-
-        this.treeInProgress = manifestData;
-        url = manifestData.parentId;
-
-        const t = this;
-        Manifest.get(
-            url,
-            function(manifestData2: any) {
-
-                if (typeof manifestData2 === 'string') {
-                    alert(manifestData2);
-                    return;
-                }
-
-                t.buildTree(manifestData2.id);
-            }
-        );
     }
 
     clearTree() {
-        this.setState({tree: null});
+        this.setState({tree: undefined});
     }
 
     componentDidMount() {

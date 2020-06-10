@@ -1,72 +1,39 @@
 import * as React from 'react';
-import Manifest from '../lib/Manifest';
 import Loading from '../Loading';
-import Cache from '../lib/Cache';
 import './treeview.css';
+import ITree from "../interface/ITree";
+import Cache from "../lib/Cache";
+import TreeBuilder from "./TreeBuilder";
 
-interface IProps {
-    id?: string;
+interface IPros {
+    tree?: ITree;
     level: number;
-    opened: boolean;
-    data?: object;
     currentFolderId?: string;
+    isOpen?: boolean;
 }
 
 interface IState {
-    id: string | null;
-    level: number;
-    opened: boolean;
-    data: object | undefined;
-    currentFolderId: string | undefined;
+    isOpen: boolean;
+    tree?: ITree;
 }
 
-class TreeViewItem extends React.Component<IProps, IState> {
+class TreeViewItem extends React.Component<IPros, IState> {
 
 
-    constructor(props: IProps) {
+    constructor(props: IPros) {
 
         super(props);
 
-        this.state = {
-            level: props.level,
-            opened: props.opened,
-            data: this.props.data || undefined,
-            id: this.props.id || null,
-            currentFolderId: this.props.currentFolderId || undefined,
-        };
+        this.state = {isOpen: this.props.isOpen === true, tree: this.props.tree};
 
-        this.updateCurrentFolder = this.updateCurrentFolder.bind(this);
+        this.openIt = this.openIt.bind(this);
     }
 
     render() {
+        const data = this.state.tree;
 
-        let data;
-        if (this.state.data === undefined) {
-            if (typeof this.state.id === 'string') {
-
-                const url: string = this.state.id;
-                const t = this;
-
-                data = Manifest.fetchFromCache(url);
-
-                if (!data) {
-
-                    Manifest.get(
-                        url,
-                        function (data2: any) {
-                            t.setState({
-                                data: data2
-                            });
-                        }
-                    );
-
-                    return <Loading/>;
-                }
-            } else {
-                return '';
-            }
-        } else {
-            data = this.state.data;
+        if (!data) {
+            return <Loading/>;
         }
 
         const style = {marginLeft: (this.props.level - 1) * 10};
@@ -74,45 +41,35 @@ class TreeViewItem extends React.Component<IProps, IState> {
         let classNameCaret = 'treeview-caret';
 
 
-        if (data && data.collections && data.collections.length === 0) {
+        if ((!data.children || data.children.length === 0) && data.hasLockedChildren !== true) {
             classNameCaret += ' no-caret';
-        } else if (this.state.opened) {
+        } else if (this.state.isOpen) {
             classNameCaret += ' opened';
         }
-        const id = data.id;
-        if (id === this.state.currentFolderId) {
+        if (data.id === this.props.currentFolderId) {
             className += ' current';
         }
         const label = data.label;
 
 
-        const children = [];
-        if (this.state.opened) {
-            const childrenLevel = this.state.level + 1;
-            const folders = data.collections;
-            for (const key in folders) {
-                if (folders.hasOwnProperty(key)) {
-                    const folder = folders[key];
-                    let opened = false;
-                    if (folder.hasOwnProperty('opened') && folder.opened) {
-                        opened = true;
-                    }
-                    const folderId = folder.id;
+        const children: any = [];
+        if (this.state.isOpen) {
+            const childrenLevel = this.props.level + 1;
+            if (data.children) {
+                for (const child of data.children) {
                     children.push(
-                        <TreeViewItem level={childrenLevel} opened={opened} key={folderId} id={folderId}
-                                      currentFolderId={this.state.currentFolderId} />
+                        <TreeViewItem level={childrenLevel} key={child.id} tree={child} isOpen={child.isOpen}
+                                   currentFolderId={this.props.currentFolderId} />
                     );
                 }
-
             }
         }
-
 
         return (
             <div>
                 <div className={className} style={style}>
-                    <div className={classNameCaret} onClick={() => this.toggleCaret()} />
-                    <div className="treeview-label" onClick={() => this.openFolder(id)}>{label}</div>
+                    <div className={classNameCaret} onClick={() => this.toggleCaret()}/>
+                    <div className="treeview-label" onClick={() => this.openFolder(data.id)}>{label}</div>
                 </div>
                 {children}
             </div>
@@ -120,33 +77,60 @@ class TreeViewItem extends React.Component<IProps, IState> {
     }
 
     toggleCaret() {
-        this.setState({
-            opened: !this.state.opened
-        });
 
+        if (this.state.isOpen) {
+            this.setState({isOpen: false});
+            return;
+        }
+
+        this.setOpen();
     }
 
+    openFolder(itemId: string) {
+        this.setOpen();
 
-    openFolder(itemId: any) {
         Cache.ee.emit('open-folder', itemId);
     }
 
-    updateCurrentFolder(folderId: string) {
-        this.setState({
-            currentFolderId: folderId
-        });
+    isSubTreeMissing() {
+        return (
+            this.props.tree &&
+            this.props.tree.hasLockedChildren &&
+            this.props.tree.children.length === 0
+        )
     }
 
+    loadSubTree() {
+        if (this.props.tree) {
+            const t = this;
+            TreeBuilder.get(this.props.tree.id, undefined, (tree) => {
+                t.setState({tree, isOpen: true})
+            }, true);
+        }
+
+    }
+
+    setOpen() {
+        if (this.isSubTreeMissing()) {
+            this.loadSubTree();
+        } else {
+            this.setState({isOpen: true});
+        }
+    }
+
+    openIt(id: string) {
+        if (this.props.tree && this.props.tree.id === id) {
+            this.setOpen();
+        }
+    }
 
     componentDidMount() {
-        Cache.ee.addListener('update-current-folder-id', this.updateCurrentFolder);
+        Cache.ee.addListener('update-current-folder-id', this.openIt);
     }
 
     componentWillUnmount() {
-        Cache.ee.removeListener('update-current-folder-id', this.updateCurrentFolder);
+        Cache.ee.removeListener('update-current-folder-id', this.openIt);
     }
-
-
 }
 
 export default TreeViewItem;
