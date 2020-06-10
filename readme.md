@@ -18,9 +18,21 @@
 | ≥ 14 | ≥ 52    | ≥ 49   | ≥ 10   |
 
 
+## IIIF suport
+
+* [IIIF Image API 2 & 3](https://iiif.io/api/image/3.0/)
+* [IIIF Presentation API 2 & 3](https://iiif.io/api/presentation/3.0/)
+* [IIIF Authentication API 1](https://iiif.io/api/auth/1.0/)
+
+## Demo
+
+https://iiif.sozialarchiv.ch
+
 ## See also
 
+* [iiif.io](https://iiif.io/)
 * [React](https://reactjs.org/docs/getting-started.html)
 * [Material UI](https://next.material-ui.com/)
 * [Material icons](https://material.io/tools/icons/)
 * [Material colors](https://material.io/tools/color/)
+* [manifesto](https://github.com/IIIF-Commons/manifesto)
