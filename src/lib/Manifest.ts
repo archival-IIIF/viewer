@@ -8,6 +8,7 @@ import UrlValidation from './UrlValidation';
 import Config from './Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
+import Token from "./Token";
 
 declare let global: {
     config: Config;
@@ -45,8 +46,8 @@ class Manifest {
         const t = this;
         const authHeader: Headers = new Headers();
         let statusCode = 0;
-        if (Cache.token !== '') {
-            authHeader.set('Authorization', 'Bearer ' + Cache.token);
+        if (Token.has()) {
+            authHeader.set('Authorization', 'Bearer ' + Token.get());
         }
 
         fetch(url, {
@@ -136,7 +137,7 @@ class Manifest {
 
                                     externalTokenResponse.json()
                                         .then((externalTokenJson: any) => {
-                                            Cache.token = externalTokenJson.accessToken;
+                                            Token.set(externalTokenJson.accessToken)
                                             return this.fetchFromUrl(url, callback);
                                         });
                                 });

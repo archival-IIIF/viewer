@@ -1,4 +1,5 @@
 import Cache from './Cache';
+import Token from "./Token";
 
 class InfoJson {
 
@@ -39,8 +40,8 @@ class InfoJson {
 
         const t = this;
         const authHeader: Headers = new Headers();
-        if (Cache.token !== '') {
-            authHeader.set('Authorization', 'Bearer ' + Cache.token);
+        if (Token.has()) {
+            authHeader.set('Authorization', 'Bearer ' + Token.get());
         }
 
         const url = id + '/info.json';

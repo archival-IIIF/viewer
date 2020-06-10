@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import ManifestData from './entity/ManifestData';
+import Token from "./lib/Token";
 
 const manifesto = require('manifesto.js');
 
@@ -150,6 +151,7 @@ class Login extends React.Component<any, IState> {
     }
 
     logout() {
+        Token.delete();
         window.open(this.logoutUrl, '_blank');
         const id = Manifest.getIdFromCurrentUrl();
         const currentUrl = window.location.href;
@@ -182,7 +184,7 @@ class Login extends React.Component<any, IState> {
         }
         Manifest.clearCache();
         InfoJson.clearCache();
-        Cache.token = event.data.accessToken;
+        Token.set(event.data);
         Cache.ee.emit('token-received');
         const id = Manifest.getIdFromCurrentUrl();
         Cache.ee.emit('open-folder', id);

@@ -3,6 +3,7 @@ import * as OpenSeadragon from 'openseadragon';
 import InfoJson from '../lib/InfoJson';
 import Cache from '../lib/Cache';
 import ViewerSpinner from './ViewerSpinner';
+import Token from "../lib/Token";
 
 interface IProps {
     source: string[];
@@ -123,9 +124,9 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 ajaxWithCredentials: false
             };
 
-            if (Cache.token !== '') {
+            if (Token.has()) {
                 options['ajaxHeaders'] = {
-                    Authorization: 'Bearer ' + Cache.token
+                    Authorization: 'Bearer ' + Token.get()
                 };
             }
 

@@ -5,6 +5,7 @@ import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';
+import Token from "../lib/Token";
 
 interface IState {
     logoutButtonIsVisible: boolean;
@@ -17,7 +18,7 @@ class TopBar extends React.Component<{}, IState> {
         super(props);
 
         this.state = {
-            logoutButtonIsVisible: false
+            logoutButtonIsVisible: Token.has()
         };
 
         this.tokenReceived = this.tokenReceived.bind(this);
@@ -57,7 +58,7 @@ class TopBar extends React.Component<{}, IState> {
 
     tokenReceived() {
         this.setState({
-            logoutButtonIsVisible: true
+            logoutButtonIsVisible: Token.has()
         });
     }
 
