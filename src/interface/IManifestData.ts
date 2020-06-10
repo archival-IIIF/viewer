@@ -3,7 +3,7 @@ import IManifestDataThumbnail from './IManifestDataThumbnail';
 interface IManifestData {
     id: string;
     type: string;
-    label: string | null;
+    label: string;
     logo: string | null;
     attribution: string;
     manifestations: any;

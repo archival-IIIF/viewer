@@ -87,7 +87,7 @@ class Manifest {
                 } else if (type === 'sc:Collection' || type === 'Collection') {
                     manifestData.type = 'sc:Collection';
                 }
-                manifestData.label = manifestoData.getDefaultLabel();
+                manifestData.label = manifestoData.getDefaultLabel() ?? '';
                 const isV3 = this.isV3(manifestoData);
                 if (isV3) {
                     const partOf = manifestoData.getProperty('partOf');
