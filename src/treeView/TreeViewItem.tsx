@@ -4,6 +4,9 @@ import './treeview.css';
 import ITree from "../interface/ITree";
 import Cache from "../lib/Cache";
 import TreeBuilder from "./TreeBuilder";
+import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
+import CaretRightIcon from '@material-ui/icons/ArrowRight';
+
 
 interface IPros {
     tree?: ITree;
@@ -39,12 +42,18 @@ class TreeViewItem extends React.Component<IPros, IState> {
         const style = {marginLeft: (this.props.level - 1) * 10};
         let className = 'treeview-item level-' + this.props.level;
         let classNameCaret = 'treeview-caret';
-
+        let caret = <></>;
+        const iconStyle = {
+            color: "#8C8C8C",
+            fontSize: 32
+        }
 
         if ((!data.children || data.children.length === 0) && data.hasLockedChildren !== true) {
             classNameCaret += ' no-caret';
         } else if (this.state.isOpen) {
-            classNameCaret += ' opened';
+            caret = <CaretDownIcon style={iconStyle} />;
+        } else {
+            caret = <CaretRightIcon style={iconStyle} />;
         }
         if (data.id === this.props.currentFolderId) {
             className += ' current';
@@ -68,7 +77,9 @@ class TreeViewItem extends React.Component<IPros, IState> {
         return (
             <div>
                 <div className={className} style={style}>
-                    <div className={classNameCaret} onClick={() => this.toggleCaret()}/>
+                    <div className={classNameCaret} onClick={() => this.toggleCaret()}>
+                        {caret}
+                    </div>
                     <div className="treeview-label" onClick={() => this.openFolder(data.id)}>{label}</div>
                 </div>
                 {children}
