@@ -37,7 +37,6 @@ class PlainTextViewer extends React.Component<IProps, IState> {
 
     componentDidMount() {
         const t = this;
-        console.log(this.props.source)
         fetch(this.props.source)
             .then(function(response) {
                 return response.text();
