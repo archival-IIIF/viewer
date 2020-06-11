@@ -10,6 +10,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import ManifestData from './entity/ManifestData';
 import Token from "./lib/Token";
+import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
+import * as DOMPurify from "dompurify";
+import Config from "./lib/Config";
 
 const manifesto = require('manifesto.js');
 
@@ -23,6 +26,10 @@ interface IState {
     error?: boolean;
     errorMessage?: string;
 }
+
+declare let global: {
+    config: Config;
+};
 
 class Login extends React.Component<any, IState> {
 
@@ -109,7 +116,12 @@ class Login extends React.Component<any, IState> {
 
     showLogin(manifestoData: ManifestData) {
 
-        const loginService = manifesto.Utils.getService(manifestoData, 'http://iiif.io/api/auth/1/login');
+        let loginService = manifesto.Utils.getService(manifestoData, ServiceProfile.AUTH_1_LOGIN);
+        if(!loginService) {
+            loginService = manifesto.Utils.getService(manifestoData, ServiceProfile.AUTH_1_CLICK_THROUGH);
+        }
+
+
         if (!loginService.options) {
             loginService['options'] = {locale: Manifest.lang};
         }
@@ -133,7 +145,10 @@ class Login extends React.Component<any, IState> {
     body() {
         const body = [];
         body.push(<iframe id="messageFrame" title="messageFrame" key="messageFrame"/>);
-        body.push(<div key="description">{this.state.description}</div>);
+        body.push(<div key="description" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+            __html: DOMPurify.sanitize(this.state.description ?? '', global.config.getSanitizeRulesSet())
+        }} />);
+
 
         if (this.state.error) {
             body.push(<div className="modal-error-message" key="error">{this.state.errorMessage}</div>);
@@ -143,10 +158,10 @@ class Login extends React.Component<any, IState> {
     }
 
     getTokenUrlFromService(loginService: any) {
-        const tokenService = loginService.getService('http://iiif.io/api/auth/1/token');
+        const tokenService = loginService.getService(ServiceProfile.AUTH_1_TOKEN);
         this.tokenUrl = tokenService.id;
 
-        const logoutService = loginService.getService('http://iiif.io/api/auth/1/logout');
+        const logoutService = loginService.getService(ServiceProfile.AUTH_1_LOGOUT);
         this.logoutUrl = logoutService.id;
     }
 

@@ -36,10 +36,6 @@ class FileInfo extends React.Component<IProps, {}> {
             return '';
         }
 
-        if (typeof this.props.data === 'string') {
-            return <div id="file-info">{this.props.data}</div>;
-        }
-
         const manifestData = this.props.data;
         const metadataView = [];
 
