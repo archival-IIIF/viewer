@@ -12,8 +12,10 @@
     "filesize": "^6.1.0",
     "i18next": "^19.4.5",
     "manifesto.js": "^4.0.4",
+    "mini-css-extract-plugin": "^0.9.0",
     "node-fetch": "^2.6.0",
     "openseadragon": "^2.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
@@ -36,6 +38,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "build:dist": "react-app-rewired build && node bin/buildDist.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
