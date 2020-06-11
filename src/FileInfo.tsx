@@ -7,9 +7,8 @@ import {Translation} from 'react-i18next';
 import './css/manifestations-modal.css';
 import './css/file-info.css';
 import FileIcon from '@material-ui/icons/DescriptionOutlined';
-
-const iifLogo = require('./icons/iiif.png');
-
+import {ReactComponent as IIIFLogo} from './icons/iiif.svg';
+import {inherits} from "util";
 
 interface IHTMLAnchorElement {
     nodeName: string;
@@ -123,7 +122,7 @@ class FileInfo extends React.Component<IProps, {}> {
                 <h3>{manifestData.label}</h3>
                 {metadataView}
                 <a id="iiif-logo" href={manifestData.id} target="_blank" rel="noopener noreferrer">
-                    <img src={iifLogo} title="IIIF-Manifest" alt="IIIF-Manifest"/>
+                    <IIIFLogo title="IIIF-Manifest" width={32} height={'100%'} /><br />
                 </a>
             </div>
         );
