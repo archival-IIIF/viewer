@@ -8,7 +8,6 @@ import './css/manifestations-modal.css';
 import './css/file-info.css';
 import FileIcon from '@material-ui/icons/DescriptionOutlined';
 import {ReactComponent as IIIFLogo} from './icons/iiif.svg';
-import {inherits} from "util";
 
 interface IHTMLAnchorElement {
     nodeName: string;
