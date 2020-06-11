@@ -137,7 +137,7 @@ class Manifest {
 
                                     externalTokenResponse.json()
                                         .then((externalTokenJson: any) => {
-                                            Token.set(externalTokenJson.accessToken)
+                                            Token.set(externalTokenJson)
                                             return this.fetchFromUrl(url, callback, skipAuthentication);
                                         });
                                 });
