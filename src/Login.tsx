@@ -130,7 +130,6 @@ class Login extends React.Component<IProps, IState> {
         if(!loginService) {
             loginService = manifesto.Utils.getService(manifestoData, ServiceProfile.AUTH_1_KIOSK);
             this.getTokenUrlFromService(loginService);
-            console.log('ttttt');
 
             this.openWindow(loginService.id);
             return;

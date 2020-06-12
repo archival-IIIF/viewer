@@ -45,8 +45,6 @@ class Manifest {
 
     static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean) {
 
-        console.log(url)
-
         const t = this;
         const authHeader: Headers = new Headers();
         let statusCode = 0;
