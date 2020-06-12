@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Manifest from './lib/Manifest';
-import ManifestHistory from './lib/ManifestHistory';
 import Cache from './lib/Cache';
 import TouchDetection from './lib/TouchDetection';
 import IManifestData from './interface/IManifestData';
@@ -10,7 +8,8 @@ const FileImage = require('./icons/fa/file.svg');
 
 interface IProps {
     item: IManifestData;
-    selected?: string;
+    selected: IManifestData;
+    setCurrentManifest: (id: string) => void;
 }
 
 class Item extends React.Component<IProps, {}> {
@@ -23,7 +22,7 @@ class Item extends React.Component<IProps, {}> {
         let className = 'item ' + itemType;
         const label = this.props.item.label;
         const style = {backgroundImage: this.getThumbnail()};
-        if (id === this.props.selected) {
+        if (id === this.props.selected.id) {
             className += ' active';
         }
 
@@ -63,50 +62,35 @@ class Item extends React.Component<IProps, {}> {
 
     open() {
         if (this.props.item.type === 'sc:Collection') {
-            Cache.ee.emit('open-folder', this.props.item.id);
+            this.props.setCurrentManifest(this.props.item.id);
         } else {
-            this.openFile(this.props.item);
+            this.openFile();
         }
     }
 
     activateItem() {
-
-        const manifestDataId = this.props.item.id;
-
-        if (TouchDetection.isTouchDevice() && manifestDataId === this.props.selected) {
+        if (TouchDetection.isTouchDevice() && this.props.item.id === this.props.selected.id) {
             this.open();
+        } else {
+            this.props.setCurrentManifest(this.props.item.id);
+        }
+    }
+
+    openFile() {
+
+        if (!this.props.selected.resource) {
             return;
         }
 
-        Manifest.get(
-            manifestDataId,
-            function(manifestData: any) {
-                ManifestHistory.pageChanged(manifestData.id, manifestData.label);
-                Cache.ee.emit('update-file-info', manifestData);
+        const type = this.props.selected.resource.type;
+        if (type === 'audio' || type === 'video') {
+            Cache.ee.emit('play-audio', this.props.selected.resource.source);
+        } else if (type === 'file') {
+            const win = window.open(this.props.selected.resource.id, '_target');
+            if (win) {
+                win.focus();
             }
-        );
-
-
-    }
-
-    openFile(file0: any) {
-
-        const manifestId = file0.id;
-
-        Manifest.get(
-            manifestId,
-            function(file: any) {
-                const type = file.resource.type;
-                if (type === 'audio' || type === 'video') {
-                    Cache.ee.emit('play-audio', file.resource.source);
-                } else if (type === 'file') {
-                    const win = window.open(file.resource.id, '_target');
-                    if (win) {
-                        win.focus();
-                    }
-                }
-            }
-        );
+        }
     }
 }
 

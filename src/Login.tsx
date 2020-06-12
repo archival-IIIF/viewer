@@ -31,7 +31,11 @@ declare let global: {
     config: Config;
 };
 
-class Login extends React.Component<any, IState> {
+interface IProps {
+    setCurrentManifest: (id: string) => void;
+}
+
+class Login extends React.Component<IProps, IState> {
 
     private checkIfLoginWindowIsClosedInterval = 0;
     private logoutUrl = '';
@@ -39,7 +43,7 @@ class Login extends React.Component<any, IState> {
     private origin = window.location.protocol + '//' + window.location.hostname
         + (window.location.port ? ':' + window.location.port : '');
 
-    constructor(props: any) {
+    constructor(props: IProps) {
 
         super(props);
 
@@ -56,28 +60,31 @@ class Login extends React.Component<any, IState> {
 
     render() {
 
-        return <Dialog
-            id={this.state.id}
-            open={this.state.visible}
-            onClose={this.closeModal}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle >
-                {this.state.title}
-                <span className="close" onClick={this.closeModal}>&times;</span>
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText color="textPrimary" component="div">
-                    {this.body()}
-                </DialogContentText>
-                <DialogActions>
-                    <Button onClick={() => this.openWindow(this.state.id)} color="primary">
-                        {this.state.confirmLabel}
-                    </Button>
-                </DialogActions>
-            </DialogContent>
-        </Dialog>;
+        return <>
+            <iframe id="messageFrame" title="messageFrame" />
+            <Dialog
+                id={this.state.id}
+                open={this.state.visible}
+                onClose={this.closeModal}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle >
+                    {this.state.title}
+                    <span className="close" onClick={this.closeModal}>&times;</span>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText color="textPrimary" component="div">
+                        {this.body()}
+                    </DialogContentText>
+                    <DialogActions>
+                        <Button onClick={() => this.openWindow(this.state.id)} color="primary">
+                            {this.state.confirmLabel}
+                        </Button>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
+        </>;
     }
 
     openWindow(id: string) {
@@ -87,7 +94,7 @@ class Login extends React.Component<any, IState> {
         const win = window.open(url);
         this.checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
             try {
-                if (win == null || win.closed) {
+                if (win === null || win.closed) {
                     window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
                     window.addEventListener('message', (event) => this.receiveToken(event), {once: true});
                     const src = this.tokenUrl + '?messageId=1&origin=' + this.origin;
@@ -120,11 +127,22 @@ class Login extends React.Component<any, IState> {
         if(!loginService) {
             loginService = manifesto.Utils.getService(manifestoData, ServiceProfile.AUTH_1_CLICK_THROUGH);
         }
+        if(!loginService) {
+            loginService = manifesto.Utils.getService(manifestoData, ServiceProfile.AUTH_1_KIOSK);
+            this.getTokenUrlFromService(loginService);
+            console.log('ttttt');
+
+            this.openWindow(loginService.id);
+            return;
+        }
+
 
 
         if (!loginService.options) {
             loginService['options'] = {locale: Manifest.lang};
         }
+
+
 
         if (loginService !== false) {
             this.getTokenUrlFromService(loginService);
@@ -139,12 +157,10 @@ class Login extends React.Component<any, IState> {
                 visible: true
             });
         }
-
     }
 
     body() {
         const body = [];
-        body.push(<iframe id="messageFrame" title="messageFrame" key="messageFrame"/>);
         body.push(<div key="description" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
             __html: DOMPurify.sanitize(this.state.description ?? '', global.config.getSanitizeRulesSet())
         }} />);
@@ -202,7 +218,9 @@ class Login extends React.Component<any, IState> {
         Token.set(event.data);
         Cache.ee.emit('token-received');
         const id = Manifest.getIdFromCurrentUrl();
-        Cache.ee.emit('open-folder', id);
+        if (id) {
+            this.props.setCurrentManifest(id);
+        }
 
         this.setState({
             visible: false

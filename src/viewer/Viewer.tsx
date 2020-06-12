@@ -7,7 +7,7 @@ import PlainTextViewer from './PlainTextViewer';
 import './viewer.css';
 
 interface IProps {
-    data: IManifestData | null;
+    data?: IManifestData;
 }
 
 

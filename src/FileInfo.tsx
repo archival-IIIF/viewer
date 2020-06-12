@@ -15,7 +15,7 @@ interface IHTMLAnchorElement {
 }
 
 interface IProps {
-    data: IManifestData | null;
+    data?: IManifestData;
 }
 
 declare let global: {
@@ -32,7 +32,7 @@ class FileInfo extends React.Component<IProps, {}> {
     }
 
     render() {
-        if (this.props.data === null || this.props.data.restricted) {
+        if (!this.props.data || this.props.data.restricted) {
             return '';
         }
 
@@ -138,7 +138,7 @@ class FileInfo extends React.Component<IProps, {}> {
     showManifestationsModal() {
 
         const bodyJsx = [];
-        if (this.props.data !== null) {
+        if (this.props.data) {
             let manifestations = [];
             if (this.props.data.manifestations.length > 0) {
                 manifestations = this.props.data.manifestations;

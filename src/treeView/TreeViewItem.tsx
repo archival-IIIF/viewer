@@ -2,7 +2,6 @@ import * as React from 'react';
 import Loading from '../Loading';
 import './treeview.css';
 import ITree from "../interface/ITree";
-import Cache from "../lib/Cache";
 import TreeBuilder from "./TreeBuilder";
 import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
 import CaretRightIcon from '@material-ui/icons/ArrowRight';
@@ -13,6 +12,7 @@ interface IPros {
     level: number;
     currentFolderId?: string;
     isOpen?: boolean;
+    setCurrentManifest: (id: string) => void;
 }
 
 interface IState {
@@ -28,8 +28,6 @@ class TreeViewItem extends React.Component<IPros, IState> {
         super(props);
 
         this.state = {isOpen: this.props.isOpen === true, tree: this.props.tree};
-
-        this.openIt = this.openIt.bind(this);
     }
 
     render() {
@@ -67,8 +65,14 @@ class TreeViewItem extends React.Component<IPros, IState> {
             if (data.children) {
                 for (const child of data.children) {
                     children.push(
-                        <TreeViewItem level={childrenLevel} key={child.id} tree={child} isOpen={child.isOpen}
-                                   currentFolderId={this.props.currentFolderId} />
+                        <TreeViewItem
+                            level={childrenLevel}
+                            key={child.id}
+                            tree={child}
+                            isOpen={child.isOpen}
+                            currentFolderId={this.props.currentFolderId}
+                            setCurrentManifest={this.props.setCurrentManifest}
+                        />
                     );
                 }
             }
@@ -80,7 +84,7 @@ class TreeViewItem extends React.Component<IPros, IState> {
                     <div className={classNameCaret} onClick={() => this.toggleCaret()}>
                         {caret}
                     </div>
-                    <div className="treeview-label" onClick={() => this.openFolder(data.id)}>{label}</div>
+                    <div className="treeview-label" onClick={() => this.props.setCurrentManifest(data.id)}>{label}</div>
                 </div>
                 {children}
             </div>
@@ -95,12 +99,6 @@ class TreeViewItem extends React.Component<IPros, IState> {
         }
 
         this.setOpen();
-    }
-
-    openFolder(itemId: string) {
-        this.setOpen();
-
-        Cache.ee.emit('open-folder', itemId);
     }
 
     isSubTreeMissing() {
@@ -127,20 +125,6 @@ class TreeViewItem extends React.Component<IPros, IState> {
         } else {
             this.setState({isOpen: true});
         }
-    }
-
-    openIt(id: string) {
-        if (this.props.tree && this.props.tree.id === id) {
-            this.setOpen();
-        }
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('update-current-folder-id', this.openIt);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('update-current-folder-id', this.openIt);
     }
 }
 

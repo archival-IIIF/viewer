@@ -5,7 +5,9 @@ import Folder from "./Folder";
 import IManifestData from "./interface/IManifestData";
 
 interface IPros {
-    data: IManifestData | null;
+    currentManifest: IManifestData;
+    currentFolder: IManifestData;
+    setCurrentManifest: (id: string) => void;
 }
 
 class Content extends React.Component<IPros, {}> {
@@ -14,18 +16,28 @@ class Content extends React.Component<IPros, {}> {
 
         const size = this.getSize();
         let key = "content" + size.toString();
-        if(this.props.data && this.props.data.id) {
-            key += this.props.data.id;
+        if(this.props.currentManifest && this.props.currentManifest.id) {
+            key += this.props.currentManifest.id;
         }
 
         if (size === 0) {
-            return <Folder data={this.props.data}/>;
+            return <Folder
+                key={this.props.currentManifest.id}
+                currentManifest={this.props.currentManifest}
+                currentFolder={this.props.currentFolder}
+                setCurrentManifest={this.props.setCurrentManifest}
+            />;
         }
 
         if (this.isAudio()) {
             return <div id="content-audio">
-                <Viewer data={this.props.data}/>
-                <Folder data={this.props.data}/>
+                <Viewer data={this.props.currentManifest}/>
+                <Folder
+                    key={this.props.currentManifest.id}
+                    currentManifest={this.props.currentManifest}
+                    currentFolder={this.props.currentFolder}
+                    setCurrentManifest={this.props.setCurrentManifest}
+                />
             </div>;
         }
 
@@ -33,14 +45,19 @@ class Content extends React.Component<IPros, {}> {
             id="content"
             key={key}
             aSize={size}
-            a={<Viewer data={this.props.data}/>}
-            b={<Folder data={this.props.data}/>}
+            a={<Viewer data={this.props.currentManifest}/>}
+            b={<Folder
+                key={this.props.currentManifest.id}
+                currentManifest={this.props.currentManifest}
+                currentFolder={this.props.currentFolder}
+                setCurrentManifest={this.props.setCurrentManifest}
+            />}
             direction="horizontal"
         />
     }
 
     isAudio() {
-        const manifestData: any = this.props.data;
+        const manifestData: any = this.props.currentManifest;
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return false;
         }
@@ -53,7 +70,7 @@ class Content extends React.Component<IPros, {}> {
     }
 
     getSize(): number {
-        const manifestData: any = this.props.data;
+        const manifestData: any = this.props.currentManifest;
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return 0;
         }

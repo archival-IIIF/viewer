@@ -19,6 +19,8 @@ class Manifest {
     static lang: string = 'en';
 
     static cache: any = {};
+    static cacheSkipAuthentication: any = {};
+
 
     static get(url?: string, callback?: any, skipAuthentication?: boolean) {
 
@@ -26,7 +28,7 @@ class Manifest {
             return;
         }
 
-        const data = this.fetchFromCache(url);
+        const data = this.fetchFromCache(url, skipAuthentication);
 
         if (data !== false) {
 
@@ -42,6 +44,8 @@ class Manifest {
     }
 
     static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean) {
+
+        console.log(url)
 
         const t = this;
         const authHeader: Headers = new Headers();
@@ -116,6 +120,7 @@ class Manifest {
                     return;
                 }
 
+
                 if (statusCode === 401) {
 
                     const external = manifestoData.getService(ServiceProfile.AUTH_1_EXTERNAL);
@@ -145,7 +150,9 @@ class Manifest {
                         }
                     }
 
-                    if (skipAuthentication !== true) {
+                    if (skipAuthentication === true) {
+                        t.cacheSkipAuthentication[url] = manifestData;
+                    } else {
                         Cache.ee.emit('show-login', manifestoData);
                         manifestData.collections = [];
                         manifestData.manifests = [];
@@ -593,10 +600,14 @@ class Manifest {
         return tmp.innerHTML;
     }
 
-    static fetchFromCache(url: string) {
+    static fetchFromCache(url: string, skipAuthentication?: boolean) {
 
         if (this.cache.hasOwnProperty(url)) {
             return this.cache[url];
+        }
+
+        if (skipAuthentication === true && this.cacheSkipAuthentication.hasOwnProperty(url)) {
+            return this.cacheSkipAuthentication[url];
         }
 
         return false;

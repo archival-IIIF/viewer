@@ -1,5 +1,3 @@
-import Cache from './Cache';
-
 class ManifestHistory {
 
     static previousIds: string[] = [];
@@ -22,11 +20,7 @@ class ManifestHistory {
         // delete current
         this.previousIds.splice(-1, 1);
 
-        const backId = this.previousIds.slice(-1)[0];
-
-        if (backId) {
-            Cache.ee.emit('open-folder', backId);
-        }
+        return this.previousIds.slice(-1)[0];
     }
 
 
