@@ -65,6 +65,7 @@ class App extends React.Component<IProps, IState> {
         });
 
         this.setCurrentManifest = this.setCurrentManifest.bind(this);
+        this.clearTree = this.clearTree.bind(this);
     }
 
     render() {
@@ -147,13 +148,6 @@ class App extends React.Component<IProps, IState> {
                         }
                     )
                 }
-                /*
-
-
-
-              if (pageReload !== false) {
-                   ManifestHistory.pageChanged(manifestData.id, manifestData.label);
-               }*/
 
                 if (currentManifest.restricted === true) {
                     document.title = currentManifest.label;
