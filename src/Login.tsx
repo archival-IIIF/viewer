@@ -32,7 +32,7 @@ declare let global: {
 };
 
 interface IProps {
-    setCurrentManifest: (id: string) => void;
+    setCurrentManifest: (id?: string) => void;
 }
 
 class Login extends React.Component<IProps, IState> {
