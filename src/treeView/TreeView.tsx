@@ -21,7 +21,7 @@ class TreeView extends React.Component<IProps, {}> {
         return (
             <div id="treeview">
                 <TreeViewItem
-                    key={this.props.tree.id}
+                    key={Math.random()}
                     tree={this.props.tree}
                     level={1}
                     currentFolderId={this.props.currentFolderId}

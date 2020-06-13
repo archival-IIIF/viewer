@@ -141,9 +141,7 @@ class Login extends React.Component<IProps, IState> {
             loginService['options'] = {locale: Manifest.lang};
         }
 
-
-
-        if (loginService !== false) {
+        if (loginService !== false && (this.state.id !== loginService.id || !this.state.visible)) {
             this.getTokenUrlFromService(loginService);
 
             this.setState({

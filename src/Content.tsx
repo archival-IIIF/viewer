@@ -22,7 +22,7 @@ class Content extends React.Component<IPros, {}> {
 
         if (size === 0) {
             return <Folder
-                key={this.props.currentManifest.id}
+                key={this.props.currentManifest.key}
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}
@@ -31,9 +31,9 @@ class Content extends React.Component<IPros, {}> {
 
         if (this.isAudio()) {
             return <div id="content-audio">
-                <Viewer data={this.props.currentManifest}/>
+                <Viewer currentManifest={this.props.currentManifest}/>
                 <Folder
-                    key={this.props.currentManifest.id}
+                    key={this.props.currentManifest.key}
                     currentManifest={this.props.currentManifest}
                     currentFolder={this.props.currentFolder}
                     setCurrentManifest={this.props.setCurrentManifest}
@@ -45,9 +45,9 @@ class Content extends React.Component<IPros, {}> {
             id="content"
             key={key}
             aSize={size}
-            a={<Viewer data={this.props.currentManifest}/>}
+            a={<Viewer currentManifest={this.props.currentManifest}/>}
             b={<Folder
-                key={this.props.currentManifest.id}
+                key={this.props.currentManifest.key}
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}

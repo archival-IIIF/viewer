@@ -65,7 +65,6 @@ class App extends React.Component<IProps, IState> {
         });
 
         this.setCurrentManifest = this.setCurrentManifest.bind(this);
-        this.clearTree = this.clearTree.bind(this);
     }
 
     render() {
@@ -88,13 +87,12 @@ class App extends React.Component<IProps, IState> {
         return <Splitter
             id="main"
             a={<TreeView
-                key={this.state.currentFolder.id}
                 currentFolderId={this.state.currentFolder.id}
                 tree={this.state.tree}
                 setCurrentManifest={this.setCurrentManifest}
             />}
             b={<Content
-                key={this.state.currentManifest.id}
+                key={this.state.currentManifest.key}
                 currentManifest={this.state.currentManifest}
                 currentFolder={this.state.currentFolder}
                 setCurrentManifest={this.setCurrentManifest}
@@ -115,11 +113,6 @@ class App extends React.Component<IProps, IState> {
         if (id) {
             this.setCurrentManifest(id);
         }
-        Cache.ee.addListener('token-received', this.clearTree);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('token-received', this.clearTree);
     }
 
     setCurrentManifest(id: string) {
@@ -154,10 +147,6 @@ class App extends React.Component<IProps, IState> {
                 }
             }
         );
-    }
-
-    clearTree() {
-        this.setState({tree: undefined});
     }
 }
 

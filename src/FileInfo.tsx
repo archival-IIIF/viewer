@@ -15,7 +15,7 @@ interface IHTMLAnchorElement {
 }
 
 interface IProps {
-    data?: IManifestData;
+    currentManifest: IManifestData;
 }
 
 declare let global: {
@@ -32,11 +32,11 @@ class FileInfo extends React.Component<IProps, {}> {
     }
 
     render() {
-        if (!this.props.data || this.props.data.restricted) {
+        if (this.props.currentManifest.restricted) {
             return '';
         }
 
-        const manifestData = this.props.data;
+        const manifestData = this.props.currentManifest;
         const metadataView = [];
 
         // Add a hook to make all links open a new window
@@ -138,24 +138,24 @@ class FileInfo extends React.Component<IProps, {}> {
     showManifestationsModal() {
 
         const bodyJsx = [];
-        if (this.props.data) {
-            let manifestations = [];
-            if (this.props.data.manifestations.length > 0) {
-                manifestations = this.props.data.manifestations;
-            } else if (this.props.data.resource.manifestations && this.props.data.resource.manifestations.length > 0) {
-                manifestations = this.props.data.resource.manifestations;
-            }
+        let manifestations = [];
+        const rawManifestations = this.props.currentManifest.manifestations;
+        const resource = this.props.currentManifest.resource;
+        if (rawManifestations.length > 0) {
+            manifestations = rawManifestations;
+        } else if (this.props.currentManifest.resource.manifestations && resource.manifestations.length > 0) {
+            manifestations = resource.manifestations;
+        }
 
-            for (const i in manifestations) {
-                if (manifestations.hasOwnProperty(i)) {
-                    const manifestation = manifestations[i];
-                    bodyJsx.push(
-                        <div key={i} className="file-manifestation" onClick={() => this.openFile(manifestation.url)}>
-                            <FileIcon />
-                            {manifestation.label}
-                        </div>
-                    );
-                }
+        for (const i in manifestations) {
+            if (manifestations.hasOwnProperty(i)) {
+                const manifestation = manifestations[i];
+                bodyJsx.push(
+                    <div key={i} className="file-manifestation" onClick={() => this.openFile(manifestation.url)}>
+                        <FileIcon />
+                        {manifestation.label}
+                    </div>
+                );
             }
         }
 

@@ -3,6 +3,7 @@ import IManifestData from '../interface/IManifestData';
 class ManifestData implements IManifestData {
 
     id: '';
+    key: '';
     type: '';
     label: '';
     logo: '';
@@ -20,6 +21,7 @@ class ManifestData implements IManifestData {
 
     constructor() {
         this.id = '';
+        this.key = '';
         this.type = '';
         this.label = '';
         this.logo = '';

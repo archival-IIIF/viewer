@@ -30,7 +30,7 @@ class Manifest {
 
         const data = this.fetchFromCache(url, skipAuthentication);
 
-        if (data !== false) {
+        if (data) {
 
             if (callback !== undefined) {
                 callback(data);
@@ -83,6 +83,7 @@ class Manifest {
                 const manifestData: IManifestData = new ManifestData();
 
                 manifestData.id = manifestoData.id;
+                manifestData.key = manifestoData.id;
                 const type = manifestoData.getProperty('type');
                 if (type === 'sc:Manifest' || type === 'Manifest') {
                     manifestData.type = 'sc:Manifest';
@@ -156,6 +157,7 @@ class Manifest {
                         manifestData.manifests = [];
                         manifestData.restricted = true;
                     }
+                    manifestData.key = '0' + manifestData.key;
                 } else {
                     const isV3 = this.isV3(manifestoData);
                     manifestData.metadata = t.getMetadata(manifestoData);

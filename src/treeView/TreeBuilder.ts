@@ -11,7 +11,12 @@ class TreeBuilder {
             url,
             async function(manifestData: IManifestData) {
 
-                const tree2: ITree = {id: manifestData.id, label: manifestData.label, isOpen: true, children: []};
+                const tree2: ITree = {
+                    id: manifestData.id,
+                    label: manifestData.label,
+                    isOpen: true,
+                    children: []
+                };
                 for (const child of manifestData.collections) {
                     const newChild: ITree = {
                         id: child.id,
@@ -28,7 +33,6 @@ class TreeBuilder {
                             }, true);
                         });
                         newChild.hasLockedChildren = d.collections.length > 0;
-
                     }
                     tree2.children.push(newChild);
                 }

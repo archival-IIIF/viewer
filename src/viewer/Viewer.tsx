@@ -7,7 +7,7 @@ import PlainTextViewer from './PlainTextViewer';
 import './viewer.css';
 
 interface IProps {
-    data?: IManifestData;
+    currentManifest: IManifestData;
 }
 
 
@@ -17,7 +17,7 @@ class Viewer extends React.Component<IProps, {}> {
 
     render() {
 
-        const manifestData: any = this.props.data;
+        const manifestData: any = this.props.currentManifest;
 
         if (!manifestData || !manifestData.hasOwnProperty('resource')) {
             return '';
@@ -43,32 +43,27 @@ class Viewer extends React.Component<IProps, {}> {
     }
 
     renderImage() {
-        if (this.props.data) {
-            const resource: any = this.props.data.resource;
-            return (
-                <div id="viewer">
-                    <ReactOpenSeadragon source={resource.source} key={resource.source} />
-                </div>
-            );
-        }
-
+        const resource: any = this.props.currentManifest.resource;
+        return (
+            <div id="viewer">
+                <ReactOpenSeadragon source={resource.source} key={resource.source} />
+            </div>
+        );
     }
 
     renderPlainText() {
-        if (this.props.data) {
-            const resource: any = this.props.data.resource;
-            return (
-                <div id="viewer">
-                    <PlainTextViewer source={resource.id} key={resource.id}/>
-                </div>
-            );
-        }
+        const resource: any = this.props.currentManifest.resource;
+        return (
+            <div id="viewer">
+                <PlainTextViewer source={resource.id} key={resource.id}/>
+            </div>
+        );
     }
 
     renderPdf() {
 
-        if (this.props.data && this.props.data.resource) {
-            const id = this.props.data.resource.id
+        if (this.props.currentManifest.resource) {
+            const id = this.props.currentManifest.resource.id
 
             return <iframe id="viewer" src={id} title={id}/>;
         }
@@ -76,8 +71,8 @@ class Viewer extends React.Component<IProps, {}> {
 
     renderAudioVideo() {
 
-        if (this.props.data) {
-            const resource: any = this.props.data.resource;
+        if (this.props.currentManifest.resource) {
+            const resource: any = this.props.currentManifest.resource;
             const mime = resource.format;
             const mediaType = resource.type;
             const file = resource.id;

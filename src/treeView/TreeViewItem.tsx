@@ -31,9 +31,9 @@ class TreeViewItem extends React.Component<IPros, IState> {
     }
 
     render() {
-        const data = this.state.tree;
+        const tree = this.state.tree;
 
-        if (!data) {
+        if (!tree) {
             return <Loading/>;
         }
 
@@ -46,28 +46,28 @@ class TreeViewItem extends React.Component<IPros, IState> {
             fontSize: 32
         }
 
-        if ((!data.children || data.children.length === 0) && data.hasLockedChildren !== true) {
+        if ((!tree.children || tree.children.length === 0) && tree.hasLockedChildren !== true) {
             classNameCaret += ' no-caret';
         } else if (this.state.isOpen) {
             caret = <CaretDownIcon style={iconStyle} />;
         } else {
             caret = <CaretRightIcon style={iconStyle} />;
         }
-        if (data.id === this.props.currentFolderId) {
+        if (tree.id === this.props.currentFolderId) {
             className += ' current';
         }
-        const label = data.label;
+        const label = tree.label;
 
 
         const children: any = [];
         if (this.state.isOpen) {
             const childrenLevel = this.props.level + 1;
-            if (data.children) {
-                for (const child of data.children) {
+            if (tree.children) {
+                for (const child of tree.children) {
                     children.push(
                         <TreeViewItem
                             level={childrenLevel}
-                            key={child.id}
+                            key={Math.random()}
                             tree={child}
                             isOpen={child.isOpen}
                             currentFolderId={this.props.currentFolderId}
@@ -84,7 +84,7 @@ class TreeViewItem extends React.Component<IPros, IState> {
                     <div className={classNameCaret} onClick={() => this.toggleCaret()}>
                         {caret}
                     </div>
-                    <div className="treeview-label" onClick={() => this.props.setCurrentManifest(data.id)}>{label}</div>
+                    <div className="treeview-label" onClick={() => this.props.setCurrentManifest(tree.id)}>{label}</div>
                 </div>
                 {children}
             </div>
