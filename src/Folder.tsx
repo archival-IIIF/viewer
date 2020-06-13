@@ -7,7 +7,7 @@ import IManifestData from "./interface/IManifestData";
 interface IProps {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
-    setCurrentManifest: (id: string) => void;
+    setCurrentManifest: (id?: string) => void;
 }
 
 class Folder extends React.Component<IProps, {}> {

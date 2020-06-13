@@ -7,7 +7,7 @@ import IManifestData from "./interface/IManifestData";
 interface IPros {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
-    setCurrentManifest: (id: string) => void;
+    setCurrentManifest: (id?: string) => void;
 }
 
 class Content extends React.Component<IPros, {}> {

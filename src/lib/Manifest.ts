@@ -621,7 +621,7 @@ class Manifest {
         }
 
         if (!manifestUri || manifestUri === '') {
-            return false;
+            return undefined;
         }
 
         return manifestUri;

@@ -109,21 +109,26 @@ class App extends React.Component<IProps, IState> {
                 t.setCurrentManifest(backId)
             }
         });
-        const id = Manifest.getIdFromCurrentUrl();
-        if (id) {
-            this.setCurrentManifest(id);
-        }
+        this.setCurrentManifest();
     }
 
-    setCurrentManifest(id: string) {
+    setCurrentManifest(id?: string) {
         const t = this;
+
+        if (!id) {
+            id = Manifest.getIdFromCurrentUrl();
+        }
+        if (!id) {
+            return;
+        }
+        const url = id;
 
 
         Manifest.get(
-            id,
+            url,
             (currentManifest: IManifestData) =>  {
 
-                ManifestHistory.pageChanged(id, currentManifest.label);
+                ManifestHistory.pageChanged(url, currentManifest.label);
 
 
                 if (currentManifest.type === 'sc:Collection') {

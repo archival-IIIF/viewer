@@ -12,7 +12,7 @@ interface IState {
 interface IProps {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
-    setCurrentManifest: (id: string) => void;
+    setCurrentManifest: (id?: string) => void;
 }
 
 class FolderView extends React.Component<IProps, IState> {

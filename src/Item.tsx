@@ -9,7 +9,7 @@ const FileImage = require('./icons/fa/file.svg');
 interface IProps {
     item: IManifestData;
     selected: IManifestData;
-    setCurrentManifest: (id: string) => void;
+    setCurrentManifest: (id?: string) => void;
 }
 
 class Item extends React.Component<IProps, {}> {
