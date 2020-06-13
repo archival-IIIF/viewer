@@ -51,6 +51,7 @@ class Manifest {
         if (Token.has()) {
             const authHeader: Headers = new Headers();
             authHeader.set('Authorization', 'Bearer ' + Token.get());
+            init.credentials = 'include';
             init.headers = authHeader;
         }
 
