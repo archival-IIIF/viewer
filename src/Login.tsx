@@ -179,8 +179,9 @@ class Login extends React.Component<IProps, IState> {
     }
 
     logout() {
+        const logoutUrl = Token.getLogOutUrl();
         Token.delete();
-        window.open(this.logoutUrl, '_blank');
+        window.open(logoutUrl, '_blank');
         const id = Manifest.getIdFromCurrentUrl();
         const currentUrl = window.location.href;
         const viewerUrl = currentUrl.substring(0, currentUrl.indexOf('?manifest='));
@@ -212,7 +213,7 @@ class Login extends React.Component<IProps, IState> {
         }
         Manifest.clearCache();
         InfoJson.clearCache();
-        Token.set(event.data);
+        Token.set(event.data, this.logoutUrl);
         Cache.ee.emit('token-received');
         this.props.setCurrentManifest();
 
