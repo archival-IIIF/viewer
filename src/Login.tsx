@@ -42,6 +42,7 @@ class Login extends React.Component<IProps, IState> {
     private tokenUrl = '';
     private origin = window.location.protocol + '//' + window.location.hostname
         + (window.location.port ? ':' + window.location.port : '');
+    private openWindows: string[] = [];
 
     constructor(props: IProps) {
 
@@ -90,13 +91,20 @@ class Login extends React.Component<IProps, IState> {
     openWindow(id: string) {
 
         const url = id + '?origin=' + this.origin;
+        if (this.openWindows.includes(id)) {
+            return;
+        }
+        this.openWindows.push(id);
 
         const win = window.open(url);
         this.checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
             try {
                 if (win === null || win.closed) {
                     window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
-                    window.addEventListener('message', (event) => this.receiveToken(event), {once: true});
+                    window.addEventListener(
+                        'message',
+                        (event) => this.receiveToken(event, id), {once: true}
+                        );
                     const src = this.tokenUrl + '?messageId=1&origin=' + this.origin;
                     const messageFrame: any = document.getElementById('messageFrame');
                     if (messageFrame) {
@@ -203,7 +211,12 @@ class Login extends React.Component<IProps, IState> {
         Cache.ee.removeListener('logout', this.logout);
     }
 
-    receiveToken(event: any) {
+    receiveToken(event: any, id: string) {
+
+        const index = this.openWindows.indexOf(id);
+        if (index > -1) {
+            this.openWindows.splice(index, 1);
+        }
 
         if (!event.data.hasOwnProperty('accessToken') || event.data.hasOwnProperty('error')) {
             this.setState({
