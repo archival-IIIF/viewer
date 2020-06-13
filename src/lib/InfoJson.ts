@@ -39,16 +39,15 @@ class InfoJson {
     static fetchFromUrl(id: string, callback: any) {
 
         const t = this;
-        const authHeader: Headers = new Headers();
+        const init: RequestInit = {};
         if (Token.has()) {
+            const authHeader: Headers = new Headers();
             authHeader.set('Authorization', 'Bearer ' + Token.get());
+            init.headers = authHeader;
         }
 
         const url = id + '/info.json';
-        fetch(url, {
-                headers: authHeader
-            }
-        ).then((response) => {
+        fetch(url, init).then((response) => {
 
             const statusCode = response.status;
 
