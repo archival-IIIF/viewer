@@ -124,8 +124,6 @@ class App extends React.Component<IProps, IState> {
         }
         const url = id;
 
-        console.log(url);
-
         Manifest.get(
             url,
             (currentManifest: IManifestData) =>  {
