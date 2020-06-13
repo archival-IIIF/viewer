@@ -214,10 +214,7 @@ class Login extends React.Component<IProps, IState> {
         InfoJson.clearCache();
         Token.set(event.data);
         Cache.ee.emit('token-received');
-        const id = Manifest.getIdFromCurrentUrl();
-        if (id) {
-            this.props.setCurrentManifest(id);
-        }
+        this.props.setCurrentManifest();
 
         this.setState({
             visible: false
