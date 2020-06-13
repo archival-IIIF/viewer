@@ -131,7 +131,7 @@ class App extends React.Component<IProps, IState> {
                 ManifestHistory.pageChanged(url, currentManifest.label);
 
 
-                if (currentManifest.type === 'sc:Collection') {
+                if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;
                     TreeBuilder.get(currentFolder.id, undefined, (tree) => {
                         t.setState({currentManifest, currentFolder, tree});

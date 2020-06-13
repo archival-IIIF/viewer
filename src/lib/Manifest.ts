@@ -86,9 +86,9 @@ class Manifest {
                 manifestData.key = manifestoData.id;
                 const type = manifestoData.getProperty('type');
                 if (type === 'sc:Manifest' || type === 'Manifest') {
-                    manifestData.type = 'sc:Manifest';
+                    manifestData.type = 'Manifest';
                 } else if (type === 'sc:Collection' || type === 'Collection') {
-                    manifestData.type = 'sc:Collection';
+                    manifestData.type = 'Collection';
                 }
                 manifestData.label = manifestoData.getDefaultLabel() ?? '';
                 const isV3 = this.isV3(manifestoData);
@@ -167,10 +167,10 @@ class Manifest {
                     manifestData.attribution = t.getAttribution(manifestoData);
                     manifestData.manifestations = t.getManifestations(manifestoData);
                     manifestData.restricted = false;
-                    if (manifestData.type === 'sc:Collection') {
+                    if (manifestData.type === 'Collection') {
                         manifestData.manifests = t.getManifests(manifestoData);
                         manifestData.collections = t.getCollections(manifestoData);
-                    } else if (manifestData.type === 'sc:Manifest') {
+                    } else if (manifestData.type === 'Manifest') {
                         manifestData.resource = t.getResource(manifestoData, isV3);
                     }
                     manifestData.thumbnail = t.getThumbnail(manifestoData);

@@ -17,7 +17,7 @@ class Item extends React.Component<IProps, {}> {
 
     render() {
 
-        const itemType = this.props.item.type === 'sc:Collection' ? 'folder' : 'file';
+        const itemType = this.props.item.type === 'Collection' ? 'folder' : 'file';
         const id = this.props.item.id;
         let className = 'item ' + itemType;
         const label = this.props.item.label;
@@ -40,7 +40,7 @@ class Item extends React.Component<IProps, {}> {
     getThumbnail() {
 
         if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
-            if (this.props.item.type === 'sc:Collection' || this.props.item.type === 'Collection') {
+            if (this.props.item.type === 'Collection') {
                 return `url(${FolderImage})`;
             }
 
@@ -61,7 +61,7 @@ class Item extends React.Component<IProps, {}> {
     }
 
     open() {
-        if (this.props.item.type === 'sc:Collection') {
+        if (this.props.item.type === 'Collection') {
             this.props.setCurrentManifest(this.props.item.id);
         } else {
             this.openFile();
