@@ -24,7 +24,7 @@ class Manifest {
 
     static get(url?: string, callback?: any, skipAuthentication?: boolean) {
 
-        if (url === undefined) {
+        if (url === undefined || url === '') {
             return;
         }
 
@@ -46,16 +46,15 @@ class Manifest {
     static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean) {
 
         const t = this;
-        const authHeader: Headers = new Headers();
         let statusCode = 0;
+        const init: RequestInit = {};
         if (Token.has()) {
+            const authHeader: Headers = new Headers();
             authHeader.set('Authorization', 'Bearer ' + Token.get());
+            init.headers = authHeader;
         }
 
-        fetch(url, {
-                headers: authHeader
-            }
-        ).then((response) => {
+        fetch(url, init).then((response) => {
             statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {

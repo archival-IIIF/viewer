@@ -16,6 +16,7 @@ import IManifestData from "./interface/IManifestData";
 import Manifest from "./lib/Manifest";
 import TreeBuilder from "./treeView/TreeBuilder";
 import ITree from "./interface/ITree";
+import ManifestData from "./entity/ManifestData";
 
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
@@ -123,6 +124,7 @@ class App extends React.Component<IProps, IState> {
         }
         const url = id;
 
+        console.log(url);
 
         Manifest.get(
             url,
@@ -130,13 +132,12 @@ class App extends React.Component<IProps, IState> {
 
                 ManifestHistory.pageChanged(url, currentManifest.label);
 
-
                 if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;
                     TreeBuilder.get(currentFolder.id, undefined, (tree) => {
                         t.setState({currentManifest, currentFolder, tree});
                     });
-                } else {
+                } else if (currentManifest.parentId) {
                     Manifest.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {
@@ -145,6 +146,10 @@ class App extends React.Component<IProps, IState> {
                             });
                         }
                     )
+                } else {
+                    const currentFolder = new ManifestData();
+                    currentFolder.type = 'Manifest';
+                    t.setState({currentManifest, currentFolder});
                 }
 
                 if (currentManifest.restricted === true) {

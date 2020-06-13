@@ -2,21 +2,21 @@ import IManifestData from '../interface/IManifestData';
 
 class ManifestData implements IManifestData {
 
-    id: '';
-    key: '';
-    type: '';
-    label: '';
-    logo: '';
-    attribution: '';
-    manifestations: '';
+    id: string;
+    key: string;
+    type: string;
+    label: string;
+    logo: string;
+    attribution: string;
+    manifestations: string;
     parentId: undefined;
-    collections: '';
-    manifests: '';
-    resource: '';
+    collections: string;
+    manifests: string;
+    resource: string;
     restricted: false;
-    metadata: '';
+    metadata: string;
     license: undefined;
-    description: '';
+    description: string;
     thumbnail: undefined;
 
     constructor() {
