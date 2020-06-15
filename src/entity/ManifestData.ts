@@ -1,4 +1,4 @@
-import IManifestData from '../interface/IManifestData';
+import IManifestData, {IAuthService} from '../interface/IManifestData';
 
 class ManifestData implements IManifestData {
 
@@ -18,6 +18,7 @@ class ManifestData implements IManifestData {
     license: undefined;
     description: string;
     thumbnail: undefined;
+    authService?: IAuthService;
 
     constructor() {
         this.id = '';
@@ -33,6 +34,7 @@ class ManifestData implements IManifestData {
         this.restricted = false;
         this.metadata = '';
         this.description = '';
+        this.authService = undefined;
     }
 
 }

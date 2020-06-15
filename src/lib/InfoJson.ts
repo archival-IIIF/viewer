@@ -1,5 +1,8 @@
 import Cache from './Cache';
+import {IAuthService} from "../interface/IManifestData";
+import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "./Token";
+import Manifest from "./Manifest";
 
 class InfoJson {
 
@@ -36,17 +39,23 @@ class InfoJson {
         callback(result);
     }
 
-    static fetchFromUrl(id: string, callback: any) {
+    static fetchFromUrl(url: string, callback: any, token?: string) {
 
         const t = this;
         const init: RequestInit = {};
-        if (Token.has()) {
+        if (token) {
             const authHeader: Headers = new Headers();
-            authHeader.set('Authorization', 'Bearer ' + Token.get());
+            authHeader.set('Authorization', 'Bearer ' + token);
             init.headers = authHeader;
         }
 
-        const url = id + '/info.json';
+        let id = url;
+        if (url.endsWith('/info.json')) {
+            id.replace('/info.json', '');
+        } else {
+            url += '/info.json';
+        }
+
         fetch(url, init).then((response) => {
 
             const statusCode = response.status;
@@ -61,9 +70,49 @@ class InfoJson {
             }
 
             response.json().then((json) => {
+                const authService = this.getAuthService(json);
+                json.authService = authService;
 
-                if (statusCode === 401) {
-                    Cache.ee.emit('show-login', json);
+
+                if (statusCode === 401 || url !== response.url) {
+                    if (token) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: ''
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+                    if (!authService) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: 'Auth service is missing!'
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+                    if (!authService.token) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: 'Token service is missing!'
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+
+                    const newToken = authService.token;
+                    if (Token.has(newToken)) {
+                        this.fetchFromUrl(url, callback, Token.get(newToken));
+                        return;
+                    }
+
+                    if (authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
+                        Manifest.loginInExternal(authService, url, callback);
+                        return;
+                    }
+
+
+                    Cache.ee.emit('show-login', authService);
                 } else {
                     t.cache[id] = json;
                 }
@@ -82,6 +131,57 @@ class InfoJson {
             Cache.ee.emit('alert', alertArgs);
         });
     }
+
+    static getAuthService(json: any): IAuthService | undefined {
+
+        if (!json.service || !json.service[0] ) {
+            return undefined;
+        }
+        let authService = json.service[0];
+        if (!authService.id) {
+            return undefined;
+        }
+
+        const serviceProfiles = [
+            ServiceProfile.AUTH_1_EXTERNAL,
+            ServiceProfile.AUTH_1_KIOSK,
+            ServiceProfile.AUTH_1_CLICK_THROUGH,
+            ServiceProfile.AUTH_1_LOGIN
+        ]
+
+        let profile = '';
+        let id = authService.id;
+        for (const serviceProfile of serviceProfiles) {
+            if (id === serviceProfile) {
+                profile = serviceProfile;
+                break;
+            }
+        }
+
+        let token;
+        let logout;
+        if (authService.service)
+        for (const service of authService.service) {
+            if (service.profile === ServiceProfile.AUTH_1_TOKEN) {
+                token = service.id;
+            } else if (service.profile === ServiceProfile.AUTH_1_LOGOUT) {
+                logout = service.id;
+            }
+        }
+
+        return {
+            token,
+            logout,
+            confirmLabel: authService.confirmLabel,
+            description: authService.description,
+            errorMessage: authService.failureDescription,
+            header: authService.header,
+            failureHeader: authService.failureHeader,
+            profile,
+            id
+        };
+    }
+
 
     static fetchFromCache(id: string) {
 

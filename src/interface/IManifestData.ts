@@ -17,6 +17,20 @@ interface IManifestData {
     license?: string;
     description: string;
     thumbnail?: IManifestDataThumbnail;
+    authService?: IAuthService;
 }
+
+export interface IAuthService {
+    id: string;
+    token?: string;
+    logout?: string;
+    profile: string;
+    confirmLabel?: string;
+    description?: string;
+    errorMessage?: string;
+    header?: string;
+    failureHeader?: string;
+}
+
 
 export default IManifestData;

@@ -1,6 +1,6 @@
 import Cache from './Cache';
 import filesize from 'filesize';
-import IManifestData from '../interface/IManifestData';
+import IManifestData, {IAuthService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
@@ -43,19 +43,18 @@ class Manifest {
 
     }
 
-    static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean) {
+    static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean, token?: string) {
 
         const t = this;
-        let statusCode = 0;
         const init: RequestInit = {};
-        if (Token.has()) {
+        if (token) {
             const authHeader: Headers = new Headers();
-            authHeader.set('Authorization', 'Bearer ' + Token.get());
+            authHeader.set('Authorization', 'Bearer ' + token);
             init.headers = authHeader;
         }
 
         fetch(url, init).then((response) => {
-            statusCode = response.status;
+            const statusCode = response.status;
 
             if (statusCode !== 401 && statusCode >= 400) {
                 const alertArgs = {
@@ -81,7 +80,7 @@ class Manifest {
 
                 const manifestData: IManifestData = new ManifestData();
 
-                manifestData.id = manifestoData.id;
+                manifestData.id = url;
                 manifestData.key = manifestoData.id;
                 const type = manifestoData.getProperty('type');
                 if (type === 'sc:Manifest' || type === 'Manifest') {
@@ -99,6 +98,7 @@ class Manifest {
                 } else {
                     manifestData.parentId = manifestoData.getProperty('within');
                 }
+                manifestData.authService = this.getAuthService(manifestoData);
 
                 if (!manifestData.label) {
                     const alertArgs = {
@@ -118,40 +118,48 @@ class Manifest {
                     return;
                 }
 
+                if (statusCode === 401 || url !== response.url) {
 
-                if (statusCode === 401) {
+                    if (token) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: ''
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+                    if (!manifestData.authService) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: 'Auth service is missing!'
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+                    if (!manifestData.authService.token) {
+                        const alertArgs = {
+                            title: 'Login failed',
+                            body: 'Token service is missing!'
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
 
-                    const external = manifestoData.getService(ServiceProfile.AUTH_1_EXTERNAL);
-                    if (external) {
-                        const token = external.getService(ServiceProfile.AUTH_1_TOKEN);
-                        if (token) {
-                            fetch(token.id)
-                                .then((externalTokenResponse) => {
+                    const newToken = manifestData.authService.token;
+                    if (Token.has(newToken)) {
+                        this.fetchFromUrl(url, callback, false, Token.get(newToken));
+                        return;
+                    }
 
-                                    statusCode = externalTokenResponse.status;
-                                    if (statusCode !== 200) {
-                                        const alertArgs = {
-                                            title: external.getFailureHeader(),
-                                            body: external.getFailureDescription()
-                                        };
-                                        Cache.ee.emit('alert', alertArgs);
-                                        return;
-                                    }
-
-                                    externalTokenResponse.json()
-                                        .then((externalTokenJson: any) => {
-                                            Token.set(externalTokenJson)
-                                            return this.fetchFromUrl(url, callback, skipAuthentication);
-                                        });
-                                });
-                            return;
-                        }
+                    if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
+                        this.loginInExternal(manifestData.authService, url, callback);
+                        return;
                     }
 
                     if (skipAuthentication === true) {
                         t.cacheSkipAuthentication[url] = manifestData;
                     } else {
-                        Cache.ee.emit('show-login', manifestoData);
+                        Cache.ee.emit('show-login', manifestData.authService);
                         manifestData.collections = [];
                         manifestData.manifests = [];
                         manifestData.restricted = true;
@@ -189,6 +197,75 @@ class Manifest {
                 Cache.ee.emit('alert', alertArgs);
             });
         });
+    }
+
+    static loginInExternal(authService: IAuthService, url: string, callback?: any) {
+
+        if (!authService.token) {
+            return false;
+        }
+        const tokenId = authService.token;
+
+        fetch(tokenId).then((externalTokenResponse) => {
+            const statusCode = externalTokenResponse.status;
+            if (statusCode !== 200) {
+                const alertArgs = {
+                    title: authService.failureHeader,
+                    body: authService.errorMessage
+                };
+                Cache.ee.emit('alert', alertArgs);
+                return;
+            }
+
+            externalTokenResponse.json()
+                .then((externalTokenJson: any) => {
+                    Token.set(externalTokenJson, tokenId);
+                    return this.fetchFromUrl(url, callback, false, Token.get(tokenId));
+                });
+        });
+
+        return true;
+    }
+
+    static getAuthService(manifestoData: any): IAuthService | undefined {
+
+        const serviceProfiles = [
+            ServiceProfile.AUTH_1_EXTERNAL,
+            ServiceProfile.AUTH_1_KIOSK,
+            ServiceProfile.AUTH_1_CLICK_THROUGH,
+            ServiceProfile.AUTH_1_LOGIN
+        ]
+
+        let authService;
+        let profile = '';
+        let id = '';
+        for (const serviceProfile of serviceProfiles) {
+            authService = manifestoData.getService(serviceProfile);
+            if (authService) {
+                profile = serviceProfile;
+                id = authService.id;
+                break;
+            }
+        }
+        if (!authService) {
+            return undefined;
+        }
+
+        const tokenService = authService.getService(ServiceProfile.AUTH_1_TOKEN);
+
+        const logoutService = authService.getService(ServiceProfile.AUTH_1_LOGOUT);
+
+        return {
+            token: tokenService ? tokenService.id : undefined,
+            logout: logoutService ? logoutService.id : undefined,
+            confirmLabel: authService.getConfirmLabel(),
+            description: authService.getDescription(),
+            errorMessage: authService.getFailureDescription(),
+            header: authService.getHeader(),
+            failureHeader: authService.getFailureHeader(),
+            profile,
+            id
+        };
     }
 
     static getAttribution(manifestoData: any) {

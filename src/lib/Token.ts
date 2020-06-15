@@ -1,3 +1,5 @@
+import UrlValidation from "./UrlValidation";
+
 type tokenValue = {
     accessToken: string;
     expiresIn: number;
@@ -12,18 +14,9 @@ type token = {
 
 class Token {
 
-    static get() {
-        const token = this.getFromSession();
 
-        if (token) {
-            return token.value.accessToken;
-        }
-
-        return '';
-    };
-
-    static getFromSession(): token | undefined {
-        const rawToken = sessionStorage.getItem('aiiif-token');
+    static get(url: string) {
+        const rawToken = sessionStorage.getItem(url);
         if (!rawToken) {
             return undefined;
         }
@@ -34,38 +27,29 @@ class Token {
         }
 
         if (token.expiresAt < Date.now() / 1000) {
-            sessionStorage.removeItem('aiiif-token');
+            sessionStorage.removeItem(url);
             return undefined;
         }
 
-        return token;
-    }
+        return token.value.accessToken;
+    };
 
-    static getLogOutUrl(): string {
-        const token = this.getFromSession();
 
-        if (token && token.logoutUrl) {
-            return token.logoutUrl;
+    static set(data: tokenValue, tokenUrl: string) {
+        if (UrlValidation.isURL(tokenUrl)) {
+            sessionStorage.setItem(tokenUrl, JSON.stringify({
+                value: data,
+                expiresAt: Date.now() / 1000 + data.expiresIn
+            }));
         }
-
-        return '';
     };
 
-    static set(data: tokenValue, logoutUrl?: string) {
-
-        sessionStorage.setItem('aiiif-token', JSON.stringify({
-            value: data,
-            logoutUrl,
-            expiresAt: Date.now() / 1000 + data.expiresIn
-        }));
-    };
-
-    static has() {
-        return this.get() !== '';
+    static has(url: string) {
+        return this.get(url);
     }
 
-    static delete() {
-        sessionStorage.removeItem('aiiif-token');
+    static delete(tokenId: string) {
+        sessionStorage.removeItem(tokenId);
     }
 }
 

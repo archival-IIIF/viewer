@@ -6,22 +6,19 @@ import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
+import IManifestData from "../interface/IManifestData";
+import logout from "../lib/Logout";
 
-interface IState {
-    logoutButtonIsVisible: boolean;
+interface IProps {
+    currentManifest?: IManifestData;
 }
 
-class TopBar extends React.Component<{}, IState> {
+class TopBar extends React.Component<IProps, {}> {
 
-    constructor(props: {}) {
+    constructor(props: IProps) {
 
         super(props);
 
-        this.state = {
-            logoutButtonIsVisible: Token.has()
-        };
-
-        this.tokenReceived = this.tokenReceived.bind(this);
         this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
     }
 
@@ -40,36 +37,34 @@ class TopBar extends React.Component<{}, IState> {
 
     renderLogin() {
 
-        if (this.state.logoutButtonIsVisible) {
-            return <div className="icon-button" onClick={() => this.logout()}>
+        if (
+            this.props.currentManifest &&
+            this.props.currentManifest.authService &&
+            this.props.currentManifest.authService.logout &&
+            this.props.currentManifest.authService.token &&
+            Token.has(this.props.currentManifest.authService.token)
+        ) {
+            return <div className="icon-button" onClick={() => this.handleLogout()}>
                 <LogoutIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>;
         }
     }
 
-    logout() {
-        Cache.ee.emit('logout');
+    handleLogout() {
+        if (
+            this.props.currentManifest &&
+            this.props.currentManifest.authService &&
+            this.props.currentManifest.authService.logout &&
+            this.props.currentManifest.authService.token
+        ) {
+            logout(this.props.currentManifest.authService.token, this.props.currentManifest.authService.logout);
+        }
     }
 
     toggleTreeViewBar() {
         Cache.ee.emit('toggle-splitter-main');
     }
-
-    tokenReceived() {
-        this.setState({
-            logoutButtonIsVisible: Token.has()
-        });
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('token-received', this.tokenReceived);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('token-received', this.tokenReceived);
-    }
-
 }
 
 export default TopBar;

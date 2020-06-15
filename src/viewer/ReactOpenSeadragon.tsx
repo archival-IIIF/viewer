@@ -151,9 +151,9 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 ajaxWithCredentials: false
             };
 
-            if (Token.has()) {
+            if (data.authService && data.authService.token && Token.has(data.authService.token)) {
                 options['ajaxHeaders'] = {
-                    Authorization: 'Bearer ' + Token.get()
+                    Authorization: 'Bearer ' + Token.get(data.authService.token)
                 };
             }
 
