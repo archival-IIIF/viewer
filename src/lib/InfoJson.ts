@@ -134,11 +134,19 @@ class InfoJson {
 
     static getAuthService(json: any): IAuthService | undefined {
 
-        if (!json.service || !json.service[0] ) {
+        if (!json.service) {
             return undefined;
         }
-        let authService = json.service[0];
-        if (!authService.id) {
+        let authService;
+        if (Array.isArray(json.service)) {
+            authService = json.service[0];
+        } else {
+            authService = json.service;
+        }
+
+        console.log(authService)
+
+        if (!authService.id && !authService["@id"]) {
             return undefined;
         }
 
@@ -150,7 +158,7 @@ class InfoJson {
         ]
 
         let profile = '';
-        let id = authService.id;
+        let id = authService.id ?? authService["@id"];
         for (const serviceProfile of serviceProfiles) {
             if (id === serviceProfile) {
                 profile = serviceProfile;
@@ -160,14 +168,16 @@ class InfoJson {
 
         let token;
         let logout;
-        if (authService.service)
-        for (const service of authService.service) {
-            if (service.profile === ServiceProfile.AUTH_1_TOKEN) {
-                token = service.id;
-            } else if (service.profile === ServiceProfile.AUTH_1_LOGOUT) {
-                logout = service.id;
+        if (authService.service) {
+            for (const service of authService.service) {
+                if (service.profile === ServiceProfile.AUTH_1_TOKEN) {
+                    token = service.id ?? service["@id"];
+                } else if (service.profile === ServiceProfile.AUTH_1_LOGOUT) {
+                    logout = service.id ?? service["@id"];
+                }
             }
         }
+
 
         return {
             token,
