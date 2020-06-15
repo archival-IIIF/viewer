@@ -144,8 +144,6 @@ class InfoJson {
             authService = json.service;
         }
 
-        console.log(authService)
-
         if (!authService.id && !authService["@id"]) {
             return undefined;
         }
