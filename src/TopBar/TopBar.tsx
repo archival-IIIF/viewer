@@ -6,7 +6,6 @@ import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
-import logout from "../lib/Logout";
 
 class TopBar extends React.Component<{}, {}> {
 
@@ -30,7 +29,7 @@ class TopBar extends React.Component<{}, {}> {
 
     renderLogin() {
         if (Token.hasActiveToken()) {
-            return <div className="icon-button" onClick={() => logout()}>
+            return <div className="icon-button" onClick={() => Token.logout()}>
                 <LogoutIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>;

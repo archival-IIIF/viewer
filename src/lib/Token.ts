@@ -93,7 +93,7 @@ class Token {
         sessionStorage.removeItem(tokenId);
     }
 
-    static deleteActiveTokens() {
+    static logout() {
         for (const tokenId of this.activeTokens) {
             const logoutUrl = this.getLogoutUrl(tokenId);
             sessionStorage.removeItem(tokenId);
@@ -104,7 +104,9 @@ class Token {
         this.activeTokens = [];
         Manifest.clearCache();
         InfoJson.clearCache();
-        Cache.ee.emit('token-in-use');
+        setTimeout(function () {
+            Cache.ee.emit('token-in-use')
+        }, 500);
     }
 }
 
