@@ -8,6 +8,7 @@ import './viewer.css';
 
 interface IProps {
     currentManifest: IManifestData;
+    authDate: number;
 }
 
 
@@ -44,9 +45,14 @@ class Viewer extends React.Component<IProps, {}> {
 
     renderImage() {
         const resource: any = this.props.currentManifest.resource;
+        console.log(resource.source + this.props.authDate.toString());
         return (
             <div id="viewer">
-                <ReactOpenSeadragon source={resource.source} key={resource.source} />
+                <ReactOpenSeadragon
+                    source={resource.source}
+                    key={resource.source + this.props.authDate.toString()}
+                    authDate={this.props.authDate}
+                />
             </div>
         );
     }

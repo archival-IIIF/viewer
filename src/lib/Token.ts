@@ -25,12 +25,7 @@ class Token {
             return undefined;
         }
 
-        if (!this.activeTokens.includes(url)) {
-            this.activeTokens.push(url);
-            if (this.activeTokens.length === 1) {
-                Cache.ee.emit('token-in-use');
-            }
-        }
+        this.addActive(url);
 
         return token.value.accessToken;
     };
@@ -69,12 +64,7 @@ class Token {
 
     static set(data: tokenValue, tokenUrl: string, logoutUrl?: string) {
 
-        if (!this.activeTokens.includes(tokenUrl)) {
-            this.activeTokens.push(tokenUrl);
-            if (this.activeTokens.length === 1) {
-                Cache.ee.emit('token-in-use');
-            }
-        }
+        this.addActive(tokenUrl)
 
         if (UrlValidation.isURL(tokenUrl)) {
             sessionStorage.setItem(tokenUrl, JSON.stringify({
@@ -84,6 +74,15 @@ class Token {
             }));
         }
     };
+
+    static addActive(tokenUrl: string) {
+        if (!this.activeTokens.includes(tokenUrl)) {
+            this.activeTokens.push(tokenUrl);
+            if (this.activeTokens.length === 1) {
+                Cache.ee.emit('token-changed');
+            }
+        }
+    }
 
     static has(url: string) {
         return this.get(url);
@@ -105,7 +104,7 @@ class Token {
         Manifest.clearCache();
         InfoJson.clearCache();
         setTimeout(function () {
-            Cache.ee.emit('token-in-use')
+            Cache.ee.emit('token-changed')
         }, 500);
     }
 }

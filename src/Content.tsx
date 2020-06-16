@@ -33,7 +33,7 @@ class Content extends React.Component<IPros, {}> {
 
         if (this.isAudio()) {
             return <div id="content-audio">
-                <Viewer currentManifest={this.props.currentManifest}/>
+                <Viewer currentManifest={this.props.currentManifest} authDate={this.props.authDate}/>
                 <Folder
                     key={this.props.currentManifest.id}
                     currentManifest={this.props.currentManifest}
@@ -48,7 +48,7 @@ class Content extends React.Component<IPros, {}> {
             id="content"
             key={key}
             aSize={size}
-            a={<Viewer currentManifest={this.props.currentManifest}/>}
+            a={<Viewer currentManifest={this.props.currentManifest} authDate={this.props.authDate}/>}
             b={<Folder
                 key={this.props.currentManifest.id}
                 currentManifest={this.props.currentManifest}

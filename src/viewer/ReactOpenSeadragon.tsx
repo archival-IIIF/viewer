@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as OpenSeadragon from 'openseadragon';
 import InfoJson from '../lib/InfoJson';
-import Cache from '../lib/Cache';
 import ViewerSpinner from './ViewerSpinner';
 import Token from "../lib/Token";
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
@@ -14,6 +13,7 @@ import PreviousIcon from '@material-ui/icons/NavigateBefore';
 
 interface IProps {
     source: string[];
+    authDate?: number;
 }
 
 interface IState {
@@ -31,6 +31,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     private viewer: any;
     private data: any = [];
     private i = 0;
+    private isM = false;
 
     constructor(props: IProps) {
 
@@ -68,6 +69,10 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             <ViewerSpinner show={this.state.spinner} />
             {this.renderSources()}
         </div>;
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
+        //this.initViewer();
     }
 
     renderPreviousButton() {
@@ -124,12 +129,9 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
         }
     }
 
-
     componentDidMount() {
-
+        this.isM = true;
         this.initViewer();
-
-        Cache.ee.addListener('token-received', this.tokenReceived);
     }
 
     tokenReceived() {
@@ -141,6 +143,19 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     initViewer() {
         const t = this;
         InfoJson.getMulti(this.state.source, function(data: any) {
+            if (!t.isM) {
+                return;
+            }
+
+            if (data[0] && data[0].statusCode === 401) {
+                t.viewer = undefined;
+                t.setState({
+                    spinner: false
+                });
+                return;
+            }
+
+
             t.data = data;
             const options: any = {
                 id: 'openseadragon',
@@ -180,10 +195,10 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
+        this.isM = false;
         if (this.viewer) {
-            this.viewer.removeAllHandlers();
+            this.viewer.removeAllHandlers('tile-drawn');
         }
-        Cache.ee.addListener('token-received', this.tokenReceived);
     }
 }
 

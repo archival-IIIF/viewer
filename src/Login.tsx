@@ -194,7 +194,6 @@ class Login extends React.Component<IProps, IState> {
         Manifest.clearCache();
         InfoJson.clearCache();
         Token.set(event.data, this.authService.token, this.authService.logout);
-        Cache.ee.emit('token-received');
         this.props.setCurrentManifest();
 
         this.setState({

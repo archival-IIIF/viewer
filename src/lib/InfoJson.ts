@@ -71,6 +71,7 @@ class InfoJson {
 
             response.json().then((json) => {
                 const authService = this.getAuthService(json);
+                json.statusCode = statusCode;
                 json.authService = authService;
 
 

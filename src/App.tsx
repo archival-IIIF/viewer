@@ -114,11 +114,11 @@ class App extends React.Component<IProps, IState> {
             }
         });
         this.setCurrentManifest();
-        Cache.ee.addListener('token-in-use', this.tokenReceived);
+        Cache.ee.addListener('token-changed', this.tokenReceived);
     }
 
     componentWillUnmount() {
-        Cache.ee.removeListener('token-in-use', this.tokenReceived);
+        Cache.ee.removeListener('token-changed', this.tokenReceived);
     }
 
     setCurrentManifest(id?: string) {
