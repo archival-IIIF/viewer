@@ -3,7 +3,7 @@ import IManifestData, {IAuthService} from '../interface/IManifestData';
 class ManifestData implements IManifestData {
 
     id: string;
-    key: string;
+    request?: string;
     type: string;
     label: string;
     logo: string;
@@ -22,7 +22,7 @@ class ManifestData implements IManifestData {
 
     constructor() {
         this.id = '';
-        this.key = '';
+        this.request = '';
         this.type = '';
         this.label = '';
         this.logo = '';

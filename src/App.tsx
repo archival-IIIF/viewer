@@ -93,7 +93,7 @@ class App extends React.Component<IProps, IState> {
                 setCurrentManifest={this.setCurrentManifest}
             />}
             b={<Content
-                key={this.state.currentManifest.key}
+                key={this.state.currentManifest.id}
                 currentManifest={this.state.currentManifest}
                 currentFolder={this.state.currentFolder}
                 setCurrentManifest={this.setCurrentManifest}
@@ -128,7 +128,9 @@ class App extends React.Component<IProps, IState> {
             url,
             (currentManifest: IManifestData) =>  {
 
-                ManifestHistory.pageChanged(url, currentManifest.label);
+                console.log(url, currentManifest.request, currentManifest.id)
+
+                ManifestHistory.pageChanged(currentManifest.request ?? currentManifest.id, currentManifest.label);
 
                 if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;

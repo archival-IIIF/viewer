@@ -2,7 +2,7 @@ import IManifestDataThumbnail from './IManifestDataThumbnail';
 
 interface IManifestData {
     id: string;
-    key: string;
+    request?: string;
     type: string;
     label: string;
     logo: string | null;

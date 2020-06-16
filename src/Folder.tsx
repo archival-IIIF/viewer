@@ -16,13 +16,13 @@ class Folder extends React.Component<IProps, {}> {
         return <Splitter
             id="aiiif-splitter-folder"
             a={<FolderView
-                key={this.props.currentManifest.key}
+                key={this.props.currentManifest.id}
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}
             />}
             b={<FileInfo
-                key={this.props.currentManifest.key}
+                key={this.props.currentManifest.id}
                 currentManifest={this.props.currentManifest}
             />}
             aSize={70}

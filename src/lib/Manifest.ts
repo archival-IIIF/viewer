@@ -80,8 +80,8 @@ class Manifest {
 
                 const manifestData: IManifestData = new ManifestData();
 
-                manifestData.id = url;
-                manifestData.key = manifestoData.id;
+                manifestData.id = manifestoData.id;
+                manifestData.request = url !== response.url ? url : undefined;
                 const type = manifestoData.getProperty('type');
                 if (type === 'sc:Manifest' || type === 'Manifest') {
                     manifestData.type = 'Manifest';
@@ -164,7 +164,6 @@ class Manifest {
                         manifestData.manifests = [];
                         manifestData.restricted = true;
                     }
-                    manifestData.key = '0' + manifestData.key;
                 } else {
                     const isV3 = this.isV3(manifestoData);
                     manifestData.metadata = t.getMetadata(manifestoData);
@@ -181,9 +180,9 @@ class Manifest {
                         manifestData.resource = t.getResource(manifestoData, isV3);
                     }
                     manifestData.thumbnail = t.getThumbnail(manifestoData);
-
-                    t.cache[url] = manifestData;
                 }
+
+                t.cache[manifestData.id] = manifestData;
 
                 if (callback !== undefined) {
                     callback(manifestData);
