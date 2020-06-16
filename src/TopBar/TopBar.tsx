@@ -11,11 +11,8 @@ import logout from "../lib/Logout";
 class TopBar extends React.Component<{}, {}> {
 
     constructor(props: {}) {
-
         super(props);
-
         this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
-        this.tokenReceived = this.tokenReceived.bind(this);
     }
 
     render() {
@@ -43,19 +40,6 @@ class TopBar extends React.Component<{}, {}> {
     toggleTreeViewBar() {
         Cache.ee.emit('toggle-splitter-main');
     }
-
-    tokenReceived() {
-        this.forceUpdate();
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('token-in-use', this.tokenReceived);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('token-in-use', this.tokenReceived);
-    }
-
 }
 
 export default TopBar;

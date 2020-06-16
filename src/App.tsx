@@ -34,6 +34,7 @@ interface IState {
     currentManifest?: IManifestData;
     currentFolder?: IManifestData;
     tree?: ITree;
+    authDate: number;
 }
 
 class App extends React.Component<IProps, IState> {
@@ -46,7 +47,7 @@ class App extends React.Component<IProps, IState> {
 
         global.config = new Config(this.props.config);
 
-        this.state = {}
+        this.state = {authDate: 0}
 
         i18n.use(initReactI18next).init({
             lng: global.config.getLanguage(),
@@ -66,6 +67,7 @@ class App extends React.Component<IProps, IState> {
         });
 
         this.setCurrentManifest = this.setCurrentManifest.bind(this);
+        this.tokenReceived = this.tokenReceived.bind(this);
     }
 
     render() {
@@ -73,7 +75,7 @@ class App extends React.Component<IProps, IState> {
             <I18nextProvider i18n={i18n}>
                 <Alert />
                 <Login setCurrentManifest={this.setCurrentManifest}/>
-                <TopBar />
+                <TopBar key={this.state.authDate}/>
                 {this.renderMain()}
             </I18nextProvider>
         );
@@ -97,6 +99,7 @@ class App extends React.Component<IProps, IState> {
                 currentManifest={this.state.currentManifest}
                 currentFolder={this.state.currentFolder}
                 setCurrentManifest={this.setCurrentManifest}
+                authDate={this.state.authDate}
             />}
             direction="vertical"
         />;
@@ -111,6 +114,11 @@ class App extends React.Component<IProps, IState> {
             }
         });
         this.setCurrentManifest();
+        Cache.ee.addListener('token-in-use', this.tokenReceived);
+    }
+
+    componentWillUnmount() {
+        Cache.ee.removeListener('token-in-use', this.tokenReceived);
     }
 
     setCurrentManifest(id?: string) {
@@ -154,6 +162,10 @@ class App extends React.Component<IProps, IState> {
                 }
             }
         );
+    }
+
+    tokenReceived() {
+        this.setState({authDate: Date.now()})
     }
 }
 

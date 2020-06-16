@@ -9,6 +9,7 @@ const FileImage = require('./icons/fa/file.svg');
 interface IProps {
     item: IManifestData;
     selected: IManifestData;
+    authDate: number;
     setCurrentManifest: (id?: string) => void;
 }
 
@@ -56,8 +57,11 @@ class Item extends React.Component<IProps, {}> {
         } else {
             thumbnailUrl = this.props.item.thumbnail.id;
         }
+        if (this.props.authDate > 0) {
+            thumbnailUrl += '?t=' + this.props.authDate.toString();
+        }
 
-        return `url(${thumbnailUrl})`;
+        return 'url(' + thumbnailUrl + ')';
     }
 
     open() {

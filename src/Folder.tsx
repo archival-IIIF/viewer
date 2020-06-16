@@ -7,6 +7,7 @@ import IManifestData from "./interface/IManifestData";
 interface IProps {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
+    authDate: number;
     setCurrentManifest: (id?: string) => void;
 }
 
@@ -20,6 +21,7 @@ class Folder extends React.Component<IProps, {}> {
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}
+                authDate={this.props.authDate}
             />}
             b={<FileInfo
                 key={this.props.currentManifest.id}

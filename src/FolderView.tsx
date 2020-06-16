@@ -12,6 +12,7 @@ interface IState {
 interface IProps {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
+    authDate: number;
     setCurrentManifest: (id?: string) => void;
 }
 
@@ -59,6 +60,7 @@ class FolderView extends React.Component<IProps, IState> {
                     selected={this.props.currentManifest}
                     key={folder.id}
                     setCurrentManifest={this.props.setCurrentManifest}
+                    authDate={this.props.authDate}
                 />
             );
         }
@@ -69,6 +71,7 @@ class FolderView extends React.Component<IProps, IState> {
                     selected={this.props.currentManifest}
                     key={file.id}
                     setCurrentManifest={this.props.setCurrentManifest}
+                    authDate={this.props.authDate}
                 />
             );
         }

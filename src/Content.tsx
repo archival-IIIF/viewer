@@ -7,6 +7,7 @@ import IManifestData from "./interface/IManifestData";
 interface IPros {
     currentManifest: IManifestData;
     currentFolder: IManifestData;
+    authDate: number;
     setCurrentManifest: (id?: string) => void;
 }
 
@@ -26,6 +27,7 @@ class Content extends React.Component<IPros, {}> {
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}
+                authDate={this.props.authDate}
             />;
         }
 
@@ -37,6 +39,7 @@ class Content extends React.Component<IPros, {}> {
                     currentManifest={this.props.currentManifest}
                     currentFolder={this.props.currentFolder}
                     setCurrentManifest={this.props.setCurrentManifest}
+                    authDate={this.props.authDate}
                 />
             </div>;
         }
@@ -51,6 +54,7 @@ class Content extends React.Component<IPros, {}> {
                 currentManifest={this.props.currentManifest}
                 currentFolder={this.props.currentFolder}
                 setCurrentManifest={this.props.setCurrentManifest}
+                authDate={this.props.authDate}
             />}
             direction="horizontal"
         />
