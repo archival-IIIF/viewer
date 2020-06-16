@@ -180,9 +180,9 @@ class Manifest {
                         manifestData.resource = t.getResource(manifestoData, isV3);
                     }
                     manifestData.thumbnail = t.getThumbnail(manifestoData);
+                    t.cache[manifestData.id] = manifestData;
                 }
 
-                t.cache[manifestData.id] = manifestData;
 
                 if (callback !== undefined) {
                     callback(manifestData);
