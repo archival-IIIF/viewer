@@ -94,12 +94,9 @@ class Token {
     }
 
     static deleteActiveTokens() {
-
-        console.log(this.activeTokens);
-
         for (const tokenId of this.activeTokens) {
-            sessionStorage.removeItem(tokenId);
             const logoutUrl = this.getLogoutUrl(tokenId);
+            sessionStorage.removeItem(tokenId);
             if (logoutUrl){
                 window.open(logoutUrl, '_blank');
             }

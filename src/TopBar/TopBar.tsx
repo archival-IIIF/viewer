@@ -6,7 +6,6 @@ import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
-import IManifestData from "../interface/IManifestData";
 import logout from "../lib/Logout";
 
 class TopBar extends React.Component<{}, {}> {
