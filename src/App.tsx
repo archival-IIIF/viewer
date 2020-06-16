@@ -157,15 +157,14 @@ class App extends React.Component<IProps, IState> {
                     t.setState({currentManifest, currentFolder});
                 }
 
-                if (currentManifest.restricted === true) {
-                    document.title = currentManifest.label;
-                }
+                document.title = currentManifest.label;
             }
         );
     }
 
     tokenReceived() {
-        this.setState({authDate: Date.now()})
+        this.setState({authDate: Date.now()});
+        this.setCurrentManifest();
     }
 }
 
