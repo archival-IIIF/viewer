@@ -127,9 +127,6 @@ class App extends React.Component<IProps, IState> {
         Manifest.get(
             url,
             (currentManifest: IManifestData) =>  {
-
-                console.log(url, currentManifest.request, currentManifest.id)
-
                 ManifestHistory.pageChanged(currentManifest.request ?? currentManifest.id, currentManifest.label);
 
                 if (currentManifest.type === 'Collection') {
