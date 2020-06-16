@@ -45,7 +45,6 @@ class Viewer extends React.Component<IProps, {}> {
 
     renderImage() {
         const resource: any = this.props.currentManifest.resource;
-        console.log(resource.source + this.props.authDate.toString());
         return (
             <div id="viewer">
                 <ReactOpenSeadragon
