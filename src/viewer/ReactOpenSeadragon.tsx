@@ -28,7 +28,6 @@ const iconStyle = {
 
 class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
-    private tokenReceived = this.update.bind(this);
     private viewer: any;
     private data: any = [];
     private i = 0;
@@ -41,6 +40,8 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             source: props.source,
             spinner: true
         };
+
+        this.tokenReceived = this.tokenReceived.bind(this);
     }
 
     render() {
@@ -125,8 +126,20 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
 
     componentDidMount() {
-        const t = this;
 
+        this.initViewer();
+
+        Cache.ee.addListener('token-received', this.tokenReceived);
+    }
+
+    tokenReceived() {
+        if (this.viewer) {
+            this.viewer.forceRedraw();
+        }
+    }
+
+    initViewer() {
+        const t = this;
         InfoJson.getMulti(this.state.source, function(data: any) {
             t.data = data;
             const options: any = {
@@ -164,14 +177,6 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 });
             });
         });
-
-        Cache.ee.addListener('token-received', this.tokenReceived);
-    }
-
-    update() {
-        if (this.viewer) {
-            this.viewer.forceRedraw();
-        }
     }
 
     componentWillUnmount() {

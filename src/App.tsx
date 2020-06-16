@@ -69,12 +69,11 @@ class App extends React.Component<IProps, IState> {
     }
 
     render() {
-        const topBarKey = 'topBar' + (this.state.currentManifest ? this.state.currentManifest.key : '');
         return (
             <I18nextProvider i18n={i18n}>
                 <Alert />
                 <Login setCurrentManifest={this.setCurrentManifest}/>
-                <TopBar key={topBarKey} currentManifest={this.state.currentManifest} />
+                <TopBar />
                 {this.renderMain()}
             </I18nextProvider>
         );

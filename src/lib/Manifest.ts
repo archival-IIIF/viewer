@@ -219,7 +219,7 @@ class Manifest {
 
             externalTokenResponse.json()
                 .then((externalTokenJson: any) => {
-                    Token.set(externalTokenJson, tokenId);
+                    Token.set(externalTokenJson, tokenId, authService.logout);
                     return this.fetchFromUrl(url, callback, false, Token.get(tokenId));
                 });
         });

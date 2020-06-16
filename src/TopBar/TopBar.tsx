@@ -9,17 +9,14 @@ import Token from "../lib/Token";
 import IManifestData from "../interface/IManifestData";
 import logout from "../lib/Logout";
 
-interface IProps {
-    currentManifest?: IManifestData;
-}
+class TopBar extends React.Component<{}, {}> {
 
-class TopBar extends React.Component<IProps, {}> {
-
-    constructor(props: IProps) {
+    constructor(props: {}) {
 
         super(props);
 
         this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
+        this.tokenReceived = this.tokenReceived.bind(this);
     }
 
     render() {
@@ -36,35 +33,30 @@ class TopBar extends React.Component<IProps, {}> {
     }
 
     renderLogin() {
-
-        if (
-            this.props.currentManifest &&
-            this.props.currentManifest.authService &&
-            this.props.currentManifest.authService.logout &&
-            this.props.currentManifest.authService.token &&
-            Token.has(this.props.currentManifest.authService.token)
-        ) {
-            return <div className="icon-button" onClick={() => this.handleLogout()}>
+        if (Token.hasActiveToken()) {
+            return <div className="icon-button" onClick={() => logout()}>
                 <LogoutIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>;
         }
     }
 
-    handleLogout() {
-        if (
-            this.props.currentManifest &&
-            this.props.currentManifest.authService &&
-            this.props.currentManifest.authService.logout &&
-            this.props.currentManifest.authService.token
-        ) {
-            logout(this.props.currentManifest.authService.token, this.props.currentManifest.authService.logout);
-        }
-    }
-
     toggleTreeViewBar() {
         Cache.ee.emit('toggle-splitter-main');
     }
+
+    tokenReceived() {
+        this.forceUpdate();
+    }
+
+    componentDidMount() {
+        Cache.ee.addListener('token-in-use', this.tokenReceived);
+    }
+
+    componentWillUnmount() {
+        Cache.ee.removeListener('token-in-use', this.tokenReceived);
+    }
+
 }
 
 export default TopBar;
