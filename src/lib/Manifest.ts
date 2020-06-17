@@ -118,7 +118,7 @@ class Manifest {
                     return;
                 }
 
-                if (statusCode === 401 || url !== response.url) {
+                if (statusCode === 401 || (url !== response.url && manifestData.authService)) {
 
                     if (token) {
                         const alertArgs = {
