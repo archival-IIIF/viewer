@@ -652,7 +652,7 @@ class Manifest {
                     id: manifestoManifest.id,
                     label: manifestoManifest.getDefaultLabel(),
                     thumbnail: this.getThumbnail(manifestoManifest),
-                    type: manifestoManifest.getProperty('type')
+                    type: manifestoManifest.getProperty('type').replace('sc:', '')
                 });
             }
         }
