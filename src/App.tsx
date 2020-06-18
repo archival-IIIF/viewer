@@ -21,6 +21,7 @@ import Navigation from "./navigation/Navigation";
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
 const commonNl = require('./translations/nl/common.json');
+const commonFr = require('./translations/fr/common.json');
 
 interface IProps {
     config: IConfigParameter;
@@ -57,15 +58,10 @@ class App extends React.Component<IProps, IState> {
             fallbackLng: global.config.getFallbackLanguage(),
             interpolation: { escapeValue: false },  // React already does escaping
             resources: {
-                de: {
-                    common: commonDe
-                },
-                en: {
-                    common: commonEn
-                },
-                nl: {
-                    common: commonNl
-                }
+                de: {common: commonDe},
+                en: {common: commonEn},
+                fr: {common: commonFr},
+                nl: {common: commonNl}
             }
         });
 

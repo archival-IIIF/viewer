@@ -9,5 +9,13 @@
   "emptyFolder": "This folder is empty",
   "showFile": "Show file",
   "searchInputLabel": "search terms",
-  "fileManifestations": "File manifestations"
+  "fileManifestations": "File manifestations",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out",
+  "zoomReset": "Reset zoom",
+  "nextPage": "Next page",
+  "previousPage": "previous page",
+  "rotateLeft": "Rotate left",
+  "rotateRight": "Rotate right",
+  "toggleFullScreen": "Toggle full screen"
 }

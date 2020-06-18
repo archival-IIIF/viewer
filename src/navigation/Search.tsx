@@ -5,7 +5,6 @@ import Chip from '@material-ui/core/Chip';
 import Cache from "../lib/Cache";
 import TextField from '@material-ui/core/TextField';
 import {ISearchService} from "../interface/IManifestData";
-import {Translation} from "react-i18next";
 import i18next from 'i18next';
 
 interface IProps {

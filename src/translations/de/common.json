@@ -8,5 +8,12 @@
   "logout": "Ausloggen",
   "emptyFolder": "Dieser Ordner ist leer",
   "showFile": "Datei anzeigen",
-  "fileManifestations": "Manifestationen der Datei"
+  "fileManifestations": "Manifestationen der Datei",
+  "zoomIn": "Vergrößern",
+  "zoomOut": "Verkleinern",
+  "zoomReset": "Ansicht zurücksetzen",
+  "toggleFullScreen": "Vollbild umschalten",
+  "nextPage": "Nächte Seite",
+  "previousPage": "Vorherige Seite",
+  "rotateRight": "Nach rechts drehen"
 }

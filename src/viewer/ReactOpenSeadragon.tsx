@@ -12,6 +12,7 @@ import NextIcon from '@material-ui/icons/NavigateNext';
 import PreviousIcon from '@material-ui/icons/NavigateBefore';
 import {AnnotationType} from "../fetch/SearchApi";
 import Cache from "../lib/Cache";
+import i18next from 'i18next';
 
 interface IProps {
     source: any[];
@@ -45,6 +46,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
         };
 
         this.addAnnotation = this.addAnnotation.bind(this);
+        this.changeLanguage = this.changeLanguage.bind(this);
     }
 
     render() {
@@ -76,7 +78,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     renderPreviousButton() {
         if (this.data.length > 1) {
             return <button id="previous-button" className="openseadragon-icon" disabled={(this.i === 0)}
-                        onClick={() => this.changeSource(this.i - 1)}>
+                        onClick={() => this.changeSource(this.i - 1)} title={i18next.t('common:previousPage')}>
                 <PreviousIcon style={iconStyle} />
             </button>
         }
@@ -85,7 +87,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     renderNextButton() {
         if (this.data.length > 1) {
             return  <button id="next-button" className="openseadragon-icon" disabled={(this.i + 1 === this.data.length)}
-                         onClick={() => this.changeSource(this.i + 1)}>
+                         onClick={() => this.changeSource(this.i + 1)} title={i18next.t('common:nextPage')}>
                 <NextIcon style={iconStyle}/>
             </button>
         }
@@ -174,6 +176,12 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 };
             }
 
+            OpenSeadragon.setString("Tooltips.Home", i18next.t('common:zoomReset'));
+            OpenSeadragon.setString("Tooltips.ZoomOut",i18next.t('common:zoomOut'));
+            OpenSeadragon.setString("Tooltips.ZoomIn",  i18next.t('common:zoomIn'));
+            OpenSeadragon.setString("Tooltips.FullPage",  i18next.t('common:toggleFullScreen'));
+            OpenSeadragon.setString("Tooltips.RotateRight",  i18next.t('common:rotateRight'));
+
             t.viewer = new OpenSeadragon.Viewer(options);
             t.viewer.addHandler('tile-drawn', () => {
                 t.setState({
@@ -210,10 +218,18 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     }
 
 
+    changeLanguage(lng: string) {
+        if (this.viewer) {
+            this.viewer.removeAllHandlers('tile-drawn');
+        }
+        this.initViewer();
+    }
+
     componentDidMount() {
         this.isM = true;
         this.initViewer();
         Cache.ee.addListener('annotation-changed', this.addAnnotation);
+        i18next.on('languageChanged', this.changeLanguage);
     }
 
     componentWillUnmount() {
@@ -222,6 +238,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             this.viewer.removeAllHandlers('tile-drawn');
         }
         Cache.ee.removeListener('annotation-changed', this.addAnnotation);
+        i18next.off('languageChanged', this.changeLanguage);
 
     }
 }
