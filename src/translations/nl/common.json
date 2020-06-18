@@ -8,5 +8,6 @@
   "logout": "Uitloggen",
   "emptyFolder": "Deze folder is leeg",
   "showFile": "Toon bestand",
+  "searchInputLabel": "zoek termen",
   "fileManifestations": "Bestandsmanifestaties"
 }

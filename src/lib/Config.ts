@@ -16,6 +16,7 @@ class Config {
     private readonly translations: object = {
         en: 'English',
         de: 'Deutsch',
+        fr: 'Français',
         nl: 'Nederlands'
     };
 

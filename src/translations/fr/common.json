@@ -1,0 +1,13 @@
+{
+  "iconView": "Vue symbole",
+  "listView": "Vue liste",
+  "navBar": "Barre de navigation",
+  "language": "Langue",
+  "attribution": "Attribution",
+  "license": "Licence",
+  "logout": "Déconnexion",
+  "emptyFolder": "Ce dossier est vide",
+  "showFile": "Afficher le fichier",
+  "searchInputLabel": "Chercher un mot",
+  "fileManifestations": "Manifestations du dossier"
+}

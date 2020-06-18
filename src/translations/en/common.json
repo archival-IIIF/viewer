@@ -8,5 +8,6 @@
   "logout": "Logout",
   "emptyFolder": "This folder is empty",
   "showFile": "Show file",
+  "searchInputLabel": "search terms",
   "fileManifestations": "File manifestations"
 }
