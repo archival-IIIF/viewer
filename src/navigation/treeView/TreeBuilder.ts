@@ -1,6 +1,6 @@
-import Manifest from "../lib/Manifest";
-import IManifestData from "../interface/IManifestData";
-import ITree from "../interface/ITree";
+import Manifest from "../../lib/Manifest";
+import IManifestData from "../../interface/IManifestData";
+import ITree from "../../interface/ITree";
 
 class TreeBuilder {
 

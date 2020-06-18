@@ -10,9 +10,11 @@ import RotateIcon from '@material-ui/icons/RotateRight';
 import FullScreenIcon from '@material-ui/icons/Fullscreen';
 import NextIcon from '@material-ui/icons/NavigateNext';
 import PreviousIcon from '@material-ui/icons/NavigateBefore';
+import {AnnotationType} from "../fetch/SearchApi";
+import Cache from "../lib/Cache";
 
 interface IProps {
-    source: string[];
+    source: any[];
     authDate?: number;
 }
 
@@ -42,7 +44,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             spinner: true
         };
 
-        this.tokenReceived = this.tokenReceived.bind(this);
+        this.addAnnotation = this.addAnnotation.bind(this);
     }
 
     render() {
@@ -69,10 +71,6 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
             <ViewerSpinner show={this.state.spinner} />
             {this.renderSources()}
         </div>;
-    }
-
-    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
-        //this.initViewer();
     }
 
     renderPreviousButton() {
@@ -116,6 +114,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     changeSource(i: number) {
         const t = this;
+        this.viewer.clearOverlays();
 
         if (this.data.hasOwnProperty(i)) {
             const oldImage = this.viewer.world.getItemAt(0);
@@ -129,20 +128,10 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
         }
     }
 
-    componentDidMount() {
-        this.isM = true;
-        this.initViewer();
-    }
-
-    tokenReceived() {
-        if (this.viewer) {
-            this.viewer.forceRedraw();
-        }
-    }
-
     initViewer() {
         const t = this;
         InfoJson.getMulti(this.state.source, function(data: any) {
+
             if (!t.isM) {
                 return;
             }
@@ -194,11 +183,47 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
         });
     }
 
+    addAnnotation(annotation: AnnotationType) {
+
+        console.log()
+        const index: any = this.props.source.findIndex((s: any) => s.on === annotation.on);
+        if (index < 0) {
+            return;
+        }
+
+        if (index !== this.i) {
+            this.changeSource(index);
+        } else {
+            this.viewer.clearOverlays();
+        }
+
+        const elt = document.createElement("div");
+        elt.className = "aiiif-highlight";
+        const imageWidth = this.props.source[index].width;
+        this.viewer.addOverlay({
+            element: elt,
+            location: new OpenSeadragon.Rect(
+                annotation.x/imageWidth,
+                annotation.y/imageWidth,
+                annotation.width/imageWidth,
+                annotation.height/imageWidth)
+        });
+    }
+
+
+    componentDidMount() {
+        this.isM = true;
+        this.initViewer();
+        Cache.ee.addListener('annotation-changed', this.addAnnotation);
+    }
+
     componentWillUnmount() {
         this.isM = false;
         if (this.viewer) {
             this.viewer.removeAllHandlers('tile-drawn');
         }
+        Cache.ee.removeListener('annotation-changed', this.addAnnotation);
+
     }
 }
 

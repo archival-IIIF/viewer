@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import TreeViewItem from './TreeViewItem';
 import './treeview.css';
-import ITree from "../interface/ITree";
+import ITree from "../../interface/ITree";
 
 interface IProps {
     tree?: ITree;

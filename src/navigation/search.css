@@ -1,0 +1,53 @@
+#main > .a {
+    position: relative;
+}
+
+.aiiif-navigation {
+    background-color: #EDECED;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.aiiif-navigation-bar {
+    position: sticky;
+    top: 0;
+    background-color: gray;
+    opacity: 0.7;
+}
+
+.aiiif-navigation-bar > svg {
+    margin: 4px;
+    cursor: pointer;
+}
+
+.aiiif-search {
+    padding: 6px 12px;
+    width: 100%;
+}
+
+.aiiif-search-result-item {
+    line-height: 1.6rem;
+}
+
+.aiiif-search-result-item > p {
+    margin: 10px;
+}
+
+.aiiif-search-input {
+    margin-bottom: 12px !important;
+}
+
+.aiiif-circle-active {
+    background-color: #ffff00 !important;
+}
+
+.aiiif-highlight {
+    border: 2px solid #ffff00;
+    opacity: 0.8;
+}

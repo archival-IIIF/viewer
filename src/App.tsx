@@ -7,16 +7,16 @@ import {I18nextProvider, initReactI18next} from 'react-i18next';
 import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
-import TreeView from "./treeView/TreeView";
 import Splitter from "./splitter/Splitter";
 import Content from "./Content";
 import './css/App.css';
 import Cache from "./lib/Cache";
 import IManifestData from "./interface/IManifestData";
 import Manifest from "./lib/Manifest";
-import TreeBuilder from "./treeView/TreeBuilder";
+import TreeBuilder from "./navigation/treeView/TreeBuilder";
 import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
+import Navigation from "./navigation/Navigation";
 
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
@@ -89,9 +89,10 @@ class App extends React.Component<IProps, IState> {
 
         return <Splitter
             id="main"
-            a={<TreeView
-                currentFolderId={this.state.currentFolder.id}
+            a={<Navigation
                 tree={this.state.tree}
+                currentManifest={this.state.currentManifest}
+                currentFolder={this.state.currentFolder}
                 setCurrentManifest={this.setCurrentManifest}
             />}
             b={<Content

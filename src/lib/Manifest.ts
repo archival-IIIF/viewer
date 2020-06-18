@@ -1,6 +1,6 @@
 import Cache from './Cache';
 import filesize from 'filesize';
-import IManifestData, {IAuthService} from '../interface/IManifestData';
+import IManifestData, {IAuthService, ISearchService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
@@ -179,6 +179,7 @@ class Manifest {
                     } else if (manifestData.type === 'Manifest') {
                         manifestData.resource = t.getResource(manifestoData, isV3);
                     }
+                    manifestData.search = t.getSearch(manifestoData);
                     manifestData.thumbnail = t.getThumbnail(manifestoData);
                     t.cache[manifestData.id] = manifestData;
                 }
@@ -273,6 +274,17 @@ class Manifest {
         try {
             return manifestoAttribution.value[0].value;
         } catch (e) {
+        }
+
+        return undefined;
+    }
+
+    static getSearch(manifestoData: any): ISearchService | undefined {
+        const searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
+        if (searchService) {
+            return {
+                id: searchService.id
+            }
         }
 
         return undefined;
@@ -484,7 +496,11 @@ class Manifest {
                     for(const profile of profiles) {
                         const service = source.getService(profile);
                         if (service) {
-                            images.push(service.id);
+                            images.push({
+                                id: service.id,
+                                on: canvas.id,
+                                width: canvas.getWidth()
+                            });
                             break;
                         }
                     }
@@ -575,7 +591,11 @@ class Manifest {
                 continue;
             }
 
-            sources.push(service.id);
+            sources.push({
+                id: service.id,
+                on: image0.getOn(),
+                width: canvases.getWidth()
+            });
         }
 
         if (sources.length === 0) {

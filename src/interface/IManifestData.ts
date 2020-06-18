@@ -15,6 +15,7 @@ interface IManifestData {
     restricted: boolean;
     metadata: any;
     license?: string;
+    search?: ISearchService
     description: string;
     thumbnail?: IManifestDataThumbnail;
     authService?: IAuthService;
@@ -30,6 +31,11 @@ export interface IAuthService {
     errorMessage?: string;
     header?: string;
     failureHeader?: string;
+}
+
+export interface ISearchService {
+    id: string;
+    autoComplete?: string;
 }
 
 

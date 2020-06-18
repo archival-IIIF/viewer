@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import './treeview.css';
-import ITree from "../interface/ITree";
+import ITree from "../../interface/ITree";
 import TreeBuilder from "./TreeBuilder";
 import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
 import CaretRightIcon from '@material-ui/icons/ArrowRight';

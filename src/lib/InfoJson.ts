@@ -22,14 +22,14 @@ class InfoJson {
         this.fetchFromUrl(id, callback);
     }
 
-    static async getMulti(ids: string[], callback: any) {
+    static async getMulti(sources: any[], callback: any) {
 
         const result: any = [];
 
-        for await (const id of ids) {
+        for await (const source of sources) {
 
             await new Promise((resolve, reject) => {
-                this.get(id, function (data: any) {
+                this.get(source.id, function (data: any) {
                     result.push(data);
                     resolve();
                 });
