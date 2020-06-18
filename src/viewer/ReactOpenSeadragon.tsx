@@ -185,7 +185,6 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     addAnnotation(annotation: AnnotationType) {
 
-        console.log()
         const index: any = this.props.source.findIndex((s: any) => s.on === annotation.on);
         if (index < 0) {
             return;

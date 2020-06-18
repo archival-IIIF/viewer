@@ -67,7 +67,6 @@ export default class Navigation extends React.Component<IProps, IState> {
     }
 
     setView(view: string) {
-        console.log(view);
         this.setState({view});
     }
 }
