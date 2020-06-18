@@ -5,14 +5,17 @@ import Chip from '@material-ui/core/Chip';
 import Cache from "../lib/Cache";
 import TextField from '@material-ui/core/TextField';
 import {ISearchService} from "../interface/IManifestData";
+import {Translation} from "react-i18next";
+import i18next from 'i18next';
 
 interface IProps {
     searchService: ISearchService;
+    q: string | null;
 }
 
 interface IState {
     currentAnnotation?: AnnotationType;
-    searchPhrase: String;
+    searchPhrase: string;
     hits: HitType[];
 }
 
@@ -33,7 +36,7 @@ class Search extends React.Component<IProps, IState> {
 
         return <div className="aiiif-search">
             <form onSubmit={this.onSubmit}>
-                <TextField className="aiiif-search-input" label="Search field" type="search"
+                <TextField className="aiiif-search-input" label={i18next.t('common:searchInputLabel')} type="search"
                            value={this.state.searchPhrase} onChange={this.setSearchPhrase} />
             </form>
             {this.renderHits()}
@@ -56,7 +59,7 @@ class Search extends React.Component<IProps, IState> {
                      onClick={() => this.setCurrentAnnotation(hit.resource)}>
                     <Chip className={circleClassName} label={hit.i} />
 
-                    <p>{hit.before} <strong>{hit.match}</strong> {hit.after}</p>
+                    <p>{this.stripTags(hit.before)} <strong>{hit.match}</strong> {this.stripTags(hit.after)}</p>
                 </div>
             );
         }
@@ -77,17 +80,32 @@ class Search extends React.Component<IProps, IState> {
 
         event.preventDefault();
 
-        if (this.state.searchPhrase === '') {
+        this.fetchSearchResults(this.state.searchPhrase);
+    }
+
+    fetchSearchResults(searchPhrase: string) {
+        if (searchPhrase === '') {
             this.setState({hits: []});
             return;
         }
 
-        const searchUrl = this.props.searchService.id + '?q=' + this.state.searchPhrase;
+        const searchUrl = this.props.searchService.id + '?q=' + searchPhrase;
         SearchApi.get(searchUrl, this.setHits)
     }
 
     setHits(hits: HitType[]) {
         this.setState({hits});
+    }
+
+    stripTags(input: string) {
+        return input.replace(/<\/?[^>]+(>|$)/g, "");
+    }
+
+    componentDidMount() {
+        if (this.props.q) {
+            this.setState({searchPhrase: this.props.q});
+            this.fetchSearchResults(this.props.q);
+        }
     }
 }
 

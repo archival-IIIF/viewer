@@ -39,6 +39,8 @@ interface IState {
 
 class App extends React.Component<IProps, IState> {
 
+    private q: string | null;
+
     constructor(props: IProps) {
 
         super(props);
@@ -46,8 +48,9 @@ class App extends React.Component<IProps, IState> {
         Cache.ee.setMaxListeners(100);
 
         global.config = new Config(this.props.config);
+        this.q = Manifest.getGetParameter('q', window.location.href);
 
-        this.state = {authDate: 0}
+        this.state = {authDate: 0};
 
         i18n.use(initReactI18next).init({
             lng: global.config.getLanguage(),
@@ -94,6 +97,7 @@ class App extends React.Component<IProps, IState> {
                 currentManifest={this.state.currentManifest}
                 currentFolder={this.state.currentFolder}
                 setCurrentManifest={this.setCurrentManifest}
+                q={this.q}
             />}
             b={<Content
                 key={this.state.currentManifest.id}

@@ -20,6 +20,7 @@ interface IProps {
     currentFolder: IManifestData;
     currentManifest: IManifestData;
     tree?: ITree;
+    q: string | null;
     setCurrentManifest: (id?: string) => void;
 }
 
@@ -28,7 +29,7 @@ export default class Navigation extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = {view: 'tree'};
+        this.state = {view: this.props.q ? 'search' : 'tree'};
 
         this.setView = this.setView.bind(this);
     }
@@ -63,7 +64,7 @@ export default class Navigation extends React.Component<IProps, IState> {
             />
         }
 
-        return <Search searchService={searchService}/>
+        return <Search searchService={searchService} q={this.props.q}/>
     }
 
     setView(view: string) {
