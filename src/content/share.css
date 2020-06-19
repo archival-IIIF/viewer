@@ -10,6 +10,7 @@
     width: 64px;
     display: flex;
     margin-right: 16px;
+    cursor: pointer;
 }
 
 .aiiif-share-button svg {
@@ -21,7 +22,7 @@
     background-color: #888888;
 }
 
-.aiiif-share-button-email svg {
+.aiiif-share-button-email svg, .aiiif-share-button-embed svg {
     font-size: 2.2em;
 }
 
@@ -49,4 +50,14 @@
 .aiiif-share-button-iiif svg {
     width: 60%;
     height: 60%;
+}
+
+.aiiif-share-code {
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    background-color: #fafafa;
+    border-radius: 3px;
+    border: 1px solid rgb(237, 237, 237);
+    display: block;
+    padding: 12px;
+    margin: 12px 0;
 }

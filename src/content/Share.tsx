@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import DialogContent from "@material-ui/core/DialogContent";
 import EmailIcon from "@material-ui/icons/Email";
+import CodeIcon from '@material-ui/icons/Code';
 import './share.css';
 import FacebookIcon from "../icons/fa/FacebookIcon";
 import IIIFIcon from "../icons/IIIFIcon";
@@ -18,6 +19,7 @@ interface IProps {
 
 interface IState {
     isOpen: boolean;
+    isEmbedVisible: boolean;
 }
 
 declare let global: {
@@ -31,7 +33,9 @@ export default class Share extends React.Component<IProps,IState> {
 
         super(props);
 
-        this.state = {isOpen: false};
+        this.state = {isOpen: false, isEmbedVisible: false};
+
+        this.toggleIsEmbedVisible = this.toggleIsEmbedVisible.bind(this);
     }
 
     render() {
@@ -63,27 +67,36 @@ export default class Share extends React.Component<IProps,IState> {
                         Share
                         <span className="close" onClick={() => this.setIsOpen(false)}>&times;</span>
                     </DialogTitle>
-                    <DialogContent className="aiiif-share-button-group">
+                    <DialogContent>
 
-                        <a target="_blank" rel="noopener noreferrer" href={this.props.currentManifest.id}
-                           className="aiiif-share-button aiiif-share-button-iiif">
-                            <IIIFIcon />
-                        </a>
+                        <div className="aiiif-share-button-group">
+                            <a target="_blank" rel="noopener noreferrer" href={this.props.currentManifest.id}
+                               className="aiiif-share-button aiiif-share-button-iiif">
+                                <IIIFIcon />
+                            </a>
 
-                        <a href={"mailto:?subject=" + title + "&body=" + window.location.href}
-                           className="aiiif-share-button aiiif-share-button-email">
-                            <EmailIcon />
-                        </a>
+                            <a href={"mailto:?subject=" + title + "&body=" + window.location.href}
+                               className="aiiif-share-button aiiif-share-button-email">
+                                <EmailIcon />
+                            </a>
 
-                        <a target="_blank" rel="noopener noreferrer" href={facebookUrl}
-                           className="aiiif-share-button aiiif-share-button-facebook">
-                            <FacebookIcon />
-                        </a>
+                            <div className="aiiif-share-button aiiif-share-button-embed"
+                                 onClick={this.toggleIsEmbedVisible}>
+                                <CodeIcon />
+                            </div>
 
-                        <a href={twitterUrl} target="_blank" rel="noopener noreferrer"
-                           className="aiiif-share-button aiiif-share-button-twitter">
-                            <TwitterIcon />
-                        </a>
+                            <a target="_blank" rel="noopener noreferrer" href={facebookUrl}
+                               className="aiiif-share-button aiiif-share-button-facebook">
+                                <FacebookIcon />
+                            </a>
+
+                            <a href={twitterUrl} target="_blank" rel="noopener noreferrer"
+                               className="aiiif-share-button aiiif-share-button-twitter">
+                                <TwitterIcon />
+                            </a>
+                        </div>
+
+                        {this.renderEmbed()}
 
                     </DialogContent>
                 </Dialog>
@@ -93,6 +106,21 @@ export default class Share extends React.Component<IProps,IState> {
 
     setIsOpen(isOpen: boolean) {
         this.setState({isOpen})
+    }
+
+    toggleIsEmbedVisible() {
+        this.setState({isEmbedVisible: !this.state.isEmbedVisible})
+    }
+
+    renderEmbed() {
+        const iframe = unescape(
+            '<iframe width="560" height="315" src="'+window.location.href+'" frameBorder="0" />'
+        );
+        if (this.state.isEmbedVisible) {
+            return <code className="aiiif-share-code">
+                {iframe}
+            </code>;
+        }
     }
 
 }
