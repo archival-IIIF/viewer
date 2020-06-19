@@ -25,7 +25,7 @@
     
         <script type="text/javascript" src="path-to-viewer/archivalIIIFViewer.min.js"></script>
         <script type="text/javascript">
-        new ArchivalIIIFViewer({id: 'root'});
+            new ArchivalIIIFViewer({id: 'root'});
         </script>
     </body>
 </html>
@@ -66,7 +66,7 @@
             <td></td>
         </tr>
         <tr>
-            <td>disableSharing/td>
+            <td>disableSharing</td>
             <td>Disable share button</td>
             <td>true</td>
             <td>No</td>
