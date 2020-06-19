@@ -1,6 +1,9 @@
 import React from 'react';
 
-// https://fontawesome.com/icons/facebook-f?style=brands
+/**
+ * Source: https://fontawesome.com/icons/facebook-f?style=brands
+ * License: CC BY 4.0 License
+ */
 
 export default function FacebookIcon() {
     return (

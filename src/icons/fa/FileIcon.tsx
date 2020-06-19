@@ -1,6 +1,9 @@
 import React from 'react';
 
-// https://fontawesome.com/icons/file?style=solid
+/**
+ * Source: https://fontawesome.com/icons/file?style=solid
+ * License: CC BY 4.0 License
+ */
 
 export default function FolderIcon() {
     return (
