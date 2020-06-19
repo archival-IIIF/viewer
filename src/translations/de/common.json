@@ -8,6 +8,7 @@
   "logout": "Ausloggen",
   "emptyFolder": "Dieser Ordner ist leer",
   "showFile": "Datei anzeigen",
+  "searchInputLabel": "Suchbegriffe",
   "fileManifestations": "Manifestationen der Datei",
   "zoomIn": "Vergrößern",
   "zoomOut": "Verkleinern",

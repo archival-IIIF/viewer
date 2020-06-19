@@ -7,7 +7,7 @@ import {Translation} from 'react-i18next';
 import './css/manifestations-modal.css';
 import './css/file-info.css';
 import FileIcon from '@material-ui/icons/DescriptionOutlined';
-import {ReactComponent as IIIFLogo} from './icons/iiif.svg';
+import Share from "./content/Share";
 
 interface IHTMLAnchorElement {
     nodeName: string;
@@ -115,10 +115,8 @@ class FileInfo extends React.Component<IProps, {}> {
         return (
             <div id="file-info">
                 <h3>{manifestData.label}</h3>
+                <Share currentManifest={this.props.currentManifest} />
                 {metadataView}
-                <a id="iiif-logo" href={manifestData.id} target="_blank" rel="noopener noreferrer">
-                    <IIIFLogo title="IIIF-Manifest" width={32} height={'100%'} /><br />
-                </a>
             </div>
         );
     }
