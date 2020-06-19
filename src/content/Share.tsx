@@ -42,7 +42,6 @@ export default class Share extends React.Component<IProps,IState> {
 
     render() {
         const currentManifest = this.props.currentManifest;
-        console.log(currentManifest.authService);
         if (
             global.config.getDisableSharing() ||
             currentManifest.restricted ||

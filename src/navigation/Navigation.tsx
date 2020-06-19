@@ -29,7 +29,7 @@ export default class Navigation extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = {view: this.props.q ? 'search' : 'tree'};
+        this.state = {view: (this.props.q || !this.props.currentManifest.parentId) ? 'search' : 'tree'};
 
         this.setView = this.setView.bind(this);
     }
