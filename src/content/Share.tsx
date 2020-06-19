@@ -2,12 +2,12 @@ import * as React from 'react';
 import IManifestData from '../interface/IManifestData';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import DialogContent from "@material-ui/core/DialogContent";
 import EmailIcon from "@material-ui/icons/Email";
 import './share.css';
-import {ReactComponent as FacebookIcon} from '../icons/fa/facebook-f-brands.svg';
-import {ReactComponent as TwitterIcon} from '../icons/fa/twitter-brands.svg';
-import {ReactComponent as IIIFLogo} from '../icons/iiif.svg';
+import FacebookIcon from "../icons/fa/FacebookIcon";
+import IIIFIcon from "../icons/IIIFIcon";
 import {ServiceProfile} from "@iiif/vocabulary";
 import Config from "../lib/Config";
 
@@ -67,7 +67,7 @@ export default class Share extends React.Component<IProps,IState> {
 
                         <a target="_blank" rel="noopener noreferrer" href={this.props.currentManifest.id}
                            className="aiiif-share-button aiiif-share-button-iiif">
-                            <IIIFLogo />
+                            <IIIFIcon />
                         </a>
 
                         <a href={"mailto:?subject=" + title + "&body=" + window.location.href}

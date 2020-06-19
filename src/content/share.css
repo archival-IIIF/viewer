@@ -38,7 +38,8 @@
 }
 
 .aiiif-share-button-twitter svg {
-    width: 50%;
+    width: 58%;
+    height: inherit;
 }
 
 .aiiif-share-button-iiif {

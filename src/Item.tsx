@@ -3,8 +3,8 @@ import Cache from './lib/Cache';
 import TouchDetection from './lib/TouchDetection';
 import IManifestData from './interface/IManifestData';
 import './css/item.css';
-const FolderImage = require('./icons/fa/folder.svg');
-const FileImage = require('./icons/fa/file.svg');
+import FolderIcon from "./icons/fa/FolderIcon";
+import FileIcon from "./icons/fa/FileIcon";
 
 interface IProps {
     item: IManifestData;
@@ -22,7 +22,6 @@ class Item extends React.Component<IProps, {}> {
         const id = this.props.item.id;
         let className = 'item ' + itemType;
         const label = this.props.item.label;
-        const style = {backgroundImage: this.getThumbnail()};
         if (id === this.props.selected.id) {
             className += ' active';
         }
@@ -33,7 +32,7 @@ class Item extends React.Component<IProps, {}> {
             onClick={() => this.activateItem()}
             onDoubleClick={() => this.open()}
         >
-            <div className="item-thumbnail" style={style} />
+            {this.getThumbnail()}
             <div className="item-label">{label}</div>
         </div>;
     }
@@ -42,11 +41,12 @@ class Item extends React.Component<IProps, {}> {
 
         if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
             if (this.props.item.type === 'Collection') {
-                return `url(${FolderImage})`;
+                return <div className="item-thumbnail"><FolderIcon  /></div>;
             }
 
-            return `url(${FileImage})`;
+            return <div className="item-thumbnail"><FileIcon /></div>;
         }
+
 
         let thumbnailUrl;
         if (this.props.item.thumbnail.hasOwnProperty('service') && this.props.item.thumbnail.service) {
@@ -61,7 +61,8 @@ class Item extends React.Component<IProps, {}> {
             thumbnailUrl += '?t=' + this.props.authDate.toString();
         }
 
-        return 'url(' + thumbnailUrl + ')';
+        const style = {backgroundImage: 'url(' + thumbnailUrl + ')'};
+        return <div className="item-thumbnail" style={style} />;
     }
 
     open() {

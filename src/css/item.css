@@ -20,6 +20,11 @@
     margin: 0 auto;
 }
 
+.item-thumbnail svg {
+    width: 90%;
+    height: 90%;
+}
+
 .item-label {
     line-height: 14px;
     text-align: center;
