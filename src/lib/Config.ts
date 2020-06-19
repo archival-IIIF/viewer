@@ -9,6 +9,8 @@ class Config {
 
     private readonly language: string;
 
+    private readonly disableSharing: boolean;
+
     private readonly manifest: string;
 
     private readonly fallbackLanguage: string = 'en';
@@ -29,12 +31,13 @@ class Config {
     constructor(config: IConfigParameter) {
         this.language = config.language ? config.language : window.navigator.language;
         this.manifest = config.manifest ? config.manifest : '';
+        this.disableSharing = config.disableSharing ? config.disableSharing : false;
     }
 
     getSplitterWidth(folded: boolean) {
 
         if (TouchDetection.isTouchDevice()) {
-            if (folded === true) {
+            if (folded) {
                 return 0;
             }
 
@@ -70,6 +73,10 @@ class Config {
 
     getManifest() {
         return this.manifest;
+    }
+
+    getDisableSharing() {
+        return this.disableSharing;
     }
 }
 

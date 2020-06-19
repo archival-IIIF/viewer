@@ -8,6 +8,8 @@ import './share.css';
 import {ReactComponent as FacebookIcon} from '../icons/fa/facebook-f-brands.svg';
 import {ReactComponent as TwitterIcon} from '../icons/fa/twitter-brands.svg';
 import {ReactComponent as IIIFLogo} from '../icons/iiif.svg';
+import {ServiceProfile} from "@iiif/vocabulary";
+import Config from "../lib/Config";
 
 
 interface IProps {
@@ -17,6 +19,11 @@ interface IProps {
 interface IState {
     isOpen: boolean;
 }
+
+declare let global: {
+    config: Config;
+};
+
 
 export default class Share extends React.Component<IProps,IState> {
 
@@ -28,11 +35,21 @@ export default class Share extends React.Component<IProps,IState> {
     }
 
     render() {
-        if (this.props.currentManifest.restricted) {
+        const currentManifest = this.props.currentManifest;
+        console.log(currentManifest.authService);
+        if (
+            global.config.getDisableSharing() ||
+            currentManifest.restricted ||
+            (
+                currentManifest.authService &&
+                currentManifest.authService.profile !== ServiceProfile.AUTH_0_CLICK_THROUGH &&
+                currentManifest.authService.profile !== ServiceProfile.AUTH_1_CLICK_THROUGH
+            )
+        ) {
             return '';
         }
 
-        const title = this.props.currentManifest.label;
+        const title = currentManifest.label;
         const encodedUrl = encodeURI(window.location.href);
         const twitterUrl = 'https://twitter.com/intent/tweet?text=' + title + ': ' + encodedUrl;
         const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '&t=' + title;
