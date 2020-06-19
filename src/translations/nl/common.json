@@ -1,13 +1,13 @@
 {
-  "iconView": "Symboolweergave",
-  "listView": "Lijstweergave",
-  "navBar": "Navigatiebalk",
-  "language": "Taal",
   "attribution": "Naamsvermelding",
-  "license": "Licentie",
-  "logout": "Uitloggen",
   "emptyFolder": "Deze folder is leeg",
-  "showFile": "Toon bestand",
+  "fileManifestations": "Bestandsmanifestaties",
+  "iconView": "Symboolweergave",
+  "language": "Taal",
+  "license": "Licentie",
+  "listView": "Lijstweergave",
+  "logout": "Uitloggen",
+  "navBar": "Navigatiebalk",
   "searchInputLabel": "zoek termen",
-  "fileManifestations": "Bestandsmanifestaties"
+  "showFile": "Toon bestand"
 }
