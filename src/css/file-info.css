@@ -1,7 +1,10 @@
 #file-info {
-    padding: 8px;
     width: 100%;
     overflow: auto;
+}
+
+#file-info > div {
+    padding: 8px;
 }
 
 #file-info * {

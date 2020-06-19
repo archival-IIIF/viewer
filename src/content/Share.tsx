@@ -11,6 +11,8 @@ import FacebookIcon from "../icons/fa/FacebookIcon";
 import IIIFIcon from "../icons/IIIFIcon";
 import {ServiceProfile} from "@iiif/vocabulary";
 import Config from "../lib/Config";
+import ShareIcon from '@material-ui/icons/Share';
+import {Translation} from "react-i18next";
 
 
 interface IProps {
@@ -59,8 +61,12 @@ export default class Share extends React.Component<IProps,IState> {
         const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '&t=' + title;
 
         return (
-            <div>
-                <div onClick={() => this.setIsOpen(true)}>Share</div>
+            <nav className="bar">
+                <div className="icon-button" onClick={() => this.setIsOpen(true)}>
+                    <ShareIcon />
+                    <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
+                </div>
+
                 <Dialog onClose={() => this.setIsOpen(false)} aria-labelledby="simple-dialog-title"
                         open={this.state.isOpen} fullWidth={true}>
                     <DialogTitle>
@@ -100,7 +106,7 @@ export default class Share extends React.Component<IProps,IState> {
 
                     </DialogContent>
                 </Dialog>
-            </div>
+            </nav>
         );
     }
 

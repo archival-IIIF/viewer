@@ -114,9 +114,11 @@ class FileInfo extends React.Component<IProps, {}> {
 
         return (
             <div id="file-info">
-                <h3>{manifestData.label}</h3>
                 <Share currentManifest={this.props.currentManifest} />
-                {metadataView}
+                <div>
+                    <h3>{manifestData.label}</h3>
+                    {metadataView}
+                </div>
             </div>
         );
     }
