@@ -8,6 +8,13 @@
   "listView": "Vue liste",
   "logout": "Déconnexion",
   "navBar": "Barre de navigation",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "rotateRight": "Rotation à droite",
   "searchInputLabel": "Chercher un mot",
-  "showFile": "Afficher le fichier"
+  "showFile": "Afficher le fichier",
+  "toggleFullScreen": "Basculer en plein écran",
+  "zoomIn": "Zoom avant",
+  "zoomOut": "Zoom arrière",
+  "zoomReset": "Réinitialiser le zoom"
 }
