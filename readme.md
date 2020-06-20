@@ -40,21 +40,21 @@
         <tr>
             <td>id</td>
             <td>Id of the element to append the viewer's container element to.</td>
-            <td>'root'</td>
+            <td><code>'root'</code></td>
             <td>Yes</td>
             <td></td>
         </tr>
         <tr>
             <td>language</td>
             <td>Default interface language</td>
-            <td>'en'</td>
+            <td><code>'en'</code></td>
             <td>No</td>
             <td></td>
         </tr>
         <tr>
             <td>manifest</td>
             <td>Initial manifest url</td>
-            <td>'https://iiif.sozialarchiv.ch/iiif/collection/demo'</td>
+            <td><code>'https://iiif.sozialarchiv.ch/iiif/collection/demo'</code></td>
             <td>No</td>
             <td></td>
         </tr>
@@ -63,12 +63,15 @@
             <td>Disable share button</td>
             <td>true</td>
             <td>No</td>
-            <td>false</td>
+            <td><code>false<code></td>
         </tr>
         <tr>
             <td>allowedOrigins</td>
             <td>Indicates whether a manifest can be shown from the given origin.</td>
-            <td>'https://iiif.sozialarchiv.ch/' or ['https://iiif.sozialarchiv.ch', 'https://example.com']</td>
+            <td>
+                <code>'https://iiif.sozialarchiv.ch/'</code> or 
+                <code>['https://iiif.sozialarchiv.ch', 'https://example.com']</code>
+            </td>
             <td>No</td>
             <td>*</td>
         </tr>
