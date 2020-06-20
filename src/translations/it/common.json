@@ -11,11 +11,12 @@
   "nextPage": "Pagina successiva",
   "previousPage": "Pagina precedente",
   "rotateRight": "Girare a destra",
+  "search": "Cerca",
   "searchInputLabel": "Termini di ricerca",
   "share": "Condividi",
   "showFile": "Mostra file",
   "toggleFullScreen": "Schermo intero",
   "zoomIn": "Ingrandire",
   "zoomOut": "Strizzacervelli",
-  "zoomReset": ""
+  "zoomReset": "Resetta la vista"
 }

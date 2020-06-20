@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import IConfigParameter from './interface/IConfigParameter';
+import i18n from "i18next";
 
 class Init {
 
@@ -14,6 +15,12 @@ class Init {
         );
         serviceWorker.unregister();
     }
+
+
+    changeLanguage(code: string) {
+        i18n.changeLanguage(code);
+    }
+
 }
 
 export default Init;

@@ -31,6 +31,10 @@ class LanguageSwitcher extends React.Component<any, IState> {
 
     render() {
 
+        if (global.config.getDisableLanguageSelection()) {
+            return <></>;
+        }
+
         return <>
             <div className="icon-button" onClick={this.open} aria-controls="language-switch-menu"
                      aria-haspopup="true">

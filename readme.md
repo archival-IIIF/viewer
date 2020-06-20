@@ -75,6 +75,15 @@
             <td>No</td>
             <td><code>*</code></td>
         </tr>
+        <tr>
+            <td>allowedOrigins</td>
+            <td>Indicates whether a manifest can be shown from the given origin.</td>
+            <td>
+                <code>https://iiif-search.sozialarchiv.ch</code> 
+            </td>
+            <td>No</td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
 

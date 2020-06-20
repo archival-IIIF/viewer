@@ -21,6 +21,8 @@
     display: flex;
     vertical-align: middle;
     align-items: center;
+    color: black;
+    text-decoration: none;
 }
 
 .icon-button  > svg {

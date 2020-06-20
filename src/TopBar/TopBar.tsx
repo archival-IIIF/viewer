@@ -6,6 +6,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
+import ExternalSearch from "./ExternalSearch";
 
 class TopBar extends React.Component<{}, {}> {
 
@@ -22,7 +23,7 @@ class TopBar extends React.Component<{}, {}> {
                 <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
             </div>
             <LanguageSwitcher />
-
+            <ExternalSearch />
             {this.renderLogin()}
         </div>;
     }

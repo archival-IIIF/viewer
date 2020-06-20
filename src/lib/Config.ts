@@ -11,6 +11,10 @@ class Config {
 
     private readonly disableSharing: boolean;
 
+    private readonly disableLanguageSelection: boolean;
+
+    private readonly externalSearchUrl?: string;
+
     private readonly manifest: string;
 
     private readonly fallbackLanguage: string = 'en';
@@ -36,6 +40,8 @@ class Config {
         this.manifest = config.manifest ? config.manifest : '';
         this.allowedOrigins = config.allowedOrigins ? config.allowedOrigins : '*';
         this.disableSharing = config.disableSharing ? config.disableSharing : false;
+        this.disableLanguageSelection = config.disableLanguageSelection ? config.disableLanguageSelection : false;
+        this.externalSearchUrl = config.externalSearchUrl;
     }
 
     getSplitterWidth(folded: boolean) {
@@ -81,6 +87,14 @@ class Config {
 
     getDisableSharing() {
         return this.disableSharing;
+    }
+
+    getDisableLanguageSelection() {
+        return this.disableLanguageSelection;
+    }
+
+    getExternalSearchUrl() {
+        return this.externalSearchUrl;
     }
 
     isAllowedOrigin(url: string): boolean {
