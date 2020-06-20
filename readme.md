@@ -76,8 +76,8 @@
             <td><code>*</code></td>
         </tr>
         <tr>
-            <td>allowedOrigins</td>
-            <td>Indicates whether a manifest can be shown from the given origin.</td>
+            <td>externalSearchUrl </td>
+            <td>External search URL</td>
             <td>
                 <code>https://iiif-search.sozialarchiv.ch</code> 
             </td>
