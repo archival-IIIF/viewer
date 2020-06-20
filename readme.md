@@ -61,7 +61,7 @@
         <tr>
             <td>disableSharing</td>
             <td>Disable share button</td>
-            <td>true</td>
+            <td><code>true</code></td>
             <td>No</td>
             <td><code>false<code></td>
         </tr>
@@ -73,7 +73,7 @@
                 <code>['https://iiif.sozialarchiv.ch', 'https://example.com']</code>
             </td>
             <td>No</td>
-            <td>*</td>
+            <td><code>*</code></td>
         </tr>
     </tbody>
 </table>
