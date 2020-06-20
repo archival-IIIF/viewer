@@ -1,8 +1,8 @@
 import * as React from 'react';
 import FolderView from "./FolderView";
-import Splitter from "./splitter/Splitter";
+import Splitter from "../splitter/Splitter";
 import FileInfo from "./FileInfo";
-import IManifestData from "./interface/IManifestData";
+import IManifestData from "../interface/IManifestData";
 
 interface IProps {
     currentManifest: IManifestData;

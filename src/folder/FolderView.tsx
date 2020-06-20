@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Item from './Item';
-import IManifestData from './interface/IManifestData';
+import IManifestData from '../interface/IManifestData';
 import {Translation} from 'react-i18next';
 import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
 import ViewListIcon from "@material-ui/icons/ViewList";

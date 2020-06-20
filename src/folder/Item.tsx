@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Cache from './lib/Cache';
-import TouchDetection from './lib/TouchDetection';
-import IManifestData from './interface/IManifestData';
-import './css/item.css';
-import FolderIcon from "./icons/fa/FolderIcon";
-import FileIcon from "./icons/fa/FileIcon";
+import Cache from '../lib/Cache';
+import TouchDetection from '../lib/TouchDetection';
+import IManifestData from '../interface/IManifestData';
+import './item.css';
+import FolderIcon from "../icons/fa/FolderIcon";
+import FileIcon from "../icons/fa/FileIcon";
 
 interface IProps {
     item: IManifestData;

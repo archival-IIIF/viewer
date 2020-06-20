@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as DOMPurify from 'dompurify';
-import Cache from './lib/Cache';
-import IManifestData from './interface/IManifestData';
-import Config from './lib/Config';
+import Cache from '../lib/Cache';
+import IManifestData from '../interface/IManifestData';
+import Config from '../lib/Config';
 import {Translation} from 'react-i18next';
-import './css/manifestations-modal.css';
-import './css/file-info.css';
+import './manifestations-modal.css';
+import './file-info.css';
 import FileIcon from '@material-ui/icons/DescriptionOutlined';
-import Share from "./content/Share";
+import Share from "./Share";
 
 interface IHTMLAnchorElement {
     nodeName: string;
