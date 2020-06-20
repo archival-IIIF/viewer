@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as OpenSeadragon from 'openseadragon';
-import InfoJson from '../lib/InfoJson';
+import ImageApi from '../fetch/ImageApi';
 import ViewerSpinner from './ViewerSpinner';
 import Token from "../lib/Token";
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
@@ -132,7 +132,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     initViewer() {
         const t = this;
-        InfoJson.getMulti(this.state.source, function(data: any) {
+        ImageApi.getMulti(this.state.source, function(data: any) {
 
             if (!t.isM) {
                 return;

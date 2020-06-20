@@ -1,4 +1,4 @@
-import Manifest from "../../lib/Manifest";
+import PresentationApi from "../../fetch/PresentationApi";
 import IManifestData from "../../interface/IManifestData";
 import ITree from "../../interface/ITree";
 
@@ -7,7 +7,7 @@ class TreeBuilder {
 
     static get(url: string, tree?: ITree, done?: (finishedTree?: ITree) => void, limited?: boolean) {
 
-        Manifest.get(
+        PresentationApi.get(
             url,
             async function(manifestData: IManifestData) {
 
@@ -28,7 +28,7 @@ class TreeBuilder {
                         newChild.isOpen = true;
                     } else {
                         const d: IManifestData = await new Promise((resolve, reject) => {
-                            Manifest.get(child.id, function (d: IManifestData) {
+                            PresentationApi.get(child.id, function (d: IManifestData) {
                                 resolve(d);
                             }, true);
                         });

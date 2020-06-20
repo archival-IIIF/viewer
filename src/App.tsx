@@ -12,7 +12,7 @@ import Content from "./Content";
 import './css/App.css';
 import Cache from "./lib/Cache";
 import IManifestData from "./interface/IManifestData";
-import Manifest from "./lib/Manifest";
+import PresentationApi from "./fetch/PresentationApi";
 import TreeBuilder from "./navigation/treeView/TreeBuilder";
 import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
@@ -50,7 +50,7 @@ class App extends React.Component<IProps, IState> {
         Cache.ee.setMaxListeners(100);
 
         global.config = new Config(this.props.config);
-        this.q = Manifest.getGetParameter('q', window.location.href);
+        this.q = PresentationApi.getGetParameter('q', window.location.href);
 
         this.state = {authDate: 0};
 
@@ -128,14 +128,14 @@ class App extends React.Component<IProps, IState> {
         const t = this;
 
         if (!id) {
-            id = Manifest.getIdFromCurrentUrl();
+            id = PresentationApi.getIdFromCurrentUrl();
         }
         if (!id) {
             return;
         }
         const url = id;
 
-        Manifest.get(
+        PresentationApi.get(
             url,
             (currentManifest: IManifestData) =>  {
                 ManifestHistory.pageChanged(currentManifest.request ?? currentManifest.id, currentManifest.label);
@@ -146,7 +146,7 @@ class App extends React.Component<IProps, IState> {
                         t.setState({currentManifest, currentFolder, tree});
                     });
                 } else if (currentManifest.parentId) {
-                    Manifest.get(
+                    PresentationApi.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {
                             TreeBuilder.get(currentFolder.id, undefined, (tree) => {

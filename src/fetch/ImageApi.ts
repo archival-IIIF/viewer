@@ -1,15 +1,15 @@
-import Cache from './Cache';
+import Cache from '../lib/Cache';
 import {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
-import Token from "./Token";
-import Manifest from "./Manifest";
-import Config from "./Config";
+import Token from "../lib/Token";
+import Manifest from "./PresentationApi";
+import Config from "../lib/Config";
 
 declare let global: {
     config: Config;
 };
 
-class InfoJson {
+class ImageApi {
 
     static cache: any = {};
 
@@ -217,4 +217,4 @@ class InfoJson {
     }
 }
 
-export default InfoJson;
+export default ImageApi;

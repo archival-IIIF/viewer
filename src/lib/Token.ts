@@ -1,7 +1,7 @@
 import UrlValidation from "./UrlValidation";
 import Cache from "./Cache";
-import Manifest from "./Manifest";
-import InfoJson from "./InfoJson";
+import PresentationApi from "../fetch/PresentationApi";
+import ImageApi from "../fetch/ImageApi";
 
 type tokenValue = {
     accessToken: string;
@@ -101,8 +101,8 @@ class Token {
             }
         }
         this.activeTokens = [];
-        Manifest.clearCache();
-        InfoJson.clearCache();
+        PresentationApi.clearCache();
+        ImageApi.clearCache();
         setTimeout(function () {
             Cache.ee.emit('token-changed')
         }, 500);

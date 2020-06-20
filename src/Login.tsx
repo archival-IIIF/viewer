@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Manifest from './lib/Manifest';
-import InfoJson from './lib/InfoJson';
+import PresentationApi from './fetch/PresentationApi';
+import ImageApi from './fetch/ImageApi';
 import Cache from './lib/Cache';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -191,8 +191,8 @@ class Login extends React.Component<IProps, IState> {
             });
             return;
         }
-        Manifest.clearCache();
-        InfoJson.clearCache();
+        PresentationApi.clearCache();
+        ImageApi.clearCache();
         Token.set(event.data, this.authService.token, this.authService.logout);
         this.props.setCurrentManifest();
 

@@ -1,14 +1,14 @@
-import Cache from './Cache';
+import Cache from '../lib/Cache';
 import filesize from 'filesize';
 import IManifestData, {IAuthService, ISearchService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
-import UrlValidation from './UrlValidation';
-import Config from './Config';
+import UrlValidation from '../lib/UrlValidation';
+import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
-import Token from "./Token";
+import Token from "../lib/Token";
 
 declare let global: {
     config: Config;
