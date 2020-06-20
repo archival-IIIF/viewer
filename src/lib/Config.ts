@@ -21,6 +21,7 @@ class Config {
         en: 'English',
         de: 'Deutsch',
         fr: 'Français',
+        it: 'Italiano',
         nl: 'Nederlands'
     };
 
