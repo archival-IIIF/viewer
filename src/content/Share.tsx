@@ -69,7 +69,7 @@ export default class Share extends React.Component<IProps,IState> {
                 <Dialog onClose={() => this.setIsOpen(false)} aria-labelledby="simple-dialog-title"
                         open={this.state.isOpen} fullWidth={true}>
                     <DialogTitle>
-                        Share
+                        <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
                         <span className="close" onClick={() => this.setIsOpen(false)}>&times;</span>
                     </DialogTitle>
                     <DialogContent>
