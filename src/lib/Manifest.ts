@@ -45,6 +45,12 @@ class Manifest {
 
     static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean, token?: string) {
 
+        if (!global.config.isAllowedOrigin(url)) {
+            const alertArgs = {title: 'Error', body: 'The manifest url is not an allowed origin: ' + url};
+            Cache.ee.emit('alert', alertArgs);
+            return;
+        }
+
         const t = this;
         const init: RequestInit = {};
         if (token) {

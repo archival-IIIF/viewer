@@ -3,6 +3,11 @@ import {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "./Token";
 import Manifest from "./Manifest";
+import Config from "./Config";
+
+declare let global: {
+    config: Config;
+};
 
 class InfoJson {
 
@@ -40,6 +45,12 @@ class InfoJson {
     }
 
     static fetchFromUrl(url: string, callback: any, token?: string) {
+
+        if (!global.config.isAllowedOrigin(url)) {
+            const alertArgs = {title: 'Error', body: 'The image manifest-Url is not an allowed origin: ' + url};
+            Cache.ee.emit('alert', alertArgs);
+            return;
+        }
 
         const t = this;
         const init: RequestInit = {};

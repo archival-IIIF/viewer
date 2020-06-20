@@ -15,6 +15,8 @@ class Config {
 
     private readonly fallbackLanguage: string = 'en';
 
+    private readonly allowedOrigins: string | string[] = '*';
+
     private readonly translations: object = {
         en: 'English',
         de: 'Deutsch',
@@ -31,6 +33,7 @@ class Config {
     constructor(config: IConfigParameter) {
         this.language = config.language ? config.language : window.navigator.language;
         this.manifest = config.manifest ? config.manifest : '';
+        this.allowedOrigins = config.allowedOrigins ? config.allowedOrigins : '*';
         this.disableSharing = config.disableSharing ? config.disableSharing : false;
     }
 
@@ -77,6 +80,24 @@ class Config {
 
     getDisableSharing() {
         return this.disableSharing;
+    }
+
+    isAllowedOrigin(url: string): boolean {
+        if (this.allowedOrigins === '*') {
+            return true;
+        }
+
+        if (!Array.isArray(this.allowedOrigins)) {
+            return url.startsWith(this.allowedOrigins);
+        }
+
+        for (const allowedOrigin of this.allowedOrigins) {
+            if (url.startsWith(allowedOrigin)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

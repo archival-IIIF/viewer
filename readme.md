@@ -4,14 +4,7 @@
 
 ![](https://raw.githubusercontent.com/archival-IIIF/server/master/docs/components.png)
 
-## Installation
-
-1. Install [Node.js](https://nodejs.org/en/https://nodejs.org/en/)
-1. Install [yarn](https://yarnpkg.com) or [npm](https://www.npmjs.com/)
-1. ```yarn install``` or ```npm install```
-1. ```yarn run start``` or  ```npm run start```
-
-## Init
+## Usage
 
 ```html
 <!DOCTYPE html>
@@ -72,8 +65,29 @@
             <td>No</td>
             <td>false</td>
         </tr>
+        <tr>
+            <td>allowedOrigins</td>
+            <td>Indicates whether a manifest can be shown from the given origin.</td>
+            <td>'https://iiif.sozialarchiv.ch/' or ['https://iiif.sozialarchiv.ch', 'https://example.com']</td>
+            <td>No</td>
+            <td>*</td>
+        </tr>
     </tbody>
 </table>
+
+## Development
+
+# Installation
+
+1. Install [Node.js](https://nodejs.org/en/https://nodejs.org/en/)
+1. Install [yarn](https://yarnpkg.com) or [npm](https://www.npmjs.com/)
+1. ```yarn install``` or ```npm install```
+1. ```yarn run start``` or  ```npm run start```
+
+# Building
+
+1. ```yarn run build``` or  ```npm run build```
+
 
 ## Supported Browsers
 
