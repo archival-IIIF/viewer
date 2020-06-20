@@ -36,7 +36,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
         }
 
         return <>
-            <div className="icon-button" onClick={this.open} aria-controls="language-switch-menu"
+            <div className="aiiif-icon-button" onClick={this.open} aria-controls="language-switch-menu"
                      aria-haspopup="true">
                     <LanguageIcon/>
                     <Translation ns="common">{(t, { i18n }) => <p>{t('language')}</p>}</Translation>
@@ -66,7 +66,7 @@ class LanguageSwitcher extends React.Component<any, IState> {
         }
 
         return <Menu
-            id="language-switch-menu"
+            className="aiiif-language-switch-menu"
             anchorEl={this.state.anchorEl}
             keepMounted
             open={Boolean(this.state.anchorEl)}

@@ -38,8 +38,8 @@ class TreeViewItem extends React.Component<IPros, IState> {
         }
 
         const style = {marginLeft: (this.props.level - 1) * 10};
-        let className = 'treeview-item level-' + this.props.level;
-        let classNameCaret = 'treeview-caret';
+        let className = 'aiiif-treeview-item level-' + this.props.level;
+        let classNameCaret = 'aiiif-treeview-caret';
         let caret = <></>;
         const iconStyle = {
             color: "#8C8C8C",
@@ -47,14 +47,14 @@ class TreeViewItem extends React.Component<IPros, IState> {
         }
 
         if ((!tree.children || tree.children.length === 0) && tree.hasLockedChildren !== true) {
-            classNameCaret += ' no-caret';
+            classNameCaret += ' aiiif-no-caret';
         } else if (this.state.isOpen) {
             caret = <CaretDownIcon style={iconStyle} />;
         } else {
             caret = <CaretRightIcon style={iconStyle} />;
         }
         if (tree.id === this.props.currentFolderId) {
-            className += ' current';
+            className += ' aiiif-current';
         }
         const label = tree.label;
 
@@ -84,7 +84,7 @@ class TreeViewItem extends React.Component<IPros, IState> {
                     <div className={classNameCaret} onClick={() => this.toggleCaret()}>
                         {caret}
                     </div>
-                    <div className="treeview-label" onClick={() => this.props.setCurrentManifest(tree.id)}>{label}</div>
+                    <div className="aiiif-treeview-label" onClick={() => this.props.setCurrentManifest(tree.id)}>{label}</div>
                 </div>
                 {children}
             </div>

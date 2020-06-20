@@ -32,7 +32,7 @@ class FolderView extends React.Component<IProps, IState> {
     render() {
 
         if (this.props.currentFolder.restricted) {
-            return <div id="folder-view-container" />;
+            return <div className="aiiif-folder-view-container" />;
         }
 
         const files = this.props.currentFolder.manifests;
@@ -41,10 +41,10 @@ class FolderView extends React.Component<IProps, IState> {
         if (files.length === 0 && folders.length === 0) {
 
             return (
-                <div id="folder-view-container">
+                <div className="aiiif-folder-view-container">
                     <div>
                         <h1>{this.props.currentFolder.label}</h1>
-                        <div className="empty">
+                        <div className="aiiif-empty">
                             <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
                         </div>
                     </div>
@@ -76,16 +76,16 @@ class FolderView extends React.Component<IProps, IState> {
             );
         }
 
-        const folderViewClassNames = 'folder-view ' + this.state.mode;
+        const folderViewClassNames = 'aiiif-folder-view aiiif-' + this.state.mode;
 
         return (
-            <div id="folder-view-container">
-                <nav className="bar">
-                    <div className="icon-button" onClick={this.showIconView}>
+            <div className="aiiif-folder-view-container">
+                <nav className="aiiif-bar">
+                    <div className="aiiif-icon-button" onClick={this.showIconView}>
                         <ViewSymbolsIcon />
                         <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
                     </div>
-                    <div className="icon-button" onClick={this.showListView}>
+                    <div className="aiiif-icon-button" onClick={this.showListView}>
                         <ViewListIcon />
                         <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
                     </div>

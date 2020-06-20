@@ -1,32 +1,32 @@
-#treeview {
+.aiiif-treeview {
     padding: 18px 12px;
     background-color: #EDECED;
     overflow-y: auto;
     width: 100%;
 }
 
-.treeview-item {
+.aiiif-treeview-item {
     padding: 2px 6px;
     cursor: pointer;
     display: inline-flex;
 }
 
 
-.treeview-item.current {
+.aiiif-treeview-item.aiiif-current {
     background-color: #7CD6FA;
     border-radius: 4px;
 }
 
-.no-caret {
+.aiiif-no-caret {
     background: none !important;
     width: 33px;
 }
 
-.treeview-caret {
+.aiiif-treeview-caret {
     margin: -4px -2px -4px -6px;
 }
 
-.treeview-label {
+.aiiif-treeview-label {
     vertical-align: middle;
     word-break: break-all;
     line-height: 24px;
@@ -36,10 +36,10 @@ a {
     text-decoration: none;
 }
 
-.label {
+.aiiif-label {
     margin: 9px 0 3px 0;
 }
 
-.value {
+.aiiif-value {
     margin: 0 0 6px 0;
 }

@@ -15,7 +15,7 @@ class Folder extends React.Component<IProps, {}> {
 
     render() {
         return <Splitter
-            id="aiiif-splitter-folder"
+            id="splitter-folder"
             a={<FolderView
                 key={this.props.currentManifest.id}
                 currentManifest={this.props.currentManifest}

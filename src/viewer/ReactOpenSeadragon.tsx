@@ -52,7 +52,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     render() {
 
 
-        return <div id="openseadragon" key={this.state.source[0]}>
+        return <div id="openseadragon" className="aiiif-openseadragon" key={this.state.source[0]}>
             <button id="zoom-in-button" className="openseadragon-icon">
                 <ZoomInIcon style={iconStyle} />
             </button>
@@ -110,7 +110,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 );
             }
 
-            return <div id="sources">{sourceThumbs}</div>
+            return <div className="aiiif-sources">{sourceThumbs}</div>
         }
     }
 

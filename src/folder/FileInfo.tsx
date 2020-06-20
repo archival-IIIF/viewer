@@ -51,10 +51,10 @@ class FileInfo extends React.Component<IProps, {}> {
 
         if (manifestData.description !== undefined) {
             metadataView.push(<div key="description">
-                <div className="label">
+                <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('description')}</p>}</Translation>
                 </div>
-                <div className="value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                     __html: DOMPurify.sanitize(manifestData.description, global.config.getSanitizeRulesSet())
                 }} />
             </div>);
@@ -65,8 +65,8 @@ class FileInfo extends React.Component<IProps, {}> {
                 if (manifestData.metadata.hasOwnProperty(key)) {
                     const metadataItem = manifestData.metadata[key];
                     metadataView.push(<div key={key}>
-                        <div className="label">{metadataItem.label}</div>
-                        <div className="value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                        <div className="aiiif-label">{metadataItem.label}</div>
+                        <div className="aiiif-value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                                 __html: DOMPurify.sanitize(metadataItem.value, global.config.getSanitizeRulesSet())
                             }} />
                     </div>);
@@ -76,10 +76,10 @@ class FileInfo extends React.Component<IProps, {}> {
 
         if (manifestData.attribution) {
             metadataView.push(<div key="attribution">
-                <div className="label">
+                <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>
                 </div>
-                <div className="value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                     __html: DOMPurify.sanitize(manifestData.attribution, global.config.getSanitizeRulesSet())
                 }} />
             </div>);
@@ -87,16 +87,16 @@ class FileInfo extends React.Component<IProps, {}> {
 
         if (manifestData.license !== undefined) {
             metadataView.push(<div key="termsOfUsage">
-                <div className="label">
+                <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>
                 </div>
-                <div className="value"><a href={manifestData.license}>{manifestData.license}</a></div>
+                <div className="aiiif-value"><a href={manifestData.license}>{manifestData.license}</a></div>
             </div>);
         }
 
         const logo = manifestData.logo;
         if (logo) {
-            metadataView.push(<img key="providerLogo" id="provider-logo" src={logo} alt="Logo" title="Logo"/>);
+            metadataView.push(<img key="providerLogo" className="aiiif-provider-logo" src={logo} alt="Logo" title="Logo"/>);
         }
 
         if (
@@ -105,7 +105,7 @@ class FileInfo extends React.Component<IProps, {}> {
         ) {
             metadataView.push(
                 <div key="manifestation">
-                    <div id="show-manifestation" onClick={this.showManifestationsModal}>
+                    <div className="aiiif-show-manifestation" onClick={this.showManifestationsModal}>
                         <Translation ns="common">{(t, { i18n }) => <p>{t('showFile')}</p>}</Translation>
                     </div>
                 </div>
@@ -113,7 +113,7 @@ class FileInfo extends React.Component<IProps, {}> {
         }
 
         return (
-            <div id="file-info">
+            <div className="aiiif-file-info">
                 <Share currentManifest={this.props.currentManifest} />
                 <div>
                     <h3>{manifestData.label}</h3>
@@ -151,7 +151,7 @@ class FileInfo extends React.Component<IProps, {}> {
             if (manifestations.hasOwnProperty(i)) {
                 const manifestation = manifestations[i];
                 bodyJsx.push(
-                    <div key={i} className="file-manifestation" onClick={() => this.openFile(manifestation.url)}>
+                    <div key={i} className="aiiif-file-manifestation" onClick={() => this.openFile(manifestation.url)}>
                         <FileIcon />
                         {manifestation.label}
                     </div>

@@ -19,7 +19,7 @@ class TreeView extends React.Component<IProps, {}> {
         }
 
         return (
-            <div id="treeview">
+            <div className="aiiif-treeview">
                 <TreeViewItem
                     key={Math.random()}
                     tree={this.props.tree}

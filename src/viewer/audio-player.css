@@ -1,20 +1,3 @@
 #audio-player {
     background-color: #404346;
 }
-
-.mejs__container, .mejs__controls {
-    background: transparent !important;
-}
-
-.mejs__audio {
-    width: 100% !important;
-}
-
-.mejs__video {
-    margin: 0 auto;
-    text-align: center !important;
-}
-
-.mejs__overlay-play {
-    width: 100%;
-}

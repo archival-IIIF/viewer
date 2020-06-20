@@ -1,4 +1,4 @@
-.item {
+.aiiif-item {
     min-height: 45px;
     width: 120px;
     padding: 8px;
@@ -7,11 +7,11 @@
     cursor: pointer;
 }
 
-.item.active {
+.aiiif-item.active {
     background-color: lightgray;
 }
 
-.item-thumbnail {
+.aiiif-item-thumbnail {
     background-size: contain;
     background-repeat: no-repeat;
     width: 72px;
@@ -20,12 +20,12 @@
     margin: 0 auto;
 }
 
-.item-thumbnail svg {
+.aiiif-item-thumbnail svg {
     width: 90%;
     height: 90%;
 }
 
-.item-label {
+.aiiif-item-label {
     line-height: 14px;
     text-align: center;
     word-break: break-all;
@@ -34,7 +34,7 @@
 }
 
 
-.list-view > .item {
+.aiiif-list-view > .aiiif-item {
     width: 100%;
     text-align: left;
     padding: 4px 8px;
@@ -43,13 +43,13 @@
     display: flex;
 }
 
-.list-view > .item > .item-thumbnail {
+.aiiif-list-view > .aiiif-item > .aiiif-item-thumbnail {
     width: 16px;
     height: 16px;
     margin: 0;
 }
 
 
-.list-view > .item > .item-label {
+.aiiif-list-view > .aiiif-item > .aiiif-item-label {
     margin: 0 0 0 6px;
 }

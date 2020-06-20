@@ -56,12 +56,12 @@ class Splitter extends React.Component<IProps, IState> {
     }
 
     render() {
-        const containerClassName = 'splitter-container splitter-' + this.props.direction;
-        return <div className={containerClassName} id={this.props.id} ref={this.myRef}>
-            <div className="a" style={this.getAStyle()}>{this.props.a}</div>
-            <div className="splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
+        const containerClassName = 'aiiif-splitter-container aiiif-splitter-' + this.props.direction + ' aiiif-' + this.props.id;
+        return <div className={containerClassName} ref={this.myRef}>
+            <div className="aiiif-a" style={this.getAStyle()}>{this.props.a}</div>
+            <div className="aiiif-splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
                     onDoubleClick={() => this.splitterDoubleClick()} />
-            <div className="b">{this.props.b}</div>
+            <div className="aiiif-b">{this.props.b}</div>
         </div>;
     }
 

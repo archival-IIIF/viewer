@@ -1,4 +1,4 @@
-#topbar {
+.aiiif-topbar {
     height: 40px;
     padding: 10px;
     background-color: lightgrey;
@@ -8,14 +8,14 @@
     width: 100%;
 }
 
-.bar {
+.aiiif-bar {
     display: flex;
     height: 40px;
     background-color: lightgrey;
     position: sticky;
 }
 
-.icon-button {
+.aiiif-icon-button {
     margin: 0 6px;
     cursor: pointer;
     display: flex;
@@ -25,6 +25,6 @@
     text-decoration: none;
 }
 
-.icon-button  > svg {
+.aiiif-icon-button  > svg {
     margin-right: 2px;
 }

@@ -17,8 +17,8 @@ class TopBar extends React.Component<{}, {}> {
 
     render() {
 
-        return <div id="topbar">
-            <div className="icon-button" onClick={this.toggleTreeViewBar}>
+        return <div className="aiiif-topbar">
+            <div className="aiiif-icon-button" onClick={this.toggleTreeViewBar}>
                 <NavBarIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
             </div>
@@ -30,7 +30,7 @@ class TopBar extends React.Component<{}, {}> {
 
     renderLogin() {
         if (Token.hasActiveToken()) {
-            return <div className="icon-button" onClick={() => Token.logout()}>
+            return <div className="aiiif-icon-button" onClick={() => Token.logout()}>
                 <LogoutIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>;

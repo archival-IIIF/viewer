@@ -14,7 +14,7 @@ export default function ExternalSearch() {
         return <></>
     }
 
-    return <a className="icon-button" href={externalSearchUrl}>
+    return <a className="aiiif-icon-button" href={externalSearchUrl}>
         <SearchIcon />
         <Translation ns="common">{(t, { i18n }) => <p>{t('search')}</p>}</Translation>
     </a>

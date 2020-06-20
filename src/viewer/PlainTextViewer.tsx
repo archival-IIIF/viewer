@@ -30,7 +30,7 @@ class PlainTextViewer extends React.Component<IProps, IState> {
             return <ViewerSpinner show={this.state.loading} />;
         }
 
-        return <div className="plain-text">
+        return <div className="aiiif-plain-text">
             <Nl2br text={this.state.text} />
         </div>;
     }

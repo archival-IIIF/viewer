@@ -46,7 +46,7 @@ class Viewer extends React.Component<IProps, {}> {
     renderImage() {
         const resource: any = this.props.currentManifest.resource;
         return (
-            <div id="viewer">
+            <div className="aiiif-viewer">
                 <ReactOpenSeadragon
                     source={resource.source}
                     key={resource.source + this.props.authDate.toString()}
@@ -59,7 +59,7 @@ class Viewer extends React.Component<IProps, {}> {
     renderPlainText() {
         const resource: any = this.props.currentManifest.resource;
         return (
-            <div id="viewer">
+            <div className="aiiif-viewer">
                 <PlainTextViewer source={resource.id} key={resource.id}/>
             </div>
         );
@@ -70,7 +70,7 @@ class Viewer extends React.Component<IProps, {}> {
         if (this.props.currentManifest.resource) {
             const id = this.props.currentManifest.resource.id
 
-            return <iframe id="viewer" src={id} title={id}/>;
+            return <iframe className="aiiif-viewer" src={id} title={id}/>;
         }
     }
 
@@ -86,7 +86,7 @@ class Viewer extends React.Component<IProps, {}> {
             this.type = 'audioVideo';
 
             return (
-                <div id="viewer">
+                <div className="aiiif-viewer">
                     <MediaPlayer
                         id="player1"
                         key={file}

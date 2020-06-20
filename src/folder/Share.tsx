@@ -60,8 +60,8 @@ export default class Share extends React.Component<IProps,IState> {
         const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '&t=' + title;
 
         return (
-            <nav className="bar">
-                <div className="icon-button" onClick={() => this.setIsOpen(true)}>
+            <nav className="aiiif-bar">
+                <div className="aiiif-icon-button" onClick={() => this.setIsOpen(true)}>
                     <ShareIcon />
                     <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
                 </div>

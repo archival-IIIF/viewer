@@ -20,7 +20,7 @@ class Item extends React.Component<IProps, {}> {
 
         const itemType = this.props.item.type === 'Collection' ? 'folder' : 'file';
         const id = this.props.item.id;
-        let className = 'item ' + itemType;
+        let className = 'aiiif-item ' + itemType;
         const label = this.props.item.label;
         if (id === this.props.selected.id) {
             className += ' active';
@@ -33,7 +33,7 @@ class Item extends React.Component<IProps, {}> {
             onDoubleClick={() => this.open()}
         >
             {this.getThumbnail()}
-            <div className="item-label">{label}</div>
+            <div className="aiiif-item-label">{label}</div>
         </div>;
     }
 
@@ -41,10 +41,10 @@ class Item extends React.Component<IProps, {}> {
 
         if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
             if (this.props.item.type === 'Collection') {
-                return <div className="item-thumbnail"><FolderIcon  /></div>;
+                return <div className="aiiif-item-thumbnail"><FolderIcon  /></div>;
             }
 
-            return <div className="item-thumbnail"><FileIcon /></div>;
+            return <div className="aiiif-item-thumbnail"><FileIcon /></div>;
         }
 
 
@@ -62,7 +62,7 @@ class Item extends React.Component<IProps, {}> {
         }
 
         const style = {backgroundImage: 'url(' + thumbnailUrl + ')'};
-        return <div className="item-thumbnail" style={style} />;
+        return <div className="aiiif-item-thumbnail" style={style} />;
     }
 
     open() {

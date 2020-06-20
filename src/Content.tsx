@@ -32,7 +32,7 @@ class Content extends React.Component<IPros, {}> {
         }
 
         if (this.isAudio()) {
-            return <div id="content-audio">
+            return <div className="aiiif-content-audio">
                 <Viewer currentManifest={this.props.currentManifest} authDate={this.props.authDate}/>
                 <Folder
                     key={this.props.currentManifest.id}

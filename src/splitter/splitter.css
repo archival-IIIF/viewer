@@ -1,21 +1,21 @@
-.splitter {
+.aiiif-splitter {
     background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
     z-index: 999;
 }
 
 
-.splitter-vertical > .splitter {
+.aiiif-splitter-vertical > .aiiif-splitter {
     cursor: col-resize;
     min-width: 8px;
 }
 
-.splitter-horizontal > .splitter {
+.aiiif-splitter-horizontal > .aiiif-splitter {
     min-height: 8px;
     cursor: row-resize;
 }
 
 
-.splitter:hover {
+.aiiif-splitter:hover {
     background-color: black;
 }
 
@@ -23,22 +23,22 @@ body.no-select {
     user-select: none;
 }
 
-.splitter-container {
+.aiiif-splitter-container {
     display: flex;
     flex-grow: 2;
 }
 
-.splitter-horizontal {
+.aiiif-splitter-horizontal {
     flex-direction: column;
     height: 100%;
 }
 
-.splitter-container > div {
+.aiiif-splitter-container > div {
     display: flex;
     align-items: stretch;
 }
 
-.splitter-container > div.b {
+.aiiif-splitter-container > div.aiiif-b {
     flex-grow: 2;
 }
 
