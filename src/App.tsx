@@ -22,6 +22,7 @@ const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
 const commonNl = require('./translations/nl/common.json');
 const commonFr = require('./translations/fr/common.json');
+const commonIt = require('./translations/it/common.json');
 
 interface IProps {
     config: IConfigParameter;
@@ -61,6 +62,7 @@ class App extends React.Component<IProps, IState> {
                 de: {common: commonDe},
                 en: {common: commonEn},
                 fr: {common: commonFr},
+                it: {common: commonIt},
                 nl: {common: commonNl}
             }
         });
