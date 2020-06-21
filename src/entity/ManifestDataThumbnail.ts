@@ -2,8 +2,8 @@ import IManifestDataThumbnail from '../interface/IManifestDataThumbnail';
 
 class ManifestDataThumbnail implements IManifestDataThumbnail {
 
-    id: '';
-    service: null;
+    id: string;
+    service?: string;
 
     constructor() {
         this.id = '';

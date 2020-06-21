@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Cache from '../lib/Cache';
 import TouchDetection from '../lib/TouchDetection';
-import IManifestData from '../interface/IManifestData';
+import IManifestData, {IManifestReference} from '../interface/IManifestData';
 import './item.css';
 import FolderIcon from "../icons/fa/FolderIcon";
 import FileIcon from "../icons/fa/FileIcon";
+import {getLocalized} from "../lib/ManifestHelpers";
 
 interface IProps {
-    item: IManifestData;
+    item: IManifestReference;
     selected: IManifestData;
     authDate: number;
     setCurrentManifest: (id?: string) => void;
@@ -21,7 +22,7 @@ class Item extends React.Component<IProps, {}> {
         const itemType = this.props.item.type === 'Collection' ? 'folder' : 'file';
         const id = this.props.item.id;
         let className = 'aiiif-item ' + itemType;
-        const label = this.props.item.label;
+        const label = getLocalized(this.props.item.label);
         if (id === this.props.selected.id) {
             className += ' active';
         }

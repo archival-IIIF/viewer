@@ -1,24 +1,32 @@
 import IManifestDataThumbnail from './IManifestDataThumbnail';
+import {LabelValuePair, LanguageMap} from "manifesto.js";
 
 interface IManifestData {
     id: string;
     request?: string;
     type: string;
-    label: string;
+    label: LanguageMap;
     logo: string | null;
-    attribution: string;
+    attribution: LabelValuePair | null;
     manifestations: any;
     parentId?: string;
-    collections: any;
-    manifests: any;
+    collections: IManifestReference[];
+    manifests: IManifestReference[];
     resource: any;
     restricted: boolean;
-    metadata: any;
-    license?: string;
+    metadata: LabelValuePair[];
+    license: string | null;
     search?: ISearchService
-    description: string;
+    description: LanguageMap;
     thumbnail?: IManifestDataThumbnail;
     authService?: IAuthService;
+}
+
+export interface IManifestReference {
+    id: string;
+    label: LanguageMap;
+    thumbnail?: IManifestDataThumbnail;
+    type: string;
 }
 
 export interface IAuthService {
@@ -26,11 +34,11 @@ export interface IAuthService {
     token?: string;
     logout?: string;
     profile: string;
-    confirmLabel?: string;
-    description?: string;
-    errorMessage?: string;
-    header?: string;
-    failureHeader?: string;
+    confirmLabel: string | null;
+    description: string | null;
+    errorMessage: string | null;
+    header: string | null;
+    failureHeader: string | null;
 }
 
 export interface ISearchService {

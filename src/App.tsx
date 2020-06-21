@@ -17,6 +17,7 @@ import TreeBuilder from "./navigation/treeView/TreeBuilder";
 import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
 import Navigation from "./navigation/Navigation";
+import {getLocalized} from "./lib/ManifestHelpers";
 
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
@@ -69,6 +70,7 @@ class App extends React.Component<IProps, IState> {
 
         this.setCurrentManifest = this.setCurrentManifest.bind(this);
         this.tokenReceived = this.tokenReceived.bind(this);
+        this.refresh = this.refresh.bind(this);
     }
 
     render() {
@@ -118,10 +120,12 @@ class App extends React.Component<IProps, IState> {
         });
         this.setCurrentManifest();
         Cache.ee.addListener('token-changed', this.tokenReceived);
+        i18n.on('languageChanged', this.refresh);
     }
 
     componentWillUnmount() {
         Cache.ee.removeListener('token-changed', this.tokenReceived);
+        i18n.off('languageChanged', this.refresh);
     }
 
     setCurrentManifest(id?: string) {
@@ -138,7 +142,10 @@ class App extends React.Component<IProps, IState> {
         PresentationApi.get(
             url,
             (currentManifest: IManifestData) =>  {
-                ManifestHistory.pageChanged(currentManifest.request ?? currentManifest.id, currentManifest.label);
+                ManifestHistory.pageChanged(
+                    currentManifest.request ?? currentManifest.id,
+                    getLocalized(currentManifest.label)
+                );
 
                 if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;
@@ -160,13 +167,17 @@ class App extends React.Component<IProps, IState> {
                     t.setState({currentManifest, currentFolder});
                 }
 
-                document.title = currentManifest.label;
+                document.title = getLocalized(currentManifest.label);
             }
         );
     }
 
     tokenReceived() {
         this.setState({authDate: Date.now()});
+        this.setCurrentManifest();
+    }
+
+    refresh() {
         this.setCurrentManifest();
     }
 }

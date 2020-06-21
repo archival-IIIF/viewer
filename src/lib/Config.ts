@@ -70,7 +70,16 @@ class Config {
     }
 
     getLanguage() {
-        return this.language;
+
+        if (Object.keys(this.translations).includes(this.language)) {
+            return this.language;
+        }
+
+        if (Object.keys(this.translations).includes(this.language.substr(0, 2))) {
+            return this.language.substr(0, 2)
+        }
+
+        return this.fallbackLanguage;
     }
 
     getFallbackLanguage() {

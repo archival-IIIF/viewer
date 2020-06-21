@@ -1,22 +1,23 @@
-import IManifestData, {IAuthService} from '../interface/IManifestData';
+import IManifestData, {IAuthService, IManifestReference} from '../interface/IManifestData';
+import {LabelValuePair, LanguageMap} from "manifesto.js";
 
 class ManifestData implements IManifestData {
 
     id: string;
     request?: string;
     type: string;
-    label: string;
+    label: LanguageMap;
     logo: string;
-    attribution: string;
+    attribution: LabelValuePair | null;
     manifestations: string;
     parentId: undefined;
-    collections: string;
-    manifests: string;
+    collections: IManifestReference[];
+    manifests: IManifestReference[];
     resource: string;
     restricted: false;
-    metadata: string;
-    license: undefined;
-    description: string;
+    metadata: LabelValuePair[];
+    license: null;
+    description: LanguageMap;
     thumbnail: undefined;
     authService?: IAuthService;
 
@@ -24,19 +25,18 @@ class ManifestData implements IManifestData {
         this.id = '';
         this.request = '';
         this.type = '';
-        this.label = '';
+        this.label = new LanguageMap();
         this.logo = '';
-        this.attribution = '';
+        this.attribution = null;
         this.manifestations = '';
-        this.collections = '';
-        this.manifests = '';
+        this.collections = [];
+        this.manifests = [];
         this.resource = '';
         this.restricted = false;
-        this.metadata = '';
-        this.description = '';
+        this.metadata = [];
+        this.description = new LanguageMap();
         this.authService = undefined;
     }
-
 }
 
 export default ManifestData;

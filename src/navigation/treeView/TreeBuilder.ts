@@ -1,6 +1,7 @@
 import PresentationApi from "../../fetch/PresentationApi";
 import IManifestData from "../../interface/IManifestData";
 import ITree from "../../interface/ITree";
+import {getLocalized} from "../../lib/ManifestHelpers";
 
 class TreeBuilder {
 
@@ -13,14 +14,14 @@ class TreeBuilder {
 
                 const tree2: ITree = {
                     id: manifestData.id,
-                    label: manifestData.label,
+                    label: getLocalized(manifestData.label),
                     isOpen: true,
                     children: []
                 };
                 for (const child of manifestData.collections) {
                     const newChild: ITree = {
                         id: child.id,
-                        label: child.label,
+                        label: getLocalized(child.label),
                         children: []
                     }
                     if (tree && tree.id === child.id) {

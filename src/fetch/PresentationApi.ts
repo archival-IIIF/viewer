@@ -1,6 +1,5 @@
 import Cache from '../lib/Cache';
-import filesize from 'filesize';
-import IManifestData, {IAuthService, ISearchService} from '../interface/IManifestData';
+import IManifestData, {IAuthService, IManifestReference, ISearchService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
@@ -9,6 +8,7 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
+import {IIIFResource} from "manifesto.js";
 
 declare let global: {
     config: Config;
@@ -94,7 +94,7 @@ class Manifest {
                 } else if (type === 'sc:Collection' || type === 'Collection') {
                     manifestData.type = 'Collection';
                 }
-                manifestData.label = manifestoData.getDefaultLabel() ?? '';
+                manifestData.label = manifestoData.getLabel() ?? '';
                 const isV3 = this.isV3(manifestoData);
                 if (isV3) {
                     const partOf = manifestoData.getProperty('partOf');
@@ -172,11 +172,11 @@ class Manifest {
                     }
                 } else {
                     const isV3 = this.isV3(manifestoData);
-                    manifestData.metadata = t.getMetadata(manifestoData);
-                    manifestData.description = t.getDescription(manifestoData);
+                    manifestData.metadata = manifestoData.getMetadata();
+                    manifestData.description = manifestoData.getDescription();
                     manifestData.license = t.getLicense(manifestoData);
                     manifestData.logo = manifestoData.getLogo();
-                    manifestData.attribution = t.getAttribution(manifestoData);
+                    manifestData.attribution = manifestoData.getRequiredStatement();
                     manifestData.manifestations = t.getManifestations(manifestoData);
                     manifestData.restricted = false;
                     if (manifestData.type === 'Collection') {
@@ -233,7 +233,7 @@ class Manifest {
         return true;
     }
 
-    static getAuthService(manifestoData: any): IAuthService | undefined {
+    static getAuthService(manifestoData: IIIFResource): IAuthService | undefined {
 
         const serviceProfiles = [
             ServiceProfile.AUTH_1_EXTERNAL,
@@ -274,18 +274,7 @@ class Manifest {
         };
     }
 
-    static getAttribution(manifestoData: any) {
-        const manifestoAttribution = manifestoData.getRequiredStatement();
-
-        try {
-            return manifestoAttribution.value[0].value;
-        } catch (e) {
-        }
-
-        return undefined;
-    }
-
-    static getSearch(manifestoData: any): ISearchService | undefined {
+    static getSearch(manifestoData: IIIFResource): ISearchService | undefined {
         const searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
         if (searchService) {
             return {
@@ -296,52 +285,16 @@ class Manifest {
         return undefined;
     }
 
-    static getDescription(manifestoData: any) {
-        const description = manifestoData.getDescription();
-
-        try {
-            return description[0].value;
-        } catch (e) {
-        }
-
-        return undefined;
-    }
-
-    static getMetadata(manifestoData: any) {
-        const manifestoMetadata = manifestoData.getMetadata();
-        const metadata = [];
-
-        if (manifestoMetadata === undefined || manifestoMetadata === null) {
-            return undefined;
-        }
-
-
-        for (const element of manifestoMetadata) {
-            try {
-                const label = element.label[0].value;
-                let value = element.value[0].value;
-                if (label === 'Size') {
-                    value = filesize(parseInt(value, 10));
-                }
-                value = this.addBlankTarget(value);
-
-                metadata.push({label, value});
-            } catch (e) {}
-        }
-
-        return metadata;
-    }
-
-    static getLicense(manifestoData: any) {
-        let license: string|undefined;
+    static getLicense(manifestoData: IIIFResource): string | null {
+        let license: string | null;
         if (this.isV3(manifestoData)) {
             license = manifestoData.getProperty('rights');
         } else {
             license = manifestoData.getLicense();
         }
 
-        if (license === undefined || !UrlValidation.isURL(license)) {
-            return undefined;
+        if (!license || !UrlValidation.isURL(license)) {
+            return null;
         }
 
         return license;
@@ -392,7 +345,7 @@ class Manifest {
         return resource;
     }
 
-    static getManifestations(manifestoData: any) {
+    static getManifestations(manifestoData: IIIFResource) {
 
         const manifestations = [];
 
@@ -401,7 +354,7 @@ class Manifest {
             if (renderings.hasOwnProperty(i)) {
                 const rendering = renderings[i];
                 const manifestation = {
-                    label: rendering.getDefaultLabel(),
+                    label: rendering.getLabel(),
                     url: rendering.id,
                 };
                 manifestations.push(manifestation);
@@ -627,7 +580,7 @@ class Manifest {
         thumbnail.id = manifestoThumbnail.id;
 
         const services = [
-            'http://iiif.io/api/image/2/level2.json',
+            ServiceProfile.IMAGE_2_LEVEL_2,
             'level2'
         ];
         for (const service of services) {
@@ -641,7 +594,7 @@ class Manifest {
         return thumbnail;
     }
 
-    static getManifests(manifestoData: any) {
+    static getManifests(manifestoData: any): IManifestReference[] {
 
         const manifestoManifests = manifestoData.getManifests();
         if (manifestoManifests.length === 0) {
@@ -654,7 +607,7 @@ class Manifest {
                 const manifestoManifest = manifestoManifests[key];
                 manifests.push({
                     id: manifestoManifest.id,
-                    label: manifestoManifest.getDefaultLabel(),
+                    label: manifestoManifest.getLabel(),
                     thumbnail: this.getThumbnail(manifestoManifest),
                     type: manifestoManifest.getProperty('type')
                 });
@@ -664,19 +617,19 @@ class Manifest {
         return manifests;
     }
 
-    static getCollections(manifestoData: any) {
+    static getCollections(manifestoData: any): IManifestReference[] {
         const manifestoCollections = manifestoData.getCollections();
         if (manifestoCollections.length === 0) {
             return [];
         }
 
-        const collections = [];
+        const collections: IManifestReference[] = [];
         for (const key in manifestoCollections) {
             if (manifestoCollections.hasOwnProperty(key)) {
                 const manifestoManifest = manifestoCollections[key];
                 collections.push({
                     id: manifestoManifest.id,
-                    label: manifestoManifest.getDefaultLabel(),
+                    label: manifestoManifest.getLabel(),
                     thumbnail: this.getThumbnail(manifestoManifest),
                     type: manifestoManifest.getProperty('type').replace('sc:', '')
                 });
@@ -684,21 +637,6 @@ class Manifest {
         }
 
         return collections;
-    }
-
-    static addBlankTarget(input: string) {
-        const tmp: HTMLDivElement = document.createElement('div');
-        tmp.innerHTML = input;
-        for (let i: number = 0; i < tmp.children.length; i++) {
-            let child: Element | null = tmp.children.item(i);
-            if (child) {
-                if (child.nodeName === 'A') {
-                    child.setAttribute('target', '_blank');
-                    child.setAttribute('rel', 'noopener');
-                }
-            }
-        }
-        return tmp.innerHTML;
     }
 
     static fetchFromCache(url: string, skipAuthentication?: boolean) {
@@ -737,18 +675,10 @@ class Manifest {
         return urlObject.searchParams.get(name);
     }
 
-    static isV3(manifestoData: any) {
+    static isV3(manifestoData: IIIFResource) {
         const context = manifestoData.context;
 
-        if (typeof context === 'string') {
-            return context === 'http://iiif.io/api/presentation/3/context.json';
-        }
-
-        if (context && typeof context.includes === 'function') {
-            return context.includes('http://iiif.io/api/presentation/3/context.json');
-        }
-
-        return false;
+        return context === 'http://iiif.io/api/presentation/3/context.json';
     }
 
 }

@@ -4,6 +4,7 @@ import IManifestData from '../interface/IManifestData';
 import {Translation} from 'react-i18next';
 import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
 import ViewListIcon from "@material-ui/icons/ViewList";
+import {getLocalized} from "../lib/ManifestHelpers";
 
 interface IState {
     mode: string;
@@ -43,7 +44,7 @@ class FolderView extends React.Component<IProps, IState> {
             return (
                 <div className="aiiif-folder-view-container">
                     <div>
-                        <h1>{this.props.currentFolder.label}</h1>
+                        <h1>{getLocalized(this.props.currentFolder.label)}</h1>
                         <div className="aiiif-empty">
                             <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
                         </div>
@@ -91,7 +92,7 @@ class FolderView extends React.Component<IProps, IState> {
                     </div>
                 </nav>
                 <div>
-                    <h1>{this.props.currentFolder.label}</h1>
+                    <h1>{getLocalized(this.props.currentFolder.label)}</h1>
                     <div className={folderViewClassNames}>{content}</div>
                 </div>
 

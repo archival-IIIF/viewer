@@ -8,6 +8,7 @@ import './manifestations-modal.css';
 import './file-info.css';
 import FileIcon from '@material-ui/icons/DescriptionOutlined';
 import Share from "./Share";
+import {getLocalized, addBlankTarget} from "../lib/ManifestHelpers";
 
 interface IHTMLAnchorElement {
     nodeName: string;
@@ -49,43 +50,46 @@ class FileInfo extends React.Component<IProps, {}> {
             }
         });
 
-        if (manifestData.description !== undefined) {
+        if (manifestData.description.length > 0) {
             metadataView.push(<div key="description">
                 <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('description')}</p>}</Translation>
                 </div>
                 <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                    __html: DOMPurify.sanitize(manifestData.description, global.config.getSanitizeRulesSet())
+                    __html: DOMPurify.sanitize(getLocalized(manifestData.description), global.config.getSanitizeRulesSet())
                 }} />
             </div>);
         }
 
-        if (manifestData.metadata !== undefined) {
-            for (const key in manifestData.metadata) {
-                if (manifestData.metadata.hasOwnProperty(key)) {
-                    const metadataItem = manifestData.metadata[key];
-                    metadataView.push(<div key={key}>
-                        <div className="aiiif-label">{metadataItem.label}</div>
+        if (manifestData.metadata.length > 0) {
+            let key = 0;
+            for (const metadataItem of manifestData.metadata) {
+                const label = getLocalized(metadataItem.label);
+                let value = getLocalized(metadataItem.value);
+                value = addBlankTarget(value);
+                metadataView.push(
+                    <div key={key++}>
+                        <div className="aiiif-label">{label}</div>
                         <div className="aiiif-value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                                __html: DOMPurify.sanitize(metadataItem.value, global.config.getSanitizeRulesSet())
+                                __html: DOMPurify.sanitize(value, global.config.getSanitizeRulesSet())
                             }} />
-                    </div>);
-                }
+                    </div>
+                );
             }
         }
 
-        if (manifestData.attribution) {
+        if (manifestData.attribution && manifestData.attribution.value.length > 0) {
             metadataView.push(<div key="attribution">
                 <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>
                 </div>
                 <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                    __html: DOMPurify.sanitize(manifestData.attribution, global.config.getSanitizeRulesSet())
+                    __html: DOMPurify.sanitize(getLocalized(manifestData.attribution.value), global.config.getSanitizeRulesSet())
                 }} />
             </div>);
         }
 
-        if (manifestData.license !== undefined) {
+        if (manifestData.license) {
             metadataView.push(<div key="termsOfUsage">
                 <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>
@@ -116,23 +120,11 @@ class FileInfo extends React.Component<IProps, {}> {
             <div className="aiiif-file-info">
                 <Share currentManifest={this.props.currentManifest} />
                 <div>
-                    <h3>{manifestData.label}</h3>
+                    <h3>{getLocalized(manifestData.label)}</h3>
                     {metadataView}
                 </div>
             </div>
         );
-    }
-
-    addBlankTarget(input: string) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = input;
-        for (let i = 0; i < tmp.children.length; i++) {
-            const node: IHTMLAnchorElement = tmp.children[i];
-            if (node.nodeName === 'A') {
-                node.target = '_blank';
-            }
-        }
-        return tmp.innerHTML;
     }
 
     showManifestationsModal() {
@@ -153,7 +145,7 @@ class FileInfo extends React.Component<IProps, {}> {
                 bodyJsx.push(
                     <div key={i} className="aiiif-file-manifestation" onClick={() => this.openFile(manifestation.url)}>
                         <FileIcon />
-                        {manifestation.label}
+                        {getLocalized(manifestation.label)}
                     </div>
                 );
             }

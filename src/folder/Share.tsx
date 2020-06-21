@@ -13,6 +13,7 @@ import {ServiceProfile} from "@iiif/vocabulary";
 import Config from "../lib/Config";
 import ShareIcon from '@material-ui/icons/Share';
 import {Translation} from "react-i18next";
+import {getLocalized} from "../lib/ManifestHelpers";
 
 
 interface IProps {
@@ -54,7 +55,7 @@ export default class Share extends React.Component<IProps,IState> {
             return '';
         }
 
-        const title = currentManifest.label;
+        const title = getLocalized(currentManifest.label);
         const encodedUrl = encodeURI(window.location.href);
         const twitterUrl = 'https://twitter.com/intent/tweet?text=' + title + ': ' + encodedUrl;
         const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '&t=' + title;
