@@ -12,7 +12,7 @@ class ViewerSpinner extends React.Component<IProps, {}> {
             return '';
         }
 
-        return <div id="spinner" className="lds-ripple" style={{top: WindowInfo.getHeight() / 4 + 32}}>
+        return <div className="aiiif-viewer-spinner" style={{top: WindowInfo.getHeight() / 4 + 32}}>
             <div /><div />
         </div>;
     }
