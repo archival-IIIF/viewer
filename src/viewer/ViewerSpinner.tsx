@@ -13,7 +13,10 @@ class ViewerSpinner extends React.Component<IProps, {}> {
         }
 
         return <div className="aiiif-viewer-spinner" style={{top: WindowInfo.getHeight() / 4 + 32}}>
-            <div /><div />
+            <div>
+                <div />
+                <div />
+            </div>
         </div>;
     }
 }

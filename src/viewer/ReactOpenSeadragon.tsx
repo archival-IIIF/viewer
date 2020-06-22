@@ -13,6 +13,7 @@ import PreviousIcon from '@material-ui/icons/NavigateBefore';
 import {AnnotationType} from "../fetch/SearchApi";
 import Cache from "../lib/Cache";
 import i18next from 'i18next';
+import './openSeadragon.css';
 
 interface IProps {
     source: any[];
@@ -135,6 +136,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     initViewer() {
         const t = this;
+        return;
         ImageApi.getMulti(this.state.source, function(data: any) {
 
             if (!t.isM) {
