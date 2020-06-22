@@ -8,7 +8,7 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {Collection, IIIFResource} from "manifesto.js";
+import {IIIFResource} from "manifesto.js";
 
 declare let global: {
     config: Config;
@@ -617,7 +617,7 @@ class Manifest {
         return manifests;
     }
 
-    static getCollections(manifestoData: Collection): IManifestReference[] {
+    static getCollections(manifestoData: any): IManifestReference[] {
         const manifestoCollections = manifestoData.getCollections();
         if (manifestoCollections.length === 0) {
             return [];
