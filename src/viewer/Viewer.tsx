@@ -15,6 +15,7 @@ interface IProps {
 class Viewer extends React.Component<IProps, {}> {
 
     private type = '';
+    private id = Math.random();
 
     render() {
 
@@ -88,7 +89,6 @@ class Viewer extends React.Component<IProps, {}> {
             return (
                 <div className="aiiif-viewer">
                     <MediaPlayer
-                        id="player1"
                         key={file}
                         mediaType={mediaType}
                         preload="metadata"
