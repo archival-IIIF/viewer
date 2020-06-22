@@ -14,32 +14,32 @@
 }
 
 
-#zoom-in-button {
+.aiiif-zoom-in-button {
     left: 10px;
 }
 
-#zoom-out-button {
+.aiiif-zoom-out-button {
     left:40px;
 }
 
-#rotate-right-button {
+.aiiif-rotate-right-button {
     left:70px;
 }
 
 
-#home-button {
+.aiiif-home-button {
     left:100px;
 }
 
-#fullpage-button {
+.aiiif-fullpage-button {
     left: 130px;
 }
 
-#previous-button {
+.aiiif-previous-button {
     left:160px;
 }
 
-#next-button {
+.aiiif-next-button {
     left:190px;
 }
 
@@ -63,7 +63,7 @@
     cursor: pointer;
 }
 
-.openseadragon-icon {
+.aiiif-openseadragon-icon {
     top: 8px;
     position: absolute !important;
     width: 24px;
@@ -74,7 +74,7 @@
     cursor: pointer;
 }
 
-.openseadragon-icon:disabled {
+.aiiif-openseadragon-icon:disabled {
     opacity: 0.3;
     cursor: not-allowed;
 }

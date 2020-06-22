@@ -35,6 +35,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     private data: any = [];
     private i = 0;
     private isM = false;
+    private id = Math.random();
 
     constructor(props: IProps) {
 
@@ -52,20 +53,21 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
     render() {
 
 
-        return <div id="openseadragon" className="aiiif-openseadragon" key={this.state.source[0]}>
-            <button id="zoom-in-button" className="openseadragon-icon">
+        return <div id={'openseadragon-' + this.id} className="aiiif-openseadragon" key={this.state.source[0]}>
+            <button id={"zoom-in-button-" + this.id} className="aiiif-openseadragon-icon aiiif-zoom-in-button">
                 <ZoomInIcon style={iconStyle} />
             </button>
-            <button id="zoom-out-button" className="openseadragon-icon">
+            <button id={"zoom-out-button-" + this.id} className="aiiif-openseadragon-icon aiiif-zoom-out-button">
                 <ZoomOutIcon style={iconStyle} />
             </button>
-            <button id="rotate-right-button" className="openseadragon-icon">
+            <button id={"rotate-right-button-" + this.id}
+                    className="aiiif-openseadragon-icon aiiif-rotate-right-button">
                 <RotateIcon style={iconStyle} />
             </button>
-            <button id="home-button" className="openseadragon-icon">
+            <button id={"home-button-" + this.id} className="aiiif-openseadragon-icon aiiif-home-button">
                 <HomeIcon style={iconStyle} />
             </button>
-            <button id="fullpage-button" className="openseadragon-icon">
+            <button id={"fullpage-button-" + this.id} className="aiiif-openseadragon-icon aiiif-fullpage-button">
                 <FullScreenIcon style={iconStyle} />
             </button>
             {this.renderPreviousButton()}
@@ -77,7 +79,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     renderPreviousButton() {
         if (this.data.length > 1) {
-            return <button id="previous-button" className="openseadragon-icon" disabled={(this.i === 0)}
+            return <button className="aiiif-openseadragon-icon aiiif-previous-button" disabled={(this.i === 0)}
                         onClick={() => this.changeSource(this.i - 1)} title={i18next.t('common:previousPage')}>
                 <PreviousIcon style={iconStyle} />
             </button>
@@ -86,8 +88,9 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     renderNextButton() {
         if (this.data.length > 1) {
-            return  <button id="next-button" className="openseadragon-icon" disabled={(this.i + 1 === this.data.length)}
-                         onClick={() => this.changeSource(this.i + 1)} title={i18next.t('common:nextPage')}>
+            return <button className="aiiif-openseadragon-icon aiiif-next-button"
+                           disabled={(this.i + 1 === this.data.length)}
+                           onClick={() => this.changeSource(this.i + 1)} title={i18next.t('common:nextPage')}>
                 <NextIcon style={iconStyle}/>
             </button>
         }
@@ -149,7 +152,7 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
             t.data = data;
             const options: any = {
-                id: 'openseadragon',
+                id: 'openseadragon-' + t.id,
                 defaultZoomLevel: 0,
                 tileSources: data[0],
                 showNavigationControl: true,
@@ -162,11 +165,11 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 animationTime:  1.2,
                 visibilityRatio:  0.5,
                 blendTime:  0,
-                zoomInButton: 'zoom-in-button',
-                zoomOutButton: 'zoom-out-button',
-                homeButton: 'home-button',
-                fullPageButton: 'fullpage-button',
-                rotateRightButton: 'rotate-right-button',
+                zoomInButton: 'zoom-in-button-'+ t.id,
+                zoomOutButton: 'zoom-out-button-'+ t.id,
+                homeButton: 'home-button-'+ t.id,
+                fullPageButton: 'fullpage-button-'+ t.id,
+                rotateRightButton: 'rotate-right-button-'+ t.id,
                 ajaxWithCredentials: false
             };
 
