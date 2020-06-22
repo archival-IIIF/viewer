@@ -39,6 +39,7 @@ a {
 
 .aiiif-label {
     margin: 9px 0 3px 0;
+    font-weight: bold;
 }
 
 .aiiif-value {
