@@ -1,6 +1,6 @@
 {
   "attribution": "Naamsvermelding",
-  "emptyFolder": "Deze folder is leeg",
+  "emptyFolder": "Deze map is leeg",
   "fileManifestations": "Bestandsmanifestaties",
   "iconView": "Symboolweergave",
   "language": "Taal",
@@ -8,6 +8,15 @@
   "listView": "Lijstweergave",
   "logout": "Uitloggen",
   "navBar": "Navigatiebalk",
-  "searchInputLabel": "zoek termen",
-  "showFile": "Toon bestand"
+  "nextPage": "volgende pagina",
+  "previousPage": "vorige pagina",
+  "rotateRight": "Naar rechts draaien",
+  "search": "Zoeken",
+  "searchInputLabel": "zoektermen",
+  "share": "Delen",
+  "showFile": "Toon bestand",
+  "toggleFullScreen": "Volledig scherm",
+  "zoomIn": "Inzoomen",
+  "zoomOut": "Uitzoomen",
+  "zoomReset": "Zoom resetten"
 }
