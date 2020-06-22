@@ -53,7 +53,7 @@ class FileInfo extends React.Component<IProps, {}> {
         if (manifestData.description.length > 0) {
             metadataView.push(<div key="description">
                 <div className="aiiif-label">
-                    <Translation ns="common">{(t, { i18n }) => <p>{t('description')}</p>}</Translation>
+                    <Translation ns="common">{(t, { i18n }) => <>{t('description')}</>}</Translation>
                 </div>
                 <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                     __html: DOMPurify.sanitize(getLocalized(manifestData.description), global.config.getSanitizeRulesSet())
