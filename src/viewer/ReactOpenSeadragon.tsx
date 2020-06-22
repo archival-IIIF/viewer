@@ -136,7 +136,6 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
 
     initViewer() {
         const t = this;
-        return;
         ImageApi.getMulti(this.state.source, function(data: any) {
 
             if (!t.isM) {
