@@ -34,6 +34,7 @@ class Login extends React.Component<IProps, IState> {
     private origin = window.location.protocol + '//' + window.location.hostname
         + (window.location.port ? ':' + window.location.port : '');
     private openWindows: string[] = [];
+    private id = Math.random();
 
     constructor(props: IProps) {
 
@@ -56,7 +57,7 @@ class Login extends React.Component<IProps, IState> {
         const authService = this.authService;
 
         return <>
-            <iframe id="messageFrame" title="messageFrame" />
+            <iframe id={"message-frame-" + this.id} title="message frame" />
             <Dialog
                 id={authService.id}
                 open={this.state.visible}
@@ -105,7 +106,7 @@ class Login extends React.Component<IProps, IState> {
                         (event) => this.receiveToken(event, id), {once: true}
                         );
                     const src = token + '?messageId=1&origin=' + this.origin;
-                    const messageFrame: any = document.getElementById('messageFrame');
+                    const messageFrame: any = document.getElementById('message-frame-' + this.id);
                     if (messageFrame) {
                         messageFrame.src = src;
                     }

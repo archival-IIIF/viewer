@@ -23,7 +23,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
 
     constructor(props: IProps) {
         super(props);
-        this.play = this.play.bind(this);
+        this.togglePlay = this.togglePlay.bind(this);
     }
 
     componentDidMount() {
@@ -41,7 +41,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
 
         this.player = videojs(this.videoNode, videoJsPlayerOptions, function onPlayerReady() {});
 
-        Cache.ee.addListener('play-audio', this.play);
+        Cache.ee.addListener('play-audio', this.togglePlay);
     }
 
     // destroy player on unmount
@@ -50,7 +50,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             this.player.dispose();
         }
 
-        Cache.ee.removeListener('play-audio', this.play);
+        Cache.ee.removeListener('play-audio', this.togglePlay);
     }
 
     render() {
@@ -71,7 +71,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
         </div>;
     }
 
-    play() {
-        this.player.play();
+    togglePlay() {
+        this.player.paused() ? this.player.play() : this.player.pause();
     }
 }
