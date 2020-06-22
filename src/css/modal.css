@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-#messageFrame {
+.aiiif-message-frame {
     display: none;
 }
 

@@ -57,7 +57,7 @@ class Login extends React.Component<IProps, IState> {
         const authService = this.authService;
 
         return <>
-            <iframe id={"message-frame-" + this.id} title="message frame" />
+            <iframe id={"message-frame-" + this.id} className="aiiif-message-frame " title="message frame" />
             <Dialog
                 id={authService.id}
                 open={this.state.visible}

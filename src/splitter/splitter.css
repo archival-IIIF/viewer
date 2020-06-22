@@ -26,6 +26,7 @@ body.no-select {
 .aiiif-splitter-container {
     display: flex;
     flex-grow: 2;
+    overflow: hidden;
 }
 
 .aiiif-splitter-horizontal {

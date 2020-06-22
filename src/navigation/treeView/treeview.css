@@ -3,6 +3,7 @@
     background-color: #EDECED;
     overflow-y: auto;
     width: 100%;
+    align-self: stretch;
 }
 
 .aiiif-treeview-item {
