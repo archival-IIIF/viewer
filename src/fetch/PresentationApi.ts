@@ -8,7 +8,7 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource} from "manifesto.js";
+import {Collection, IIIFResource} from "manifesto.js";
 
 declare let global: {
     config: Config;
@@ -617,7 +617,7 @@ class Manifest {
         return manifests;
     }
 
-    static getCollections(manifestoData: any): IManifestReference[] {
+    static getCollections(manifestoData: Collection): IManifestReference[] {
         const manifestoCollections = manifestoData.getCollections();
         if (manifestoCollections.length === 0) {
             return [];
@@ -676,10 +676,19 @@ class Manifest {
     }
 
     static isV3(manifestoData: IIIFResource) {
-        const context = manifestoData.context;
+        const context: any = manifestoData.context;
 
-        return context === 'http://iiif.io/api/presentation/3/context.json';
+        if (typeof context === 'string') {
+            return context === 'http://iiif.io/api/presentation/3/context.json';
+        }
+
+        if (context && typeof context.includes === 'function') {
+            return context.includes('http://iiif.io/api/presentation/3/context.json');
+        }
+
+        return false;
     }
+
 
 }
 
