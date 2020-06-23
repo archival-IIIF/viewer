@@ -442,6 +442,7 @@ class Manifest {
                         format: 'text/plain',
                         id: source.id,
                         type: 'plainText',
+                        manifestations: this.getManifestations(canvas)
                     };
                 }
 
@@ -458,7 +459,8 @@ class Manifest {
                             images.push({
                                 id: service.id,
                                 on: canvas.id,
-                                width: canvas.getWidth()
+                                width: canvas.getWidth(),
+                                manifestations: this.getManifestations(canvas)
                             });
                             break;
                         }
@@ -468,7 +470,8 @@ class Manifest {
                     return {
                         format: source.getFormat(),
                         id: source.id,
-                        type: 'file'
+                        type: 'file',
+                        manifestations: this.getManifestations(canvas)
                     };
                 }
 
