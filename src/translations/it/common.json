@@ -1,8 +1,8 @@
 {
   "attribution": "Attribuzione",
   "description": "Descrizione",
+  "download": "Scaricare",
   "emptyFolder": "Questa cartella è vuota",
-  "fileManifestations": "Manifestazioni del file",
   "iconView": "Vista dei simboli",
   "language": "Lingua",
   "license": "Licenza",
@@ -15,7 +15,6 @@
   "search": "Cerca",
   "searchInputLabel": "Termini di ricerca",
   "share": "Condividi",
-  "showFile": "Mostra file",
   "toggleFullScreen": "Schermo intero",
   "zoomIn": "Ingrandire",
   "zoomOut": "Strizzacervelli",

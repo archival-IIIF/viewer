@@ -1,8 +1,8 @@
 {
   "attribution": "Attribution",
   "description": "Description",
+  "download": "Download",
   "emptyFolder": "This folder is empty",
-  "fileManifestations": "File manifestations",
   "iconView": "Icon view",
   "language": "Language",
   "license": "License",
@@ -15,7 +15,6 @@
   "search": "Search",
   "searchInputLabel": "search terms",
   "share": "Share",
-  "showFile": "Show file",
   "toggleFullScreen": "Toggle full screen",
   "zoomIn": "Zoom in",
   "zoomOut": "Zoom out",

@@ -1,0 +1,16 @@
+.aiiif-show-downloads {
+    background-color: lightgrey;
+    display: inline-block;
+    padding: 9px;
+    border-radius: 4px;
+    color: black;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.aiiif-download {
+    cursor: pointer;
+    vertical-align: middle;
+    display: flex;
+    padding: 3px 0;
+}

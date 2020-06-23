@@ -1,7 +1,8 @@
 {
   "attribution": "Naamsvermelding",
   "emptyFolder": "Deze map is leeg",
-  "fileManifestations": "Bestandsmanifestaties",
+  "description": "Beschrijving",
+  "download": "Download",
   "iconView": "Symboolweergave",
   "language": "Taal",
   "license": "Licentie",
@@ -14,7 +15,6 @@
   "search": "Zoeken",
   "searchInputLabel": "zoektermen",
   "share": "Delen",
-  "showFile": "Toon bestand",
   "toggleFullScreen": "Volledig scherm",
   "zoomIn": "Inzoomen",
   "zoomOut": "Uitzoomen",
