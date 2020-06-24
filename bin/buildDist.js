@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const {version} = require('../package.json');
 const buildDir = path.resolve(__dirname, '..','build');
-const distDir = path.resolve(__dirname, '..', 'dist');
+const distDir = path.resolve(__dirname, '..', 'dist', 'archival-IIIF-viewer-' + version + '-dist');
 
 if (fs.existsSync(distDir)) {
     fs.rmdirSync(distDir, { recursive: true });

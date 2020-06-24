@@ -7,7 +7,7 @@ const {version} = require('./package.json');
 module.exports = function override(config) {
     config.output.library = 'ArchivalIIIFViewer';
     if (process.env.NODE_ENV === 'production') {
-        config.output.filename = 'archivalIIIFViewer-' + version + '.min.js';
+        config.output.filename = 'archival-IIIF-viewer-' + version + '.min.js';
         config.entry = {archivalIIIFViewer: path.resolve(__dirname, 'src/index.tsx')};
         config.optimization = {
             minimizer: [
@@ -22,7 +22,7 @@ module.exports = function override(config) {
                 })
             ],
         };
-        config.plugins = [new MiniCssExtractPlugin({filename: '[name]-' + version + '.min.css'})];
+        config.plugins = [new MiniCssExtractPlugin({filename: 'archival-IIIF-viewer-' + version + '.min.css'})];
     }
     config.output.libraryExport = 'default';
     config.output.libraryTarget = 'umd';
