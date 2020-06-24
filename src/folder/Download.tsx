@@ -43,7 +43,9 @@ export default class Download extends React.Component<IProps, {}> {
             if (manifestations.hasOwnProperty(i)) {
                 const manifestation = manifestations[i];
                 bodyJsx.push(
-                    <a key={i} href={manifestation.url} className="aiiif-download" download>
+                    <a key={i} href={manifestation.url} className="aiiif-download" target="_blank"
+                       rel="noopener noreferrer" download>
+
                         <FileIcon />
                         {getLocalized(manifestation.label)}
                     </a>
