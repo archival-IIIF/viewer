@@ -43,6 +43,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "build:dist": "react-app-rewired build && node bin/buildDist.js",
+    "build:dist2": "node bin/buildDist.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

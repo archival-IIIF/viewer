@@ -2,11 +2,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const {version} = require('./package.json');
 
 module.exports = function override(config) {
     config.output.library = 'ArchivalIIIFViewer';
     if (process.env.NODE_ENV === 'production') {
-        config.output.filename = 'archivalIIIFViewer.min.js';
+        config.output.filename = 'archivalIIIFViewer-' + version + '.min.js';
         config.entry = {archivalIIIFViewer: path.resolve(__dirname, 'src/index.tsx')};
         config.optimization = {
             minimizer: [
@@ -21,7 +22,7 @@ module.exports = function override(config) {
                 })
             ],
         };
-        config.plugins = [new MiniCssExtractPlugin({filename: '[name].min.css'})];
+        config.plugins = [new MiniCssExtractPlugin({filename: '[name]-' + version + '.min.css'})];
     }
     config.output.libraryExport = 'default';
     config.output.libraryTarget = 'umd';
