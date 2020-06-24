@@ -4,6 +4,10 @@
 
 ![](https://raw.githubusercontent.com/archival-IIIF/server/master/docs/components.png)
 
+## Download
+
+https://github.com/archival-IIIF/viewer/releases
+
 ## Usage
 
 ```html
