@@ -33,6 +33,7 @@
 
 .aiiif-search-result-item {
     line-height: 1.6rem;
+    cursor: pointer;
 }
 
 .aiiif-search-result-item > p {
