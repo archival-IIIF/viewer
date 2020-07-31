@@ -58,7 +58,7 @@ export default class Share extends React.Component<IProps,IState> {
         const title = getLocalized(currentManifest.label);
         const encodedUrl = encodeURI(window.location.href);
         const twitterUrl = 'https://twitter.com/intent/tweet?text=' + title + ': ' + encodedUrl;
-        const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '&t=' + title;
+        const facebookUrl = 'https://www.facebook.com/sharer.php?u=' + encodedUrl;
 
         return (
             <nav className="aiiif-bar">
