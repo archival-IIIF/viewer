@@ -67,7 +67,7 @@ https://github.com/archival-IIIF/viewer/releases
             <td>Disable share button</td>
             <td><code>true</code></td>
             <td>No</td>
-            <td><code>false<code></td>
+            <td><code>false</code></td>
         </tr>
         <tr>
             <td>allowedOrigins</td>
