@@ -1,3 +1,18 @@
 #audio-player {
     background-color: #404346;
 }
+
+.video-js .vjs-time-control {
+    display: block;
+}
+.video-js .vjs-remaining-time {
+    display: none;
+}
+
+.vjs-has-started {
+    height: 100% !important;
+}
+
+.vjs-has-started > div {
+    height: inherit;
+}

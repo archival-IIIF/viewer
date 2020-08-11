@@ -59,11 +59,3 @@
     align-self: center;
     max-height: 90%;
 }
-
-.vjs-has-started {
-    height: 100% !important;
-}
-
-.vjs-has-started > div {
-    height: inherit;
-}
