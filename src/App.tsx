@@ -78,7 +78,7 @@ class App extends React.Component<IProps, IState> {
             <I18nextProvider i18n={i18n}>
                 <Alert />
                 <Login setCurrentManifest={this.setCurrentManifest}/>
-                <TopBar key={this.state.authDate}/>
+                <TopBar key={this.state.authDate} currentManifest={this.state.currentManifest} />
                 {this.renderMain()}
             </I18nextProvider>
         );

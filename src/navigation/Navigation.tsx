@@ -6,6 +6,7 @@ import IManifestData, {ISearchService} from "../interface/IManifestData";
 import ITree from "../interface/ITree";
 import TreeIcon from "@material-ui/icons/AccountTree";
 import SearchIcon from "@material-ui/icons/Search";
+import FileInfo from "../folder/FileInfo";
 
 
 interface IState {
@@ -35,6 +36,11 @@ export default class Navigation extends React.Component<IProps, IState> {
     }
 
     render() {
+
+        if (!this.props.currentManifest.parentId) {
+            return <FileInfo currentManifest={this.props.currentManifest} />;
+        }
+
         if (!this.props.currentManifest.search) {
             return <div className="aiiif-navigation">
                 <TreeView

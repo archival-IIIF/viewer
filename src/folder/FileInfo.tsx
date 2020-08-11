@@ -23,6 +23,27 @@ class FileInfo extends React.Component<IProps, {}> {
             return '';
         }
 
+        if (!this.props.currentManifest.parentId) {
+            return (
+                <div className="aiiif-file-info">
+                    {this.renderMetadata()}
+                    <Share currentManifest={this.props.currentManifest} />
+                </div>
+            );
+        }
+
+        return (
+            <div className="aiiif-file-info">
+                <nav className="aiiif-bar">
+                    <Share currentManifest={this.props.currentManifest} />
+                    {this.renderMetadata()}
+                </nav>
+            </div>
+        );
+    }
+
+    renderMetadata() {
+
         const manifestData = this.props.currentManifest;
         const metadataView = [];
 
@@ -57,8 +78,8 @@ class FileInfo extends React.Component<IProps, {}> {
                     <div key={key++}>
                         <div className="aiiif-label">{label}</div>
                         <div className="aiiif-value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                                __html: DOMPurify.sanitize(value, global.config.getSanitizeRulesSet())
-                            }} />
+                            __html: DOMPurify.sanitize(value, global.config.getSanitizeRulesSet())
+                        }} />
                     </div>
                 );
             }
@@ -91,15 +112,10 @@ class FileInfo extends React.Component<IProps, {}> {
 
         metadataView.push(<Download currentManifest={this.props.currentManifest} key="manifestation" />);
 
-        return (
-            <div className="aiiif-file-info">
-                <Share currentManifest={this.props.currentManifest} />
-                <div>
-                    <h3>{getLocalized(manifestData.label)}</h3>
-                    {metadataView}
-                </div>
-            </div>
-        );
+        return <div>
+            <h3>{getLocalized(manifestData.label)}</h3>
+            {metadataView}
+        </div>
     }
 }
 

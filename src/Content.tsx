@@ -14,6 +14,10 @@ interface IPros {
 class Content extends React.Component<IPros, {}> {
 
     render() {
+        
+        if (!this.props.currentManifest.parentId) {
+            return <Viewer currentManifest={this.props.currentManifest} authDate={this.props.authDate}/>;
+        }
 
         const size = this.getSize();
         let key = "content" + size.toString();

@@ -7,20 +7,30 @@ import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
 import ExternalSearch from "./ExternalSearch";
+import IManifestData from "../interface/IManifestData";
 
-class TopBar extends React.Component<{}, {}> {
+interface IProps {
+    currentManifest?: IManifestData;
+}
 
-    constructor(props: {}) {
+class TopBar extends React.Component<IProps, {}> {
+
+    constructor(props: IProps) {
         super(props);
         this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
     }
 
     render() {
 
+        let bar = 'navBar';
+        if (this.props.currentManifest && !this.props.currentManifest.parentId) {
+            bar = 'infoBar';
+        }
+
         return <div className="aiiif-topbar">
             <div className="aiiif-icon-button" onClick={this.toggleTreeViewBar}>
                 <NavBarIcon />
-                <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
+                <Translation ns="common">{(t, { i18n }) => <p>{t(bar)}</p>}</Translation>
             </div>
             <LanguageSwitcher />
             <ExternalSearch />
