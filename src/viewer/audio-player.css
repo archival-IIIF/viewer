@@ -16,3 +16,11 @@
 .vjs-has-started > div {
     height: inherit;
 }
+
+.video-js {
+    font-size: 14px;
+}
+
+.vjs-audio {
+    min-height: 42px;
+}
