@@ -75,7 +75,7 @@ h3 {
 }
 
 .aiiif-content-audio > div:first-of-type {
-    min-height: 30px;
+    min-height: 42px;
 }
 
 /* wired firefox workaround */
