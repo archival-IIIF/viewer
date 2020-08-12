@@ -7,6 +7,7 @@ import ITree from "../interface/ITree";
 import TreeIcon from "@material-ui/icons/AccountTree";
 import SearchIcon from "@material-ui/icons/Search";
 import FileInfo from "../folder/FileInfo";
+import {isSingleManifest} from "../lib/ManifestHelpers";
 
 
 interface IState {
@@ -37,7 +38,7 @@ export default class Navigation extends React.Component<IProps, IState> {
 
     render() {
 
-        if (!this.props.currentManifest.parentId) {
+        if (isSingleManifest(this.props.currentManifest)) {
             return <FileInfo currentManifest={this.props.currentManifest} />;
         }
 

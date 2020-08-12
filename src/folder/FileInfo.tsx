@@ -5,7 +5,7 @@ import Config from '../lib/Config';
 import {Translation} from 'react-i18next';
 import './file-info.css';
 import Share from "./Share";
-import {getLocalized, addBlankTarget} from "../lib/ManifestHelpers";
+import {getLocalized, addBlankTarget, isSingleManifest} from "../lib/ManifestHelpers";
 import Download from "./Download";
 
 interface IProps {
@@ -23,7 +23,7 @@ class FileInfo extends React.Component<IProps, {}> {
             return '';
         }
 
-        if (!this.props.currentManifest.parentId) {
+        if (isSingleManifest(this.props.currentManifest)) {
             return (
                 <div className="aiiif-file-info">
                     {this.renderMetadata()}

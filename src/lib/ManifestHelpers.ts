@@ -1,5 +1,6 @@
 import i18n  from 'i18next';
 import {LanguageMap} from "manifesto.js";
+import IManifestData from "../interface/IManifestData";
 
 export function getLocalized(input?: LanguageMap | string) {
     if (!input || input.length === 0) {
@@ -38,4 +39,16 @@ export function addBlankTarget(input: string) {
         }
     }
     return tmp.innerHTML;
+}
+
+export function isSingleManifest(manifestData: IManifestData): boolean {
+    if (manifestData.type !== 'Manifest') {
+        return false;
+    }
+
+    if (manifestData.parentId) {
+        return false;
+    }
+
+    return true;
 }

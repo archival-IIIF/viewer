@@ -17,7 +17,7 @@ import TreeBuilder from "./navigation/treeView/TreeBuilder";
 import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
 import Navigation from "./navigation/Navigation";
-import {getLocalized} from "./lib/ManifestHelpers";
+import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 
 const commonEn = require('./translations/en/common.json');
 const commonDe = require('./translations/de/common.json');
@@ -85,7 +85,6 @@ class App extends React.Component<IProps, IState> {
     }
 
     renderMain() {
-
         if (!this.state.currentManifest || !this.state.currentFolder) {
             return;
         }
@@ -152,7 +151,7 @@ class App extends React.Component<IProps, IState> {
                     TreeBuilder.get(currentFolder.id, undefined, (tree) => {
                         t.setState({currentManifest, currentFolder, tree});
                     });
-                } else if (currentManifest.parentId) {
+                } else if (!isSingleManifest(currentManifest)) {
                     PresentationApi.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {

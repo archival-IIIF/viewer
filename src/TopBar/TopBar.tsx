@@ -8,6 +8,7 @@ import './topbar.css';
 import Token from "../lib/Token";
 import ExternalSearch from "./ExternalSearch";
 import IManifestData from "../interface/IManifestData";
+import {isSingleManifest} from "../lib/ManifestHelpers";
 
 interface IProps {
     currentManifest?: IManifestData;
@@ -23,7 +24,7 @@ class TopBar extends React.Component<IProps, {}> {
     render() {
 
         let bar = 'navBar';
-        if (this.props.currentManifest && !this.props.currentManifest.parentId) {
+        if (this.props.currentManifest && isSingleManifest(this.props.currentManifest)) {
             bar = 'infoBar';
         }
 

@@ -1,5 +1,6 @@
 import IManifestData, {IAuthService, IManifestReference} from '../interface/IManifestData';
 import {LabelValuePair, LanguageMap} from "manifesto.js";
+import ITranscription from "../interface/ITranscription";
 
 class ManifestData implements IManifestData {
 
@@ -20,6 +21,7 @@ class ManifestData implements IManifestData {
     description: LanguageMap;
     thumbnail: undefined;
     authService?: IAuthService;
+    transcription: ITranscription[];
 
     constructor() {
         this.id = '';
@@ -36,6 +38,7 @@ class ManifestData implements IManifestData {
         this.metadata = [];
         this.description = new LanguageMap();
         this.authService = undefined;
+        this.transcription = [];
     }
 }
 
