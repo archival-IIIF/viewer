@@ -6,7 +6,7 @@ import IManifestData, {ISearchService} from "../interface/IManifestData";
 import ITree from "../interface/ITree";
 import TreeIcon from "@material-ui/icons/AccountTree";
 import SearchIcon from "@material-ui/icons/Search";
-import FileInfo from "../folder/FileInfo";
+import FileInfo from "../fileInfo/FileInfo";
 import {isSingleManifest} from "../lib/ManifestHelpers";
 
 
