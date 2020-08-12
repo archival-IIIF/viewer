@@ -3,6 +3,7 @@ import Viewer from "./viewer/Viewer";
 import Splitter from "./splitter/Splitter";
 import Folder from "./folder/Folder";
 import IManifestData from "./interface/IManifestData";
+import {isSingleManifest} from "./lib/ManifestHelpers";
 
 interface IPros {
     currentManifest: IManifestData;
@@ -15,7 +16,7 @@ class Content extends React.Component<IPros, {}> {
 
     render() {
         
-        if (!this.props.currentManifest.parentId) {
+        if (isSingleManifest(this.props.currentManifest)) {
             return <Viewer currentManifest={this.props.currentManifest} authDate={this.props.authDate}/>;
         }
 
