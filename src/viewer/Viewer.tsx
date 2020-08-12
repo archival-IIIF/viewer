@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ReactOpenSeadragon from './ReactOpenSeadragon';
 import MediaPlayer from './MediaPlayer';
-import videojs from 'video.js';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 import './viewer.css';
@@ -15,7 +14,6 @@ interface IProps {
 
 class Viewer extends React.Component<IProps, {}> {
 
-    private type = '';
     private id = Math.random();
 
     render() {
@@ -80,23 +78,10 @@ class Viewer extends React.Component<IProps, {}> {
 
         if (this.props.currentManifest.resource) {
             const resource: any = this.props.currentManifest.resource;
-            const mime = resource.format;
-            const mediaType = resource.type;
-            const file = resource.id;
-            const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
-
-            this.type = 'audioVideo';
 
             return (
                 <div className="aiiif-viewer">
-                    <MediaPlayer
-                        key={file}
-                        mediaType={mediaType}
-                        preload="metadata"
-                        controls={true}
-                        height={360}
-                        sources={sources}
-                    />
+                    <MediaPlayer key={resource.id} currentManifest={this.props.currentManifest}/>
                 </div>
             );
         }

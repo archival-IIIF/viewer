@@ -67,23 +67,8 @@ h3 {
     height: 100% !important;
 }
 
-.aiiif-content-audio {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-}
-
-.aiiif-content-audio > div:first-of-type {
-    min-height: 42px;
-}
-
 /* wired firefox workaround */
 .aiiif-content > .aiiif-b {
     height: 1px;
 }
 
-
-.vjs-has-started {
-    width: 100%;
-}

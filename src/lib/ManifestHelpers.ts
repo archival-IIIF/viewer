@@ -52,3 +52,7 @@ export function isSingleManifest(manifestData: IManifestData): boolean {
 
     return true;
 }
+
+export function hasTranscription(manifestData: IManifestData): boolean {
+    return manifestData.transcription.length > 0;
+}

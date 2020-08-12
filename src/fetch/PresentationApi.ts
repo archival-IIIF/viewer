@@ -9,6 +9,7 @@ import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
 import {IIIFResource} from "manifesto.js";
+import ITranscription from "../interface/ITranscription";
 
 declare let global: {
     config: Config;
@@ -101,6 +102,7 @@ class Manifest {
                     if (partOf && partOf.length > 0) {
                         manifestData.parentId = partOf[0].id;
                     }
+                    manifestData.transcription = this.getTranscription(manifestoData);
                 } else {
                     manifestData.parentId = manifestoData.getProperty('within');
                 }
@@ -568,6 +570,34 @@ class Manifest {
             source: sources,
             type: 'imageService'
         };
+    }
+
+    static getTranscription(manifestoData: any): ITranscription[] {
+        if (typeof manifestoData.getSequenceByIndex !== 'function') {
+            return [];
+        }
+
+        const sequence0 = manifestoData.getSequenceByIndex(0);
+        if (sequence0 === undefined) {
+            return [];
+        }
+
+        const transcription: ITranscription[] = [];
+        const annotations = sequence0.getCanvases()[0].getProperty('annotations')
+        if (annotations === undefined) {
+            return [];
+        }
+
+        const annotationsItems = annotations[0].items;
+        for (const annotation of annotationsItems) {
+            const timeCodes =  annotation.target.split('#t=').pop().split(',');
+            transcription.push({
+                content: annotation.body.value,
+                start:  parseInt(timeCodes[0]),
+                end:  timeCodes[1] ? parseInt(timeCodes[1]) : 0
+            });
+        }
+        return transcription;
     }
 
     static getThumbnail(manifestoData: any) {

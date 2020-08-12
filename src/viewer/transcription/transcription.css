@@ -1,0 +1,37 @@
+.aiiif-transcription {
+    background-color: white;
+    overflow-y: auto;
+    display: flex;
+    align-self: stretch;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 8px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.aiiif-audio-container {
+    position: relative;
+    width: 100%;
+}
+
+.aiiif-audio-container .aiiif-transcription {
+    top: 42px
+}
+
+.aiiif-transcription-part.active {
+    color: #CD171B;
+}
+
+.aiiif-time-code {
+    min-width: 70px;
+    max-width: 70px;
+}
+
+.aiiif-transcription-part {
+    display: flex;
+    padding-bottom: 12px;
+    cursor: pointer;
+}

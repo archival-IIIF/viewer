@@ -1,5 +1,6 @@
 import IManifestDataThumbnail from './IManifestDataThumbnail';
 import {LabelValuePair, LanguageMap} from "manifesto.js";
+import ITranscription from "./ITranscription";
 
 interface IManifestData {
     id: string;
@@ -20,6 +21,7 @@ interface IManifestData {
     description: LanguageMap;
     thumbnail?: IManifestDataThumbnail;
     authService?: IAuthService;
+    transcription: ITranscription[];
 }
 
 export interface IManifestReference {
