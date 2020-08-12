@@ -4,7 +4,6 @@ import MediaPlayer from './MediaPlayer';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 import './viewer.css';
-import './audio-player.css';
 
 interface IProps {
     currentManifest: IManifestData;

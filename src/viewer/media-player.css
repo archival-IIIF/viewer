@@ -1,16 +1,8 @@
-#audio-player {
-    background-color: #404346;
-}
-
 .video-js .vjs-time-control {
     display: block;
 }
 .video-js .vjs-remaining-time {
     display: none;
-}
-
-.aiiif-video-container {
-    height: 100% !important;
 }
 
 .aiiif-content-audio {
@@ -24,10 +16,6 @@
     min-height: 42px;
 }
 
-.vjs-has-started > div {
-    height: inherit;
-}
-
 .video-js {
     font-size: 14px;
 }
@@ -37,8 +25,16 @@
 }
 
 
-.vjs-has-started {
+.aiiif-player-container {
     width: 100%;
+}
+
+.aiiif-player-container.aiiif-video {
+    height: 100%;
+}
+
+.aiiif-player-container > div {
+    height: inherit;
 }
 
 .aiiif-video-splitter > .aiiif-b {

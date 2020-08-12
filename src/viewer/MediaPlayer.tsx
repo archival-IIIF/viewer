@@ -6,8 +6,8 @@ import Transcription from "./transcription/Transcription";
 import IManifestData from "../interface/IManifestData";
 import {hasTranscription} from "../lib/ManifestHelpers";
 import Splitter from "../splitter/Splitter";
-import Navigation from "../navigation/Navigation";
-import Content from "../Content";
+import './media-player.css';
+
 
 interface IProps {
     currentManifest: IManifestData;
@@ -73,7 +73,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             return <Splitter
                 id="video-splitter"
                 a={
-                    <div className="vjs-has-started aiiif-video-container">
+                    <div className="aiiif-player-container aiiif-video vjs-has-started">
                         <div data-vjs-player={true} style={{width: '100%'}}>
                             <video ref={(node) => this.videoNode = node} className="video-js"
                             preload={this.preload}  onTimeUpdate={this.handleTimeUpdate}/>
@@ -88,7 +88,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             />;
         }
 
-        return <div className="vjs-has-started aiiif-video-container">
+        return <div className="aiiif-player-container aiiif-video vjs-has-started">
             <div data-vjs-player={true} style={{width: '100%'}}>
                 <video ref={(node) => this.videoNode = node} className="video-js"
                        preload={this.preload}/>
@@ -98,7 +98,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
 
     renderAudio() {
         if (hasTranscription(this.props.currentManifest)) {
-            return <div className="aiiif-audio-container">
+            return <div className="aiiif-player-container aiiif-audio">
                 <div className="vjs-has-started">
                     <div data-vjs-player={true} style={{width: '100%', height: 30}}>
                         <audio ref={(node) => this.videoNode = node} className="video-js"

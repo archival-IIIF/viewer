@@ -1,0 +1,39 @@
+html, body, #root, .aiiif-transcription
+{
+    background-color: #fafafa !important;
+}
+
+.aiiif-topbar {
+    background-color: #CD171B !important;
+    color: white !important;
+}
+
+.aiiif-topbar p, .aiiif-topbar svg {
+    color: white !important;
+}
+
+.aiiif-player-container.aiiif-audio {
+    background-color: white;
+}
+
+.aiiif-player-container.aiiif-audio > .vjs-has-started {
+    width: auto;
+    padding: 16px 23px;
+    overflow-y: scroll;
+}
+
+.aiiif-player-container.aiiif-audio .aiiif-transcription {
+    top: 58px !important;
+}
+
+.aiiif-box {
+    border-top: 6px solid #CD171B;
+    background: white;
+    padding: 16px;
+    margin: 16px;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.aiiif-box-spacer {
+    min-height: 12px;
+}

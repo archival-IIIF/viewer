@@ -12,12 +12,12 @@
     width: 100%;
 }
 
-.aiiif-audio-container {
+.aiiif-player-container.aiiif-audio {
     position: relative;
     width: 100%;
 }
 
-.aiiif-audio-container .aiiif-transcription {
+.aiiif-player-container.aiiif-audio .aiiif-transcription {
     top: 42px
 }
 
