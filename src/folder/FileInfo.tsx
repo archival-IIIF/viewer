@@ -36,8 +36,8 @@ class FileInfo extends React.Component<IProps, {}> {
             <div className="aiiif-file-info">
                 <nav className="aiiif-bar">
                     <Share currentManifest={this.props.currentManifest} />
-                    {this.renderMetadata()}
                 </nav>
+                {this.renderMetadata()}
             </div>
         );
     }
