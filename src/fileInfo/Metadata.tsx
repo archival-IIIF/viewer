@@ -6,6 +6,7 @@ import {Translation} from 'react-i18next';
 import './file-info.css';
 import {getLocalized, addBlankTarget} from "../lib/ManifestHelpers";
 import Download from "./Download";
+import UrlValidation from "../lib/UrlValidation";
 
 interface IProps {
     currentManifest: IManifestData;
@@ -48,11 +49,24 @@ export default class Metadata extends React.Component<IProps, {}> {
             for (const metadataItem of manifestData.metadata) {
                 const label = getLocalized(metadataItem.label);
                 let value = getLocalized(metadataItem.value);
+
+                if (UrlValidation.isURL(value)) {
+                    metadataView.push(
+                        <div key={key++}>
+                            <div className="aiiif-label">{label}</div>
+                            <div className="aiiif-value">
+                                <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
+                            </div>
+                        </div>
+                    );
+                    continue;
+                }
+
                 value = addBlankTarget(value);
                 metadataView.push(
                     <div key={key++}>
                         <div className="aiiif-label">{label}</div>
-                        <div className="aiiif-value"dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+                        <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
                             __html: DOMPurify.sanitize(value, global.config.getSanitizeRulesSet())
                         }} />
                     </div>
