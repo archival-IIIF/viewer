@@ -1,7 +1,7 @@
 .aiiif-topbar {
     height: 40px;
     padding: 10px;
-    background-color: lightgrey;
+    background-color: #f3f2f1;
     justify-content: center;
     display: flex;
     z-index: 1;
@@ -11,7 +11,7 @@
 .aiiif-bar {
     display: flex;
     height: 40px;
-    background-color: lightgrey;
+    background-color: #f3f2f1;
     position: sticky;
 }
 

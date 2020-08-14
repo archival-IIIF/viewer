@@ -171,7 +171,8 @@ class ReactOpenSeadragon extends React.Component<IProps, IState> {
                 homeButton: 'home-button-'+ t.id,
                 fullPageButton: 'fullpage-button-'+ t.id,
                 rotateRightButton: 'rotate-right-button-'+ t.id,
-                ajaxWithCredentials: false
+                ajaxWithCredentials: false,
+                minZoomLevel: 0.3
             };
 
             if (data.authService && data.authService.token && Token.has(data.authService.token)) {
