@@ -16,7 +16,7 @@
     "filesize": "^6.1.0",
     "i18next": "^19.4.5",
     "manifesto.js": "^4.0.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "openseadragon": "^2.4.2",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
