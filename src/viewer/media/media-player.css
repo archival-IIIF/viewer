@@ -5,18 +5,32 @@
     display: none;
 }
 
-.aiiif-audio.vjs-paused .vjs-big-play-button {
+.aiiif-audio-payer.vjs-paused .vjs-big-play-button {
     display: none;
 }
 
-.aiiif-audio.vjs-paused .vjs-control-bar {
+.aiiif-audio-payer.vjs-paused .vjs-control-bar {
     display: flex;
 }
 
+.aiiif-audio-player {
+    min-height: 48px;
+    width: 100%;
+}
+
 .aiiif-content-audio {
+    width: 100%;
+}
+
+.aiiif-video-player {
+    height: 100%;
+    width: 100%;
+    min-height: 50%;
+}
+
+.aiiif-media-player-container {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     width: 100%;
 }
 

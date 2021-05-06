@@ -76,11 +76,9 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             return <Splitter
                 id="video-splitter"
                 a={
-                    <div className="aiiif-player-container aiiif-video vjs-has-started">
-                        <div data-vjs-player={true} style={{width: '100%'}}>
-                            <video ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
-                            preload={this.preload}  onTimeUpdate={this.handleTimeUpdate}/>
-                        </div>
+                    <div className="aiiif-media-player-container">
+                        <video ref={(node) => this.videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
+                            preload={this.preload} onTimeUpdate={this.handleTimeUpdate}/>
                     </div>
                 }
                 b={
@@ -91,33 +89,25 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             />;
         }
 
-        return <div className="aiiif-player-container aiiif-video vjs-has-started">
-            <div data-vjs-player={true} style={{width: '100%'}}>
-                <video ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
+        return <div className="aiiif-media-player-container">
+            <video ref={(node) => this.videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
                        preload={this.preload}/>
-            </div>
         </div>;
     }
 
     renderAudio() {
         if (hasTranscription(this.props.currentManifest)) {
-            return <div className="aiiif-player-container aiiif-audio">
-                <div className="vjs-has-started">
-                    <div data-vjs-player={true} style={{width: '100%', height: 30}}>
-                        <audio ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
+            return <div className="aiiif-media-player-container">
+                    <audio ref={(node) => this.videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
                                preload={this.preload} onTimeUpdate={this.handleTimeUpdate}/>
-                    </div>
-                </div>
                 <Transcription currentManifest={this.props.currentManifest}
                                jumpToTime={this.jumpToTime} />
             </div>;
         }
 
-        return <div className="vjs-has-started">
-            <div data-vjs-player={true} style={{width: '100%', height: 30}}>
-                <audio ref={(node) => this.videoNode = node} className="video-js"
+        return <div className="aiiif-media-player-container">
+            <audio ref={(node) => this.videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
                        preload={this.preload}/>
-            </div>
         </div>;
     }
 
