@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as OpenSeadragon from 'openseadragon';
-import ImageApi from '../fetch/ImageApi';
-import ViewerSpinner from './ViewerSpinner';
-import Token from "../lib/Token";
+import ImageApi from '../../fetch/ImageApi';
+import ViewerSpinner from '../ViewerSpinner';
+import Token from "../../lib/Token";
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import HomeIcon from '@material-ui/icons/Home';
@@ -10,8 +10,8 @@ import RotateIcon from '@material-ui/icons/RotateRight';
 import FullScreenIcon from '@material-ui/icons/Fullscreen';
 import NextIcon from '@material-ui/icons/NavigateNext';
 import PreviousIcon from '@material-ui/icons/NavigateBefore';
-import {AnnotationType} from "../fetch/SearchApi";
-import Cache from "../lib/Cache";
+import {AnnotationType} from "../../fetch/SearchApi";
+import Cache from "../../lib/Cache";
 import i18next from 'i18next';
 import './openSeadragon.css';
 
