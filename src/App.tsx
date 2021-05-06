@@ -42,7 +42,7 @@ interface IState {
 
 class App extends React.Component<IProps, IState> {
 
-    private q: string | null;
+    private readonly q: string | null;
 
     constructor(props: IProps) {
 
