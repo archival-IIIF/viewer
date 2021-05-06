@@ -1,5 +1,5 @@
 import * as React from 'react';
-import UrlValidation from '../lib/UrlValidation';
+import UrlValidation from '../../lib/UrlValidation';
 
 interface IProps {
     text: string;

@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Nl2br from './viewer/Nl2br';
+import Nl2br from './viewer/plainText/Nl2br';
 import './css/modal.css';
 
 interface IState {

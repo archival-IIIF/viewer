@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactOpenSeadragon from './image/ReactOpenSeadragon';
 import MediaPlayer from './media/MediaPlayer';
 import IManifestData from '../interface/IManifestData';
-import PlainTextViewer from './PlainTextViewer';
+import PlainTextViewer from './plainText/PlainTextViewer';
 import './viewer.css';
 
 interface IProps {
