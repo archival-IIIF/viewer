@@ -1,19 +1,18 @@
-import * as React from 'react';
+import React from "react";
 import "./spinner.css";
 
 interface IProps {
-    show: boolean;
-    center?: boolean;
+   show?: boolean;
+   center?: boolean;
 }
 
-export default function  ViewerSpinner(props: IProps) {
-
-    if (!props.show) {
+export default function Spinner(props: IProps) {
+    if (props.show === false) {
         return <></>;
     }
 
     let className = 'lds-ripple';
-    if (props.center !== false) {
+    if (props.center === true) {
         className += ' lds-ripple-center'
     }
 
