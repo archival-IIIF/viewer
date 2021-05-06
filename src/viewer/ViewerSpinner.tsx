@@ -6,7 +6,7 @@ interface IProps {
     center?: boolean;
 }
 
-export default function  ViewerSpinner(props: IProps) {
+export default function ViewerSpinner(props: IProps) {
 
     if (!props.show) {
         return <></>;

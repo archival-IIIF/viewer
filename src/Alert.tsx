@@ -62,7 +62,7 @@ class Alert extends React.Component<any, IState> {
 
     renderBody() {
         if (this.state.body) {
-            return <Nl2br text={this.state.body} urlTranformation={true}/>;
+            return <Nl2br text={this.state.body} urlTransformation={true}/>;
         }
         if (this.state.bodyJsx) {
             return this.state.bodyJsx;
