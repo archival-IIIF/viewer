@@ -5,6 +5,14 @@
     display: none;
 }
 
+.aiiif-audio.vjs-paused .vjs-big-play-button {
+    display: none;
+}
+
+.aiiif-audio.vjs-paused .vjs-control-bar {
+    display: flex;
+}
+
 .aiiif-content-audio {
     display: flex;
     flex-direction: column;

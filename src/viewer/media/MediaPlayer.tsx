@@ -1,11 +1,12 @@
 import * as React from 'react';
 import videojs, {VideoJsPlayerOptions} from 'video.js';
-import Cache from '../lib/Cache';
+import Cache from '../../lib/Cache';
 import 'video.js/dist/video-js.css';
-import Transcription from "./transcription/Transcription";
-import IManifestData from "../interface/IManifestData";
-import {hasTranscription} from "../lib/ManifestHelpers";
-import Splitter from "../splitter/Splitter";
+import "./vjsForest.css";
+import Transcription from "./Transcription";
+import IManifestData from "../../interface/IManifestData";
+import {hasTranscription} from "../../lib/ManifestHelpers";
+import Splitter from "../../splitter/Splitter";
 import './media-player.css';
 
 
@@ -25,6 +26,8 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
         this.togglePlay = this.togglePlay.bind(this);
         this.jumpToTime = this.jumpToTime.bind(this);
         this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
+
+        this.videoNode = React.createRef();
     }
 
     componentDidMount() {
@@ -75,7 +78,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
                 a={
                     <div className="aiiif-player-container aiiif-video vjs-has-started">
                         <div data-vjs-player={true} style={{width: '100%'}}>
-                            <video ref={(node) => this.videoNode = node} className="video-js"
+                            <video ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
                             preload={this.preload}  onTimeUpdate={this.handleTimeUpdate}/>
                         </div>
                     </div>
@@ -90,7 +93,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
 
         return <div className="aiiif-player-container aiiif-video vjs-has-started">
             <div data-vjs-player={true} style={{width: '100%'}}>
-                <video ref={(node) => this.videoNode = node} className="video-js"
+                <video ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
                        preload={this.preload}/>
             </div>
         </div>;
@@ -101,7 +104,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
             return <div className="aiiif-player-container aiiif-audio">
                 <div className="vjs-has-started">
                     <div data-vjs-player={true} style={{width: '100%', height: 30}}>
-                        <audio ref={(node) => this.videoNode = node} className="video-js"
+                        <audio ref={(node) => this.videoNode = node} className="video-js vjs-theme-forest"
                                preload={this.preload} onTimeUpdate={this.handleTimeUpdate}/>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactOpenSeadragon from './ReactOpenSeadragon';
-import MediaPlayer from './MediaPlayer';
+import MediaPlayer from './media/MediaPlayer';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './PlainTextViewer';
 import './viewer.css';
