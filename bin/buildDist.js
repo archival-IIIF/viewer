@@ -5,7 +5,7 @@ const buildDir = path.resolve(__dirname, '..','build');
 const distDir = path.resolve(__dirname, '..', 'dist', 'archival-IIIF-viewer-' + version + '-dist');
 
 if (fs.existsSync(distDir)) {
-    fs.rmdirSync(distDir, { recursive: true });
+    fs.rmSync(distDir, { recursive: true });
 }
 fs.renameSync(buildDir, distDir);
 fs.unlinkSync(path.resolve(distDir, 'favicon.ico'));
