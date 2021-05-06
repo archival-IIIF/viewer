@@ -36,7 +36,7 @@ class ImageApi {
             await new Promise((resolve, reject) => {
                 this.get(source.id, function (data: any) {
                     result.push(data);
-                    resolve();
+                    resolve('done');
                 });
             });
         }

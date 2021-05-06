@@ -1,12 +1,12 @@
 import IManifestDataThumbnail from './IManifestDataThumbnail';
-import {LabelValuePair, LanguageMap} from "manifesto.js";
+import {LabelValuePair, PropertyValue} from "manifesto.js";
 import ITranscription from "./ITranscription";
 
 interface IManifestData {
     id: string;
     request?: string;
     type: string;
-    label: LanguageMap;
+    label: PropertyValue;
     logo: string | null;
     attribution: LabelValuePair | null;
     manifestations: any;
@@ -18,7 +18,7 @@ interface IManifestData {
     metadata: LabelValuePair[];
     license: string | null;
     search?: ISearchService
-    description: LanguageMap;
+    description: PropertyValue;
     thumbnail?: IManifestDataThumbnail;
     authService?: IAuthService;
     transcription: ITranscription[];
@@ -26,7 +26,7 @@ interface IManifestData {
 
 export interface IManifestReference {
     id: string;
-    label: LanguageMap;
+    label: PropertyValue;
     thumbnail?: IManifestDataThumbnail;
     type: string;
 }

@@ -74,7 +74,7 @@ export default class Metadata extends React.Component<IProps, {}> {
             }
         }
 
-        if (manifestData.attribution && manifestData.attribution.value.length > 0) {
+        if (manifestData.attribution && manifestData.attribution.value && manifestData.attribution.value.length > 0) {
             metadataView.push(<div key="attribution">
                 <div className="aiiif-label">
                     <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>

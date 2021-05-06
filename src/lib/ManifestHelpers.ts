@@ -1,8 +1,8 @@
 import i18n  from 'i18next';
-import {LanguageMap} from "manifesto.js";
+import {PropertyValue} from "manifesto.js";
 import IManifestData from "../interface/IManifestData";
 
-export function getLocalized(input?: LanguageMap | string) {
+export function getLocalized(input?: PropertyValue | string | null) {
     if (!input || input.length === 0) {
         return '';
     }
