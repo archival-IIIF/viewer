@@ -5,21 +5,26 @@
     display: none;
 }
 
-.aiiif-audio-payer.vjs-paused .vjs-big-play-button {
-    display: none;
+.aiiif-audio-player .vjs-big-play-button {
+    display: none !important;
 }
 
-.aiiif-audio-payer.vjs-paused .vjs-control-bar {
-    display: flex;
+.aiiif-audio-player .vjs-fullscreen-control {
+    display: none !important;
+}
+.aiiif-audio-player .vjs-control-bar {
+    display: flex !important;
 }
 
 .aiiif-audio-player {
-    min-height: 48px;
+    height: 72px;
     width: 100%;
 }
 
 .aiiif-content-audio {
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .aiiif-video-player {
