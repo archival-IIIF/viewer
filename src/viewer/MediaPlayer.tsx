@@ -15,7 +15,7 @@ interface IProps {
 
 export default class MediaPlayer extends React.Component<IProps, {}> {
 
-    private player: any;
+    private player?: videojs.Player;
     private videoNode: any;
     private currentTranscriptionPart = 0;
     private preload = 'metadata';
@@ -56,7 +56,7 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
     render() {
 
         if (!this.props.currentManifest.resource) {
-            return <div></div>;
+            return <div />;
         }
 
         const resource: any = this.props.currentManifest.resource;
@@ -119,10 +119,18 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
     }
 
     togglePlay() {
+        if (!this.player) {
+            return;
+        }
+
         this.player.paused() ? this.player.play() : this.player.pause();
     }
 
     handleTimeUpdate() {
+        if (!this.player) {
+            return;
+        }
+
         const parts = this.props.currentManifest.transcription;
         let i = -1;
         const t = this.player.currentTime();
@@ -140,6 +148,10 @@ export default class MediaPlayer extends React.Component<IProps, {}> {
     }
 
     jumpToTime(timeCode: number) {
+        if (!this.player) {
+            return;
+        }
+
         this.player.currentTime(timeCode);
         this.player.play();
     }
