@@ -4,6 +4,7 @@ import MediaPlayer from './media/MediaPlayer';
 import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './plainText/PlainTextViewer';
 import './viewer.css';
+import PdfViewer from "./pdf/pdfViewer";
 
 interface IProps {
     currentManifest: IManifestData;
@@ -36,10 +37,10 @@ class Viewer extends React.Component<IProps, {}> {
         }
 
         if (manifestData.resource.type === 'pdf') {
-            return this.renderPdf();
+            return <PdfViewer presentation={manifestData} />;
         }
 
-        return '';
+        return <></>;
     }
 
     renderImage() {
@@ -62,15 +63,6 @@ class Viewer extends React.Component<IProps, {}> {
                 <PlainTextViewer source={resource.id} key={resource.id}/>
             </div>
         );
-    }
-
-    renderPdf() {
-
-        if (this.props.currentManifest.resource) {
-            const id = this.props.currentManifest.resource.id
-
-            return <iframe className="aiiif-viewer" src={id} title={id}/>;
-        }
     }
 
     renderAudioVideo() {
