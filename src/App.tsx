@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import TopBar from './TopBar/TopBar';
 import ManifestHistory from './lib/ManifestHistory';
 import Login from './Login';
 import Alert from './Alert';
-import {I18nextProvider, initReactI18next} from 'react-i18next';
+import {I18nextProvider} from 'react-i18next';
 import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
@@ -18,12 +18,7 @@ import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
 import Navigation from "./navigation/Navigation";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
-
-const commonEn = require('./translations/en/common.json');
-const commonDe = require('./translations/de/common.json');
-const commonNl = require('./translations/nl/common.json');
-const commonFr = require('./translations/fr/common.json');
-const commonIt = require('./translations/it/common.json');
+import './lib/i18n';
 
 interface IProps {
     config: IConfigParameter;
@@ -33,102 +28,20 @@ declare let global: {
     config: Config;
 };
 
-interface IState {
-    currentManifest?: IManifestData;
-    currentFolder?: IManifestData;
-    tree?: ITree;
-    authDate: number;
-}
 
-class App extends React.Component<IProps, IState> {
+export default function App(props: IProps) {
 
-    private readonly q: string | null;
+    Cache.ee.setMaxListeners(100);
+    global.config = new Config(props.config);
 
-    constructor(props: IProps) {
 
-        super(props);
+    const [currentManifest, setCurrentManifest] = useState<IManifestData | undefined>(undefined);
+    const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);
+    const [tree, setTree] = useState<ITree | undefined>(undefined);
+    const [authDate, setAuthDate] = useState<number>(0);
+    const [q] = useState< string | null>(PresentationApi.getGetParameter('q', window.location.href));
 
-        Cache.ee.setMaxListeners(100);
-
-        global.config = new Config(this.props.config);
-        this.q = PresentationApi.getGetParameter('q', window.location.href);
-
-        this.state = {authDate: 0};
-
-        i18n.use(initReactI18next).init({
-            lng: global.config.getLanguage(),
-            fallbackLng: global.config.getFallbackLanguage(),
-            interpolation: { escapeValue: false },  // React already does escaping
-            resources: {
-                de: {common: commonDe},
-                en: {common: commonEn},
-                fr: {common: commonFr},
-                it: {common: commonIt},
-                nl: {common: commonNl}
-            }
-        });
-
-        this.setCurrentManifest = this.setCurrentManifest.bind(this);
-        this.tokenReceived = this.tokenReceived.bind(this);
-        this.refresh = this.refresh.bind(this);
-    }
-
-    render() {
-        return (
-            <I18nextProvider i18n={i18n}>
-                <Alert />
-                <Login setCurrentManifest={this.setCurrentManifest}/>
-                <TopBar key={this.state.authDate} currentManifest={this.state.currentManifest} />
-                {this.renderMain()}
-            </I18nextProvider>
-        );
-    }
-
-    renderMain() {
-        if (!this.state.currentManifest || !this.state.currentFolder) {
-            return;
-        }
-
-        return <Splitter
-            id="main"
-            a={<Navigation
-                tree={this.state.tree}
-                currentManifest={this.state.currentManifest}
-                currentFolder={this.state.currentFolder}
-                setCurrentManifest={this.setCurrentManifest}
-                q={this.q}
-            />}
-            b={<Content
-                key={this.state.currentManifest.id}
-                currentManifest={this.state.currentManifest}
-                currentFolder={this.state.currentFolder}
-                setCurrentManifest={this.setCurrentManifest}
-                authDate={this.state.authDate}
-            />}
-            direction="vertical"
-        />;
-    }
-
-    componentDidMount() {
-        const t = this;
-        window.addEventListener('popstate', function(event) {
-            const backId = ManifestHistory.goBack();
-            if (backId) {
-                t.setCurrentManifest(backId)
-            }
-        });
-        this.setCurrentManifest();
-        Cache.ee.addListener('token-changed', this.tokenReceived);
-        i18n.on('languageChanged', this.refresh);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('token-changed', this.tokenReceived);
-        i18n.off('languageChanged', this.refresh);
-    }
-
-    setCurrentManifest(id?: string) {
-        const t = this;
+    const setCurrentManifest0 = (id?: string) => {
 
         if (!id) {
             id = PresentationApi.getIdFromCurrentUrl();
@@ -149,21 +62,26 @@ class App extends React.Component<IProps, IState> {
                 if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;
                     TreeBuilder.get(currentFolder.id, undefined, (tree) => {
-                        t.setState({currentManifest, currentFolder, tree});
+                        setCurrentManifest(currentManifest);
+                        setCurrentFolder(currentFolder);
+                        setTree(tree);
                     });
                 } else if (!isSingleManifest(currentManifest)) {
                     PresentationApi.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {
                             TreeBuilder.get(currentFolder.id, undefined, (tree) => {
-                                t.setState({currentManifest, currentFolder, tree});
+                                setCurrentManifest(currentManifest);
+                                setCurrentFolder(currentFolder);
+                                setTree(tree);
                             });
                         }
                     )
                 } else {
                     const currentFolder = new ManifestData();
                     currentFolder.type = 'Manifest';
-                    t.setState({currentManifest, currentFolder});
+                    setCurrentManifest(currentManifest);
+                    setCurrentFolder(currentFolder);
                 }
 
                 document.title = getLocalized(currentManifest.label);
@@ -171,14 +89,63 @@ class App extends React.Component<IProps, IState> {
         );
     }
 
-    tokenReceived() {
-        this.setState({authDate: Date.now()});
-        this.setCurrentManifest();
-    }
 
-    refresh() {
-        this.setCurrentManifest();
-    }
+
+    useEffect(() => {
+        const tokenReceived = () => {
+            setAuthDate(Date.now());
+            setCurrentManifest0();
+        }
+
+        const refresh = () => {
+            setCurrentManifest0();
+        }
+
+        Cache.ee.addListener('token-changed', tokenReceived);
+        i18n.changeLanguage(global.config.getLanguage());
+        i18n.options.fallbackLng = global.config.getFallbackLanguage();
+        i18n.on('languageChanged', refresh);
+
+        window.addEventListener('popstate', function(event) {
+            const backId = ManifestHistory.goBack();
+            if (backId) {
+                setCurrentManifest0(backId)
+            }
+        });
+
+        setCurrentManifest0();
+
+        return () => {
+            Cache.ee.removeListener('token-changed', tokenReceived);
+            i18n.off('languageChanged', refresh);
+        }
+    }, []);
+
+
+    return <I18nextProvider i18n={i18n}>
+        <Alert />
+        <Login setCurrentManifest={setCurrentManifest0}/>
+        <TopBar key={authDate} currentManifest={currentManifest} />
+        {(!currentManifest || !currentFolder) ?
+            <></> :
+            <Splitter
+                id="main"
+                a={<Navigation
+                    tree={tree}
+                    currentManifest={currentManifest}
+                    currentFolder={currentFolder}
+                    setCurrentManifest={setCurrentManifest0}
+                    q={q}
+                />}
+                b={<Content
+                    key={currentManifest.id}
+                    currentManifest={currentManifest}
+                    currentFolder={currentFolder}
+                    setCurrentManifest={setCurrentManifest0}
+                    authDate={authDate}
+                />}
+                direction="vertical"
+            />
+        }
+    </I18nextProvider>;
 }
-
-export default App;
