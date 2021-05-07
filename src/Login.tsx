@@ -31,7 +31,6 @@ export default function Login(props: IProps) {
 
 
     const [visible, setVisible] = useState<boolean>(false);
-    const [manifestations, setManifestations] = useState<any | undefined>(undefined);
     const [error, setError] = useState<boolean | undefined>(undefined);
 
     const origin = window.location.protocol + '//' + window.location.hostname

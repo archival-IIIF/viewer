@@ -7,26 +7,27 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Nl2br from './viewer/plainText/Nl2br';
 import './css/modal.css';
 
+interface IContent {
+    title?: string;
+    titleJsx?: JSX.Element;
+    body?: string;
+    bodyJsx?:  JSX.Element;
+}
 
-export default function  Alert() {
+export default function Alert() {
 
     const [visible, setVisible] = useState<boolean>(false);
-    const [title, setTitle] = useState<string | undefined>(undefined);
-    const [titleJsx, setTitleJsx] = useState<JSX.Element | undefined>(undefined);
-    const [body, setBody] = useState<string | undefined>(undefined);
-    const [bodyJsx, setBodyJsx] = useState<JSX.Element | undefined>(undefined);
+    const [content, setContent] = useState<IContent>({});
 
 
-    const t = title ?? (titleJsx ?? <></>);
-    const b = body ?
-        <Nl2br text={body} urlTransformation={true}/> :
-        (bodyJsx ?? <></>);
+    const title = content.title ?? (content.titleJsx ?? <></>);
+    const body = content.body ?
+        <Nl2br text={content.body} urlTransformation={true}/> :
+        (content.bodyJsx ?? <></>);
 
-    const open = (args: any) => {
-        setTitle(args['title']);
-        setTitleJsx(args['titleJsx']);
-        setBody(args['body']);
-        setBodyJsx(args['bodyJsx']);
+    const open = (input: IContent) => {
+        setContent(input)
+        setVisible(true);
     }
 
     useEffect(() => {
@@ -43,13 +44,13 @@ export default function  Alert() {
         aria-describedby="alert-dialog-description"
         fullWidth={true}
     >
-        <DialogTitle >
-            {t}
+        <DialogTitle>
+            {title}
             <span className="close" onClick={() => setVisible(false)}>&times;</span>
         </DialogTitle>
         <DialogContent>
             <DialogContentText color="textPrimary" component="div">
-                {b}
+                {body}
             </DialogContentText>
         </DialogContent>
     </Dialog>;
