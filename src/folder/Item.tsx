@@ -14,90 +14,84 @@ interface IProps {
     setCurrentManifest: (id?: string) => void;
 }
 
-class Item extends React.Component<IProps, {}> {
+export default  function Item(props: IProps) {
 
-
-    render() {
-
-        const itemType = this.props.item.type === 'Collection' ? 'folder' : 'file';
-        const id = this.props.item.id;
-        let className = 'aiiif-item ' + itemType;
-        const label = getLocalized(this.props.item.label);
-        if (id === this.props.selected.id) {
-            className += ' active';
-        }
-
-        return <div
-            className={className}
-            key={id}
-            onClick={() => this.activateItem()}
-            onDoubleClick={() => this.open()}
-        >
-            {this.getThumbnail()}
-            <div className="aiiif-item-label">{label}</div>
-        </div>;
+    const itemType = props.item.type === 'Collection' ? 'folder' : 'file';
+    const id = props.item.id;
+    let className = 'aiiif-item ' + itemType;
+    const label = getLocalized(props.item.label);
+    if (id === props.selected.id) {
+        className += ' active';
     }
 
-    getThumbnail() {
+    return <div
+        className={className}
+        key={id}
+        onClick={() => activateItem(props)}
+        onDoubleClick={() => open(props)}
+    >
+        {getThumbnail(props)}
+        <div className="aiiif-item-label">{label}</div>
+    </div>;
+}
 
-        if (this.props.item.thumbnail === undefined || !this.props.item.thumbnail.hasOwnProperty('id')) {
-            if (this.props.item.type === 'Collection') {
-                return <div className="aiiif-item-thumbnail"><FolderIcon  /></div>;
-            }
+function getThumbnail(props: IProps) {
 
-            return <div className="aiiif-item-thumbnail"><FileIcon /></div>;
+    if (props.item.thumbnail === undefined || !props.item.thumbnail.hasOwnProperty('id')) {
+        if (props.item.type === 'Collection') {
+            return <div className="aiiif-item-thumbnail"><FolderIcon  /></div>;
         }
 
-
-        let thumbnailUrl;
-        if (this.props.item.thumbnail.hasOwnProperty('service') && this.props.item.thumbnail.service) {
-            const width = '72';
-            const height = '72';
-            const serviceUrl = this.props.item.thumbnail.service;
-            thumbnailUrl = serviceUrl.replace('/info.json', '') + '/full/!' + width + ',' + height + '/0/default.jpg';
-        } else {
-            thumbnailUrl = this.props.item.thumbnail.id;
-        }
-        if (this.props.authDate > 0) {
-            thumbnailUrl += '?t=' + this.props.authDate.toString();
-        }
-
-        const style = {backgroundImage: 'url(' + thumbnailUrl + ')'};
-        return <div className="aiiif-item-thumbnail" style={style} />;
+        return <div className="aiiif-item-thumbnail"><FileIcon /></div>;
     }
 
-    open() {
-        if (this.props.item.type === 'Collection') {
-            this.props.setCurrentManifest(this.props.item.id);
-        } else {
-            this.openFile();
-        }
+
+    let thumbnailUrl;
+    if (props.item.thumbnail.hasOwnProperty('service') && props.item.thumbnail.service) {
+        const width = '72';
+        const height = '72';
+        const serviceUrl = props.item.thumbnail.service;
+        thumbnailUrl = serviceUrl.replace('/info.json', '') + '/full/!' + width + ',' + height + '/0/default.jpg';
+    } else {
+        thumbnailUrl = props.item.thumbnail.id;
+    }
+    if (props.authDate > 0) {
+        thumbnailUrl += '?t=' + props.authDate.toString();
     }
 
-    activateItem() {
-        if (TouchDetection.isTouchDevice() && this.props.item.id === this.props.selected.id) {
-            this.open();
-        } else {
-            this.props.setCurrentManifest(this.props.item.id);
-        }
-    }
+    const style = {backgroundImage: 'url(' + thumbnailUrl + ')'};
+    return <div className="aiiif-item-thumbnail" style={style} />;
+}
 
-    openFile() {
-
-        if (!this.props.selected.resource) {
-            return;
-        }
-
-        const type = this.props.selected.resource.type;
-        if (type === 'audio' || type === 'video') {
-            Cache.ee.emit('play-audio', this.props.selected.resource.source);
-        } else if (type === 'file') {
-            const win = window.open(this.props.selected.resource.id, '_target');
-            if (win) {
-                win.focus();
-            }
-        }
+function open(props: IProps) {
+    if (props.item.type === 'Collection') {
+        props.setCurrentManifest(props.item.id);
+    } else {
+        openFile(props);
     }
 }
 
-export default Item;
+function activateItem(props: IProps) {
+    if (TouchDetection.isTouchDevice() && props.item.id === props.selected.id) {
+        open(props);
+    } else {
+        props.setCurrentManifest(props.item.id);
+    }
+}
+
+function openFile(props: IProps) {
+
+    if (!props.selected.resource) {
+        return;
+    }
+
+    const type = props.selected.resource.type;
+    if (type === 'audio' || type === 'video') {
+        Cache.ee.emit('play-audio', props.selected.resource.source);
+    } else if (type === 'file') {
+        const win = window.open(props.selected.resource.id, '_target');
+        if (win) {
+            win.focus();
+        }
+    }
+}

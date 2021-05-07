@@ -11,26 +11,22 @@ interface IProps {
     setCurrentManifest: (id?: string) => void;
 }
 
-class Folder extends React.Component<IProps, {}> {
+export default function Folder(props: IProps) {
 
-    render() {
-        return <Splitter
-            id="splitter-folder"
-            a={<FolderView
-                key={this.props.currentManifest.id}
-                currentManifest={this.props.currentManifest}
-                currentFolder={this.props.currentFolder}
-                setCurrentManifest={this.props.setCurrentManifest}
-                authDate={this.props.authDate}
-            />}
-            b={<FileInfo
-                key={this.props.currentManifest.id}
-                currentManifest={this.props.currentManifest}
-            />}
-            aSize={70}
-            direction="vertical"
-        />
-    }
+    return <Splitter
+        id="splitter-folder"
+        a={<FolderView
+            key={props.currentManifest.id}
+            currentManifest={props.currentManifest}
+            currentFolder={props.currentFolder}
+            setCurrentManifest={props.setCurrentManifest}
+            authDate={props.authDate}
+        />}
+        b={<FileInfo
+            key={props.currentManifest.id}
+            currentManifest={props.currentManifest}
+        />}
+        aSize={70}
+        direction="vertical"
+    />
 }
-
-export default Folder;
