@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import './splitter.css';
-import {CSSProperties} from "react";
 import Cache from "../lib/Cache";
 
 interface IProps {
@@ -11,148 +10,131 @@ interface IProps {
     direction: "horizontal"|"vertical";
 }
 
-interface IState {
-    size: number
-}
-
-class Splitter extends React.Component<IProps, IState> {
-
-    private isMoving: boolean = false;
-    private readonly myRef: React.RefObject<HTMLDivElement>;
-    private lastSize = 0;
-    private readonly defaultSize = 20;
-
-    constructor(props: IProps) {
-
-        super(props);
-
-        const t = this;
-        this.globalMoveStart = this.globalMoveStart.bind(this);
-        this.globalMoveEnd = this.globalMoveEnd.bind(this);
-
-        this.state = {size: this.getSize()};
-        this.myRef = React.createRef();
-
-        document.addEventListener('mousemove', function(event) {
-            if (t.props.direction === 'vertical') {
-                t.globalMoveStart(event.clientX);
-            } else {
-                t.globalMoveStart(event.clientY);
-            }
-        });
-        document.addEventListener('touchmove', function(event) {
-            if (t.props.direction === 'vertical') {
-                t.globalMoveStart(event.touches[0].clientX);
-            } else {
-                t.globalMoveStart(event.touches[0].clientY);
-            }
-        });
+const defaultSize = 20;
 
 
-        document.addEventListener('mouseup', this.globalMoveEnd);
-        document.addEventListener('touchend', this.globalMoveEnd);
+export default function Splitter(props: IProps) {
 
-        this.toggleSplitter = this.toggleSplitter.bind(this);
-    }
+    const myRef: React.RefObject<HTMLDivElement> = React.createRef();
 
-    render() {
-        const containerClassName = 'aiiif-splitter-container aiiif-splitter-' + this.props.direction + ' aiiif-' + this.props.id;
-        return <div className={containerClassName} ref={this.myRef}>
-            <div className="aiiif-a" style={this.getAStyle()}>{this.props.a}</div>
-            <div className="aiiif-splitter" onMouseDown={() => this.movingStart()} onTouchStart={() => this.movingStart()}
-                    onDoubleClick={() => this.splitterDoubleClick()} />
-            <div className="aiiif-b">{this.props.b}</div>
-        </div>;
-    }
-
-    getSize(): number {
-        if (this.props.id) {
-            const storesSize = sessionStorage.getItem('aiiif-splitter-' + this.props.id);
+    const getSize = (): number => {
+        if (props.id) {
+            const storesSize = sessionStorage.getItem('aiiif-splitter-' + props.id);
             if (storesSize && parseInt(storesSize) < 100 && parseInt(storesSize) > 0) {
                 return parseInt(storesSize);
             }
         }
-        if (this.props.aSize && this.props.aSize < 100 && this.props.aSize > 0) {
-            return this.props.aSize;
+        if (props.aSize && props.aSize < 100 && props.aSize > 0) {
+            return props.aSize;
         }
 
-        return this.defaultSize;
-    }
+        return defaultSize;
+    };
 
+    const [size, setSize] = useState<number>(getSize());
+    const [isMoving, setIsMoving] = useState<boolean>(false);
+    const [lastSize, setLastSize] = useState<number>(0);
 
-    getAStyle(): CSSProperties {
-        const size = (this.state.size).toString() + '%';
-        if (this.props.direction === 'vertical') {
-            return {minWidth: size, maxWidth: size};
+    const getAStyle = (): CSSProperties => {
+        const sizeP = size.toString() + '%';
+        if (props.direction === 'vertical') {
+            return {minWidth: sizeP, maxWidth: sizeP};
         }
 
-        return {minHeight: size, maxHeight: size};
+        return {minHeight: sizeP, maxHeight: sizeP};
     }
 
-    globalMoveStart(size: number) {
-        if (this.isMoving && this.myRef.current) {
-            let offset = 0;
-            let totalSize = 1;
-            if (this.props.direction === 'vertical') {
-                totalSize = this.myRef.current.clientWidth;
-                offset = this.myRef.current.offsetLeft;
+    const globalMoveStart = (size: number) => {
+
+        if (isMoving && myRef.current) {
+            let offset: number;
+            let totalSize: number;
+            if (props.direction === 'vertical') {
+                totalSize = myRef.current.clientWidth;
+                offset = myRef.current.offsetLeft;
             } else {
-                totalSize = this.myRef.current.clientHeight;
-                offset = this.myRef.current.offsetTop;
+                totalSize = myRef.current.clientHeight;
+                offset = myRef.current.offsetTop;
             }
             size = (size - offset) / totalSize * 100;
-            if (this.props.id) {
-                sessionStorage.setItem('aiiif-splitter-' + this.props.id, size.toString());
+            if (props.id) {
+                sessionStorage.setItem('aiiif-splitter-' + props.id, size.toString());
             }
-            this.setState({size})
+            setSize(size);
+        } else {
         }
     }
 
-    globalMoveEnd() {
-        this.isMoving = false;
+    const globalMoveEnd = () => {
+        setIsMoving(false);
         document.body.classList.remove('no-select');
     }
 
-    movingStart() {
+    const movingStart = () => {
         document.body.classList.add('no-select');
-        this.isMoving = true;
+        setIsMoving(true);
     }
 
-    splitterDoubleClick() {
-        /*if (this.props.left > 0) {
-            this.props.widthChangedFunc(0);
+    const mouseMove = (event: MouseEvent) => {
+        if (props.direction === 'vertical') {
+            globalMoveStart(event.clientX);
         } else {
-            this.props.widthChangedFunc(global.config.getDefaultNavBarWith());
-        }*/
-    }
-
-    componentDidMount() {
-        if (this.props.id) {
-            Cache.ee.addListener('toggle-splitter-'+this.props.id, this.toggleSplitter);
+            globalMoveStart(event.clientY);
         }
     }
 
-
-    componentWillUnmount() {
-        if (this.props.id) {
-            Cache.ee.removeListener('toggle-splitter-' + this.props.id, this.toggleSplitter);
+    const touchMove = (event: TouchEvent) => {
+        if (props.direction === 'vertical') {
+            globalMoveStart(event.touches[0].clientX);
+        } else {
+            globalMoveStart(event.touches[0].clientY);
         }
     }
 
-    toggleSplitter() {
-        if (this.state.size > 0) {
-            this.lastSize = this.state.size;
-            this.setState({size: 0})
+    useEffect(() => {
+        if (props.id) {
+            Cache.ee.addListener('toggle-splitter-'+props.id, toggleSplitter);
+        }
+
+        document.addEventListener('mousemove', mouseMove);
+        document.addEventListener('touchmove', touchMove);
+        document.addEventListener('mouseup', globalMoveEnd);
+        document.addEventListener('touchend', globalMoveEnd);
+
+
+        return () => {
+            if (props.id) {
+                Cache.ee.removeListener('toggle-splitter-' + props.id, toggleSplitter);
+            }
+            document.removeEventListener('mousemove', mouseMove);
+            document.removeEventListener('touchmove', touchMove);
+            document.removeEventListener('mouseup', globalMoveEnd);
+            document.removeEventListener('touchend', globalMoveEnd);
+        }
+    })
+
+    const toggleSplitter = () => {
+        if (size > 0) {
+            setLastSize(size);
+            setSize(0);
         } else {
-            if (this.lastSize > 0) {
-                this.setState({size: this.lastSize})
-            } else if (this.props.aSize !== undefined && this.props.aSize < 100) {
-                this.setState({size: this.props.aSize})
+            if (lastSize > 0) {
+                setSize(lastSize);
+            } else if (props.aSize !== undefined && props.aSize < 100) {
+                setSize(props.aSize);
             } else {
-                this.setState({size: this.defaultSize})
+                setSize(defaultSize)
             }
         }
     }
+
+
+
+    const containerClassName = 'aiiif-splitter-container aiiif-splitter-' + props.direction + ' aiiif-' + props.id;
+    return <div className={containerClassName} ref={myRef}>
+        <div className="aiiif-a" style={getAStyle()}>{props.a}</div>
+        <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()} />
+        <div className="aiiif-b">{props.b}</div>
+    </div>;
 }
 
-export default Splitter;
