@@ -14,43 +14,25 @@ interface IProps {
     currentManifest?: IManifestData;
 }
 
-class TopBar extends React.Component<IProps, {}> {
+export default function TopBar(props: IProps) {
 
-    constructor(props: IProps) {
-        super(props);
-        this.toggleTreeViewBar = this.toggleTreeViewBar.bind(this);
+    let bar = 'navBar';
+    if (props.currentManifest && isSingleManifest(props.currentManifest)) {
+        bar = 'infoBar';
     }
 
-    render() {
-
-        let bar = 'navBar';
-        if (this.props.currentManifest && isSingleManifest(this.props.currentManifest)) {
-            bar = 'infoBar';
-        }
-
-        return <div className="aiiif-topbar">
-            <div className="aiiif-icon-button" onClick={this.toggleTreeViewBar}>
-                <NavBarIcon />
-                <Translation ns="common">{(t, { i18n }) => <p>{t(bar)}</p>}</Translation>
-            </div>
-            <LanguageSwitcher />
-            <ExternalSearch />
-            {this.renderLogin()}
-        </div>;
-    }
-
-    renderLogin() {
-        if (Token.hasActiveToken()) {
-            return <div className="aiiif-icon-button" onClick={() => Token.logout()}>
+    return <div className="aiiif-topbar">
+        <div className="aiiif-icon-button" onClick={() => Cache.ee.emit('toggle-splitter-main')}>
+            <NavBarIcon />
+            <Translation ns="common">{(t, { i18n }) => <p>{t(bar)}</p>}</Translation>
+        </div>
+        <LanguageSwitcher />
+        <ExternalSearch />
+        {Token.hasActiveToken() &&
+            <div className="aiiif-icon-button" onClick={() => Token.logout()}>
                 <LogoutIcon />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
-            </div>;
+            </div>
         }
-    }
-
-    toggleTreeViewBar() {
-        Cache.ee.emit('toggle-splitter-main');
-    }
+    </div>;
 }
-
-export default TopBar;

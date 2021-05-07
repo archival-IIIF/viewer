@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import Cache from './lib/Cache';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,95 +7,50 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Nl2br from './viewer/plainText/Nl2br';
 import './css/modal.css';
 
-interface IState {
-    visible: boolean;
-    title?: string;
-    titleJsx?: JSX.Element;
-    body?: string;
-    bodyJsx?: JSX.Element;
+
+export default function  Alert() {
+
+    const [visible, setVisible] = useState<boolean>(false);
+    const [title, setTitle] = useState<string | undefined>(undefined);
+    const [titleJsx, setTitleJsx] = useState<JSX.Element | undefined>(undefined);
+    const [body, setBody] = useState<string | undefined>(undefined);
+    const [bodyJsx, setBodyJsx] = useState<JSX.Element | undefined>(undefined);
+
+
+    const t = title ?? (titleJsx ?? <></>);
+    const b = body ?
+        <Nl2br text={body} urlTransformation={true}/> :
+        (bodyJsx ?? <></>);
+
+    const open = (args: any) => {
+        setTitle(args['title']);
+        setTitleJsx(args['titleJsx']);
+        setBody(args['body']);
+        setBodyJsx(args['bodyJsx']);
+    }
+
+    useEffect(() => {
+        Cache.ee.addListener('alert', open);
+        return () => {
+            Cache.ee.removeListener('alert', open);
+        }
+    });
+
+    return <Dialog
+        open={visible}
+        onClose={() => setVisible(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth={true}
+    >
+        <DialogTitle >
+            {t}
+            <span className="close" onClick={() => setVisible(false)}>&times;</span>
+        </DialogTitle>
+        <DialogContent>
+            <DialogContentText color="textPrimary" component="div">
+                {b}
+            </DialogContentText>
+        </DialogContent>
+    </Dialog>;
 }
-
-class Alert extends React.Component<any, IState> {
-
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            visible: false
-        };
-
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-    }
-
-    render() {
-
-
-        return <Dialog
-            open={this.state.visible}
-            onClose={this.close}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            fullWidth={true}
-        >
-            <DialogTitle >
-                {this.renderTitle()}
-                <span className="close" onClick={this.close}>&times;</span>
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText color="textPrimary" component="div">
-                    {this.renderBody()}
-                </DialogContentText>
-            </DialogContent>
-        </Dialog>;
-
-    }
-
-    renderTitle() {
-        if (this.state.title) {
-            return this.state.title;
-        }
-        if (this.state.titleJsx) {
-            return this.state.titleJsx;
-        }
-    }
-
-    renderBody() {
-        if (this.state.body) {
-            return <Nl2br text={this.state.body} urlTransformation={true}/>;
-        }
-        if (this.state.bodyJsx) {
-            return this.state.bodyJsx;
-        }
-    }
-
-    close() {
-        this.setState({
-            visible: false
-        });
-    }
-
-    open(args: any) {
-
-        const state: any = {
-            visible: true
-        };
-
-        state['title'] = args['title'] ? args['title'] : null;
-        state['titleJsx'] = args['titleJsx'] ? args['titleJsx'] : null;
-        state['body'] = args['body'] ? args['body'] : null;
-        state['bodyJsx'] = args['bodyJsx'] ? args['bodyJsx'] : null;
-
-        this.setState(state);
-    }
-
-    componentDidMount() {
-        Cache.ee.addListener('alert', this.open);
-    }
-
-    componentWillUnmount() {
-        Cache.ee.removeListener('alert', this.open);
-    }
-}
-
-export default Alert;

@@ -6,59 +6,56 @@ import Cache from "../lib/Cache";
 import TextField from '@material-ui/core/TextField';
 import {ISearchService} from "../interface/IManifestData";
 import i18next from 'i18next';
+import {useEffect, useState} from "react";
 
 interface IProps {
     searchService: ISearchService;
     q: string | null;
 }
 
-interface IState {
-    currentAnnotation?: AnnotationType;
-    searchPhrase: string;
-    hits: HitType[];
-}
+export default function Search(props: IProps) {
 
-class Search extends React.Component<IProps, IState> {
+    const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
+    const [searchPhrase, setSearchPhrase] = useState<string>(props.q ?? '');
+    const [hits, setHits] = useState<HitType[]>([]);
 
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {searchPhrase: '', hits: []};
-
-        this.setSearchPhrase = this.setSearchPhrase.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.setHits = this.setHits.bind(this);
+    const setCurrentAnnotation2 = (currentAnnotation?: AnnotationType) => {
+        Cache.ee.emit('annotation-changed', currentAnnotation);
+        setCurrentAnnotation(currentAnnotation);
     }
 
-    render() {
-
-
-        return <div className="aiiif-search">
-            <form onSubmit={this.onSubmit}>
-                <TextField className="aiiif-search-input" label={i18next.t('common:searchInputLabel')} type="search"
-                           value={this.state.searchPhrase} onChange={this.setSearchPhrase} />
-            </form>
-            {this.renderHits()}
-        </div>;
+    const onSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        fetchSearchResults(searchPhrase);
     }
 
-    renderHits() {
-        if (this.state.hits.length === 0) {
-            return [];
+    const fetchSearchResults = (searchPhrase: string) => {
+        if (searchPhrase === '') {
+            setHits([]);
+            return;
+        }
+
+        const searchUrl = props.searchService.id + '?q=' + searchPhrase;
+        SearchApi.get(searchUrl, setHits)
+    }
+
+    const renderHits = () => {
+        if (hits.length === 0) {
+            return <></>;
         }
 
         const output = [];
-        for (const hit of this.state.hits) {
+        for (const hit of hits) {
             let circleClassName = 'aiiif-circle';
-            if (this.state.currentAnnotation && hit.resource.id === this.state.currentAnnotation.id) {
+            if (currentAnnotation && hit.resource.id === currentAnnotation.id) {
                 circleClassName += ' aiiif-circle-active';
             }
             output.push(
                 <div className="aiiif-search-result-item" key={hit.i}
-                     onClick={() => this.setCurrentAnnotation(hit.resource)}>
-                    <Chip className={circleClassName} label={hit.i} />
+                     onClick={() => setCurrentAnnotation2(hit.resource)}>
+                    <Chip className={circleClassName} label={hit.i}/>
 
-                    <p>{this.stripTags(hit.before)} <strong>{hit.match}</strong> {this.stripTags(hit.after)}</p>
+                    <p>{stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}</p>
                 </div>
             );
         }
@@ -66,46 +63,26 @@ class Search extends React.Component<IProps, IState> {
         return output;
     }
 
-    setCurrentAnnotation(currentAnnotation?: AnnotationType) {
-        Cache.ee.emit('annotation-changed', currentAnnotation);
-        this.setState({currentAnnotation})
-    }
-
-    setSearchPhrase(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({searchPhrase: event.target.value});
-    }
-
-    onSubmit(event: React.FormEvent) {
-
-        event.preventDefault();
-
-        this.fetchSearchResults(this.state.searchPhrase);
-    }
-
-    fetchSearchResults(searchPhrase: string) {
-        if (searchPhrase === '') {
-            this.setState({hits: []});
-            return;
+    useEffect(() => {
+        if (props.q) {
+            fetchSearchResults(props.q);
         }
+    })
 
-        const searchUrl = this.props.searchService.id + '?q=' + searchPhrase;
-        SearchApi.get(searchUrl, this.setHits)
-    }
-
-    setHits(hits: HitType[]) {
-        this.setState({hits});
-    }
-
-    stripTags(input: string) {
-        return input.replace(/<\/?[^>]+(>|$)/g, "");
-    }
-
-    componentDidMount() {
-        if (this.props.q) {
-            this.setState({searchPhrase: this.props.q});
-            this.fetchSearchResults(this.props.q);
-        }
-    }
+    return <div className="aiiif-search">
+        <form onSubmit={onSubmit}>
+            <TextField
+                className="aiiif-search-input"
+                label={i18next.t('common:searchInputLabel')}
+                type="search"
+                value={searchPhrase} onChange={(e) => setSearchPhrase(e.target.value)}
+            />
+        </form>
+        {renderHits()}
+    </div>;
 }
 
-export default Search;
+
+function stripTags(input: string) {
+    return input.replace(/<\/?[^>]+(>|$)/g, "");
+}
