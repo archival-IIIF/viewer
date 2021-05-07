@@ -12,71 +12,66 @@ interface IProps {
 }
 
 
-class Viewer extends React.Component<IProps, {}> {
+export default function Viewer(props: IProps) {
 
-    private id = Math.random();
+    const manifestData: any = props.currentManifest;
 
-    render() {
-
-        const manifestData: any = this.props.currentManifest;
-
-        if (!manifestData || !manifestData.hasOwnProperty('resource')) {
-            return '';
-        }
-
-        if (manifestData.resource.type === 'imageService') {
-            return this.renderImage();
-        }
-
-        if (manifestData.resource.type === 'audio' || manifestData.resource.type === 'video') {
-            return this.renderAudioVideo();
-        }
-
-        if (manifestData.resource.type === 'plainText') {
-            return this.renderPlainText();
-        }
-
-        if (manifestData.resource.type === 'pdf') {
-            return <PdfViewer presentation={manifestData} />;
-        }
-
+    if (!manifestData || !manifestData.hasOwnProperty('resource')) {
         return <></>;
     }
 
-    renderImage() {
-        const resource: any = this.props.currentManifest.resource;
-        return (
-            <div className="aiiif-viewer">
-                <ReactOpenSeadragon
-                    source={resource.source}
-                    key={resource.source + this.props.authDate.toString()}
-                    authDate={this.props.authDate}
-                />
-            </div>
-        );
+    if (manifestData.resource.type === 'imageService') {
+        return <Image {...props} />;
     }
 
-    renderPlainText() {
-        const resource: any = this.props.currentManifest.resource;
-        return (
-            <div className="aiiif-viewer">
-                <PlainTextViewer source={resource.id} key={resource.id}/>
-            </div>
-        );
+    if (manifestData.resource.type === 'audio' || manifestData.resource.type === 'video') {
+        return <AudioVideo {...props} />;
     }
 
-    renderAudioVideo() {
-
-        if (this.props.currentManifest.resource) {
-            const resource: any = this.props.currentManifest.resource;
-
-            return (
-                <div className="aiiif-viewer">
-                    <MediaPlayer key={resource.id} currentManifest={this.props.currentManifest}/>
-                </div>
-            );
-        }
+    if (manifestData.resource.type === 'plainText') {
+        return <PlainText {...props} />;
     }
+
+    if (manifestData.resource.type === 'pdf') {
+        return <PdfViewer presentation={manifestData} />;
+    }
+
+    return <></>;
 }
 
-export default Viewer;
+function Image(props: IProps) {
+    const resource: any = props.currentManifest.resource;
+    return (
+        <div className="aiiif-viewer">
+            <ReactOpenSeadragon
+                source={resource.source}
+                key={resource.source + props.authDate.toString()}
+                authDate={props.authDate}
+            />
+        </div>
+    );
+}
+
+function PlainText(props: IProps) {
+    const resource: any = props.currentManifest.resource;
+    return (
+        <div className="aiiif-viewer">
+            <PlainTextViewer source={resource.id} key={resource.id}/>
+        </div>
+    );
+}
+
+function AudioVideo(props: IProps) {
+
+    if (!props.currentManifest.resource) {
+        return <></>;
+    }
+
+    const resource: any = props.currentManifest.resource;
+
+    return (
+        <div className="aiiif-viewer">
+            <MediaPlayer key={resource.id} currentManifest={props.currentManifest}/>
+        </div>
+    );
+}
