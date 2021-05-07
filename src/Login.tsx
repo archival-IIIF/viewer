@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import PresentationApi from './fetch/PresentationApi';
 import ImageApi from './fetch/ImageApi';
 import Cache from './lib/Cache';
@@ -14,12 +14,6 @@ import * as DOMPurify from "dompurify";
 import Config from "./lib/Config";
 import {IAuthService} from "./interface/IManifestData";
 
-interface IState {
-    visible: boolean;
-    manifestations?: any;
-    error?: boolean;
-}
-
 declare let global: {
     config: Config;
 };
@@ -28,85 +22,79 @@ interface IProps {
     setCurrentManifest: (id?: string) => void;
 }
 
-class Login extends React.Component<IProps, IState> {
+export default function Login(props: IProps) {
 
-    private checkIfLoginWindowIsClosedInterval = 0;
-    private origin = window.location.protocol + '//' + window.location.hostname
+
+    const messageFrameId = useRef<number>(Math.random());
+    const openWindows = useRef<string[]>([]);
+    const authService = useRef<IAuthService | undefined>(undefined);
+
+
+    const [visible, setVisible] = useState<boolean>(false);
+    const [manifestations, setManifestations] = useState<any | undefined>(undefined);
+    const [error, setError] = useState<boolean | undefined>(undefined);
+
+    const origin = window.location.protocol + '//' + window.location.hostname
         + (window.location.port ? ':' + window.location.port : '');
-    private openWindows: string[] = [];
-    private id = Math.random();
 
-    constructor(props: IProps) {
-
-        super(props);
-
-        this.state = {visible: false};
-
-        this.showLogin = this.showLogin.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.receiveToken = this.receiveToken.bind(this);
-    }
-
-    private authService?: IAuthService = undefined;
-
-    render() {
-        if (!this.authService) {
-            return <></>
+    useEffect(() => {
+        const escFunction = (event: any) => {
+            if (event.keyCode === 27) {
+                setVisible(false)
+            }
         }
 
-        const authService = this.authService;
+        const showLogin = (service: IAuthService) => {
 
-        return <>
-            <iframe id={"message-frame-" + this.id} className="aiiif-message-frame " title="message frame" />
-            <Dialog
-                id={authService.id}
-                open={this.state.visible}
-                onClose={this.closeModal}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle >
-                    {authService.header}
-                    <span className="close" onClick={this.closeModal}>&times;</span>
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText color="textPrimary" component="div">
-                        {this.body(authService)}
-                    </DialogContentText>
-                    <DialogActions>
-                        <Button onClick={() => this.openWindow(authService.id)} color="primary">
-                            {authService.confirmLabel}
-                        </Button>
-                    </DialogActions>
-                </DialogContent>
-            </Dialog>
-        </>;
-    }
+            authService.current = service;
+            if (service.profile === ServiceProfile.AUTH_1_KIOSK) {
+                openWindow(service.id);
+                return;
+            }
+            /*if (!authService.options) {
+                authService['options'] = {locale: Manifest.lang};
+            }*/
 
-    openWindow(id: string) {
+            if (!visible) {
+                setError(false);
+                setVisible(true);
+            }
+        }
 
-        if (!this.authService || !this.authService.token) {
+        document.addEventListener('keydown', escFunction, false);
+        Cache.ee.addListener('show-login', showLogin);
+
+        return () => {
+            document.removeEventListener('keydown', escFunction, false);
+            Cache.ee.removeListener('show-login', showLogin);
+        }
+    })
+
+
+    const openWindow = (id: string) => {
+
+        if (!authService.current || !authService.current.token) {
             return;
         }
-        const token = this.authService.token;
+        const token = authService.current.token;
 
-        const url = id + '?origin=' + this.origin;
-        if (this.openWindows.includes(id)) {
+        const url = id + '?origin=' + origin;
+        if (openWindows.current.includes(id)) {
             return;
         }
-        this.openWindows.push(id);
+        openWindows.current.push(id);
 
         const win = window.open(url);
-        this.checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
+        let checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
             try {
                 if (win === null || win.closed) {
-                    window.clearInterval(this.checkIfLoginWindowIsClosedInterval);
+                    window.clearInterval(checkIfLoginWindowIsClosedInterval);
                     window.addEventListener(
                         'message',
-                        (event) => this.receiveToken(event, id), {once: true}
-                        );
-                    const src = token + '?messageId=1&origin=' + this.origin;
-                    const messageFrame: any = document.getElementById('message-frame-' + this.id);
+                        (event) => receiveToken(event, id), {once: true}
+                    );
+                    const src = token + '?messageId=1&origin=' + origin;
+                    const messageFrame: any = document.getElementById('message-frame-' + messageFrameId.current);
                     if (messageFrame) {
                         messageFrame.src = src;
                     }
@@ -117,90 +105,75 @@ class Login extends React.Component<IProps, IState> {
         }, 1000);
     }
 
-    closeModal() {
-        this.setState({
-            visible: false
-        });
-    }
 
-    escFunction(event: any) {
-        if (event.keyCode === 27) {
-            this.closeModal();
-        }
-    }
 
-    showLogin(authService: IAuthService) {
 
-        this.authService = authService;
-        if (authService.profile === ServiceProfile.AUTH_1_KIOSK) {
-            this.openWindow(authService.id);
-            return;
-        }
-        /*if (!authService.options) {
-            authService['options'] = {locale: Manifest.lang};
-        }*/
 
-        if (!this.state.visible) {
-            this.setState({
-                error: false,
-                visible: true,
-            });
-        }
-    }
-
-    body(authService: IAuthService) {
+    const body = (authService: IAuthService) => {
         const body = [];
         body.push(<div key="description" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
             __html: DOMPurify.sanitize(authService.description ?? '', global.config.getSanitizeRulesSet())
         }} />);
 
 
-        if (this.state.error) {
+        if (error) {
             body.push(<div className="modal-error-message" key="error">{authService.errorMessage}</div>);
         }
 
         return body;
     }
 
-    componentDidMount() {
-        this.escFunction = this.escFunction.bind(this);
-        document.addEventListener('keydown', this.escFunction, false);
 
-        Cache.ee.addListener('show-login', this.showLogin);
-    }
+    const receiveToken = (event: any, id: string) => {
 
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.escFunction, false);
-
-        Cache.ee.removeListener('show-login', this.showLogin);
-    }
-
-    receiveToken(event: any, id: string) {
-
-        if (!this.authService || !this.authService.token) {
+        if (!authService.current || !authService.current.token) {
             return;
         }
 
-        const index = this.openWindows.indexOf(id);
+        const index = openWindows.current.indexOf(id);
         if (index > -1) {
-            this.openWindows.splice(index, 1);
+            openWindows.current.splice(index, 1);
         }
 
         if (!event.data.hasOwnProperty('accessToken') || event.data.hasOwnProperty('error')) {
-            this.setState({
-                error: true
-            });
+            setError(true);
             return;
         }
         PresentationApi.clearCache();
         ImageApi.clearCache();
-        Token.set(event.data, this.authService.token, this.authService.logout);
-        this.props.setCurrentManifest();
-
-        this.setState({
-            visible: false
-        });
+        Token.set(event.data, authService.current.token, authService.current.logout);
+        props.setCurrentManifest();
+        setVisible(false);
     }
-}
 
-export default Login;
+    if (!authService.current) {
+        return <></>
+    }
+    const aService = authService.current;
+
+    return <>
+        <iframe id={"message-frame-" + messageFrameId.current} className="aiiif-message-frame " title="message frame" />
+        <Dialog
+            id={aService.id}
+            open={visible}
+            onClose={() => setVisible(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle >
+                {aService.header}
+                <span className="close" onClick={() => setVisible(false)}>&times;</span>
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText color="textPrimary" component="div">
+                    {body(aService)}
+                </DialogContentText>
+                <DialogActions>
+                    <Button onClick={() => openWindow(aService.id)} color="primary">
+                        {aService.confirmLabel}
+                    </Button>
+                </DialogActions>
+            </DialogContent>
+        </Dialog>
+    </>;
+}
