@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './search.css';
 import Search from "./Search";
 import TreeView from "./treeView/TreeView";
-import IManifestData, {ISearchService} from "../interface/IManifestData";
+import IManifestData from "../interface/IManifestData";
 import ITree from "../interface/ITree";
 import TreeIcon from "@material-ui/icons/AccountTree";
 import SearchIcon from "@material-ui/icons/Search";

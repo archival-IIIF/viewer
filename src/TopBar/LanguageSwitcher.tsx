@@ -44,8 +44,6 @@ export default function LanguageSwitcher() {
         languages.push(<MenuItem key={i} onClick={() => changeLanguage(i)}>{translations[i]}</MenuItem>);
     }
 
-    console.log(anchorEl)
-
     return <>
         <div className="aiiif-icon-button" onClick={open} aria-controls="language-switch-menu"
              aria-haspopup="true">
