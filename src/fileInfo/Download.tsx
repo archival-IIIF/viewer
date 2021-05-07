@@ -10,53 +10,50 @@ interface IProps {
     currentManifest: IManifestData;
 }
 
-export default class Download extends React.Component<IProps, {}> {
+export default function Download(props: IProps) {
 
-    render() {
-
-        const manifestData = this.props.currentManifest;
-        if (
-            manifestData.manifestations.length > 0 ||
-            (manifestData.resource.manifestations && manifestData.resource.manifestations.length > 0)
-        ) {
-            return <div className="aiiif-show-downloads" onClick={() => this.showManifestationsModal()}>
-                    <Translation ns="common">{(t, { i18n }) => <>{t('download')}</>}</Translation>
-                </div>
-        }
-
-        return <></>;
+    const currentManifest = props.currentManifest;
+    if (
+        currentManifest.manifestations.length > 0 ||
+        (currentManifest.resource.manifestations && currentManifest.resource.manifestations.length > 0)
+    ) {
+        return <div className="aiiif-show-downloads" onClick={() => showManifestationsModal(currentManifest) }>
+                <Translation ns="common">{(t, { i18n }) => <>{t('download')}</>}</Translation>
+            </div>;
     }
 
-    showManifestationsModal() {
+    return <></>;
+}
 
-        const bodyJsx = [];
-        let manifestations = [];
-        const rawManifestations = this.props.currentManifest.manifestations;
-        const resource = this.props.currentManifest.resource;
-        if (rawManifestations.length > 0) {
-            manifestations = rawManifestations;
-        } else if (this.props.currentManifest.resource.manifestations && resource.manifestations.length > 0) {
-            manifestations = resource.manifestations;
-        }
+function showManifestationsModal(currentManifest: IManifestData) {
 
-        for (const i in manifestations) {
-            if (manifestations.hasOwnProperty(i)) {
-                const manifestation = manifestations[i];
-                bodyJsx.push(
-                    <a key={i} href={manifestation.url} className="aiiif-download" target="_blank"
-                       rel="noopener noreferrer">
-
-                        <FileIcon />
-                        {getLocalized(manifestation.label)}
-                    </a>
-                );
-            }
-        }
-
-        const alertArgs = {
-            titleJsx: <Translation ns="common">{(t, { i18n }) => <p>{t('download')}</p>}</Translation>,
-            bodyJsx
-        };
-        Cache.ee.emit('alert', alertArgs);
+    const bodyJsx = [];
+    let manifestations = [];
+    const rawManifestations = currentManifest.manifestations;
+    const resource = currentManifest.resource;
+    if (rawManifestations.length > 0) {
+        manifestations = rawManifestations;
+    } else if (currentManifest.resource.manifestations && resource.manifestations.length > 0) {
+        manifestations = resource.manifestations;
     }
+
+    for (const i in manifestations) {
+        if (manifestations.hasOwnProperty(i)) {
+            const manifestation = manifestations[i];
+            bodyJsx.push(
+                <a key={i} href={manifestation.url} className="aiiif-download" target="_blank"
+                   rel="noopener noreferrer">
+
+                    <FileIcon />
+                    {getLocalized(manifestation.label)}
+                </a>
+            );
+        }
+    }
+
+    const alertArgs = {
+        titleJsx: <Translation ns="common">{(t, { i18n }) => <p>{t('download')}</p>}</Translation>,
+        bodyJsx
+    };
+    Cache.ee.emit('alert', alertArgs);
 }

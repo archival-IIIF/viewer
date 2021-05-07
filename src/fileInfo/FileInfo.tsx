@@ -9,33 +9,30 @@ interface IProps {
     currentManifest: IManifestData;
 }
 
-class FileInfo extends React.Component<IProps, {}> {
+export default function FileInfo(props: IProps) {
 
-    render() {
-        if (this.props.currentManifest.restricted) {
-            return '';
-        }
+    if (props.currentManifest.restricted) {
+        return <></>;
+    }
 
-        if (isSingleManifest(this.props.currentManifest)) {
-            return (
-                <div className="aiiif-file-info">
-                    <div className="aiiif-box">
-                        <Metadata currentManifest={this.props.currentManifest} />
-                        <Share currentManifest={this.props.currentManifest} />
-                    </div>
-                </div>
-            );
-        }
-
+    if (isSingleManifest(props.currentManifest)) {
         return (
             <div className="aiiif-file-info">
-                <nav className="aiiif-bar">
-                    <Share currentManifest={this.props.currentManifest} />
-                </nav>
-                <Metadata currentManifest={this.props.currentManifest} />
+                <div className="aiiif-box">
+                    <Metadata currentManifest={props.currentManifest} />
+                    <Share currentManifest={props.currentManifest} />
+                </div>
             </div>
         );
     }
+
+    return (
+        <div className="aiiif-file-info">
+            <nav className="aiiif-bar">
+                <Share currentManifest={props.currentManifest} />
+            </nav>
+            <Metadata currentManifest={props.currentManifest} />
+        </div>
+    );
 }
 
-export default FileInfo;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import IManifestData from '../interface/IManifestData';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,113 +20,84 @@ interface IProps {
     currentManifest: IManifestData;
 }
 
-interface IState {
-    isOpen: boolean;
-    isEmbedVisible: boolean;
-}
-
 declare let global: {
     config: Config;
 };
 
 
-export default class Share extends React.Component<IProps,IState> {
+export default function Share(props: IProps) {
 
-    constructor(props: any) {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isEmbedVisible, setIsEmbedVisible] = useState<boolean>(false);
 
-        super(props);
-
-        this.state = {isOpen: false, isEmbedVisible: false};
-
-        this.toggleIsEmbedVisible = this.toggleIsEmbedVisible.bind(this);
+    const currentManifest = props.currentManifest;
+    if (
+        global.config.getDisableSharing() ||
+        currentManifest.restricted ||
+        (
+            currentManifest.authService &&
+            currentManifest.authService.profile !== ServiceProfile.AUTH_0_CLICK_THROUGH &&
+            currentManifest.authService.profile !== ServiceProfile.AUTH_1_CLICK_THROUGH
+        )
+    ) {
+        return <></>;
     }
 
-    render() {
-        const currentManifest = this.props.currentManifest;
-        if (
-            global.config.getDisableSharing() ||
-            currentManifest.restricted ||
-            (
-                currentManifest.authService &&
-                currentManifest.authService.profile !== ServiceProfile.AUTH_0_CLICK_THROUGH &&
-                currentManifest.authService.profile !== ServiceProfile.AUTH_1_CLICK_THROUGH
-            )
-        ) {
-            return '';
-        }
+    const title = getLocalized(currentManifest.label);
+    const encodedUrl = encodeURI(window.location.href);
+    const twitterUrl = 'https://twitter.com/intent/tweet?text=' + title + ': ' + encodedUrl;
+    const facebookUrl = 'https://www.facebook.com/sharer.php?u=' + encodedUrl;
 
-        const title = getLocalized(currentManifest.label);
-        const encodedUrl = encodeURI(window.location.href);
-        const twitterUrl = 'https://twitter.com/intent/tweet?text=' + title + ': ' + encodedUrl;
-        const facebookUrl = 'https://www.facebook.com/sharer.php?u=' + encodedUrl;
+    return (
+        <>
+            <div className="aiiif-icon-button" onClick={() => setIsOpen(true)}>
+                <ShareIcon />
+                <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
+            </div>
 
-        return (
-            <>
-                <div className="aiiif-icon-button" onClick={() => this.setIsOpen(true)}>
-                    <ShareIcon />
+            <Dialog onClose={() => setIsOpen(false)} aria-labelledby="simple-dialog-title"
+                    open={isOpen} fullWidth={true}>
+                <DialogTitle>
                     <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
-                </div>
+                    <span className="close" onClick={() => setIsOpen(false)}>&times;</span>
+                </DialogTitle>
+                <DialogContent>
 
-                <Dialog onClose={() => this.setIsOpen(false)} aria-labelledby="simple-dialog-title"
-                        open={this.state.isOpen} fullWidth={true}>
-                    <DialogTitle>
-                        <Translation ns="common">{(t, { i18n }) => <p>{t('share')}</p>}</Translation>
-                        <span className="close" onClick={() => this.setIsOpen(false)}>&times;</span>
-                    </DialogTitle>
-                    <DialogContent>
+                    <div className="aiiif-share-button-group">
+                        <a target="_blank" rel="noopener noreferrer" href={props.currentManifest.id}
+                           className="aiiif-share-button aiiif-share-button-iiif">
+                            <IIIFIcon />
+                        </a>
 
-                        <div className="aiiif-share-button-group">
-                            <a target="_blank" rel="noopener noreferrer" href={this.props.currentManifest.id}
-                               className="aiiif-share-button aiiif-share-button-iiif">
-                                <IIIFIcon />
-                            </a>
+                        <a href={"mailto:?subject=" + title + "&body=" + window.location.href}
+                           className="aiiif-share-button aiiif-share-button-email">
+                            <EmailIcon />
+                        </a>
 
-                            <a href={"mailto:?subject=" + title + "&body=" + window.location.href}
-                               className="aiiif-share-button aiiif-share-button-email">
-                                <EmailIcon />
-                            </a>
-
-                            <div className="aiiif-share-button aiiif-share-button-embed"
-                                 onClick={this.toggleIsEmbedVisible}>
-                                <CodeIcon />
-                            </div>
-
-                            <a target="_blank" rel="noopener noreferrer" href={facebookUrl}
-                               className="aiiif-share-button aiiif-share-button-facebook">
-                                <FacebookIcon />
-                            </a>
-
-                            <a href={twitterUrl} target="_blank" rel="noopener noreferrer"
-                               className="aiiif-share-button aiiif-share-button-twitter">
-                                <TwitterIcon />
-                            </a>
+                        <div className="aiiif-share-button aiiif-share-button-embed"
+                             onClick={() => setIsEmbedVisible(!isEmbedVisible)}>
+                            <CodeIcon />
                         </div>
 
-                        {this.renderEmbed()}
+                        <a target="_blank" rel="noopener noreferrer" href={facebookUrl}
+                           className="aiiif-share-button aiiif-share-button-facebook">
+                            <FacebookIcon />
+                        </a>
 
-                    </DialogContent>
-                </Dialog>
-            </>
-        );
-    }
+                        <a href={twitterUrl} target="_blank" rel="noopener noreferrer"
+                           className="aiiif-share-button aiiif-share-button-twitter">
+                            <TwitterIcon />
+                        </a>
+                    </div>
 
-    setIsOpen(isOpen: boolean) {
-        this.setState({isOpen})
-    }
+                    {isEmbedVisible &&
+                        <code className="aiiif-share-code">
+                            { unescape('<iframe width="560" height="315" src="'+window.location.href+'" />')}
+                        </code>
+                    }
 
-    toggleIsEmbedVisible() {
-        this.setState({isEmbedVisible: !this.state.isEmbedVisible})
-    }
-
-    renderEmbed() {
-        const iframe = unescape(
-            '<iframe width="560" height="315" src="'+window.location.href+'" frameBorder="0" />'
-        );
-        if (this.state.isEmbedVisible) {
-            return <code className="aiiif-share-code">
-                {iframe}
-            </code>;
-        }
-    }
-
+                </DialogContent>
+            </Dialog>
+        </>
+    );
 }
