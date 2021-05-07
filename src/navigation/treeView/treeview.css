@@ -4,6 +4,7 @@
     overflow-y: auto;
     width: 100%;
     align-self: stretch;
+    flex-grow: 2;
 }
 
 .aiiif-treeview-item {
