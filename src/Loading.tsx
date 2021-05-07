@@ -1,10 +1,6 @@
 import * as React from 'react';
 
-class Loading extends React.Component<{}, {}> {
+export default function Loading() {
 
-    render() {
-        return '';
-    }
+    return <></>;
 }
-
-export default Loading;

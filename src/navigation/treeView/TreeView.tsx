@@ -10,27 +10,20 @@ interface IProps {
     setCurrentManifest: (id: string) => void;
 }
 
-class TreeView extends React.Component<IProps, {}> {
+export default function TreeView(props: IProps) {
 
-    render() {
-
-        if (!this.props.tree) {
-            return <Loading/>;
-        }
-
-        return (
-            <div className="aiiif-treeview">
-                <TreeViewItem
-                    key={Math.random()}
-                    tree={this.props.tree}
-                    level={1}
-                    currentFolderId={this.props.currentFolderId}
-                    isOpen={this.props.tree.isOpen}
-                    setCurrentManifest={this.props.setCurrentManifest}
-                />
-            </div>
-        );
+    if (!props.tree) {
+        return <Loading/>;
     }
-}
 
-export default TreeView;
+    return <div className="aiiif-treeview">
+        <TreeViewItem
+            key={Math.random()}
+            tree={props.tree}
+            level={1}
+            currentFolderId={props.currentFolderId}
+            isOpen={props.tree.isOpen}
+            setCurrentManifest={props.setCurrentManifest}
+        />
+    </div>;
+}
