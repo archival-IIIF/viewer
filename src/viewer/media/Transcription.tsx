@@ -4,6 +4,7 @@ import * as DOMPurify from "dompurify";
 import Config from "../../lib/Config";
 import './transcription.css';
 import Cache from "../../lib/Cache";
+import {sanitizeRulesSet} from "../../lib/ManifestHelpers";
 
 interface IPros {
     currentManifest: IManifestData;
@@ -64,7 +65,7 @@ export default function Transcription(props: IPros) {
                      key={i++} ref={currentRef}>
                     <div className="aiiif-time-code">{hours}:{pad(minutes, 2)}:{pad(seconds, 2)}</div>
                     <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(t.content, global.config.getSanitizeRulesSet())
+                        __html: DOMPurify.sanitize(t.content, sanitizeRulesSet)
                     }}/>
                 </div>
             );
@@ -73,7 +74,7 @@ export default function Transcription(props: IPros) {
                 <div className="aiiif-transcription-part" onClick={() => props.jumpToTime(t.start)} key={i++}>
                     <div className="aiiif-time-code">{hours}:{pad(minutes, 2)}:{pad(seconds, 2)}</div>
                     <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(t.content, global.config.getSanitizeRulesSet())
+                        __html: DOMPurify.sanitize(t.content, sanitizeRulesSet)
                     }}/>
                 </div>
             );

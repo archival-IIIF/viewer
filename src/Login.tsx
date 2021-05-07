@@ -13,6 +13,7 @@ import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import * as DOMPurify from "dompurify";
 import Config from "./lib/Config";
 import {IAuthService} from "./interface/IManifestData";
+import {sanitizeRulesSet} from "./lib/ManifestHelpers";
 
 declare let global: {
     config: Config;
@@ -111,7 +112,7 @@ export default function Login(props: IProps) {
     const body = (authService: IAuthService) => {
         const body = [];
         body.push(<div key="description" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-            __html: DOMPurify.sanitize(authService.description ?? '', global.config.getSanitizeRulesSet())
+            __html: DOMPurify.sanitize(authService.description ?? '', sanitizeRulesSet)
         }} />);
 
 

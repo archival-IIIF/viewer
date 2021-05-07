@@ -29,12 +29,6 @@ class Config {
         nl: 'Nederlands'
     };
 
-    // See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
-    private sanitizeRulesSet = {
-        ALLOWED_ATTR: ['href', 'src', 'alt'],
-        ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span'],
-    };
-
     constructor(config: IConfigParameter) {
         this.language = config.language ? config.language : window.navigator.language;
         this.manifest = config.manifest ? config.manifest : '';
@@ -63,10 +57,6 @@ class Config {
 
     getMinimalNavBarWidth() {
         return this.minimalNavBarWidth;
-    }
-
-    getSanitizeRulesSet() {
-        return this.sanitizeRulesSet;
     }
 
     getLanguage() {

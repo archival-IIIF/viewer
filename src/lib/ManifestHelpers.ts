@@ -56,3 +56,9 @@ export function isSingleManifest(manifestData: IManifestData): boolean {
 export function hasTranscription(manifestData: IManifestData): boolean {
     return manifestData.transcription.length > 0;
 }
+
+// See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
+export const sanitizeRulesSet = {
+    ALLOWED_ATTR: ['href', 'src', 'alt'],
+    ALLOWED_TAGS: ['a', 'b', 'br', 'i', 'img', 'p', 'span'],
+};

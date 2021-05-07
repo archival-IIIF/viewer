@@ -4,7 +4,7 @@ import IManifestData from '../interface/IManifestData';
 import Config from '../lib/Config';
 import {Translation} from 'react-i18next';
 import './file-info.css';
-import {getLocalized, addBlankTarget} from "../lib/ManifestHelpers";
+import {getLocalized, addBlankTarget, sanitizeRulesSet} from "../lib/ManifestHelpers";
 import Download from "./Download";
 import UrlValidation from "../lib/UrlValidation";
 
@@ -38,7 +38,7 @@ export default function Metadata(props: IProps) {
                 <Translation ns="common">{(t, { i18n }) => <>{t('description')}</>}</Translation>
             </div>
             <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                __html: DOMPurify.sanitize(getLocalized(manifestData.description), global.config.getSanitizeRulesSet())
+                __html: DOMPurify.sanitize(getLocalized(manifestData.description), sanitizeRulesSet)
             }} />
         </div>);
     }
@@ -66,7 +66,7 @@ export default function Metadata(props: IProps) {
                 <div key={key++}>
                     <div className="aiiif-label">{label}</div>
                     <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(value, global.config.getSanitizeRulesSet())
+                        __html: DOMPurify.sanitize(value, sanitizeRulesSet)
                     }} />
                 </div>
             );
@@ -79,7 +79,7 @@ export default function Metadata(props: IProps) {
                 <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>
             </div>
             <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                __html: DOMPurify.sanitize(getLocalized(manifestData.attribution.value), global.config.getSanitizeRulesSet())
+                __html: DOMPurify.sanitize(getLocalized(manifestData.attribution.value), sanitizeRulesSet)
             }} />
         </div>);
     }
