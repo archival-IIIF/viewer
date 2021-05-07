@@ -277,7 +277,13 @@ class Manifest {
     }
 
     static getSearch(manifestoData: IIIFResource): ISearchService | undefined {
-        const searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
+        let searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
+        if (searchService) {
+            return {
+                id: searchService.id
+            }
+        }
+        searchService = manifestoData.getService(ServiceProfile.SEARCH_1);
         if (searchService) {
             return {
                 id: searchService.id
