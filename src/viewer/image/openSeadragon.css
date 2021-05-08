@@ -4,52 +4,6 @@
     margin: 0 auto;
 }
 
-
-.aiiif-zoom-in-button {
-    left: 10px;
-}
-
-.aiiif-zoom-out-button {
-    left:40px;
-}
-
-.aiiif-rotate-right-button {
-    left:70px;
-}
-
-
-.aiiif-home-button {
-    left:100px;
-}
-
-.aiiif-fullpage-button {
-    left: 130px;
-}
-
-.aiiif-previous-button {
-    left:160px;
-}
-
-.aiiif-next-button {
-    left:190px;
-}
-
-.aiiif-openseadragon-icon {
-    top: 8px;
-    position: absolute !important;
-    width: 24px;
-    height: 24px;
-    z-index: 999;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-}
-
-.aiiif-openseadragon-icon:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
 .openseadragon-message {
     color: white
 }

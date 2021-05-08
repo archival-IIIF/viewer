@@ -1,0 +1,45 @@
+.aiiif-openseadragon-action-buttons {
+    top: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    height: 47px;
+    position: absolute;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 999;
+    display: flex;
+}
+
+.aiiif-openseadragon-action-buttons > div {
+    text-align: center;
+    flex-grow: 2;
+    background-color: transparent;
+}
+
+.aiiif-openseadragon-action-buttons .aiiif-button-bar > button.active {
+    background-color: transparent;
+}
+
+.aiiif-openseadragon-action-buttons button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 1.6rem;
+    background-repeat: no-repeat;
+    margin-left: 6px;
+}
+
+.aiiif-openseadragon-action-buttons button > a {
+    font-size: 1.6rem;
+}
+
+.aiiif-openseadragon-action-buttons button:first-of-type {
+    margin-left: 0;
+}
+
+.aiiif-openseadragon-action-buttons button:disabled svg {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

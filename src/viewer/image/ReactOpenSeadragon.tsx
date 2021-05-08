@@ -3,26 +3,16 @@ import * as OpenSeadragon from 'openseadragon';
 import ImageApi from '../../fetch/ImageApi';
 import ViewerSpinner from '../ViewerSpinner';
 import Token from "../../lib/Token";
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import HomeIcon from '@material-ui/icons/Home';
-import RotateIcon from '@material-ui/icons/RotateRight';
-import FullScreenIcon from '@material-ui/icons/Fullscreen';
-import NextIcon from '@material-ui/icons/NavigateNext';
-import PreviousIcon from '@material-ui/icons/NavigateBefore';
 import {AnnotationType} from "../../fetch/SearchApi";
 import Cache from "../../lib/Cache";
 import i18next from 'i18next';
 import './openSeadragon.css';
 import {Options, Viewer} from "openseadragon";
+import ImageButtons from "./ImageButtons";
 
 interface IProps {
     source: any[];
     authDate?: number;
-}
-const iconStyle = {
-    color: "white",
-    fontSize: 32
 }
 
 const buttons = [
@@ -57,6 +47,7 @@ export default function ReactOpenSeadragon(props: IProps) {
 
 
     const [spinner, setSpinner] = useState<boolean>(true);
+    const [showButtons, setShowButtons] = useState<boolean>(true);
 
 
     const changeSource = (n: number) => {
@@ -214,36 +205,10 @@ export default function ReactOpenSeadragon(props: IProps) {
         }
     }
 
-    return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.source[0]}>
-        <button id={"zoom-in-button-" + id.current.toString()} className="aiiif-openseadragon-icon aiiif-zoom-in-button">
-            <ZoomInIcon style={iconStyle} />
-        </button>
-        <button id={"zoom-out-button-" + id.current.toString()} className="aiiif-openseadragon-icon aiiif-zoom-out-button">
-            <ZoomOutIcon style={iconStyle} />
-        </button>
-        <button id={"rotate-right-button-" + id.current.toString()}
-                className="aiiif-openseadragon-icon aiiif-rotate-right-button">
-            <RotateIcon style={iconStyle} />
-        </button>
-        <button id={"home-button-" + id.current.toString()} className="aiiif-openseadragon-icon aiiif-home-button">
-            <HomeIcon style={iconStyle} />
-        </button>
-        <button id={"fullpage-button-" + id.current.toString()} className="aiiif-openseadragon-icon aiiif-fullpage-button">
-            <FullScreenIcon style={iconStyle} />
-        </button>
-        {(data.current.length > 1) &&
-            <button className="aiiif-openseadragon-icon aiiif-previous-button" disabled={(j.current === 0)}
-                onClick={() => changeSource(j.current - 1)} title={i18next.t('common:previousPage')}>
-                <PreviousIcon style={iconStyle} />
-            </button>
-        }
-        {(data.current.length > 1) &&
-            <button className="aiiif-openseadragon-icon aiiif-next-button"
-                disabled={(j.current + 1 === data.current.length)}
-                onClick={() => changeSource(j.current + 1)} title={i18next.t('common:nextPage')}>
-                <NextIcon style={iconStyle}/>
-            </button>
-        }
+    return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.source[0]}
+                onMouseEnter={() => setShowButtons(true)}
+                onMouseLeave={() => setShowButtons(false)} >
+        <ImageButtons data={data.current} viewerId={id.current} j={j.current} changeSource={changeSource} show={showButtons}/>
         <ViewerSpinner show={spinner} />
         {renderSources()}
     </div>;
