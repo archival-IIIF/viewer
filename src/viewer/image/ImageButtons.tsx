@@ -1,9 +1,8 @@
 import React, {CSSProperties} from 'react';
 import i18next from "i18next";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {
-    faHome, faSearchPlus, faSearchMinus, faUndo, faExpand, faArrowLeft, faArrowRight
-} from "@fortawesome/free-solid-svg-icons";
+import {faHome, faSearchPlus, faSearchMinus, faUndo, faExpand, faArrowLeft, faArrowRight}
+    from "@fortawesome/free-solid-svg-icons";
 import './imageButtons.css';
 
 interface IProps {
