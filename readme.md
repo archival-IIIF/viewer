@@ -1,8 +1,21 @@
 # Archival IIIF viewer
 
-## Components
+This software is an open-source and web-based viewer for [IIIF](https://iiif.io/). It is focused on tree views but also works with single manifests.
 
-![](https://raw.githubusercontent.com/archival-IIIF/server/master/docs/components.png)
+The viewer was developed for the Archival IIIF Server, but also works with any other IIIF server.
+
+## Demo
+
+https://iiif.sozialarchiv.ch
+
+## Features
+
+* [IIIF Image API 2 & 3](https://iiif.io/api/image/3.0/)
+* [IIIF Presentation API 2 & 3](https://iiif.io/api/presentation/3.0/)
+* [IIIF Authentication API](https://iiif.io/api/auth/1.0/)
+* [IIIF Search API](https://iiif.io/api/search/1.0/)
+* [Image](https://iiif.sozialarchiv.ch/?manifest=https://iiif.sozialarchiv.ch/iiif/manifest/Images--Amsterdam_-_Boat_-_0635.jpg), [audio](https://iiif.sozialarchiv.ch/?manifest=https://iiif.sozialarchiv.ch/iiif/manifest/Audio__&__Video--Audio--378_Amsterdam.ogg), [video](https://iiif.sozialarchiv.ch/?manifest=https://iiif.sozialarchiv.ch/iiif/manifest/Audio__&__Video--Video--Amsterdam_krijgt_nieuwe_sleepboten-519265.ogv), [pdf](https://iiif.sozialarchiv.ch/?manifest=https://iiif.sozialarchiv.ch/iiif/manifest/Info--Test.pdf) and [plain text](https://iiif.sozialarchiv.ch/?manifest=https://iiif.sozialarchiv.ch/iiif/manifest/Info--Short__information.txt) support
+* Audio and video transcripts
 
 ## Download
 
@@ -93,36 +106,18 @@ https://github.com/archival-IIIF/viewer/releases
 
 ## Development
 
-# Installation
+### Installation
 
 1. Install [Node.js](https://nodejs.org/en/https://nodejs.org/en/)
 1. Install [yarn](https://yarnpkg.com) or [npm](https://www.npmjs.com/)
 1. ```yarn install``` or ```npm install```
 1. ```yarn run start``` or  ```npm run start```
 
-# Building
+### Building
 
 1. ```yarn run build``` or  ```npm run build```
 
-
-## Supported Browsers
-
-| Edge | Firefox | Chrome | Safari |
-|------|---------|--------|--------|
-| ≥ 14 | ≥ 52    | ≥ 49   | ≥ 10   |
-
-
-## IIIF suport
-
-* [IIIF Image API 2 & 3](https://iiif.io/api/image/3.0/)
-* [IIIF Presentation API 2 & 3](https://iiif.io/api/presentation/3.0/)
-* [IIIF Authentication API 1](https://iiif.io/api/auth/1.0/)
-
-## Demo
-
-https://iiif.sozialarchiv.ch
-
-## See also
+#### See also
 
 * [iiif.io](https://iiif.io/)
 * [React](https://reactjs.org/docs/getting-started.html)
