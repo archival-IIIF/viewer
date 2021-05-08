@@ -34,18 +34,18 @@ export default function ImageButtons(props: IProps) {
             <FontAwesomeIcon icon={faHome}  />
         </button>
         <button id={"fullpage-button-" + props.viewerId.toString()} className="aiiif-openseadragon-icon aiiif-fullpage-button">
-            <FontAwesomeIcon  icon={faExpand} />
+            <FontAwesomeIcon icon={faExpand} />
         </button>
         {(props.data.length > 1) &&
         <button disabled={(props.j === 0)}
                 onClick={() => props.changeSource(props.j - 1)} title={i18next.t('common:previousPage')}>
-            <FontAwesomeIcon  icon={faArrowLeft}/>
+            <FontAwesomeIcon icon={faArrowLeft}/>
         </button>
         }
         {(props.data.length > 1) &&
         <button disabled={(props.j + 1 === props.data.length)}
                 onClick={() => props.changeSource(props.j + 1)} title={i18next.t('common:nextPage')}>
-            <FontAwesomeIcon  icon={faArrowRight}/>
+            <FontAwesomeIcon icon={faArrowRight}/>
         </button>
         }
     </div>
