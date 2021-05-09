@@ -1,7 +1,7 @@
 .aiiif-topbar {
     height: 40px;
     padding: 10px;
-    background-color: #f3f2f1;
+    background: linear-gradient(117deg,#fefefd,#fefefd 20%,#fafaf8 40%,#fafaf8);
     justify-content: center;
     display: flex;
     z-index: 1;
