@@ -1,48 +1,24 @@
 import PresentationApi from "../../fetch/PresentationApi";
 import IManifestData from "../../interface/IManifestData";
-import ITree from "../../interface/ITree";
-import {getLocalized} from "../../lib/ManifestHelpers";
+
+interface ITreeStatus {[key: string]: boolean};
 
 class TreeBuilder {
 
+    static cache: ITreeStatus = {};
 
-    static get(url: string, tree?: ITree, done?: (finishedTree?: ITree) => void, limited?: boolean) {
+    static buildCache(url: string, done: () => void) {
 
         PresentationApi.get(
             url,
             async function(manifestData: IManifestData) {
+                TreeBuilder.cache[manifestData.id] = true;
 
-                const tree2: ITree = {
-                    id: manifestData.id,
-                    label: getLocalized(manifestData.label),
-                    isOpen: true,
-                    children: []
-                };
-                for (const child of manifestData.collections) {
-                    const newChild: ITree = {
-                        id: child.id,
-                        label: getLocalized(child.label),
-                        children: []
-                    }
-                    if (tree && tree.id === child.id) {
-                        newChild.children = tree.children;
-                        newChild.isOpen = true;
-                    } else {
-                        const d: IManifestData = await new Promise((resolve, reject) => {
-                            PresentationApi.get(child.id, function (d: IManifestData) {
-                                resolve(d);
-                            }, true);
-                        });
-                        newChild.hasLockedChildren = d.collections.length > 0;
-                    }
-                    tree2.children.push(newChild);
-                }
-
-                if(manifestData.parentId && limited !== true) {
-                    TreeBuilder.get(manifestData.parentId, tree2, done);
+                if (manifestData.parentId) {
+                    TreeBuilder.buildCache(manifestData.parentId, done);
                 } else {
                     if (done) {
-                        done(tree2);
+                        done();
                     }
                 }
 
