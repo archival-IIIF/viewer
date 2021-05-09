@@ -70,11 +70,11 @@ export default function App(props: IProps) {
                     PresentationApi.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {
-                            /*TreeBuilder.get(currentFolder.id, undefined, (tree) => {
-                                setCurrentManifest(currentManifest);
-                                setCurrentFolder(currentFolder);
-                                setTree(tree);
-                            });*/
+                            setCurrentManifest(currentManifest);
+                            setCurrentFolder(currentFolder);
+                            TreeBuilder.buildCache(currentFolder.id, () => {
+                                setTreeDate(Date.now());
+                            });
                         }
                     )
                 } else {
