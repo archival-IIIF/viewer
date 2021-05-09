@@ -14,11 +14,11 @@ import Cache from "./lib/Cache";
 import IManifestData from "./interface/IManifestData";
 import PresentationApi from "./fetch/PresentationApi";
 import TreeBuilder from "./navigation/treeView/TreeBuilder";
-import ITree from "./interface/ITree";
 import ManifestData from "./entity/ManifestData";
 import Navigation from "./navigation/Navigation";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 import './lib/i18n';
+import {AppContext} from "./AppContext";
 
 interface IProps {
     config: IConfigParameter;
@@ -37,9 +37,9 @@ export default function App(props: IProps) {
 
     const [currentManifest, setCurrentManifest] = useState<IManifestData | undefined>(undefined);
     const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);
-    const [tree, setTree] = useState<ITree | undefined>(undefined);
+    const [treeDate, setTreeDate] = useState<number>(Date.now());
     const [authDate, setAuthDate] = useState<number>(0);
-    const [q] = useState< string | null>(PresentationApi.getGetParameter('q', window.location.href));
+    const q = PresentationApi.getGetParameter('q', window.location.href);
 
     const setCurrentManifest0 = (id?: string) => {
 
@@ -61,20 +61,20 @@ export default function App(props: IProps) {
 
                 if (currentManifest.type === 'Collection') {
                     const currentFolder = currentManifest;
-                    TreeBuilder.get(currentFolder.id, undefined, (tree) => {
-                        setCurrentManifest(currentManifest);
-                        setCurrentFolder(currentFolder);
-                        setTree(tree);
+                    setCurrentManifest(currentManifest);
+                    setCurrentFolder(currentFolder);
+                    TreeBuilder.buildCache(currentFolder.id, () => {
+                        setTreeDate(Date.now());
                     });
                 } else if (!isSingleManifest(currentManifest)) {
                     PresentationApi.get(
                         currentManifest.parentId,
                         (currentFolder: IManifestData) => {
-                            TreeBuilder.get(currentFolder.id, undefined, (tree) => {
+                            /*TreeBuilder.get(currentFolder.id, undefined, (tree) => {
                                 setCurrentManifest(currentManifest);
                                 setCurrentFolder(currentFolder);
                                 setTree(tree);
-                            });
+                            });*/
                         }
                     )
                 } else {
@@ -121,31 +121,31 @@ export default function App(props: IProps) {
         }
     }, []);
 
-
-    return <I18nextProvider i18n={i18n}>
-        <Alert />
-        <Login setCurrentManifest={setCurrentManifest0}/>
-        <TopBar key={authDate} currentManifest={currentManifest} />
-        {(!currentManifest || !currentFolder) ?
-            <></> :
-            <Splitter
-                id="main"
-                a={<Navigation
-                    tree={tree}
-                    currentManifest={currentManifest}
-                    currentFolder={currentFolder}
-                    setCurrentManifest={setCurrentManifest0}
-                    q={q}
-                />}
-                b={<Content
-                    key={currentManifest.id}
-                    currentManifest={currentManifest}
-                    currentFolder={currentFolder}
-                    setCurrentManifest={setCurrentManifest0}
-                    authDate={authDate}
-                />}
-                direction="vertical"
-            />
-        }
-    </I18nextProvider>;
+    return <AppContext.Provider value={{treeDate}}>
+        <I18nextProvider i18n={i18n}>
+            <Alert />
+            <Login setCurrentManifest={setCurrentManifest0}/>
+            <TopBar key={authDate} currentManifest={currentManifest} />
+            {(!currentManifest || !currentFolder) ?
+                <></> :
+                <Splitter
+                    id="main"
+                    a={<Navigation
+                        currentManifest={currentManifest}
+                        currentFolder={currentFolder}
+                        setCurrentManifest={setCurrentManifest0}
+                        q={q}
+                    />}
+                    b={<Content
+                        key={currentManifest.id}
+                        currentManifest={currentManifest}
+                        currentFolder={currentFolder}
+                        setCurrentManifest={setCurrentManifest0}
+                        authDate={authDate}
+                    />}
+                    direction="vertical"
+                />
+            }
+        </I18nextProvider>
+    </AppContext.Provider>;
 }

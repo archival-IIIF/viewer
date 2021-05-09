@@ -1,61 +1,60 @@
 import * as React from 'react';
-import Loading from '../../Loading';
 import './treeview.css';
-import ITree from "../../interface/ITree";
-import TreeBuilder from "./TreeBuilder";
 import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
 import CaretRightIcon from '@material-ui/icons/ArrowRight';
 import {useState} from "react";
+import {getLocalized} from "../../lib/ManifestHelpers";
+import PresentationApi from "../../fetch/PresentationApi";
+import IManifestData, {IManifestReference} from "../../interface/IManifestData";
+import {PropertyValue} from "manifesto.js";
+import TreeBuilder from "./TreeBuilder";
 
 
 interface IPros {
-    tree?: ITree;
+    id: string;
+    children?: IManifestReference[];
+    label: PropertyValue;
     level: number;
     currentFolderId?: string;
-    isOpen?: boolean;
     setCurrentManifest: (id: string) => void;
 }
 
 export default function TreeViewItem(props: IPros) {
 
-    const [isOpen, setIsOpen] = useState<boolean>(props.isOpen === true);
-    const [tree, setTree] = useState<ITree | undefined>(props.tree);
+    const [children, setChildren] = useState<IManifestReference[] | undefined>(props.children);
+    const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id] ?? false);
 
     const isSubTreeMissing = (): boolean => {
-        return (props.tree && props.tree.hasLockedChildren && props.tree.children.length === 0) ? true : false;
+
+        return !children;
     }
+
+
 
     const loadSubTree = () => {
-        if (props.tree) {
-            TreeBuilder.get(props.tree.id, undefined, (tree) => {
-                setTree(tree);
+        PresentationApi.get(
+            props.id,
+            async function(manifestData: IManifestData) {
+                setChildren(manifestData.collections ?? []);
                 setIsOpen(true);
-            }, true);
-        }
+            }
+        );
 
-    }
-
-
-    const setOpen = () => {
-        if (isSubTreeMissing()) {
-            loadSubTree();
-        } else {
-            setIsOpen(true);
-        }
     }
 
     const toggleCaret = () => {
 
         if (isOpen) {
-            setIsOpen(false)
-            return;
+            TreeBuilder.cache[props.id] = false;
+            setIsOpen(false);
+        } else {
+            TreeBuilder.cache[props.id] = true;
+            if (isSubTreeMissing()) {
+                loadSubTree();
+            } else {
+                setIsOpen(true);
+            }
         }
-
-        setOpen();
-    }
-
-    if (!tree) {
-        return <Loading/>;
     }
 
     const style = {marginLeft: (props.level - 1) * 10};
@@ -67,48 +66,66 @@ export default function TreeViewItem(props: IPros) {
         fontSize: 32
     }
 
-    if ((!tree.children || tree.children.length === 0) && tree.hasLockedChildren !== true) {
+
+
+    if (children?.length === 0) {
         classNameCaret += ' aiiif-no-caret';
     } else if (isOpen) {
         caret = <CaretDownIcon style={iconStyle} />;
     } else {
         caret = <CaretRightIcon style={iconStyle} />;
     }
-    if (tree.id === props.currentFolderId) {
+    if (props.id === props.currentFolderId) {
         className += ' aiiif-current';
     }
-    const label = tree.label;
+    const label = getLocalized(props.label);
 
 
-    const children: any = [];
-    if (isOpen) {
+    const childrenElements: JSX.Element[] = [];
+
+
+
+    if (isOpen && children) {
         const childrenLevel = props.level + 1;
-        if (tree.children) {
-            for (const child of tree.children) {
-                children.push(
+
+
+        for (const child of children) {
+            const c = PresentationApi.fetchFromCache(child.id);
+            if (c === false) {
+                childrenElements.push(
                     <TreeViewItem
                         level={childrenLevel}
                         key={Math.random()}
-                        tree={child}
-                        isOpen={child.isOpen}
+                        id={child.id}
+                        label={child.label}
                         currentFolderId={props.currentFolderId}
                         setCurrentManifest={props.setCurrentManifest}
                     />
                 );
-            }
+           } else {
+                childrenElements.push(
+                   <TreeViewItem
+                       level={childrenLevel}
+                       key={Math.random()}
+                       id={c.id}
+                       label={c.label}
+                       children={c.collections ?? []}
+                       currentFolderId={props.currentFolderId}
+                       setCurrentManifest={props.setCurrentManifest}
+                   />
+               );
+           }
         }
     }
 
-    return (
-        <div>
-            <div className={className} style={style}>
-                <div className={classNameCaret} onClick={() => toggleCaret()}>
-                    {caret}
-                </div>
-                <div className="aiiif-treeview-label" onClick={() => props.setCurrentManifest(tree.id)}>{label}</div>
-            </div>
-            {children}
-        </div>
-    );
-}
 
+    return <div>
+        <div className={className} style={style}>
+            <div className={classNameCaret} onClick={() => toggleCaret()}>
+                {caret}
+            </div>
+            <div className="aiiif-treeview-label" onClick={() => props.setCurrentManifest(props.id)}>{label}</div>
+        </div>
+        {childrenElements}
+    </div>;
+}

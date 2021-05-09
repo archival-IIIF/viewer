@@ -19,8 +19,8 @@ class Manifest {
 
     static lang: string = 'en';
 
-    static cache: any = {};
-    static cacheSkipAuthentication: any = {};
+    static cache: {[key: string]: IManifestData} = {};
+    static cacheSkipAuthentication: {[key: string]: IManifestData} = {};
 
 
     static get(url?: string, callback?: any, skipAuthentication?: boolean) {
@@ -678,7 +678,7 @@ class Manifest {
         return collections;
     }
 
-    static fetchFromCache(url: string, skipAuthentication?: boolean) {
+    static fetchFromCache(url: string, skipAuthentication?: boolean): IManifestData | false {
 
         if (this.cache.hasOwnProperty(url)) {
             return this.cache[url];
@@ -707,6 +707,16 @@ class Manifest {
 
     static clearCache() {
         this.cache = {};
+    }
+
+    static getRootId() {
+        for(const m of Object.values(this.cache)) {
+            if (m.parentId === undefined && m.id) {
+                return m.id;
+            }
+        }
+
+        return undefined;
     }
 
     static getGetParameter(name: string, url: string) {
