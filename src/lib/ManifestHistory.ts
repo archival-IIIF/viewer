@@ -1,3 +1,5 @@
+import PresentationApi from "../fetch/PresentationApi";
+
 class ManifestHistory {
 
     static previousIds: string[] = [];
@@ -12,7 +14,13 @@ class ManifestHistory {
             this.previousIds.push(id);
         }
 
-        window.history.pushState({}, label, '?manifest=' + id);
+        let url = '?manifest=' + id;
+        const q = PresentationApi.getGetParameter('q', window.location.href);
+        if (q) {
+            url += '&q=' + q;
+        }
+
+        window.history.pushState({}, label, url);
 
     }
 
