@@ -92,7 +92,7 @@ export default function ReactOpenSeadragon(props: IProps) {
                 defaultZoomLevel: 0,
                 tileSources: result[0],
                 showNavigationControl: true,
-                showNavigator: result.length === 1,
+                showNavigator: false,
                 showRotationControl: true,
                 maxZoomPixelRatio: 2,
                 controlsFadeDelay: 250,
