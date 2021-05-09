@@ -11,6 +11,8 @@ class Config {
 
     private readonly disableSharing: boolean;
 
+    private readonly disableDownload: boolean;
+
     private readonly disableLanguageSelection: boolean;
 
     private readonly externalSearchUrl?: string;
@@ -34,6 +36,7 @@ class Config {
         this.manifest = config.manifest ? config.manifest : '';
         this.allowedOrigins = config.allowedOrigins ? config.allowedOrigins : '*';
         this.disableSharing = config.disableSharing ? config.disableSharing : false;
+        this.disableDownload = config.disableDownload ? config.disableDownload : false;
         this.disableLanguageSelection = config.disableLanguageSelection ? config.disableLanguageSelection : false;
         this.externalSearchUrl = config.externalSearchUrl;
     }
@@ -86,6 +89,10 @@ class Config {
 
     getDisableSharing() {
         return this.disableSharing;
+    }
+
+    getDisableDownload() {
+        return this.disableDownload;
     }
 
     getDisableLanguageSelection() {

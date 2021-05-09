@@ -77,7 +77,14 @@ https://github.com/archival-IIIF/viewer/releases
         </tr>
         <tr>
             <td>disableSharing</td>
-            <td>Disable share button</td>
+            <td>Disable share tab</td>
+            <td><code>true</code></td>
+            <td>No</td>
+            <td><code>false</code></td>
+        </tr>
+        <tr>
+            <td>disableDownload</td>
+            <td>Disable download tab</td>
             <td><code>true</code></td>
             <td>No</td>
             <td><code>false</code></td>
