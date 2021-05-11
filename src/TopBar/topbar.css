@@ -13,6 +13,7 @@
     height: 40px;
     background-color: #f3f2f1;
     position: sticky;
+    padding: 0 8px;
 }
 
 .aiiif-icon-button {

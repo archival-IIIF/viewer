@@ -2,11 +2,13 @@
 
 ## 1.0.0
 
-* TreeView more lazy #156
-* Migration to react hooks
-* Disable download option added
 * Audio and video transcript support added
-* Info nav bar added
+* TreeView more lazy #156
+* Search possibility in none single manifests add, #163
+* Search possibility for folder view added
+* Disable download option added
+* Migration to React hooks and Content API
+* Info nav bar added, #162
 * IIIF SEARCH API 1.0 support added
 * SeaDragon showNavigator disabled
 * Image buttons with auto hide
