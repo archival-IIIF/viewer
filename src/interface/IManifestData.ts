@@ -45,7 +45,7 @@ export interface IAuthService {
 
 export interface ISearchService {
     id: string;
-    autoComplete?: string;
+    autoCompleteId?: string;
 }
 
 

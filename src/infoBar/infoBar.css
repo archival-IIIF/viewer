@@ -49,17 +49,6 @@
     background-color: lightgrey;
 }
 
-.aiiif-search-result-item {
-    text-align: left;
-    line-height: 1.6rem;
-    cursor: pointer;
-    margin: 10px;
-}
-
-.aiiif-search-result-item.active  > .aiiif-badge  {
-    background-color: #7CD6FA;;
-    color: white !important;
-}
 
 .aiiif-metadata-item {
     text-align: left;

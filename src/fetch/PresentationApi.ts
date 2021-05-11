@@ -279,16 +279,33 @@ class Manifest {
     static getSearch(manifestoData: IIIFResource): ISearchService | undefined {
         let searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
         if (searchService) {
+            let autoCompleteService = searchService.getService(ServiceProfile.SEARCH_0_AUTO_COMPLETE);
+            if (autoCompleteService) {
+                return {
+                    id: searchService.id,
+                    autoCompleteId: autoCompleteService.id
+                }
+            }
             return {
                 id: searchService.id
             }
         }
         searchService = manifestoData.getService(ServiceProfile.SEARCH_1);
         if (searchService) {
+
+            let autoCompleteService = searchService.getService(ServiceProfile.SEARCH_1_AUTO_COMPLETE);
+            if (autoCompleteService) {
+                return {
+                    id: searchService.id,
+                    autoCompleteId: autoCompleteService.id
+                }
+            }
+
             return {
                 id: searchService.id
             }
         }
+
 
         return undefined;
     }

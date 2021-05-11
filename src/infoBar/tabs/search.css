@@ -34,10 +34,12 @@
 .aiiif-search-result-item {
     line-height: 1.6rem;
     cursor: pointer;
+    text-align: left;
+    margin: 10px 0;
 }
 
 .aiiif-search-result-item > p {
-    margin: 10px;
+    margin: 10px 0;
 }
 
 .aiiif-search-input {
