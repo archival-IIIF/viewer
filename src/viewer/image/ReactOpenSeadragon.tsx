@@ -40,17 +40,49 @@ const buttons = [
 
 export default function ReactOpenSeadragon(props: IProps) {
 
-    const {page, setPage, annotation} = useContext(AppContext);
+    const {page, setPage, currentAnnotation, searchResult} = useContext(AppContext);
     const viewer = useRef<Viewer | undefined | null>(undefined);
     const id = useRef<number>(Math.random());
-    const data = useRef<any[]>([]);
 
 
     const [spinner, setSpinner] = useState<boolean>(true);
     const [showButtons, setShowButtons] = useState<boolean>(true);
 
 
+    useEffect(() => {
+        if (currentAnnotation && currentAnnotation.page !== page) {
+            setPage(currentAnnotation.page);
+        }
+    });
+
     // change page
+    useEffect(() => {
+
+        if (!viewer.current) {
+            return;
+        }
+
+        setSpinner(true);
+        const oldImage = viewer.current.world.getItemAt(0);
+        viewer.current.world.removeItem(oldImage);
+
+        ImageApi.get(props.source[page].id, function(result: any) {
+
+            if (!viewer.current) {
+                return;
+            }
+
+            viewer.current.addTiledImage({
+                tileSource: result,
+                success: () => {
+                    setSpinner(false);
+                }
+            });
+        });
+
+    }, [page, props.source]);
+
+    // redraw annotations
     useEffect(() => {
         if (!viewer.current) {
             return;
@@ -58,16 +90,31 @@ export default function ReactOpenSeadragon(props: IProps) {
 
         viewer.current.clearOverlays();
 
-        if (data.current.hasOwnProperty(page)) {
-            const oldImage = viewer.current.world.getItemAt(0);
-            viewer.current.addTiledImage({
-                tileSource: data.current[page],
-                success: function() {
-                    viewer.current?.world.removeItem(oldImage);
-                }
+        for (const r of searchResult) {
+            const annotation = r.resource;
+            if (annotation.page !== page) {
+                continue;
+            }
+
+            const elt = document.createElement("div");
+            elt.className = "aiiif-highlight";
+
+            if (currentAnnotation && annotation.id === currentAnnotation.id) {
+                elt.className += ' active';
+            }
+
+            const imageWidth = props.source[annotation.page].width;
+            viewer.current.addOverlay({
+                element: elt,
+                location: new OpenSeadragon.Rect(
+                    annotation.x/imageWidth,
+                    annotation.y/imageWidth,
+                    annotation.width/imageWidth,
+                    annotation.height/imageWidth)
             });
         }
-    }, [page]);
+
+    });
 
     // init viewer
     useEffect(() => {
@@ -77,18 +124,18 @@ export default function ReactOpenSeadragon(props: IProps) {
 
         viewer.current = null;
 
-        ImageApi.getMulti(props.source, function(result: any) {
+
+        ImageApi.get(props.source[page].id, function(result: any) {
 
             if (result[0] && result[0].statusCode === 401) {
                 viewer.current = undefined;
                 return;
             }
 
-            data.current = result;
             const options: Options = {
                 id: 'openseadragon-' + id.current,
                 defaultZoomLevel: 0,
-                tileSources: result[0],
+                tileSources: result,
                 showNavigationControl: true,
                 showNavigator: false,
                 showRotationControl: true,
@@ -149,35 +196,6 @@ export default function ReactOpenSeadragon(props: IProps) {
             i18next.off('languageChanged', changeLanguage);
         }
     })
-
-    useEffect(() => {
-        if (!annotation || !viewer.current) {
-            return;
-        }
-
-        const index: any = props.source.findIndex((s: any) => s.on === annotation.on);
-        if (index < 0) {
-            return;
-        }
-
-        if (index !== page) {
-            setPage(index);
-        } else {
-            viewer.current.clearOverlays();
-        }
-
-        const elt = document.createElement("div");
-        elt.className = "aiiif-highlight";
-        const imageWidth = props.source[index].width;
-        viewer.current.addOverlay({
-            element: elt,
-            location: new OpenSeadragon.Rect(
-                annotation.x/imageWidth,
-                annotation.y/imageWidth,
-                annotation.width/imageWidth,
-                annotation.height/imageWidth)
-        });
-    });
 
     return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.source[0]}
                 onMouseEnter={() => setShowButtons(true)}

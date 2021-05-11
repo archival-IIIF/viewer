@@ -1,6 +1,6 @@
 import React from 'react';
 import IManifestData from "./interface/IManifestData";
-import {AnnotationType} from "./fetch/SearchApi";
+import {AnnotationType, HitType} from "./fetch/SearchApi";
 
 interface IContext {
     treeDate: number;
@@ -14,8 +14,10 @@ interface IContext {
     setCurrentFolder: (manifest: IManifestData | undefined) => void;
     authDate: number;
     setAuthDate: (authDate: number) => void;
-    annotation: AnnotationType | undefined;
-    setAnnotation: (annotation: AnnotationType | undefined) => void;
+    currentAnnotation: AnnotationType | undefined;
+    setCurrentAnnotation: (annotation: AnnotationType | undefined) => void;
+    searchResult: HitType[];
+    setSearchResult: (annotation: HitType[]) => void;
 }
 
 export const AppContext = React.createContext<IContext>({
@@ -30,6 +32,8 @@ export const AppContext = React.createContext<IContext>({
     setCurrentFolder: () => {},
     authDate: 0,
     setAuthDate: () => {},
-    annotation: undefined,
-    setAnnotation: () => {}
+    currentAnnotation: undefined,
+    setCurrentAnnotation: () => {},
+    searchResult: [],
+    setSearchResult: () => {}
 });

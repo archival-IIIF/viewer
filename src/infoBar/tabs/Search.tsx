@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
-import SearchApi, {HitType} from "../../fetch/SearchApi";
+import SearchApi from "../../fetch/SearchApi";
 import './search.css';
-import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import i18next from 'i18next';
 import {AppContext} from "../../AppContext";
@@ -9,9 +8,9 @@ import {AppContext} from "../../AppContext";
 
 export default function Search() {
 
-    const {currentManifest, annotation, setAnnotation} = useContext(AppContext);
+    const {currentManifest, currentAnnotation, setCurrentAnnotation, searchResult,
+        setSearchResult} = useContext(AppContext);
     const [searchPhrase, setSearchPhrase] = useState<string>('');
-    const [hits, setHits] = useState<HitType[]>([]);
     if (!currentManifest || !currentManifest.search) {
         return <></>;
     }
@@ -24,35 +23,35 @@ export default function Search() {
 
     const fetchSearchResults = (searchPhrase: string) => {
         if (searchPhrase === '') {
-            setHits([]);
+            setSearchResult([]);
             return;
         }
 
         const searchUrl = searchId + '?q=' + searchPhrase;
-        SearchApi.get(searchUrl, setHits)
+        SearchApi.get(searchUrl, currentManifest, setSearchResult)
     }
 
     const renderHits = () => {
-        if (hits.length === 0) {
+        if (searchResult.length === 0) {
             return <></>;
         }
 
         const output = [];
-        for (const hit of hits) {
-            let circleClassName = 'aiiif-circle';
-            if (annotation && hit.resource.id === annotation.id) {
-                circleClassName += ' aiiif-circle-active';
+        for (const hit of searchResult) {
+            let className = 'aiiif-search-result-item';
+            if (currentAnnotation && hit.resource.id === currentAnnotation.id) {
+                className += ' aiiif-search-result-item-active';
             }
-            output.push(
-                <div className="aiiif-search-result-item" key={hit.i}
-                     onClick={() => setAnnotation(hit.resource)}>
-                    <Chip className={circleClassName} label={hit.i}/>
 
-                    <p>{stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}</p>
+            output.push(
+                <div className={className} key={hit.i}
+                     onClick={() => setCurrentAnnotation(hit.resource)}>
+                    <span className="aiiif-search-badge">{i18next.t('common:pageDot')} {hit.resource.page + 1}</span>
+
+                    {stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}
                 </div>
             );
         }
-
         return output;
     }
 

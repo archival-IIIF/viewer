@@ -410,6 +410,7 @@ class Manifest {
 
     static getIIF3Resource(sequence0: any) {
 
+
         const images = [];
         for (const canvas of sequence0.getCanvases()) {
             try {

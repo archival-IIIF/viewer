@@ -44,11 +44,23 @@
     margin-bottom: 12px !important;
 }
 
-.aiiif-circle-active {
-    background-color: #ffff00 !important;
+.aiiif-search-badge {
+    font-size: 0.8rem;
+    background-color: #ffff00;
+    border-radius: 20px;
+    padding: 2px 6px;
+    margin-right: 4px;
+}
+.aiiif-search-result-item-active .aiiif-search-badge {
+    background-color: #7CD6FA;
 }
 
 .aiiif-highlight {
-    border: 2px solid #ffff00;
-    opacity: 0.8;
+    background-color: #ffff00;
+    opacity: 0.2;
 }
+
+.aiiif-highlight.active {
+    background-color: #7CD6FA;
+}
+

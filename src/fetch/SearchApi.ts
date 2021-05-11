@@ -1,4 +1,5 @@
 import Cache from "../lib/Cache";
+import IManifestData from "../interface/IManifestData";
 
 export type HitType = {
     match: string;
@@ -13,6 +14,7 @@ export type AnnotationType = {
     on: string;
     x: number;
     y: number;
+    page: number,
     width: number;
     height: number;
 }
@@ -21,7 +23,7 @@ export default class SearchApi {
 
     static cache: {[key: string]: HitType[]} = {};
 
-    static get(searchUrl: string, callback?: (hits: HitType[]) => void): any {
+    static get(searchUrl: string, manifest: IManifestData, callback?: (hits: HitType[]) => void): any {
 
         if (this.cache.hasOwnProperty(searchUrl)) {
             if (callback !== undefined) {
@@ -32,10 +34,10 @@ export default class SearchApi {
         }
 
 
-        this.fetchFromUrl(searchUrl, callback);
+        this.fetchFromUrl(searchUrl, manifest, callback);
     }
 
-    static fetchFromUrl(searchUrl: string, callback?: any) {
+    static fetchFromUrl(searchUrl: string, manifest: IManifestData, callback?: any) {
         fetch(searchUrl).then((response) => {
 
             const statusCode = response.status;
@@ -64,6 +66,7 @@ export default class SearchApi {
                         let tmpArray = resource.on.split('#xywh=');
                         let position = tmpArray[1].split(',');
 
+                        const page = manifest.resource.source.findIndex((r: any) => r.on === tmpArray[0]);
                         hits.push({
                             match: hit.match,
                             before: hit.before,
@@ -72,6 +75,7 @@ export default class SearchApi {
                             resource: {
                                 id: resource['@id'],
                                 on: tmpArray[0],
+                                page,
                                 x: parseInt(position[0]),
                                 y: parseInt(position[1]),
                                 width: parseInt(position[2]),

@@ -27,23 +27,6 @@ class ImageApi {
         this.fetchFromUrl(id, callback);
     }
 
-    static async getMulti(sources: any[], callback: any) {
-
-        const result: any = [];
-
-        for await (const source of sources) {
-
-            await new Promise((resolve, reject) => {
-                this.get(source.id, function (data: any) {
-                    result.push(data);
-                    resolve('done');
-                });
-            });
-        }
-
-        callback(result);
-    }
-
     static fetchFromUrl(url: string, callback: any, token?: string) {
 
         if (!global.config.isAllowedOrigin(url)) {

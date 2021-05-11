@@ -13,7 +13,7 @@ import ManifestData from "./entity/ManifestData";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 import './lib/i18n';
 import {AppContext} from "./AppContext";
-import {AnnotationType} from "./fetch/SearchApi";
+import {AnnotationType, HitType} from "./fetch/SearchApi";
 import Main from "./layout/Main";
 
 interface IProps {
@@ -37,8 +37,8 @@ export default function App(props: IProps) {
     const [authDate, setAuthDate] = useState<number>(0);
     const [tab, setTab] = useState<string>('metadata');
     const [page, setPage] = useState<number>(0);
-    const [annotation, setAnnotation] = useState<AnnotationType | undefined>(undefined);
-    const q = PresentationApi.getGetParameter('q', window.location.href);
+    const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
+    const [searchResult, setSearchResult] = useState<HitType[]>([]);
 
     const setCurrentManifest0 = (id?: string) => {
 
@@ -63,6 +63,8 @@ export default function App(props: IProps) {
                     setCurrentManifest(currentManifest);
                     setCurrentFolder(currentFolder);
                     setPage(0);
+                    setCurrentAnnotation(undefined);
+                    setSearchResult([]);
                     TreeBuilder.buildCache(currentFolder.id, () => {
                         setTreeDate(Date.now());
                     });
@@ -73,6 +75,8 @@ export default function App(props: IProps) {
                             setCurrentManifest(currentManifest);
                             setCurrentFolder(currentFolder);
                             setPage(0);
+                            setCurrentAnnotation(undefined);
+                            setSearchResult([]);
                             TreeBuilder.buildCache(currentFolder.id, () => {
                                 setTreeDate(Date.now());
                             });
@@ -123,7 +127,8 @@ export default function App(props: IProps) {
     }, []);
 
     const appContextValue= {treeDate, tab, setTab, page, setPage, currentManifest, setCurrentManifest:
-        setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, annotation, setAnnotation};
+        setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, currentAnnotation,
+        setCurrentAnnotation, searchResult, setSearchResult};
 
     return <AppContext.Provider value={appContextValue}>
         <I18nextProvider i18n={i18n}>
