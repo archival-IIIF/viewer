@@ -3,12 +3,12 @@ import './treeview.css';
 import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
 import CaretRightIcon from '@material-ui/icons/ArrowRight';
 import {useState} from "react";
-import {getLocalized} from "../../lib/ManifestHelpers";
-import PresentationApi from "../../fetch/PresentationApi";
-import IManifestData, {IManifestReference} from "../../interface/IManifestData";
+import {getLocalized} from "../lib/ManifestHelpers";
+import PresentationApi from "../fetch/PresentationApi";
+import IManifestData, {IManifestReference} from "../interface/IManifestData";
 import {PropertyValue} from "manifesto.js";
 import TreeBuilder from "./TreeBuilder";
-import {AppContext} from "../../AppContext";
+import {AppContext} from "../AppContext";
 
 
 interface IPros {

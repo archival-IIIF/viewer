@@ -1,9 +1,9 @@
 import React, {useContext, useEffect} from 'react';
 import TreeViewItem from './TreeViewItem';
 import './treeview.css';
-import PresentationApi from "../../fetch/PresentationApi";
-import {AppContext} from "../../AppContext";
-import ViewerSpinner from "../../viewer/ViewerSpinner";
+import PresentationApi from "../fetch/PresentationApi";
+import {AppContext} from "../AppContext";
+import ViewerSpinner from "../viewer/ViewerSpinner";
 
 export default function TreeView() {
 

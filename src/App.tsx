@@ -1,25 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import TopBar from './TopBar/TopBar';
 import ManifestHistory from './lib/ManifestHistory';
-import Login from './Login';
-import Alert from './Alert';
 import {I18nextProvider} from 'react-i18next';
 import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
-import Splitter from "./splitter/Splitter";
-import Content from "./layout/Content";
 import './css/App.css';
 import Cache from "./lib/Cache";
 import IManifestData from "./interface/IManifestData";
 import PresentationApi from "./fetch/PresentationApi";
-import TreeBuilder from "./navigation/treeView/TreeBuilder";
+import TreeBuilder from "./treeView/TreeBuilder";
 import ManifestData from "./entity/ManifestData";
-import Navigation from "./navigation/Navigation";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 import './lib/i18n';
 import {AppContext} from "./AppContext";
 import {AnnotationType} from "./fetch/SearchApi";
+import Main from "./layout/Main";
 
 interface IProps {
     config: IConfigParameter;
@@ -127,26 +122,12 @@ export default function App(props: IProps) {
         }
     }, []);
 
-    return <AppContext.Provider value={{treeDate, tab, setTab, page, setPage, currentManifest,
-        setCurrentManifest: setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, annotation,
-        setAnnotation}}>
+    const appContextValue= {treeDate, tab, setTab, page, setPage, currentManifest, setCurrentManifest:
+        setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, annotation, setAnnotation};
+
+    return <AppContext.Provider value={appContextValue}>
         <I18nextProvider i18n={i18n}>
-            <Alert />
-            <Login />
-            <TopBar key={authDate} />
-            {(!currentManifest || !currentFolder) ?
-                <></> :
-                <Splitter
-                    id="main"
-                    a={<Navigation
-                        q={q}
-                    />}
-                    b={<Content
-                        key={currentManifest.id}
-                    />}
-                    direction="vertical"
-                />
-            }
+            <Main />
         </I18nextProvider>
     </AppContext.Provider>;
 }

@@ -1,5 +1,5 @@
-import PresentationApi from "../../fetch/PresentationApi";
-import IManifestData from "../../interface/IManifestData";
+import PresentationApi from "../fetch/PresentationApi";
+import IManifestData from "../interface/IManifestData";
 
 interface ITreeStatus {[key: string]: boolean};
 
