@@ -10,6 +10,7 @@ import './openSeadragon.css';
 import {Options, Viewer} from "openseadragon";
 import ImageButtons from "./ImageButtons";
 import {AppContext} from "../../AppContext";
+import {AnnotationType} from "../../fetch/SearchApi";
 
 interface IProps {
     source: any[];
@@ -50,10 +51,11 @@ export default function ReactOpenSeadragon(props: IProps) {
 
 
     useEffect(() => {
-        if (currentAnnotation && currentAnnotation.page !== page) {
+        if (currentAnnotation)
+        {
             setPage(currentAnnotation.page);
         }
-    });
+    }, [currentAnnotation, setPage]);
 
     // change page
     useEffect(() => {
