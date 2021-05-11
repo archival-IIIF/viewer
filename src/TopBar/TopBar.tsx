@@ -15,16 +15,13 @@ export default function TopBar() {
 
     const {currentManifest} = useContext(AppContext);
 
-    let bar = 'navBar';
-    if (currentManifest && isSingleManifest(currentManifest)) {
-        bar = 'infoBar';
-    }
-
     return <div className="aiiif-topbar">
-        <div className="aiiif-icon-button" onClick={() => Cache.ee.emit('toggle-splitter-main')}>
-            <NavBarIcon />
-            <Translation ns="common">{(t, { i18n }) => <p>{t(bar)}</p>}</Translation>
-        </div>
+        {(currentManifest && !isSingleManifest(currentManifest)) &&
+            <div className="aiiif-icon-button" onClick={() => Cache.ee.emit('toggle-splitter-main')}>
+                <NavBarIcon />
+                <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
+            </div>
+        }
         <LanguageSwitcher />
         <ExternalSearch />
         {Token.hasActiveToken() &&
