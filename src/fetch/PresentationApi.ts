@@ -721,9 +721,9 @@ class Manifest {
         return undefined;
     }
 
-    static getGetParameter(name: string, url: string) {
+    static getGetParameter(name: string, defaultValue?: string): string | undefined {
         const urlObject = new URL(window.location.href);
-        return urlObject.searchParams.get(name);
+        return urlObject.searchParams.get(name) ?? defaultValue;
     }
 
     static isV3(manifestoData: IIIFResource) {

@@ -35,7 +35,10 @@ export default function App(props: IProps) {
     const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);
     const [treeDate, setTreeDate] = useState<number>(Date.now());
     const [authDate, setAuthDate] = useState<number>(0);
-    const [tab, setTab] = useState<string>('metadata');
+    let initialQ = PresentationApi.getGetParameter('q') ?? '';
+    let initialTab = initialQ !== '' ? 'search' : PresentationApi.getGetParameter('tab') ?? 'metadata';
+    const [tab, setTab] = useState<string>(initialTab);
+    const [q, setQ] = useState<string>(initialQ);
     const [page, setPage] = useState<number>(0);
     const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
     const [searchResult, setSearchResult] = useState<HitType[]>([]);
@@ -94,7 +97,28 @@ export default function App(props: IProps) {
         );
     }
 
+    const setTab0 = (t: string) => {
+        if (currentManifest) {
+            ManifestHistory.pageChanged(
+                currentManifest.request ?? currentManifest.id,
+                getLocalized(currentManifest.label),
+                undefined,
+                t
+            );
+            setTab(t);
+        }
+    }
 
+    const setQ0 = (q: string) => {
+        if (currentManifest) {
+            ManifestHistory.pageChanged(
+                currentManifest.request ?? currentManifest.id,
+                getLocalized(currentManifest.label),
+                q
+            );
+            setQ(q);
+        }
+    }
 
     useEffect(() => {
         const tokenReceived = () => {
@@ -126,9 +150,9 @@ export default function App(props: IProps) {
         }
     }, []);
 
-    const appContextValue= {treeDate, tab, setTab, page, setPage, currentManifest, setCurrentManifest:
+    const appContextValue= {treeDate, tab, setTab: setTab0, page, setPage, currentManifest, setCurrentManifest:
         setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, currentAnnotation,
-        setCurrentAnnotation, searchResult, setSearchResult};
+        setCurrentAnnotation, searchResult, setSearchResult, q, setQ: setQ0};
 
     return <AppContext.Provider value={appContextValue}>
         <I18nextProvider i18n={i18n}>

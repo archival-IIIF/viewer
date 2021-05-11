@@ -18,6 +18,8 @@ interface IContext {
     setCurrentAnnotation: (annotation: AnnotationType | undefined) => void;
     searchResult: HitType[];
     setSearchResult: (annotation: HitType[]) => void;
+    q: string;
+    setQ: (q: string) => void;
 }
 
 export const AppContext = React.createContext<IContext>({
@@ -35,5 +37,7 @@ export const AppContext = React.createContext<IContext>({
     currentAnnotation: undefined,
     setCurrentAnnotation: () => {},
     searchResult: [],
-    setSearchResult: () => {}
+    setSearchResult: () => {},
+    q: '',
+    setQ: () => {}
 });

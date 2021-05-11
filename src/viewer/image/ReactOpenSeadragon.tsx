@@ -3,14 +3,11 @@ import * as OpenSeadragon from 'openseadragon';
 import ImageApi from '../../fetch/ImageApi';
 import ViewerSpinner from '../ViewerSpinner';
 import Token from "../../lib/Token";
-//import {AnnotationType} from "../../fetch/SearchApi";
-//import Cache from "../../lib/Cache";
 import i18next from 'i18next';
 import './openSeadragon.css';
 import {Options, Viewer} from "openseadragon";
 import ImageButtons from "./ImageButtons";
 import {AppContext} from "../../AppContext";
-import {AnnotationType} from "../../fetch/SearchApi";
 
 interface IProps {
     source: any[];

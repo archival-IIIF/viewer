@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import SearchApi from "../../fetch/SearchApi";
 import './search.css';
 import TextField from '@material-ui/core/TextField';
@@ -9,27 +9,31 @@ import {AppContext} from "../../AppContext";
 export default function Search() {
 
     const {currentManifest, currentAnnotation, setCurrentAnnotation, searchResult,
-        setSearchResult} = useContext(AppContext);
-    const [searchPhrase, setSearchPhrase] = useState<string>('');
+        setSearchResult, q, setQ} = useContext(AppContext);
+    const [searchPhrase, setSearchPhrase] = useState<string>(q);
+
+    useEffect(() => {
+        if (currentManifest && currentManifest.search) {
+            if (q === '') {
+                setSearchResult([]);
+                return;
+            }
+
+            const searchId = currentManifest.search.id;
+            const searchUrl = searchId + '?q=' + q;
+            SearchApi.get(searchUrl, currentManifest, setSearchResult);
+        }
+    }, [q, currentManifest, setSearchResult]);
+
     if (!currentManifest || !currentManifest.search) {
         return <></>;
     }
-    const searchId = currentManifest.search.id;
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        fetchSearchResults(searchPhrase);
+        setQ(searchPhrase);
     }
 
-    const fetchSearchResults = (searchPhrase: string) => {
-        if (searchPhrase === '') {
-            setSearchResult([]);
-            return;
-        }
-
-        const searchUrl = searchId + '?q=' + searchPhrase;
-        SearchApi.get(searchUrl, currentManifest, setSearchResult)
-    }
 
     const renderHits = () => {
         if (searchResult.length === 0) {
@@ -54,12 +58,6 @@ export default function Search() {
         }
         return output;
     }
-
-    /*useEffect(() => {
-        if (props.q) {
-            fetchSearchResults(props.q);
-        }
-    })*/
 
     return <div className="aiiif-search">
         <form onSubmit={onSubmit}>
