@@ -8,7 +8,7 @@ import i18n  from 'i18next';
 import IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
 import Splitter from "./splitter/Splitter";
-import Content from "./Content";
+import Content from "./layout/Content";
 import './css/App.css';
 import Cache from "./lib/Cache";
 import IManifestData from "./interface/IManifestData";
@@ -19,6 +19,7 @@ import Navigation from "./navigation/Navigation";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 import './lib/i18n';
 import {AppContext} from "./AppContext";
+import {AnnotationType} from "./fetch/SearchApi";
 
 interface IProps {
     config: IConfigParameter;
@@ -39,6 +40,9 @@ export default function App(props: IProps) {
     const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);
     const [treeDate, setTreeDate] = useState<number>(Date.now());
     const [authDate, setAuthDate] = useState<number>(0);
+    const [tab, setTab] = useState<string>('metadata');
+    const [page, setPage] = useState<number>(0);
+    const [annotation, setAnnotation] = useState<AnnotationType | undefined>(undefined);
     const q = PresentationApi.getGetParameter('q', window.location.href);
 
     const setCurrentManifest0 = (id?: string) => {
@@ -63,6 +67,7 @@ export default function App(props: IProps) {
                     const currentFolder = currentManifest;
                     setCurrentManifest(currentManifest);
                     setCurrentFolder(currentFolder);
+                    setPage(0);
                     TreeBuilder.buildCache(currentFolder.id, () => {
                         setTreeDate(Date.now());
                     });
@@ -72,6 +77,7 @@ export default function App(props: IProps) {
                         (currentFolder: IManifestData) => {
                             setCurrentManifest(currentManifest);
                             setCurrentFolder(currentFolder);
+                            setPage(0);
                             TreeBuilder.buildCache(currentFolder.id, () => {
                                 setTreeDate(Date.now());
                             });
@@ -121,27 +127,22 @@ export default function App(props: IProps) {
         }
     }, []);
 
-    return <AppContext.Provider value={{treeDate}}>
+    return <AppContext.Provider value={{treeDate, tab, setTab, page, setPage, currentManifest,
+        setCurrentManifest: setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, annotation,
+        setAnnotation}}>
         <I18nextProvider i18n={i18n}>
             <Alert />
-            <Login setCurrentManifest={setCurrentManifest0}/>
-            <TopBar key={authDate} currentManifest={currentManifest} />
+            <Login />
+            <TopBar key={authDate} />
             {(!currentManifest || !currentFolder) ?
                 <></> :
                 <Splitter
                     id="main"
                     a={<Navigation
-                        currentManifest={currentManifest}
-                        currentFolder={currentFolder}
-                        setCurrentManifest={setCurrentManifest0}
                         q={q}
                     />}
                     b={<Content
                         key={currentManifest.id}
-                        currentManifest={currentManifest}
-                        currentFolder={currentFolder}
-                        setCurrentManifest={setCurrentManifest0}
-                        authDate={authDate}
                     />}
                     direction="vertical"
                 />

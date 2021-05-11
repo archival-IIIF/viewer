@@ -1,18 +1,14 @@
-import React from "react";
-import IManifestData from "../../interface/IManifestData";
+import React, {useContext} from "react";
+import {AppContext} from "../../AppContext";
 
+export default function PdfViewer() {
 
-interface IProps {
-    presentation: IManifestData;
-}
-
-export default function PdfViewer(props: IProps) {
-
-    if (!props.presentation.resource) {
+    const {currentManifest} = useContext(AppContext);
+    if (!currentManifest || !currentManifest.resource) {
         return <></>;
     }
 
-    const id = props.presentation.resource.id
+    const id = currentManifest.resource.id;
 
     return <iframe className="aiiif-viewer" src={id} title={id}/>;
 }

@@ -1,0 +1,12 @@
+.aiiif-download {
+    cursor: pointer;
+    vertical-align: middle;
+    display: flex;
+    padding: 3px 0;
+    color: #c11e07;
+    line-height: 1.5rem;
+}
+
+.aiiif-download svg {
+    margin-right: 3px;
+}

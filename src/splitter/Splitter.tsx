@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState, useRef} from 'react';
 import './splitter.css';
 import Cache from "../lib/Cache";
 
@@ -15,7 +15,7 @@ const defaultSize = 20;
 
 export default function Splitter(props: IProps) {
 
-    const myRef: React.RefObject<HTMLDivElement> = React.createRef();
+    const myRef = useRef<HTMLDivElement>(null);
 
     const getSize = (): number => {
         if (props.id) {
@@ -36,7 +36,32 @@ export default function Splitter(props: IProps) {
     const [lastSize, setLastSize] = useState<number>(0);
 
     const getAStyle = (): CSSProperties => {
-        const sizeP = size.toString() + '%';
+
+        let sizeP;
+        if (size <= 0) {
+            sizeP = 0;
+        } else if (size >= 100) {
+            sizeP = 'calc(100% - 8px)';
+        } else {
+            sizeP = 'calc(' + size.toString() + '% - 4px)';
+        }
+        if (props.direction === 'vertical') {
+            return {minWidth: sizeP, maxWidth: sizeP};
+        }
+
+        return {minHeight: sizeP, maxHeight: sizeP};
+    }
+
+    const getBStyle = (): CSSProperties => {
+
+        let sizeP;
+        if (size <= 0) {
+            sizeP = 'calc(100% - 8px)';
+        } else if (size >= 100) {
+            sizeP = '0';
+        } else {
+            sizeP = 'calc(' + (100-size).toString() + '% - 4px)';
+        }
         if (props.direction === 'vertical') {
             return {minWidth: sizeP, maxWidth: sizeP};
         }
@@ -46,7 +71,7 @@ export default function Splitter(props: IProps) {
 
     const globalMoveStart = (size: number) => {
 
-        if (isMoving && myRef.current) {
+        if (isMoving && myRef && myRef.current) {
             let offset: number;
             let totalSize: number;
             if (props.direction === 'vertical') {
@@ -61,7 +86,6 @@ export default function Splitter(props: IProps) {
                 sessionStorage.setItem('aiiif-splitter-' + props.id, size.toString());
             }
             setSize(size);
-        } else {
         }
     }
 
@@ -134,7 +158,7 @@ export default function Splitter(props: IProps) {
     return <div className={containerClassName} ref={myRef}>
         <div className="aiiif-a" style={getAStyle()}>{props.a}</div>
         <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()} />
-        <div className="aiiif-b">{props.b}</div>
+        <div className="aiiif-b" style={getBStyle()}>{props.b}</div>
     </div>;
 }
 

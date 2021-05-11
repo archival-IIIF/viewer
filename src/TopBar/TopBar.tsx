@@ -7,17 +7,16 @@ import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
 import ExternalSearch from "./ExternalSearch";
-import IManifestData from "../interface/IManifestData";
 import {isSingleManifest} from "../lib/ManifestHelpers";
+import {useContext} from "react";
+import {AppContext} from "../AppContext";
 
-interface IProps {
-    currentManifest?: IManifestData;
-}
+export default function TopBar() {
 
-export default function TopBar(props: IProps) {
+    const {currentManifest} = useContext(AppContext);
 
     let bar = 'navBar';
-    if (props.currentManifest && isSingleManifest(props.currentManifest)) {
+    if (currentManifest && isSingleManifest(currentManifest)) {
         bar = 'infoBar';
     }
 

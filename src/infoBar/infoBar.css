@@ -1,0 +1,101 @@
+.aiiif-infobar {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.aiiif-content0.aiiif-splitter-container .aiiif-infobar {
+    flex-grow: 2;
+}
+
+.aiiif-tab-container {
+    background-color: lightgrey;
+    padding: 12px 9px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    word-wrap: break-word;
+    flex-grow: 2;
+}
+.aiiif-tab-container h2 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+.aiiif-button-bar {
+    min-width: 36px;
+    max-width: 36px;
+    background-color: darkgrey;
+}
+
+.aiiif-button-bar-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.aiiif-button-bar > button {
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.5em;
+    background: transparent;
+    padding: 3px 0;
+    width: 100%;
+}
+
+.aiiif-button-bar > button.active {
+    background-color: lightgrey;
+}
+
+.aiiif-search-result-item {
+    text-align: left;
+    line-height: 1.6rem;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.aiiif-search-result-item.active  > .aiiif-badge  {
+    background-color: #7CD6FA;;
+    color: white !important;
+}
+
+.aiiif-metadata-item {
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.aiiif-metadata-item > strong {
+    margin-bottom: 3px;
+    display: block;
+}
+
+.aiiif-metadata-item .svg-inline--fa {
+    font-size: 1.7rem;
+    margin: 3px 6px 6px 0;
+}
+
+
+.aiiif-image-preview.active > div > span {
+    background-color: #7CD6FA;
+    border-radius: 3px;
+    color: black;
+}
+
+.aiiif-image-preview > div {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.aiiif-image-preview > div > span {
+    font-size: 0.8rem;
+    color: #313335;
+    padding: 3px;
+}
+
+.aiiif-image-preview > img {
+    cursor: pointer;
+    display: block;
+    margin: 4px auto;
+}

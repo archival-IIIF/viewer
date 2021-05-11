@@ -3,9 +3,9 @@ import Cache from '../lib/Cache';
 import TouchDetection from '../lib/TouchDetection';
 import IManifestData, {IManifestReference} from '../interface/IManifestData';
 import './item.css';
-import FolderIcon from "../icons/fa/FolderIcon";
-import FileIcon from "../icons/fa/FileIcon";
 import {getLocalized} from "../lib/ManifestHelpers";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFolder} from "@fortawesome/free-solid-svg-icons";
 
 interface IProps {
     item: IManifestReference;
@@ -39,10 +39,14 @@ function getThumbnail(props: IProps) {
 
     if (props.item.thumbnail === undefined || !props.item.thumbnail.hasOwnProperty('id')) {
         if (props.item.type === 'Collection') {
-            return <div className="aiiif-item-thumbnail"><FolderIcon  /></div>;
+            return <div className="aiiif-item-thumbnail">
+                <FontAwesomeIcon icon={faFolder} />
+            </div>;
         }
 
-        return <div className="aiiif-item-thumbnail"><FileIcon /></div>;
+        return <div className="aiiif-item-thumbnail">
+            <FontAwesomeIcon icon={faFolder} />
+        </div>;
     }
 
 

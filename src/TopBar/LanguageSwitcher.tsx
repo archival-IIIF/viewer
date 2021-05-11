@@ -24,7 +24,6 @@ export default function LanguageSwitcher() {
     }
 
     const close = () => {
-        console.log('gg')
         setAnchorEl(null);
     }
 

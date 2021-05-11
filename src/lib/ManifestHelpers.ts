@@ -57,6 +57,10 @@ export function hasTranscription(manifestData: IManifestData): boolean {
     return manifestData.transcription.length > 0;
 }
 
+export function basename(str: string): string {
+    return str.substr(str.lastIndexOf('/') + 1);
+}
+
 // See: https://iiif.io/api/presentation/2.1/#html-markup-in-property-values
 export const sanitizeRulesSet = {
     ALLOWED_ATTR: ['href', 'src', 'alt'],

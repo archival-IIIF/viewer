@@ -1,36 +1,33 @@
 import * as React from 'react';
 import Item from './Item';
-import IManifestData from '../interface/IManifestData';
 import {Translation} from 'react-i18next';
 import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import {getLocalized} from "../lib/ManifestHelpers";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {AppContext} from "../AppContext";
 
-interface IProps {
-    currentManifest: IManifestData;
-    currentFolder: IManifestData;
-    authDate: number;
-    setCurrentManifest: (id?: string) => void;
-}
+export default function FolderView() {
 
-export default function FolderVie(props: IProps) {
-
+    const {currentManifest, setCurrentManifest, authDate, currentFolder} = useContext(AppContext);
     const [mode, setMode] = useState<string>('icon-view');
+    if (!currentManifest || !currentFolder) {
+        return  <></>;
+    }
 
-    if (props.currentFolder.restricted) {
+    if (currentFolder.restricted) {
         return <div className="aiiif-folder-view-container" />;
     }
 
-    const files = props.currentFolder.manifests;
-    const folders = props.currentFolder.collections;
+    const files = currentFolder.manifests;
+    const folders = currentFolder.collections;
 
     if (files.length === 0 && folders.length === 0) {
 
         return (
             <div className="aiiif-folder-view-container">
                 <div>
-                    <h1>{getLocalized(props.currentFolder.label)}</h1>
+                    <h1>{getLocalized(currentFolder.label)}</h1>
                     <div className="aiiif-empty">
                         <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
                     </div>
@@ -44,10 +41,10 @@ export default function FolderVie(props: IProps) {
         content.push(
             <Item
                 item={folder}
-                selected={props.currentManifest}
+                selected={currentManifest}
                 key={folder.id}
-                setCurrentManifest={props.setCurrentManifest}
-                authDate={props.authDate}
+                setCurrentManifest={setCurrentManifest}
+                authDate={authDate}
             />
         );
     }
@@ -55,10 +52,10 @@ export default function FolderVie(props: IProps) {
         content.push(
             <Item
                 item={file}
-                selected={props.currentManifest}
+                selected={currentManifest}
                 key={file.id}
-                setCurrentManifest={props.setCurrentManifest}
-                authDate={props.authDate}
+                setCurrentManifest={setCurrentManifest}
+                authDate={authDate}
             />
         );
     }
@@ -78,7 +75,7 @@ export default function FolderVie(props: IProps) {
                 </div>
             </nav>
             <div>
-                <h1>{getLocalized(props.currentFolder.label)}</h1>
+                <h1>{getLocalized(currentFolder.label)}</h1>
                 <div className={folderViewClassNames}>{content}</div>
             </div>
 

@@ -1,26 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import IManifestData from "../../interface/IManifestData";
+import React, {useContext, useEffect, useState} from 'react';
 import * as DOMPurify from "dompurify";
-import Config from "../../lib/Config";
 import './transcription.css';
 import Cache from "../../lib/Cache";
 import {sanitizeRulesSet} from "../../lib/ManifestHelpers";
+import {AppContext} from "../../AppContext";
 
 interface IPros {
-    currentManifest: IManifestData;
     jumpToTime: (time: number) => void;
 }
 
-declare let global: {
-    config: Config;
-};
-
 export default function Transcription(props: IPros) {
-
-    const [currentPart, setCurrentPart] = useState<number>(0);
 
     const containerRef: React.RefObject<HTMLDivElement> = React.createRef();
     const currentRef: React.RefObject<HTMLDivElement> = React.createRef();
+    const [currentPart, setCurrentPart] = useState<number>(0);
+    const {currentManifest} = useContext(AppContext);
+
 
     useEffect(() => {
         Cache.ee.addListener('transcription-part-changed', setCurrentPart);
@@ -31,7 +26,7 @@ export default function Transcription(props: IPros) {
     }, [setCurrentPart])
 
     // update scroll
-    React.useEffect(() => {
+    useEffect(() => {
         if (containerRef.current && currentRef.current) {
             const containerEle = containerRef.current;
             const currentEle = currentRef.current;
@@ -49,10 +44,13 @@ export default function Transcription(props: IPros) {
         }
     }, [currentPart, containerRef, currentRef]);
 
+    if (!currentManifest) {
+        return <></>;
+    }
 
     const parts = [];
     let i = 0;
-    for (const t of props.currentManifest.transcription) {
+    for (const t of currentManifest.transcription) {
         let seconds = t.start;
         const hours = Math.floor(seconds / 3600)
         seconds = seconds - hours * 3600;

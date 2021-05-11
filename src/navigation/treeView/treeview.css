@@ -7,6 +7,10 @@
     flex-grow: 2;
 }
 
+.aiiif-treeview  .lds-ripple div {
+    border-color: darkgray !important;
+}
+
 .aiiif-treeview-item {
     padding: 2px 6px;
     cursor: pointer;

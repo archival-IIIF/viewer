@@ -17,5 +17,5 @@ export default function ViewerSpinner(props: IProps) {
         className += ' lds-ripple-center'
     }
 
-    return <div className={className}><div /><div/></div>;
+    return <div className={className}><div/><div style={{color: 'black !important'}}/></div>;
 }

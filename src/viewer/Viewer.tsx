@@ -1,77 +1,48 @@
 import * as React from 'react';
 import ReactOpenSeadragon from './image/ReactOpenSeadragon';
 import MediaPlayer from './media/MediaPlayer';
-import IManifestData from '../interface/IManifestData';
 import PlainTextViewer from './plainText/PlainTextViewer';
 import './viewer.css';
 import PdfViewer from "./pdf/pdfViewer";
-
-interface IProps {
-    currentManifest: IManifestData;
-    authDate: number;
-}
+import {useContext} from "react";
+import {AppContext} from "../AppContext";
 
 
-export default function Viewer(props: IProps) {
+export default function Viewer() {
 
-    const manifestData: any = props.currentManifest;
-
-    if (!manifestData || !manifestData.hasOwnProperty('resource')) {
+    const {currentManifest, authDate} = useContext(AppContext);
+    if (!currentManifest) {
         return <></>;
     }
 
-    if (manifestData.resource.type === 'imageService') {
-        return <Image {...props} />;
+    if (!currentManifest || !currentManifest.hasOwnProperty('resource')) {
+        return <></>;
     }
 
-    if (manifestData.resource.type === 'audio' || manifestData.resource.type === 'video') {
-        return <AudioVideo {...props} />;
+    if (currentManifest.resource.type === 'imageService') {
+        return  <div className="aiiif-viewer">
+            <ReactOpenSeadragon
+                source={currentManifest.resource.source}
+                key={currentManifest.resource.source + authDate.toString()}
+            />
+        </div>;
     }
 
-    if (manifestData.resource.type === 'plainText') {
-        return <PlainText {...props} />;
+    if (currentManifest.resource.type === 'audio' || currentManifest.resource.type === 'video') {
+        return <div className="aiiif-viewer">
+            <MediaPlayer />
+        </div>;
     }
 
-    if (manifestData.resource.type === 'pdf') {
-        return <PdfViewer presentation={manifestData} />;
+    if (currentManifest.resource.type === 'plainText') {
+        return <div className="aiiif-viewer">
+            <PlainTextViewer />
+        </div>;
+    }
+
+    if (currentManifest.resource.type === 'pdf') {
+        return <PdfViewer />;
     }
 
     return <></>;
-}
-
-function Image(props: IProps) {
-    const resource: any = props.currentManifest.resource;
-    return (
-        <div className="aiiif-viewer">
-            <ReactOpenSeadragon
-                source={resource.source}
-                key={resource.source + props.authDate.toString()}
-                authDate={props.authDate}
-            />
-        </div>
-    );
-}
-
-function PlainText(props: IProps) {
-    const resource: any = props.currentManifest.resource;
-    return (
-        <div className="aiiif-viewer">
-            <PlainTextViewer source={resource.id} key={resource.id}/>
-        </div>
-    );
-}
-
-function AudioVideo(props: IProps) {
-
-    if (!props.currentManifest.resource) {
-        return <></>;
-    }
-
-    const resource: any = props.currentManifest.resource;
-
-    return (
-        <div className="aiiif-viewer">
-            <MediaPlayer key={resource.id} currentManifest={props.currentManifest}/>
-        </div>
-    );
 }

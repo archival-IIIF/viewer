@@ -468,6 +468,7 @@ class Manifest {
                                 id: service.id,
                                 on: canvas.id,
                                 width: canvas.getWidth(),
+                                height: canvas.getHeight(),
                                 manifestations: this.getManifestations(canvas)
                             });
                             break;

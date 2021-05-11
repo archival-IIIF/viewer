@@ -1,28 +1,21 @@
-import * as React from 'react';
-import SearchApi, {AnnotationType, HitType} from "../fetch/SearchApi";
+import React, {useContext, useState} from 'react';
+import SearchApi, {HitType} from "../../fetch/SearchApi";
 import './search.css';
 import Chip from '@material-ui/core/Chip';
-import Cache from "../lib/Cache";
 import TextField from '@material-ui/core/TextField';
-import {ISearchService} from "../interface/IManifestData";
 import i18next from 'i18next';
-import {useEffect, useState} from "react";
+import {AppContext} from "../../AppContext";
 
-interface IProps {
-    searchService: ISearchService;
-    q: string | null;
-}
 
-export default function Search(props: IProps) {
+export default function Search() {
 
-    const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
-    const [searchPhrase, setSearchPhrase] = useState<string>(props.q ?? '');
+    const {currentManifest, annotation, setAnnotation} = useContext(AppContext);
+    const [searchPhrase, setSearchPhrase] = useState<string>('');
     const [hits, setHits] = useState<HitType[]>([]);
-
-    const setCurrentAnnotation2 = (currentAnnotation?: AnnotationType) => {
-        Cache.ee.emit('annotation-changed', currentAnnotation);
-        setCurrentAnnotation(currentAnnotation);
+    if (!currentManifest || !currentManifest.search) {
+        return <></>;
     }
+    const searchId = currentManifest.search.id;
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -35,7 +28,7 @@ export default function Search(props: IProps) {
             return;
         }
 
-        const searchUrl = props.searchService.id + '?q=' + searchPhrase;
+        const searchUrl = searchId + '?q=' + searchPhrase;
         SearchApi.get(searchUrl, setHits)
     }
 
@@ -47,12 +40,12 @@ export default function Search(props: IProps) {
         const output = [];
         for (const hit of hits) {
             let circleClassName = 'aiiif-circle';
-            if (currentAnnotation && hit.resource.id === currentAnnotation.id) {
+            if (annotation && hit.resource.id === annotation.id) {
                 circleClassName += ' aiiif-circle-active';
             }
             output.push(
                 <div className="aiiif-search-result-item" key={hit.i}
-                     onClick={() => setCurrentAnnotation2(hit.resource)}>
+                     onClick={() => setAnnotation(hit.resource)}>
                     <Chip className={circleClassName} label={hit.i}/>
 
                     <p>{stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}</p>
@@ -63,11 +56,11 @@ export default function Search(props: IProps) {
         return output;
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (props.q) {
             fetchSearchResults(props.q);
         }
-    })
+    })*/
 
     return <div className="aiiif-search">
         <form onSubmit={onSubmit}>
@@ -81,7 +74,6 @@ export default function Search(props: IProps) {
         {renderHits()}
     </div>;
 }
-
 
 function stripTags(input: string) {
     return input.replace(/<\/?[^>]+(>|$)/g, "");

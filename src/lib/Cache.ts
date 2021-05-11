@@ -1,6 +1,5 @@
 import {EventEmitter} from 'events';
-class Cache {
+
+export default class Cache {
     static ee = new EventEmitter();
 }
-
-export default Cache;

@@ -1,16 +1,11 @@
 import React, {useContext, useEffect} from 'react';
-import Loading from '../../Loading';
 import TreeViewItem from './TreeViewItem';
 import './treeview.css';
 import PresentationApi from "../../fetch/PresentationApi";
 import {AppContext} from "../../AppContext";
+import ViewerSpinner from "../../viewer/ViewerSpinner";
 
-interface IProps {
-    currentFolderId?: string;
-    setCurrentManifest: (id: string) => void;
-}
-
-export default function TreeView(props: IProps) {
+export default function TreeView() {
 
     const {treeDate} = useContext(AppContext);
     const rootId = PresentationApi.getRootId();
@@ -19,7 +14,9 @@ export default function TreeView(props: IProps) {
     useEffect(() => {}, [treeDate])
 
     if (!rootId) {
-        return <Loading/>;
+        return <div className="aiiif-treeview">
+            <ViewerSpinner show={true} center={false}/>
+        </div>;
     }
 
     const rootManifest = PresentationApi.fetchFromCache(rootId);
@@ -35,8 +32,6 @@ export default function TreeView(props: IProps) {
             label={rootManifest.label}
             children={rootManifest.collections ?? []}
             level={1}
-            currentFolderId={props.currentFolderId}
-            setCurrentManifest={props.setCurrentManifest}
         />
     </div>;
 }

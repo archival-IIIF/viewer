@@ -1,21 +1,19 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useContext} from 'react';
 import videojs, {VideoJsPlayerOptions} from 'video.js';
 import Cache from '../../lib/Cache';
 import 'video.js/dist/video-js.css';
 import "./vjsForest.css";
 import Transcription from "./Transcription";
-import IManifestData from "../../interface/IManifestData";
 import {hasTranscription} from "../../lib/ManifestHelpers";
 import Splitter from "../../splitter/Splitter";
 import './media-player.css';
+import {AppContext} from "../../AppContext";
 
 
-interface IProps {
-    currentManifest: IManifestData;
-}
 
-export default function MediaPlayer(props: IProps) {
+export default function MediaPlayer() {
 
+    const {currentManifest} = useContext(AppContext);
     const player = useRef<videojs.Player>();
     let videoNode: any = React.createRef();
     let currentTranscriptionPart = 0;
@@ -23,6 +21,7 @@ export default function MediaPlayer(props: IProps) {
 
 
     useEffect(() => {
+
         const togglePlay = () => {
             if (!player.current) {
                 return;
@@ -31,20 +30,6 @@ export default function MediaPlayer(props: IProps) {
             player.current.paused() ? player.current.play() : player.current.pause();
         }
 
-        const resource: any = props.currentManifest.resource;
-        const mime = resource.format;
-        const file = resource.id;
-        const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
-
-        const videoJsPlayerOptions: VideoJsPlayerOptions = {
-            sources: sources,
-            height: 360,
-            preload: preload,
-            controls: true
-        }
-
-        player.current = videojs(videoNode, videoJsPlayerOptions);
-
         Cache.ee.addListener('play-audio', togglePlay);
 
         return () => {
@@ -52,10 +37,35 @@ export default function MediaPlayer(props: IProps) {
         }
     })
 
+    useEffect(() => {
+        if (currentManifest) {
+            const resource: any = currentManifest.resource;
+            const mime = resource.format;
+            const file = resource.id;
+            const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
+
+            if (player.current) {
+                player.current.selectSource(sources);
+            } else {
+                const videoJsPlayerOptions: VideoJsPlayerOptions = {
+                    sources: sources,
+                    height: 360,
+                    preload: preload,
+                    controls: true
+                }
+
+                player.current = videojs(videoNode, videoJsPlayerOptions);
+            }
+        }
+    })
+
+    if (!currentManifest) {
+        return <></>;
+    }
 
     const renderVideo = () => {
 
-        if (hasTranscription(props.currentManifest)) {
+        if (hasTranscription(currentManifest)) {
             return <Splitter
                 id="video-splitter"
                 a={
@@ -64,10 +74,7 @@ export default function MediaPlayer(props: IProps) {
                                preload={preload} onTimeUpdate={handleTimeUpdate}/>
                     </div>
                 }
-                b={
-                    <Transcription currentManifest={props.currentManifest}
-                                   jumpToTime={jumpToTime}
-                    />}
+                b={<Transcription jumpToTime={jumpToTime}/>}
                 direction="horizontal"
             />;
         }
@@ -79,12 +86,11 @@ export default function MediaPlayer(props: IProps) {
     }
 
     const renderAudio = () => {
-        if (hasTranscription(props.currentManifest)) {
+        if (hasTranscription(currentManifest)) {
             return <div className="aiiif-media-player-container">
                 <audio ref={(node) => videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
                        preload={preload} onTimeUpdate={handleTimeUpdate}/>
-                <Transcription currentManifest={props.currentManifest}
-                               jumpToTime={jumpToTime} />
+                <Transcription jumpToTime={jumpToTime} />
             </div>;
         }
 
@@ -99,7 +105,7 @@ export default function MediaPlayer(props: IProps) {
             return;
         }
 
-        const parts = props.currentManifest.transcription;
+        const parts = currentManifest.transcription;
         let i = -1;
         const t = player.current.currentTime();
         for (const part of parts) {
@@ -124,11 +130,11 @@ export default function MediaPlayer(props: IProps) {
         player.current.play();
     }
 
-    if (!props.currentManifest.resource) {
+    if (!currentManifest.resource) {
         return <></>;
     }
 
-    const resource: any = props.currentManifest.resource;
+    const resource: any = currentManifest.resource;
     if (resource.type === 'video') {
         return renderVideo();
     }

@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useContext} from 'react';
 import PresentationApi from './fetch/PresentationApi';
 import ImageApi from './fetch/ImageApi';
 import Cache from './lib/Cache';
@@ -11,20 +11,13 @@ import Button from '@material-ui/core/Button';
 import Token from "./lib/Token";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import * as DOMPurify from "dompurify";
-import Config from "./lib/Config";
 import {IAuthService} from "./interface/IManifestData";
 import {sanitizeRulesSet} from "./lib/ManifestHelpers";
+import {AppContext} from "./AppContext";
 
-declare let global: {
-    config: Config;
-};
+export default function Login() {
 
-interface IProps {
-    setCurrentManifest: (id?: string) => void;
-}
-
-export default function Login(props: IProps) {
-
+    const {setCurrentManifest} = useContext(AppContext);
 
     const messageFrameId = useRef<number>(Math.random());
     const openWindows = useRef<string[]>([]);
@@ -142,7 +135,7 @@ export default function Login(props: IProps) {
         PresentationApi.clearCache();
         ImageApi.clearCache();
         Token.set(event.data, authService.current.token, authService.current.logout);
-        props.setCurrentManifest();
+        setCurrentManifest();
         setVisible(false);
     }
 

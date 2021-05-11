@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import './treeview.css';
 import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
 import CaretRightIcon from '@material-ui/icons/ArrowRight';
@@ -8,6 +8,7 @@ import PresentationApi from "../../fetch/PresentationApi";
 import IManifestData, {IManifestReference} from "../../interface/IManifestData";
 import {PropertyValue} from "manifesto.js";
 import TreeBuilder from "./TreeBuilder";
+import {AppContext} from "../../AppContext";
 
 
 interface IPros {
@@ -15,11 +16,11 @@ interface IPros {
     children?: IManifestReference[];
     label: PropertyValue;
     level: number;
-    currentFolderId?: string;
-    setCurrentManifest: (id: string) => void;
 }
 
 export default function TreeViewItem(props: IPros) {
+
+    const {setCurrentManifest, currentFolder} = useContext(AppContext);
 
     const [children, setChildren] = useState<IManifestReference[] | undefined>(props.children);
     const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id] ?? false);
@@ -28,8 +29,6 @@ export default function TreeViewItem(props: IPros) {
 
         return !children;
     }
-
-
 
     const loadSubTree = () => {
         PresentationApi.get(
@@ -75,7 +74,7 @@ export default function TreeViewItem(props: IPros) {
     } else {
         caret = <CaretRightIcon style={iconStyle} />;
     }
-    if (props.id === props.currentFolderId) {
+    if (currentFolder && props.id === currentFolder.id) {
         className += ' aiiif-current';
     }
     const label = getLocalized(props.label);
@@ -98,8 +97,6 @@ export default function TreeViewItem(props: IPros) {
                         key={Math.random()}
                         id={child.id}
                         label={child.label}
-                        currentFolderId={props.currentFolderId}
-                        setCurrentManifest={props.setCurrentManifest}
                     />
                 );
            } else {
@@ -110,8 +107,6 @@ export default function TreeViewItem(props: IPros) {
                        id={c.id}
                        label={c.label}
                        children={c.collections ?? []}
-                       currentFolderId={props.currentFolderId}
-                       setCurrentManifest={props.setCurrentManifest}
                    />
                );
            }
@@ -124,7 +119,7 @@ export default function TreeViewItem(props: IPros) {
             <div className={classNameCaret} onClick={() => toggleCaret()}>
                 {caret}
             </div>
-            <div className="aiiif-treeview-label" onClick={() => props.setCurrentManifest(props.id)}>{label}</div>
+            <div className="aiiif-treeview-label" onClick={() => setCurrentManifest(props.id)}>{label}</div>
         </div>
         {childrenElements}
     </div>;

@@ -1,18 +1,18 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useContext} from 'react';
 import * as OpenSeadragon from 'openseadragon';
 import ImageApi from '../../fetch/ImageApi';
 import ViewerSpinner from '../ViewerSpinner';
 import Token from "../../lib/Token";
-import {AnnotationType} from "../../fetch/SearchApi";
-import Cache from "../../lib/Cache";
+//import {AnnotationType} from "../../fetch/SearchApi";
+//import Cache from "../../lib/Cache";
 import i18next from 'i18next';
 import './openSeadragon.css';
 import {Options, Viewer} from "openseadragon";
 import ImageButtons from "./ImageButtons";
+import {AppContext} from "../../AppContext";
 
 interface IProps {
     source: any[];
-    authDate?: number;
 }
 
 const buttons = [
@@ -40,36 +40,34 @@ const buttons = [
 
 export default function ReactOpenSeadragon(props: IProps) {
 
+    const {page, setPage, annotation} = useContext(AppContext);
     const viewer = useRef<Viewer | undefined | null>(undefined);
     const id = useRef<number>(Math.random());
     const data = useRef<any[]>([]);
-    const j = useRef<number>(0);
 
 
     const [spinner, setSpinner] = useState<boolean>(true);
     const [showButtons, setShowButtons] = useState<boolean>(true);
 
 
-    const changeSource = (n: number) => {
-
+    // change page
+    useEffect(() => {
         if (!viewer.current) {
             return;
         }
 
-
         viewer.current.clearOverlays();
 
-        if (data.current.hasOwnProperty(n)) {
+        if (data.current.hasOwnProperty(page)) {
             const oldImage = viewer.current.world.getItemAt(0);
             viewer.current.addTiledImage({
-                tileSource: data.current[n],
+                tileSource: data.current[page],
                 success: function() {
                     viewer.current?.world.removeItem(oldImage);
                 }
             });
-            j.current = n;
         }
-    }
+    }, [page]);
 
     // init viewer
     useEffect(() => {
@@ -107,7 +105,8 @@ export default function ReactOpenSeadragon(props: IProps) {
                 fullPageButton: 'fullpage-button-'+ id.current,
                 rotateRightButton: 'rotate-right-button-'+ id.current,
                 ajaxWithCredentials: false,
-                minZoomLevel: 0.3
+                minZoomLevel: 0.3,
+                viewportMargins: {left: 12, top: 12, right: 12, bottom: 12}
             };
 
             if (result.authService && result.authService.token && Token.has(result.authService.token)) {
@@ -126,6 +125,7 @@ export default function ReactOpenSeadragon(props: IProps) {
             viewer.current.addHandler('tile-drawn', () => {
                 setSpinner(false);
             });
+
         });
     });
 
@@ -134,82 +134,55 @@ export default function ReactOpenSeadragon(props: IProps) {
         const changeLanguage = () => {
             for (const b of buttons) {
                 const element = document.getElementById(b.id + '-button-' + id.current.toString());
-                console.log(element, i18next.t(b.t));
                 if (element) {
                     element.title = i18next.t(b.t);
                 }
             }
         }
 
-        const addAnnotation = (annotation: AnnotationType) => {
-
-            if (!viewer.current) {
-                return;
-            }
-
-            const index: any = props.source.findIndex((s: any) => s.on === annotation.on);
-            if (index < 0) {
-                return;
-            }
-
-            if (index !== j.current) {
-                changeSource(index);
-            } else {
-                viewer.current.clearOverlays();
-            }
-
-            const elt = document.createElement("div");
-            elt.className = "aiiif-highlight";
-            const imageWidth = props.source[index].width;
-            viewer.current.addOverlay({
-                element: elt,
-                location: new OpenSeadragon.Rect(
-                    annotation.x/imageWidth,
-                    annotation.y/imageWidth,
-                    annotation.width/imageWidth,
-                    annotation.height/imageWidth)
-            });
-        }
-
-        Cache.ee.addListener('annotation-changed', addAnnotation);
         i18next.on('languageChanged', changeLanguage);
 
         return () => {
             if (viewer.current) {
                 viewer.current.removeAllHandlers('tile-drawn');
             }
-            Cache.ee.removeListener('annotation-changed', addAnnotation);
             i18next.off('languageChanged', changeLanguage);
         }
     })
 
-    const renderSources = () => {
-
-        if (data.current.length > 1) {
-            const sourceThumbs = [];
-            for (let i = 0; i < data.current.length; i++) {
-                const source = data.current[i];
-                let id2 = '';
-                if (source['@context'] === 'http://iiif.io/api/image/2/context.json') {
-                    id2 = source['@id'];
-                } else {
-                    id2 = source.id;
-                }
-                sourceThumbs.push(
-                    <img key={id2} src={id2+'/full/,140/0/default.jpg'} alt={id2}
-                         onClick={() => changeSource(i)}/>
-                );
-            }
-
-            return <div className="aiiif-sources">{sourceThumbs}</div>
+    useEffect(() => {
+        if (!annotation || !viewer.current) {
+            return;
         }
-    }
+
+        const index: any = props.source.findIndex((s: any) => s.on === annotation.on);
+        if (index < 0) {
+            return;
+        }
+
+        if (index !== page) {
+            setPage(index);
+        } else {
+            viewer.current.clearOverlays();
+        }
+
+        const elt = document.createElement("div");
+        elt.className = "aiiif-highlight";
+        const imageWidth = props.source[index].width;
+        viewer.current.addOverlay({
+            element: elt,
+            location: new OpenSeadragon.Rect(
+                annotation.x/imageWidth,
+                annotation.y/imageWidth,
+                annotation.width/imageWidth,
+                annotation.height/imageWidth)
+        });
+    });
 
     return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.source[0]}
                 onMouseEnter={() => setShowButtons(true)}
                 onMouseLeave={() => setShowButtons(false)} >
-        <ImageButtons data={data.current} viewerId={id.current} j={j.current} changeSource={changeSource} show={showButtons}/>
+        <ImageButtons data={props.source} viewerId={id.current}  show={showButtons}/>
         <ViewerSpinner show={spinner} />
-        {renderSources()}
     </div>;
 }

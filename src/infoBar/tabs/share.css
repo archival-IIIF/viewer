@@ -1,0 +1,64 @@
+.aiiif-share-button-group {
+    display: flex;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.aiiif-share-button-group > a {
+    background-color: #5a5858;
+    border-radius: 32px;
+    height: 52px;
+    width: 52px;
+    display: flex;
+    margin: 0 16px 16px 0;
+    cursor: pointer;
+    font-size: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button svg {
+    margin: auto;
+    color: white;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-email {
+    background-color: #888888;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-facebook {
+    background-color: #3b5998;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-facebook svg {
+    color: white;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-twitter {
+    background-color: #1da1f2;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-twitter svg {
+    height: inherit;
+    color: white;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-iiif {
+    background-color: ghostwhite;
+}
+
+.aiiif-share-button-group > a.aiiif-share-button-iiif svg {
+    width: 60%;
+    height: 60%;
+}
+
+.aiiif-share-code {
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    background-color: #fafafa;
+    border-radius: 3px;
+    border: 1px solid rgb(237, 237, 237);
+    display: block;
+    padding: 12px;
+    margin: 24px 0 12px;
+}
