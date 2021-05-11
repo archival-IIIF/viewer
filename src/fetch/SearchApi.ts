@@ -55,7 +55,7 @@ export default class SearchApi {
 
                 const hits: HitType[] = [];
                 let resources = json.resources;
-                let i = 1;
+                let i = 0;
                 for (const hit of json.hits) {
                     for (const annotation of hit.annotations) {
 
@@ -66,9 +66,10 @@ export default class SearchApi {
                         let tmpArray = resource.on.split('#xywh=');
                         let position = tmpArray[1].split(',');
 
+
                         const page = manifest.resource.source.findIndex((r: any) => r.on === tmpArray[0]);
                         hits.push({
-                            match: hit.match,
+                            match: resources[i].resource.chars,
                             before: hit.before,
                             after: hit.after,
                             i: i++,
