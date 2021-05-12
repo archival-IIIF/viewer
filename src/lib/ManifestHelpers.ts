@@ -53,6 +53,11 @@ export function isSingleManifest(manifestData: IManifestData): boolean {
     return true;
 }
 
+export function isSingleRoot(manifestData: IManifestData): boolean {
+    return (manifestData.type === 'Collection' && !manifestData.parentId && manifestData.collections.length === 0);
+}
+
+
 export function hasTranscription(manifestData: IManifestData): boolean {
     return manifestData.transcription.length > 0;
 }

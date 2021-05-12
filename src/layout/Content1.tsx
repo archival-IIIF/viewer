@@ -3,7 +3,7 @@ import Splitter from "../splitter/Splitter";
 import Content2 from "./Content2";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
-import {isSingleManifest} from "../lib/ManifestHelpers";
+import {isSingleManifest, isSingleRoot} from "../lib/ManifestHelpers";
 import TabButtons from "../infoBar/tabButtons";
 import InfoBar from "../infoBar/infoBar";
 import TreeView from "../treeView/TreeView";
@@ -11,13 +11,13 @@ import Content3 from "./Content3";
 
 export default function Content1() {
 
-    const {currentManifest, tab} = useContext(AppContext);
+    const {currentManifest, tab, currentFolder} = useContext(AppContext);
 
-    if (!currentManifest) {
+    if (!currentManifest || !currentFolder) {
         return <></>;
     }
 
-    if (isSingleManifest(currentManifest)) {
+    if (isSingleManifest(currentManifest) || isSingleRoot(currentFolder)) {
         if (tab === '') {
             return <>
                 <div className="aiiif-infobar">
