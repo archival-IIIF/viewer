@@ -53,15 +53,10 @@ h3 {
     margin: 0 0 20px 0 !important;
 }
 
-.aiiif-empty {
-    margin-top: 24px;
-}
-
 .aiiif-provider-logo {
-    margin: 30px 0 0;
     max-width: 70%;
     display: block;
-    margin-bottom: 20px;
+    margin: 30px 0 20px;
 }
 
 .aiiif-fullpage {

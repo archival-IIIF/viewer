@@ -25,49 +25,43 @@ export default function FolderView() {
 
     const files = currentFolder.manifests;
     const folders = currentFolder.collections;
+    const content: JSX.Element[] = [];
 
     if (files.length === 0 && folders.length === 0) {
 
-        return (
-            <div className="aiiif-folder-view-container">
-                <div>
-                    <h1>{getLocalized(currentFolder.label)}</h1>
-                    <div className="aiiif-empty">
-                        <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
-                    </div>
-                </div>
-            </div>
-        );
+        content.push(<div className="aiiif-empty">
+            <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
+        </div>);
+    } else {
+        const s = removeDiacritics(search);
+        for (const folder of folders) {
+            if (search === '' || removeDiacritics(getLocalized(folder.label)).includes(s)) {
+                content.push(
+                    <Item
+                        item={folder}
+                        selected={currentManifest}
+                        key={folder.id}
+                        setCurrentManifest={setCurrentManifest}
+                        authDate={authDate}
+                    />
+                );
+            }
+        }
+        for (const file of files) {
+            if (search === '' || removeDiacritics(getLocalized(file.label)).includes(s)) {
+                content.push(
+                    <Item
+                        item={file}
+                        selected={currentManifest}
+                        key={file.id}
+                        setCurrentManifest={setCurrentManifest}
+                        authDate={authDate}
+                    />
+                );
+            }
+        }
     }
 
-    const content = [];
-    const s = removeDiacritics(search);
-    for (const folder of folders) {
-        if (search === '' || removeDiacritics(getLocalized(folder.label)).includes(s)) {
-            content.push(
-                <Item
-                    item={folder}
-                    selected={currentManifest}
-                    key={folder.id}
-                    setCurrentManifest={setCurrentManifest}
-                    authDate={authDate}
-                />
-            );
-        }
-    }
-    for (const file of files) {
-        if (search === '' || removeDiacritics(getLocalized(file.label)).includes(s)) {
-            content.push(
-                <Item
-                    item={file}
-                    selected={currentManifest}
-                    key={file.id}
-                    setCurrentManifest={setCurrentManifest}
-                    authDate={authDate}
-                />
-            );
-        }
-    }
 
     const folderViewClassNames = 'aiiif-folder-view aiiif-' + mode;
 
