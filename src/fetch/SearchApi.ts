@@ -64,6 +64,10 @@ export default class SearchApi {
                             continue;
                         }
                         let tmpArray = resource.on.split('#xywh=');
+                        if (tmpArray.length !== 2) {
+                            console.log('Error: url must include #xywh=! ' + resource.on)
+                            continue;
+                        }
                         let position = tmpArray[1].split(',');
 
 
