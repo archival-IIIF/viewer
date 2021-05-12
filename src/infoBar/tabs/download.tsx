@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
 import {basename, getLocalized} from "../../lib/ManifestHelpers";
 import i18next from "i18next";
-import FileIcon from "@material-ui/icons/DescriptionOutlined";
 import "./download.css"
 import {AppContext} from "../../AppContext";
 
@@ -29,8 +28,6 @@ export default function Download() {
             output.push(
                 <a key={i} href={manifestation.url} className="aiiif-download" target="_blank"
                    rel="noopener noreferrer">
-
-                    <FileIcon />
                     {getLocalized(manifestation.label)}
                 </a>
             );

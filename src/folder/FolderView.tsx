@@ -1,14 +1,12 @@
 import * as React from 'react';
 import Item from './Item';
 import {Translation} from 'react-i18next';
-import ViewSymbolsIcon from "@material-ui/icons/ViewComfy";
-import ViewListIcon from "@material-ui/icons/ViewList";
 import {getLocalized} from "../lib/ManifestHelpers";
 import {useContext, useState} from "react";
 import {AppContext} from "../AppContext";
 import {InputBase} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {faList, faSearch, faTh, faThList} from "@fortawesome/free-solid-svg-icons";
 import removeDiacritics from "../lib/Diacritics";
 import i18next from "i18next";
 
@@ -89,11 +87,11 @@ export default function FolderView() {
                     />
                 </div>
                 <div className="aiiif-icon-button" onClick={() => setMode('icon-view')}>
-                    <ViewSymbolsIcon />
+                    <FontAwesomeIcon icon={faTh} />
                     <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
                 </div>
                 <div className="aiiif-icon-button" onClick={() => setMode('list-view')}>
-                    <ViewListIcon />
+                    <FontAwesomeIcon icon={faThList} />
                     <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
                 </div>
             </nav>
