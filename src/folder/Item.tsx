@@ -5,7 +5,7 @@ import IManifestData, {IManifestReference} from '../interface/IManifestData';
 import './item.css';
 import {getLocalized} from "../lib/ManifestHelpers";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolder} from "@fortawesome/free-solid-svg-icons";
+import {faFileAlt, faFolder} from "@fortawesome/free-solid-svg-icons";
 
 interface IProps {
     item: IManifestReference;
@@ -45,7 +45,7 @@ function getThumbnail(props: IProps) {
         }
 
         return <div className="aiiif-item-thumbnail">
-            <FontAwesomeIcon icon={faFolder} />
+            <FontAwesomeIcon icon={faFileAlt} />
         </div>;
     }
 

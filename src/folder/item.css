@@ -20,15 +20,17 @@
     margin: 0 auto;
 }
 
-.aiiif-item-thumbnail svg {
+.aiiif-item-thumbnail svg, .aiiif-item-thumbnail .svg-inline--fa {
     width: 90%;
     height: 90%;
 }
 
 .aiiif-item-thumbnail .fa-folder {
-    width: 90%;
-    height: 90%;
     color: #7cd6fa;
+}
+
+.aiiif-item-thumbnail .fa-file-alt {
+    color: #a9a9a9;
 }
 
 .aiiif-item-label {
