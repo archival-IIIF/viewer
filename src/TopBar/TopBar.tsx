@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Cache from '../lib/Cache';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
 import NavBarIcon from '@material-ui/icons/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
@@ -10,6 +9,8 @@ import ExternalSearch from "./ExternalSearch";
 import {isSingleManifest} from "../lib/ManifestHelpers";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 
 export default function TopBar() {
 
@@ -26,7 +27,7 @@ export default function TopBar() {
         <ExternalSearch />
         {Token.hasActiveToken() &&
             <div className="aiiif-icon-button" onClick={() => Token.logout()}>
-                <LogoutIcon />
+                <FontAwesomeIcon icon={faSignOutAlt} />
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>
         }

@@ -64,5 +64,6 @@
 
 .aiiif-highlight.active {
     background-color: #7CD6FA;
+    border: 2px solid #064e6c;
 }
 

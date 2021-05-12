@@ -1,7 +1,8 @@
 import React from 'react';
-import SearchIcon from "@material-ui/icons/Search";
 import {Translation} from "react-i18next";
 import Config from "../lib/Config";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
 declare let global: {
     config: Config;
@@ -15,7 +16,7 @@ export default function ExternalSearch() {
     }
 
     return <a className="aiiif-icon-button" href={externalSearchUrl}>
-        <SearchIcon />
+        <FontAwesomeIcon icon={faSearch} />
         <Translation ns="common">{(t, { i18n }) => <p>{t('search')}</p>}</Translation>
     </a>
 }
