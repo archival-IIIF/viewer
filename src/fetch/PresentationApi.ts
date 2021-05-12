@@ -583,7 +583,8 @@ class Manifest {
             sources.push({
                 id: service.id,
                 on: image0.getOn(),
-                width: canvases.getWidth()
+                width: canvases.getWidth(),
+                height: canvases.getHeight()
             });
         }
 
