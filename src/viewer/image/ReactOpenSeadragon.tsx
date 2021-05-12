@@ -57,7 +57,7 @@ export default function ReactOpenSeadragon(props: IProps) {
     // change page
     useEffect(() => {
 
-        if (!viewer.current) {
+        if (!viewer.current || !props.source[page]) {
             return;
         }
 
