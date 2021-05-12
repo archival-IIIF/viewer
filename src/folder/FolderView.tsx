@@ -6,7 +6,7 @@ import {useContext, useState} from "react";
 import {AppContext} from "../AppContext";
 import {InputBase} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faList, faSearch, faTh, faThList} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faTh, faThList} from "@fortawesome/free-solid-svg-icons";
 import removeDiacritics from "../lib/Diacritics";
 import i18next from "i18next";
 
