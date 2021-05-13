@@ -9,7 +9,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {debounce} from 'throttle-debounce';
-import fetchAutoCompleteApi, {IAutoCompleteTerms} from "../../fetch/AutoComplete";
+import fetchAutoCompleteApi, {IAutoCompleteTerms} from "../../fetch/AutoCompleteApi";
 
 const autocompleteWaitInterval = 300;
 
