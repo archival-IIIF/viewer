@@ -54,15 +54,17 @@ export default function Download() {
                     {extension.toUpperCase()} {image.width}x{image.height})</a>
             </div>
         );
-        const smallWidth = image.width < 1000 ? image.width : 1000;
-        const smallHeight = image.width < 1000  ? image.height : Math.round(image.height / image.width * 1000);
-        output.push(
-            <div className="aiiif-metadata-item" key="elementDownload2">
-                <a href={image.id + '/full/'+smallWidth+','+smallHeight+'/0/default.jpg'}
-                   download={basename(image.id)+'.jpg'}>{i18next.t('common:image')} (JPG
-                    {smallWidth}x{smallHeight})</a>
-            </div>
-        );
+        if (image.width > 1000 || image.height > 1000) {
+            const smallWidth = image.width < 1000 ? image.width : 1000;
+            const smallHeight = image.width < 1000  ? image.height : Math.round(image.height / image.width * 1000);
+            output.push(
+                <div className="aiiif-metadata-item" key="elementDownload2">
+                    <a href={image.id + '/full/'+smallWidth+','+smallHeight+'/0/default.jpg'}
+                       download={basename(image.id)+'.jpg'}>{i18next.t('common:image')} (JPG
+                        {smallWidth}x{smallHeight})</a>
+                </div>
+            );
+        }
     }
 
     return <>{output}</>;
