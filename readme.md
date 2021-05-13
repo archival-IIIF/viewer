@@ -90,6 +90,13 @@ https://github.com/archival-IIIF/viewer/releases
             <td><code>false</code></td>
         </tr>
         <tr>
+            <td>lazyTree</td>
+            <td>Make tree view lazy</td>
+            <td><code>true</code></td>
+            <td>No</td>
+            <td><code>false</code></td>
+        </tr>
+        <tr>
             <td>allowedOrigins</td>
             <td>Indicates whether a manifest can be shown from the given origin.</td>
             <td>

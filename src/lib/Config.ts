@@ -15,6 +15,8 @@ class Config {
 
     private readonly disableLanguageSelection: boolean;
 
+    private readonly lazyTree: boolean;
+
     private readonly externalSearchUrl?: string;
 
     private readonly manifest: string;
@@ -38,6 +40,7 @@ class Config {
         this.disableSharing = config.disableSharing ? config.disableSharing : false;
         this.disableDownload = config.disableDownload ? config.disableDownload : false;
         this.disableLanguageSelection = config.disableLanguageSelection ? config.disableLanguageSelection : false;
+        this.lazyTree = config.lazyTree ? config.lazyTree : false;
         this.externalSearchUrl = config.externalSearchUrl;
     }
 
@@ -97,6 +100,10 @@ class Config {
 
     getDisableLanguageSelection() {
         return this.disableLanguageSelection;
+    }
+
+    getLazyTree() {
+        return this.lazyTree;
     }
 
     getExternalSearchUrl() {

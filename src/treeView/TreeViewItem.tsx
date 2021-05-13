@@ -9,6 +9,7 @@ import IManifestData, {IManifestReference} from "../interface/IManifestData";
 import {PropertyValue} from "manifesto.js";
 import TreeBuilder from "./TreeBuilder";
 import {AppContext} from "../AppContext";
+import Config from "../lib/Config";
 
 
 interface IPros {
@@ -18,6 +19,10 @@ interface IPros {
     level: number;
 }
 
+declare let global: {
+    config: Config;
+};
+
 export default function TreeViewItem(props: IPros) {
 
     const {setCurrentManifest, currentFolder} = useContext(AppContext);
@@ -26,13 +31,32 @@ export default function TreeViewItem(props: IPros) {
     const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id] ?? false);
 
     const isSubTreeMissing = (): boolean => {
+        if(!children) {
+            return true;
+        }
+        if (global.config.getLazyTree() !== true) {
+            for (const child of children) {
+                if (!PresentationApi.fetchFromCache(child.id)) {
+                    return true;
+                }
+            }
+        }
 
-        return !children;
+        return false
     }
 
     const loadSubTree = () => {
-        PresentationApi.get(props.id).then(async function(manifestData: IManifestData) {
-            setChildren(manifestData.collections ?? []);
+        PresentationApi.get(props.id).then(async (manifestData) => {
+            if (global.config.getLazyTree()) {
+                setChildren(manifestData.collections ?? []);
+            } else {
+                const children: IManifestData[] = [];
+                for (const child of manifestData.collections) {
+                    children.push(await PresentationApi.get(child.id));
+
+                }
+                setChildren(children);
+            }
             setIsOpen(true);
         });
     }
@@ -74,11 +98,7 @@ export default function TreeViewItem(props: IPros) {
         className += ' aiiif-current';
     }
     const label = getLocalized(props.label);
-
-
     const childrenElements: JSX.Element[] = [];
-
-
 
     if (isOpen && children) {
         const childrenLevel = props.level + 1;

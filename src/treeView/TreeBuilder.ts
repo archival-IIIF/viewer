@@ -1,7 +1,13 @@
 import PresentationApi from "../fetch/PresentationApi";
 import IManifestData from "../interface/IManifestData";
+import Config from "../lib/Config";
+import {config} from "@fortawesome/fontawesome-svg-core";
 
 interface ITreeStatus {[key: string]: boolean};
+
+declare let global: {
+    config: Config;
+};
 
 class TreeBuilder {
 
@@ -14,7 +20,17 @@ class TreeBuilder {
 
             if (manifestData.parentId) {
                 TreeBuilder.buildCache(manifestData.parentId, done);
+                if (!global.config.getLazyTree()) {
+                    for (const child of manifestData.collections) {
+                        await PresentationApi.get(child.id, true);
+                    }
+                }
             } else {
+                if (!global.config.getLazyTree()) {
+                    for (const child of manifestData.collections) {
+                        await PresentationApi.get(child.id, true);
+                    }
+                }
                 if (done) {
                     done();
                 }
