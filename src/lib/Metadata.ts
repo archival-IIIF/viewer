@@ -1,4 +1,4 @@
-class Metadata {
+export default class Metadata {
 
     get(data: any, key: string) {
         if (!data.hasOwnProperty('metadata')) {
@@ -20,5 +20,3 @@ class Metadata {
     }
 
 }
-
-export default Metadata;
