@@ -1,7 +1,6 @@
 import PresentationApi from "../fetch/PresentationApi";
 import IManifestData from "../interface/IManifestData";
 import Config from "../lib/Config";
-import {config} from "@fortawesome/fontawesome-svg-core";
 
 interface ITreeStatus {[key: string]: boolean};
 

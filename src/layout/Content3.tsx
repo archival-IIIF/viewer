@@ -58,12 +58,11 @@ function isAudio(currentManifest: IManifestData) {
 }
 
 function getSize(currentManifest: IManifestData): number {
-    const manifestData: any = currentManifest;
-    if (!manifestData) {
+    if (!currentManifest) {
         return 0;
     }
 
-    if (['audioVideo', 'image', 'plain', 'pdf'].includes(manifestData.itemsType )) {
+    if (['audioVideo', 'image', 'plain', 'pdf'].includes(currentManifest.itemsType )) {
         return 50;
     }
 

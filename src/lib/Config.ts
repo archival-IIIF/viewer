@@ -25,7 +25,7 @@ class Config {
 
     private readonly allowedOrigins: string | string[] = '*';
 
-    private readonly translations: object = {
+    private readonly translations: {[key: string]: string} = {
         en: 'English',
         de: 'Deutsch',
         fr: 'Français',

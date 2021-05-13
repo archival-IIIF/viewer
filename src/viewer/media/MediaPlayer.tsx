@@ -38,10 +38,9 @@ export default function MediaPlayer() {
     })
 
     useEffect(() => {
-        if (currentManifest) {
-            const resource: any = currentManifest.resource;
-            const mime = resource.format;
-            const file = resource.id;
+        if (currentManifest && currentManifest.resource) {
+            const mime = currentManifest.resource.format;
+            const file = currentManifest.resource.id;
             const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
 
             if (player.current) {

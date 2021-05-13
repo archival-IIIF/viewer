@@ -31,8 +31,8 @@ export default function Login() {
         + (window.location.port ? ':' + window.location.port : '');
 
     useEffect(() => {
-        const escFunction = (event: any) => {
-            if (event.keyCode === 27) {
+        const escFunction = (event: KeyboardEvent) => {
+            if (event.code === 'Escape') {
                 setVisible(false)
             }
         }

@@ -5,11 +5,12 @@ import {faHome, faSearchPlus, faSearchMinus, faUndo, faExpand, faArrowLeft, faAr
     from "@fortawesome/free-solid-svg-icons";
 import './imageButtons.css';
 import {AppContext} from "../../AppContext";
+import {IPresentationApiImage} from "../../interface/IManifestData";
 
 interface IProps {
     viewerId: number;
     show: boolean;
-    data: any[];
+    data: IPresentationApiImage[];
 }
 
 export default function ImageButtons(props: IProps) {
