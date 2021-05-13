@@ -1,5 +1,5 @@
 import Cache from '../lib/Cache';
-import IManifestData, {IAuthService} from "../interface/IManifestData";
+import {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
 import Manifest from "./PresentationApi";
