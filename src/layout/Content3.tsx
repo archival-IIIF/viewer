@@ -54,7 +54,7 @@ export default function Content3() {
 }
 
 function isAudio(currentManifest: IManifestData) {
-    return currentManifest.resource && currentManifest.resource.type;
+    return currentManifest.resource && currentManifest.resource.type === 'audio';
 }
 
 function getSize(currentManifest: IManifestData): number {
