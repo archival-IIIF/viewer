@@ -720,7 +720,7 @@ class Manifest {
     }
 
     static getIdFromCurrentUrl() {
-        let manifestUri = this.getGetParameter('manifest', window.location.href);
+        let manifestUri = this.getGetParameter('manifest');
 
         if (!manifestUri || manifestUri === '') {
             manifestUri = global.config.getManifest();
