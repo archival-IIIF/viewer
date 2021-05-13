@@ -9,12 +9,12 @@ export default function Pages() {
 
     const output: JSX.Element[] = [];
 
-    if (!currentManifest || !currentManifest.resource.source) {
+    if (!currentManifest || currentManifest.images.length < 1) {
         return <></>;
     }
 
     let i = 0;
-    for (const image of currentManifest.resource.source) {
+    for (const image of currentManifest.images) {
         let className = 'aiiif-image-preview';
         if (i === page) {
             className += ' active'

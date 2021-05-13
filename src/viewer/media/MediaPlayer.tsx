@@ -134,8 +134,7 @@ export default function MediaPlayer() {
         return <></>;
     }
 
-    const resource: any = currentManifest.resource;
-    if (resource.type === 'video') {
+    if (currentManifest.resource.type === 'video') {
         return renderVideo();
     }
 

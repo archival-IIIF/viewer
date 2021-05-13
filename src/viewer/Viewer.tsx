@@ -15,32 +15,28 @@ export default function Viewer() {
         return <></>;
     }
 
-    if (!currentManifest || !currentManifest.hasOwnProperty('resource')) {
-        return <></>;
-    }
-
-    if (currentManifest.resource.type === 'imageService') {
+    if (currentManifest.images.length > 0) {
         return  <div className="aiiif-viewer">
             <ReactOpenSeadragon
-                source={currentManifest.resource.source}
-                key={currentManifest.resource.source + authDate.toString()}
+                images={currentManifest.images}
+                key={currentManifest.id + authDate.toString()}
             />
         </div>;
     }
 
-    if (currentManifest.resource.type === 'audio' || currentManifest.resource.type === 'video') {
+    if (currentManifest.itemsType === 'audioVideo') {
         return <div className="aiiif-viewer">
             <MediaPlayer />
         </div>;
     }
 
-    if (currentManifest.resource.type === 'plainText') {
+    if (currentManifest.itemsType === 'plain') {
         return <div className="aiiif-viewer">
             <PlainTextViewer />
         </div>;
     }
 
-    if (currentManifest.resource.type === 'pdf') {
+    if (currentManifest.itemsType=== 'pdf') {
         return <PdfViewer />;
     }
 

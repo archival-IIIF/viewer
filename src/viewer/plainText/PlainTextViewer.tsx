@@ -11,8 +11,8 @@ export default function PlainTextViewer() {
     const [text, setText] = useState<string>('');
 
     useEffect(() => {
-        if (currentManifest) {
-            const source: any = currentManifest.resource.id;
+        if (currentManifest && currentManifest.resource) {
+            const source = currentManifest.resource.id;
             fetch(source)
                 .then(function(response) {
                     return response.text();

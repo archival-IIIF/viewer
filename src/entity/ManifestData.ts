@@ -1,4 +1,9 @@
-import IManifestData, {IAuthService, IManifestReference} from '../interface/IManifestData';
+import IManifestData, {
+    IAuthService,
+    IManifestReference,
+    IPresentationApiImage,
+    IPresentationApiItemsType
+} from '../interface/IManifestData';
 import {LabelValuePair, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
 
@@ -14,7 +19,7 @@ class ManifestData implements IManifestData {
     parentId: undefined;
     collections: IManifestReference[];
     manifests: IManifestReference[];
-    resource: string;
+    itemsType: IPresentationApiItemsType = 'file';
     restricted: false;
     metadata: LabelValuePair[];
     license: null;
@@ -22,6 +27,7 @@ class ManifestData implements IManifestData {
     thumbnail: undefined;
     authService?: IAuthService;
     transcription: ITranscription[];
+    images: IPresentationApiImage[];
 
     constructor() {
         this.id = '';
@@ -33,12 +39,12 @@ class ManifestData implements IManifestData {
         this.manifestations = '';
         this.collections = [];
         this.manifests = [];
-        this.resource = '';
         this.restricted = false;
         this.metadata = [];
         this.description = new PropertyValue();
         this.authService = undefined;
         this.transcription = [];
+        this.images = [];
     }
 }
 

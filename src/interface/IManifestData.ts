@@ -6,6 +6,8 @@ interface IManifestData {
     id: string;
     request?: string;
     type: string;
+    metadata: LabelValuePair[];
+    authService?: IAuthService;
     label: PropertyValue;
     logo: string | null;
     attribution: LabelValuePair | null;
@@ -13,16 +15,39 @@ interface IManifestData {
     parentId?: string;
     collections: IManifestReference[];
     manifests: IManifestReference[];
-    resource: any;
+    resource?: IPresentationApiResource;
+    itemsType: IPresentationApiItemsType;
     restricted: boolean;
-    metadata: LabelValuePair[];
     license: string | null;
     search?: ISearchService
     description: PropertyValue;
     thumbnail?: IManifestDataThumbnail;
-    authService?: IAuthService;
     transcription: ITranscription[];
+    images: IPresentationApiImage[];
 }
+
+export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain';
+
+export interface IPresentationApiImage {
+    id: string;
+    width: number;
+    height: number;
+    on: string;
+    format: string;
+}
+
+export interface IPresentationApiResource {
+    id: string;
+    format: string;
+    type: string;
+    manifestations?: IPresentationApiManifestation[];
+}
+
+export interface IPresentationApiManifestation {
+    label: PropertyValue;
+    url: string;
+}
+
 
 export interface IManifestReference {
     id: string;

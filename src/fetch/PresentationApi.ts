@@ -1,5 +1,10 @@
 import Cache from '../lib/Cache';
-import IManifestData, {IAuthService, IManifestReference, ISearchService} from '../interface/IManifestData';
+import IManifestData, {
+    IAuthService,
+    IManifestReference,
+    IPresentationApiImage, IPresentationApiItemsType, IPresentationApiManifestation, IPresentationApiResource,
+    ISearchService
+} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
@@ -185,7 +190,10 @@ class Manifest {
                         manifestData.manifests = t.getManifests(manifestoData);
                         manifestData.collections = t.getCollections(manifestoData);
                     } else if (manifestData.type === 'Manifest') {
-                        manifestData.resource = t.getResource(manifestoData, isV3);
+                        const {resource, images, type} = t.getResource(manifestoData, isV3);
+                        manifestData.resource = resource;
+                        manifestData.images = images;
+                        manifestData.itemsType = type;
                     }
                     manifestData.search = t.getSearch(manifestoData);
                     manifestData.thumbnail = t.getThumbnail(manifestoData);
@@ -325,52 +333,43 @@ class Manifest {
         return license;
     }
 
-    static getResource(manifestoData: any, isV3: boolean) {
-
-        const resource = {
-            source: null,
-            type: null
-        };
-
+    static getResource(manifestoData: any, isV3: boolean): {resource: IPresentationApiResource | undefined, images: IPresentationApiImage[], type: IPresentationApiItemsType} {
 
 
         if (typeof manifestoData.getSequenceByIndex !== 'function') {
-            return resource;
+            return {resource: undefined, images: [], type: 'file'};
         }
 
         const sequence0 = manifestoData.getSequenceByIndex(0);
         if (sequence0 === undefined) {
-            return resource;
+            return {resource: undefined, images: [], type: 'file'};
         }
 
 
         if (isV3) {
-            const iiif3Resource = this.getIIF3Resource(sequence0);
-            if (iiif3Resource !== false) {
-                return iiif3Resource;
-            }
+            return this.getIIF3Resource(sequence0);
         } else {
-            const imageResources = this.getImageResources(sequence0);
-            if (imageResources !== false) {
-                return imageResources;
+            const images = this.getImageResources(sequence0);
+            if (images.length > 0) {
+                return {resource: undefined, images, type: 'image'};
             }
 
             const audioVideoResource = this.getAudioVideoResource(sequence0);
-            if (audioVideoResource !== false) {
-                return audioVideoResource;
+            if (audioVideoResource) {
+                return {resource: audioVideoResource,  images: [], type: 'audioVideo'};
             }
 
             const fileResource = this.getFileResource(sequence0);
             if (fileResource) {
-                return fileResource;
+                return {resource: fileResource, images: [], type: 'file'};
             }
         }
 
 
-        return resource;
+        return {resource: undefined, images: [], type: 'file'};
     }
 
-    static getManifestations(manifestoData: IIIFResource) {
+    static getManifestations(manifestoData: IIIFResource): IPresentationApiManifestation[] {
 
         const manifestations = [];
 
@@ -378,7 +377,7 @@ class Manifest {
         for (const i in renderings) {
             if (renderings.hasOwnProperty(i)) {
                 const rendering = renderings[i];
-                const manifestation = {
+                const manifestation: IPresentationApiManifestation = {
                     label: rendering.getLabel(),
                     url: rendering.id,
                 };
@@ -389,33 +388,33 @@ class Manifest {
         return manifestations;
     }
 
-    static getAudioVideoResource(sequence0: ISequenze) {
+    static getAudioVideoResource(sequence0: ISequenze): IPresentationApiResource | undefined {
         if (!sequence0.__jsonld) {
-            return false;
+            return undefined;
         }
 
         const jsonld: any = sequence0.__jsonld;
         if (!jsonld.hasOwnProperty('elements')) {
-            return false;
+            return undefined;
         }
 
         const element0: any = jsonld['elements'][0];
         if (element0 === undefined) {
-            return false;
+            return undefined;
         }
 
         if (!element0.hasOwnProperty('format')) {
-            return false;
+            return undefined;
         }
 
         const mime = element0.format;
         const mediaType = mime.substr(0, 5);
         if (mediaType !== 'audio' && mediaType !== 'video') {
-            return false;
+            return undefined;
         }
 
         if (element0['@id'] === null) {
-            return false;
+            return undefined;
         }
 
         return {
@@ -425,10 +424,10 @@ class Manifest {
         };
     }
 
-    static getIIF3Resource(sequence0: any) {
+    static getIIF3Resource(sequence0: any): {resource: IPresentationApiResource | undefined, images: IPresentationApiImage[], type: IPresentationApiItemsType} {
 
 
-        const images = [];
+        const images: IPresentationApiImage[] = [];
         for (const canvas of sequence0.getCanvases()) {
             try {
                 const source = canvas.getContent()[0].getBody()[0];
@@ -437,10 +436,14 @@ class Manifest {
                     source.getFormat().substr(0, 5) === 'video'
                 ) {
                     return {
-                        format: source.getFormat(),
-                        id: source.id,
-                        type: 'video',
-                        manifestations: this.getManifestations(canvas)
+                        resource: {
+                            format: source.getFormat(),
+                            id: source.id,
+                            type: 'video',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'audioVideo'
                     };
                 }
                 if (
@@ -449,26 +452,38 @@ class Manifest {
                     source.getFormat().substr(0, 5) === 'audio'
                 ) {
                     return {
-                        format: source.getFormat(),
-                        id: source.id,
-                        type: 'audio',
-                        manifestations: this.getManifestations(canvas)
+                        resource: {
+                            format: source.getFormat(),
+                            id: source.id,
+                            type: 'audio',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'audioVideo'
                     };
                 }
                 if (source.getFormat().toLowerCase() === 'application/pdf') {
                     return {
-                        format: 'application/pdf',
-                        id: source.id,
-                        type: 'pdf',
-                        manifestations: this.getManifestations(canvas)
+                        resource: {
+                            format: 'application/pdf',
+                            id: source.id,
+                            type: 'pdf',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'pdf'
                     };
                 }
                 if (source.getFormat().toLowerCase() === 'text/plain') {
                     return {
-                        format: 'text/plain',
-                        id: source.id,
-                        type: 'plainText',
-                        manifestations: this.getManifestations(canvas)
+                        resource: {
+                            format: 'text/plain',
+                            id: source.id,
+                            type: 'plainText',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'plain'
                     };
                 }
 
@@ -487,7 +502,7 @@ class Manifest {
                                 on: canvas.id,
                                 width: canvas.getWidth(),
                                 height: canvas.getHeight(),
-                                manifestations: this.getManifestations(canvas)
+                                format: canvas.getFormat(),
                             });
                             break;
                         }
@@ -495,25 +510,26 @@ class Manifest {
 
                 } else {
                     return {
-                        format: source.getFormat(),
-                        id: source.id,
-                        type: 'file',
-                        manifestations: this.getManifestations(canvas)
+                        resource: {
+                            format: source.getFormat(),
+                            id: source.id,
+                            type: 'file',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'file'
                     };
                 }
 
             } catch (e) {
-                return false;
+                return {resource: undefined, images: [], type: 'file'};
             }
         }
         if (images.length > 0) {
-            return {
-                source: images,
-                type: 'imageService'
-            };
+            return {resource: undefined, images, type: 'image'};
         }
 
-        return false;
+        return {resource: undefined, images, type: 'file'};
     }
 
 
@@ -549,9 +565,9 @@ class Manifest {
     }
 
 
-    static getImageResources(sequence0: any) {
+    static getImageResources(sequence0: any): IPresentationApiImage[] {
 
-        const sources: any = [];
+        const sources: IPresentationApiImage[] = [];
         for (const canvases of sequence0.getCanvases()) {
 
             let images = canvases.getImages();
@@ -583,19 +599,13 @@ class Manifest {
             sources.push({
                 id: service.id,
                 on: image0.getOn(),
+                format: canvases.getFormat(),
                 width: canvases.getWidth(),
                 height: canvases.getHeight()
             });
         }
 
-        if (sources.length === 0) {
-            return false;
-        }
-
-        return {
-            source: sources,
-            type: 'imageService'
-        };
+        return sources;
     }
 
     static getTranscription(manifestoData: any): ITranscription[] {

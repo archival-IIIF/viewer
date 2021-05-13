@@ -8,9 +8,10 @@ import './openSeadragon.css';
 import {Options, Viewer} from "openseadragon";
 import ImageButtons from "./ImageButtons";
 import {AppContext} from "../../AppContext";
+import {IPresentationApiImage} from "../../interface/IManifestData";
 
 interface IProps {
-    source: any[];
+    images: IPresentationApiImage[];
 }
 
 const buttons = [
@@ -42,7 +43,6 @@ export default function ReactOpenSeadragon(props: IProps) {
     const viewer = useRef<Viewer | undefined | null>(undefined);
     const id = useRef<number>(Math.random());
 
-
     const [spinner, setSpinner] = useState<boolean>(true);
     const [showButtons, setShowButtons] = useState<boolean>(true);
 
@@ -57,7 +57,7 @@ export default function ReactOpenSeadragon(props: IProps) {
     // change page
     useEffect(() => {
 
-        if (!viewer.current || !props.source[page]) {
+        if (!viewer.current || !props.images[page]) {
             return;
         }
 
@@ -65,7 +65,7 @@ export default function ReactOpenSeadragon(props: IProps) {
         const oldImage = viewer.current.world.getItemAt(0);
         viewer.current.world.removeItem(oldImage);
 
-        ImageApi.get(props.source[page].id, function(result: any) {
+        ImageApi.get(props.images[page].id, function(result: any) {
 
             if (!viewer.current) {
                 return;
@@ -79,7 +79,7 @@ export default function ReactOpenSeadragon(props: IProps) {
             });
         });
 
-    }, [page, props.source]);
+    }, [page, props.images]);
 
     // redraw annotations
     useEffect(() => {
@@ -102,7 +102,7 @@ export default function ReactOpenSeadragon(props: IProps) {
                 elt.className += ' active';
             }
 
-            const imageWidth = props.source[annotation.page].width;
+            const imageWidth = props.images[annotation.page].width;
             viewer.current.addOverlay({
                 element: elt,
                 location: new OpenSeadragon.Rect(
@@ -124,7 +124,7 @@ export default function ReactOpenSeadragon(props: IProps) {
         viewer.current = null;
 
 
-        ImageApi.get(props.source[page].id, function(result: any) {
+        ImageApi.get(props.images[page].id, function(result: any) {
 
             if (result[0] && result[0].statusCode === 401) {
                 viewer.current = undefined;
@@ -196,10 +196,10 @@ export default function ReactOpenSeadragon(props: IProps) {
         }
     })
 
-    return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.source[0]}
+    return <div id={'openseadragon-' + id.current.toString()} className="aiiif-openseadragon" key={props.images[0].on}
                 onMouseEnter={() => setShowButtons(true)}
                 onMouseLeave={() => setShowButtons(false)} >
-        <ImageButtons data={props.source} viewerId={id.current}  show={showButtons}/>
+        <ImageButtons data={props.images} viewerId={id.current}  show={showButtons}/>
         <ViewerSpinner show={spinner} />
     </div>;
 }

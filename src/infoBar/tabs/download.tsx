@@ -18,7 +18,7 @@ export default function Download() {
     const resource = currentManifest.resource;
     if (rawManifestations.length > 0) {
         manifestations = rawManifestations;
-    } else if (currentManifest.resource.manifestations && resource.manifestations.length > 0) {
+    } else if (resource && resource.manifestations) {
         manifestations = resource.manifestations;
     }
 
@@ -35,8 +35,8 @@ export default function Download() {
     }
 
 
-    if (currentManifest.resource.source && currentManifest.resource.source[page]) {
-        const image = currentManifest.resource.source[page];
+    if (currentManifest.images[page]) {
+        const image = currentManifest.images[page];
         let extension = 'jpg';
         if (image.format === 'image/tiff') {
             extension = 'tif';

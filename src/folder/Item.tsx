@@ -89,10 +89,9 @@ function openFile(props: IProps) {
         return;
     }
 
-    const type = props.selected.resource.type;
-    if (type === 'audio' || type === 'video') {
-        Cache.ee.emit('play-audio', props.selected.resource.source);
-    } else if (type === 'file') {
+    if (props.selected.itemsType === 'audioVideo') {
+        Cache.ee.emit('play-audio', props.selected.resource.id);
+    } else if (props.selected.itemsType === 'file') {
         const win = window.open(props.selected.resource.id, '_target');
         if (win) {
             win.focus();

@@ -19,7 +19,7 @@ export default function Tabs() {
     let tab2 = tab;
     if (tab === 'download') {
         content = <Download />
-    } else if (tab === 'pages' && currentManifest.resource && currentManifest.resource.type === 'imageService') {
+    } else if (tab === 'pages' && currentManifest.images.length > 0) {
         content = <Pages />
     } else if (tab === 'search' && currentManifest.search) {
         content = <Search />;

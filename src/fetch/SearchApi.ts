@@ -71,7 +71,7 @@ export default class SearchApi {
                         let position = tmpArray[1].split(',');
 
 
-                        const page = manifest.resource.source.findIndex((r: any) => r.on === tmpArray[0]);
+                        const page = manifest.images.findIndex(r => r.on === tmpArray[0]);
                         hits.push({
                             match: resources[i].resource.chars,
                             before: hit.before,

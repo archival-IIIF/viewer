@@ -25,7 +25,7 @@ export default function TabButtons() {
                    setTab={setTab} />
     );
 
-    if (currentManifest.resource.source) {
+    if (currentManifest.images.length > 0) {
         buttons.push(
             <TabButton key="pages" icon={faImages} name="pages" active={tab === 'pages'}
                        setTab={setTab} />

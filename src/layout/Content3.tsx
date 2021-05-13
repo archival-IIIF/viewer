@@ -54,31 +54,16 @@ export default function Content3() {
 }
 
 function isAudio(currentManifest: IManifestData) {
-    const manifestData: any = currentManifest;
-    if (!manifestData || !manifestData.hasOwnProperty('resource')) {
-        return false;
-    }
-
-    if (manifestData.resource.type !== 'audio') {
-        return false;
-    }
-
-    return true;
+    return currentManifest.resource && currentManifest.resource.type;
 }
 
 function getSize(currentManifest: IManifestData): number {
     const manifestData: any = currentManifest;
-    if (!manifestData || !manifestData.hasOwnProperty('resource')) {
+    if (!manifestData) {
         return 0;
     }
 
-    if (
-        manifestData.resource.type === 'imageService' ||
-        manifestData.resource.type === 'video' ||
-        manifestData.resource.type === 'audio' ||
-        manifestData.resource.format === 'text/plain' ||
-        manifestData.resource.format === 'application/pdf'
-    ) {
+    if (['audioVideo', 'image', 'plain', 'pdf'].includes(manifestData.itemsType )) {
         return 50;
     }
 
