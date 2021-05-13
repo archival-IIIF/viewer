@@ -9,11 +9,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {debounce} from 'throttle-debounce';
-
-interface IAutocompleteResult {
-    match: string;
-    url: string;
-}
+import fetchAutoCompleteApi, {IAutoCompleteTerms} from "../../fetch/AutoComplete";
 
 const autocompleteWaitInterval = 300;
 
@@ -24,7 +20,7 @@ export default function Search() {
     const [searchPhrase, setSearchPhrase] = useState<string>(q);
     const [isAutocompleteLoading, setIsAutocompleteLoading] = useState<boolean>(false);
     const [isAutocompleteOpen, setIsAutocompleteOpen] = useState<boolean>(false);
-    const [autocompleteResult, setAutocompleteResult] = useState<IAutocompleteResult[]>([]);
+    const [autocompleteResult, setAutocompleteResult] = useState<IAutoCompleteTerms[]>([]);
     const autocompleteDebounce = useRef(debounce( autocompleteWaitInterval, (value: string) => autocomplete(value)));
 
     useEffect(() => {
@@ -90,18 +86,10 @@ export default function Search() {
         }
 
         setIsAutocompleteLoading(true);
-        fetch(currentManifest.search.autoCompleteId + '?q=' + value)
-            .then(response => response.json())
-            .then(autocompleteData => {
-                if (autocompleteData.hasOwnProperty('terms')) {
-                    setAutocompleteResult(Object.values(autocompleteData.terms));
-                    setIsAutocompleteLoading(false);
-                } else {
-                    setAutocompleteResult([]);
-                    setIsAutocompleteLoading(false);
-
-                }
-            });
+        fetchAutoCompleteApi(currentManifest.search.autoCompleteId + '?q=' + value).then(terms => {
+            setAutocompleteResult(terms);
+            setIsAutocompleteLoading(false);
+        });
 
     }
 
