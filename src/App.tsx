@@ -53,16 +53,24 @@ export default function App(props: IProps) {
         }
         const url = id;
 
-        PresentationApi.get(
-            url,
-            (currentManifest: IManifestData) =>  {
-                ManifestHistory.pageChanged(
-                    currentManifest.request ?? currentManifest.id,
-                    getLocalized(currentManifest.label)
-                );
+        PresentationApi.get(url).then((currentManifest: IManifestData) =>  {
+            ManifestHistory.pageChanged(
+                currentManifest.request ?? currentManifest.id,
+                getLocalized(currentManifest.label)
+            );
 
-                if (currentManifest.type === 'Collection') {
-                    const currentFolder = currentManifest;
+            if (currentManifest.type === 'Collection') {
+                const currentFolder = currentManifest;
+                setCurrentManifest(currentManifest);
+                setCurrentFolder(currentFolder);
+                setPage(0);
+                setCurrentAnnotation(undefined);
+                setSearchResult([]);
+                TreeBuilder.buildCache(currentFolder.id, () => {
+                    setTreeDate(Date.now());
+                });
+            } else if (!isSingleManifest(currentManifest)) {
+                PresentationApi.get(currentManifest.parentId).then((currentFolder: IManifestData) => {
                     setCurrentManifest(currentManifest);
                     setCurrentFolder(currentFolder);
                     setPage(0);
@@ -71,30 +79,16 @@ export default function App(props: IProps) {
                     TreeBuilder.buildCache(currentFolder.id, () => {
                         setTreeDate(Date.now());
                     });
-                } else if (!isSingleManifest(currentManifest)) {
-                    PresentationApi.get(
-                        currentManifest.parentId,
-                        (currentFolder: IManifestData) => {
-                            setCurrentManifest(currentManifest);
-                            setCurrentFolder(currentFolder);
-                            setPage(0);
-                            setCurrentAnnotation(undefined);
-                            setSearchResult([]);
-                            TreeBuilder.buildCache(currentFolder.id, () => {
-                                setTreeDate(Date.now());
-                            });
-                        }
-                    )
-                } else {
-                    const currentFolder = new ManifestData();
-                    currentFolder.type = 'Manifest';
-                    setCurrentManifest(currentManifest);
-                    setCurrentFolder(currentFolder);
-                }
-
-                document.title = getLocalized(currentManifest.label);
+                })
+            } else {
+                const currentFolder = new ManifestData();
+                currentFolder.type = 'Manifest';
+                setCurrentManifest(currentManifest);
+                setCurrentFolder(currentFolder);
             }
-        );
+
+            document.title = getLocalized(currentManifest.label);
+        });
     }
 
     const setTab0 = (t: string) => {

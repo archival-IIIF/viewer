@@ -9,21 +9,18 @@ class TreeBuilder {
 
     static buildCache(url: string, done: () => void) {
 
-        PresentationApi.get(
-            url,
-            async function(manifestData: IManifestData) {
-                TreeBuilder.cache[manifestData.id] = true;
+        PresentationApi.get(url).then(async function(manifestData: IManifestData) {
+            TreeBuilder.cache[manifestData.id] = true;
 
-                if (manifestData.parentId) {
-                    TreeBuilder.buildCache(manifestData.parentId, done);
-                } else {
-                    if (done) {
-                        done();
-                    }
+            if (manifestData.parentId) {
+                TreeBuilder.buildCache(manifestData.parentId, done);
+            } else {
+                if (done) {
+                    done();
                 }
-
             }
-        );
+
+        });
 
     };
 

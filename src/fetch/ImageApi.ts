@@ -1,5 +1,5 @@
 import Cache from '../lib/Cache';
-import {IAuthService} from "../interface/IManifestData";
+import IManifestData, {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
 import Manifest from "./PresentationApi";
@@ -13,117 +13,116 @@ class ImageApi {
 
     static cache: any = {};
 
-    static get(id: string, callback: any) {
+    static get(id: string): Promise<any> {
 
-        const data = this.fetchFromCache(id);
-        if (data !== false) {
-            if (callback !== undefined) {
-                callback(data);
+        return new Promise((resolve, reject) => {
+
+            const data = this.fetchFromCache(id);
+            if (data !== false) {
+                resolve(data)
+                return;
             }
 
-            return;
-        }
-
-        this.fetchFromUrl(id, callback);
+            resolve(this.fetchFromUrl(id));
+        })
     }
 
-    static fetchFromUrl(url: string, callback: any, token?: string) {
+    static fetchFromUrl(url: string, token?: string) {
 
-        if (!global.config.isAllowedOrigin(url)) {
-            const alertArgs = {title: 'Error', body: 'The image manifest-Url is not an allowed origin: ' + url};
-            Cache.ee.emit('alert', alertArgs);
-            return;
-        }
-
-        const t = this;
-        const init: RequestInit = {};
-        if (token) {
-            const authHeader: Headers = new Headers();
-            authHeader.set('Authorization', 'Bearer ' + token);
-            init.headers = authHeader;
-        }
-
-        let id = url;
-        if (url.endsWith('/info.json')) {
-            id.replace('/info.json', '');
-        } else {
-            url += '/info.json';
-        }
-
-        fetch(url, init).then((response) => {
-
-            const statusCode = response.status;
-
-            if (statusCode !== 401 && statusCode >= 400) {
-                const alertArgs = {
-                    title: 'Error',
-                    body: 'Could not fetch info.json!\n\n'  + url
-                };
+        return new Promise((resolve, reject) => {
+            if (!global.config.isAllowedOrigin(url)) {
+                const alertArgs = {title: 'Error', body: 'The image manifest-Url is not an allowed origin: ' + url};
                 Cache.ee.emit('alert', alertArgs);
                 return;
             }
 
-            response.json().then((json) => {
-                const authService = this.getAuthService(json);
-                json.statusCode = statusCode;
-                json.authService = authService;
+            const t = this;
+            const init: RequestInit = {};
+            if (token) {
+                const authHeader: Headers = new Headers();
+                authHeader.set('Authorization', 'Bearer ' + token);
+                init.headers = authHeader;
+            }
 
+            let id = url;
+            if (url.endsWith('/info.json')) {
+                id.replace('/info.json', '');
+            } else {
+                url += '/info.json';
+            }
 
-                if (statusCode === 401 || url !== response.url) {
-                    if (token) {
-                        const alertArgs = {
-                            title: 'Login failed',
-                            body: ''
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
-                    }
-                    if (!authService) {
-                        const alertArgs = {
-                            title: 'Login failed',
-                            body: 'Auth service is missing!'
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
-                    }
-                    if (!authService.token) {
-                        const alertArgs = {
-                            title: 'Login failed',
-                            body: 'Token service is missing!'
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
-                    }
+            fetch(url, init).then((response) => {
 
-                    const newToken = authService.token;
-                    if (Token.has(newToken)) {
-                        this.fetchFromUrl(url, callback, Token.get(newToken));
-                        return;
-                    }
+                const statusCode = response.status;
 
-                    if (authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                        Manifest.loginInExternal(authService, url, callback);
-                        return;
-                    }
-
-
-                    Cache.ee.emit('show-login', authService);
-                } else {
-                    t.cache[id] = json;
+                if (statusCode !== 401 && statusCode >= 400) {
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Could not fetch info.json!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
+                    return;
                 }
 
-                if (callback !== undefined) {
-                    callback(json);
-                }
+                response.json().then((json) => {
+                    const authService = this.getAuthService(json);
+                    json.statusCode = statusCode;
+                    json.authService = authService;
 
+
+                    if (statusCode === 401 || url !== response.url) {
+                        if (token) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: ''
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+                        if (!authService) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: 'Auth service is missing!'
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+                        if (!authService.token) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: 'Token service is missing!'
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+
+                        const newToken = authService.token;
+                        if (Token.has(newToken)) {
+                            resolve(this.fetchFromUrl(url, Token.get(newToken)));
+                            return;
+                        }
+
+                        if (authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
+                            resolve(Manifest.loginInExternal(authService, url));
+                            return;
+                        }
+
+
+                        Cache.ee.emit('show-login', authService);
+                    } else {
+                        t.cache[id] = json;
+                    }
+
+                    resolve(json);
+                });
+            }).catch((err) => {
+                console.log(err);
+                const alertArgs = {
+                    title: 'Error',
+                    body: 'Could not read info.json!\n\n' + url
+                };
+                Cache.ee.emit('alert', alertArgs);
             });
-        }).catch((err) => {
-            console.log(err);
-            const alertArgs = {
-                title: 'Error',
-                body: 'Could not read info.json!\n\n'  + url
-            };
-            Cache.ee.emit('alert', alertArgs);
         });
     }
 

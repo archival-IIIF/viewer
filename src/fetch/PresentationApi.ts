@@ -1,10 +1,6 @@
 import Cache from '../lib/Cache';
-import IManifestData, {
-    IAuthService,
-    IManifestReference,
-    IPresentationApiImage, IPresentationApiItemsType, IPresentationApiManifestation, IPresentationApiResource,
-    ISearchService
-} from '../interface/IManifestData';
+import IManifestData, {IAuthService, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
+    IPresentationApiManifestation, IPresentationApiResource, ISearchService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequenze from '../interface/ISequenze';
@@ -28,219 +24,221 @@ class Manifest {
     static cacheSkipAuthentication: {[key: string]: IManifestData} = {};
 
 
-    static get(url?: string, callback?: any, skipAuthentication?: boolean) {
+    static get(url?: string, skipAuthentication?: boolean): Promise<IManifestData> {
 
-        if (url === undefined || url === '') {
-            return;
-        }
-
-        const data = this.fetchFromCache(url, skipAuthentication);
-
-        if (data) {
-
-            if (callback !== undefined) {
-                callback(data);
+        return new Promise((resolve, reject) => {
+            if (url === undefined || url === '') {
+                reject({
+                    title: 'Error',
+                    body: 'Url is empty or undefined!\n\n'
+                })
+                return;
             }
 
-            return;
-        }
+            const data = this.fetchFromCache(url, skipAuthentication);
 
-        this.fetchFromUrl(url, callback, skipAuthentication);
+            if (data) {
+                resolve(data);
+                return;
+            }
 
+            resolve(this.fetchFromUrl(url, skipAuthentication));
+        });
     }
 
-    static fetchFromUrl(url: string, callback: any, skipAuthentication?: boolean, token?: string) {
+    static fetchFromUrl(url: string, skipAuthentication?: boolean, token?: string): Promise<IManifestData> {
 
-        if (!global.config.isAllowedOrigin(url)) {
-            const alertArgs = {title: 'Error', body: 'The manifest url is not an allowed origin: ' + url};
-            Cache.ee.emit('alert', alertArgs);
-            return;
-        }
-
-        const t = this;
-        const init: RequestInit = {};
-        if (token) {
-            const authHeader: Headers = new Headers();
-            authHeader.set('Authorization', 'Bearer ' + token);
-            init.headers = authHeader;
-        }
-
-        fetch(url, init).then((response) => {
-            const statusCode = response.status;
-
-            if (statusCode !== 401 && statusCode >= 400) {
-                const alertArgs = {
-                    title: 'Error',
-                    body: 'Could not fetch manifest!\n\n'  + url
-                };
+        return new Promise((resolve, reject) => {
+            if (!global.config.isAllowedOrigin(url)) {
+                const alertArgs = {title: 'Error', body: 'The manifest url is not an allowed origin: ' + url};
                 Cache.ee.emit('alert', alertArgs);
                 return;
             }
 
-            response.json().then((json) => {
+            const t = this;
+            const init: RequestInit = {};
+            if (token) {
+                const authHeader: Headers = new Headers();
+                authHeader.set('Authorization', 'Bearer ' + token);
+                init.headers = authHeader;
+            }
 
-                let manifestoData;
-                manifestoData = manifesto.parseManifest(json);
-                if (!manifestoData) {
+            fetch(url, init).then((response) => {
+                const statusCode = response.status;
+
+                if (statusCode !== 401 && statusCode >= 400) {
                     const alertArgs = {
                         title: 'Error',
-                        body: 'Manifest could not load!\n\n' + url
+                        body: 'Could not fetch manifest!\n\n' + url
                     };
                     Cache.ee.emit('alert', alertArgs);
                     return;
                 }
 
-                const manifestData: IManifestData = new ManifestData();
+                response.json().then((json) => {
 
-                manifestData.id = manifestoData.id;
-                manifestData.request = url !== response.url ? url : undefined;
-                const type = manifestoData.getProperty('type');
-                if (type === 'sc:Manifest' || type === 'Manifest') {
-                    manifestData.type = 'Manifest';
-                } else if (type === 'sc:Collection' || type === 'Collection') {
-                    manifestData.type = 'Collection';
-                }
-                manifestData.label = manifestoData.getLabel() ?? '';
-                const isV3 = this.isV3(manifestoData);
-                if (isV3) {
-                    const partOf = manifestoData.getProperty('partOf');
-                    if (partOf && partOf.length > 0) {
-                        manifestData.parentId = partOf[0].id;
-                    }
-                    manifestData.transcription = this.getTranscription(manifestoData);
-                } else {
-                    manifestData.parentId = manifestoData.getProperty('within');
-                }
-                manifestData.authService = this.getAuthService(manifestoData);
-
-                if (!manifestData.label) {
-                    const alertArgs = {
-                        title: 'Error',
-                        body: 'Manifest file does not contain a label!\n\n' + url
-                    };
-                    Cache.ee.emit('alert', alertArgs);
-                    return;
-                }
-
-                if (!manifestData.id) {
-                    const alertArgs = {
-                        title: 'Error',
-                        body: 'Manifest file does not contain an id!\n\n' + url
-                    };
-                    Cache.ee.emit('alert', alertArgs);
-                    return;
-                }
-
-                if (statusCode === 401 || (url !== response.url && manifestData.authService)) {
-
-                    if (token) {
+                    let manifestoData;
+                    manifestoData = manifesto.parseManifest(json);
+                    if (!manifestoData) {
                         const alertArgs = {
-                            title: 'Login failed',
-                            body: ''
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
-                    }
-                    if (!manifestData.authService) {
-                        const alertArgs = {
-                            title: 'Login failed',
-                            body: 'Auth service is missing!'
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
-                    }
-                    if (!manifestData.authService.token) {
-                        const alertArgs = {
-                            title: 'Login failed',
-                            body: 'Token service is missing!'
+                            title: 'Error',
+                            body: 'Manifest could not load!\n\n' + url
                         };
                         Cache.ee.emit('alert', alertArgs);
                         return;
                     }
 
-                    const newToken = manifestData.authService.token;
-                    if (Token.has(newToken)) {
-                        this.fetchFromUrl(url, callback, false, Token.get(newToken));
-                        return;
-                    }
+                    const manifestData: IManifestData = new ManifestData();
 
-                    if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                        this.loginInExternal(manifestData.authService, url, callback);
-                        return;
+                    manifestData.id = manifestoData.id;
+                    manifestData.request = url !== response.url ? url : undefined;
+                    const type = manifestoData.getProperty('type');
+                    if (type === 'sc:Manifest' || type === 'Manifest') {
+                        manifestData.type = 'Manifest';
+                    } else if (type === 'sc:Collection' || type === 'Collection') {
+                        manifestData.type = 'Collection';
                     }
-
-                    if (skipAuthentication === true) {
-                        t.cacheSkipAuthentication[url] = manifestData;
-                    } else {
-                        Cache.ee.emit('show-login', manifestData.authService);
-                        manifestData.collections = [];
-                        manifestData.manifests = [];
-                        manifestData.restricted = true;
-                    }
-                } else {
+                    manifestData.label = manifestoData.getLabel() ?? '';
                     const isV3 = this.isV3(manifestoData);
-                    manifestData.metadata = manifestoData.getMetadata();
-                    manifestData.description = manifestoData.getDescription();
-                    manifestData.license = t.getLicense(manifestoData);
-                    manifestData.logo = manifestoData.getLogo();
-                    manifestData.attribution = manifestoData.getRequiredStatement();
-                    manifestData.manifestations = t.getManifestations(manifestoData);
-                    manifestData.restricted = false;
-                    if (manifestData.type === 'Collection') {
-                        manifestData.manifests = t.getManifests(manifestoData);
-                        manifestData.collections = t.getCollections(manifestoData);
-                    } else if (manifestData.type === 'Manifest') {
-                        const {resource, images, type} = t.getResource(manifestoData, isV3);
-                        manifestData.resource = resource;
-                        manifestData.images = images;
-                        manifestData.itemsType = type;
+                    if (isV3) {
+                        const partOf = manifestoData.getProperty('partOf');
+                        if (partOf && partOf.length > 0) {
+                            manifestData.parentId = partOf[0].id;
+                        }
+                        manifestData.transcription = this.getTranscription(manifestoData);
+                    } else {
+                        manifestData.parentId = manifestoData.getProperty('within');
                     }
-                    manifestData.search = t.getSearch(manifestoData);
-                    manifestData.thumbnail = t.getThumbnail(manifestoData);
-                    t.cache[manifestData.id] = manifestData;
-                }
+                    manifestData.authService = this.getAuthService(manifestoData);
 
+                    if (!manifestData.label) {
+                        const alertArgs = {
+                            title: 'Error',
+                            body: 'Manifest file does not contain a label!\n\n' + url
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
 
-                if (callback !== undefined) {
-                    callback(manifestData);
-                }
-            }).catch((err) => {
-                console.log(err, url);
-                const alertArgs = {
-                    title: 'Error',
-                    body: 'Could not read manifest!\n\n' + url
-                };
-                Cache.ee.emit('alert', alertArgs);
+                    if (!manifestData.id) {
+                        const alertArgs = {
+                            title: 'Error',
+                            body: 'Manifest file does not contain an id!\n\n' + url
+                        };
+                        Cache.ee.emit('alert', alertArgs);
+                        return;
+                    }
+
+                    if (statusCode === 401 || (url !== response.url && manifestData.authService)) {
+
+                        if (token) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: ''
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+                        if (!manifestData.authService) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: 'Auth service is missing!'
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+                        if (!manifestData.authService.token) {
+                            const alertArgs = {
+                                title: 'Login failed',
+                                body: 'Token service is missing!'
+                            };
+                            Cache.ee.emit('alert', alertArgs);
+                            return;
+                        }
+
+                        const newToken = manifestData.authService.token;
+                        if (Token.has(newToken)) {
+                            resolve(this.fetchFromUrl(url,  false, Token.get(newToken)));
+                            return;
+                        }
+
+                        if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
+                            resolve(this.loginInExternal(manifestData.authService, url));
+                            return;
+                        }
+
+                        if (skipAuthentication === true) {
+                            t.cacheSkipAuthentication[url] = manifestData;
+                        } else {
+                            Cache.ee.emit('show-login', manifestData.authService);
+                            manifestData.collections = [];
+                            manifestData.manifests = [];
+                            manifestData.restricted = true;
+                        }
+                    } else {
+                        const isV3 = this.isV3(manifestoData);
+                        manifestData.metadata = manifestoData.getMetadata();
+                        manifestData.description = manifestoData.getDescription();
+                        manifestData.license = t.getLicense(manifestoData);
+                        manifestData.logo = manifestoData.getLogo();
+                        manifestData.attribution = manifestoData.getRequiredStatement();
+                        manifestData.manifestations = t.getManifestations(manifestoData);
+                        manifestData.restricted = false;
+                        if (manifestData.type === 'Collection') {
+                            manifestData.manifests = t.getManifests(manifestoData);
+                            manifestData.collections = t.getCollections(manifestoData);
+                        } else if (manifestData.type === 'Manifest') {
+                            const {resource, images, type} = t.getResource(manifestoData, isV3);
+                            manifestData.resource = resource;
+                            manifestData.images = images;
+                            manifestData.itemsType = type;
+                        }
+                        manifestData.search = t.getSearch(manifestoData);
+                        manifestData.thumbnail = t.getThumbnail(manifestoData);
+                        t.cache[manifestData.id] = manifestData;
+                    }
+
+                    resolve(manifestData);
+                }).catch((err) => {
+                    console.log(err, url);
+                    const alertArgs = {
+                        title: 'Error',
+                        body: 'Could not read manifest!\n\n' + url
+                    };
+                    Cache.ee.emit('alert', alertArgs);
+                });
             });
         });
     }
 
-    static loginInExternal(authService: IAuthService, url: string, callback?: any) {
+    static loginInExternal(authService: IAuthService, url: string): Promise<IManifestData> {
 
-        if (!authService.token) {
-            return false;
-        }
-        const tokenId = authService.token;
-
-        fetch(tokenId).then((externalTokenResponse) => {
-            const statusCode = externalTokenResponse.status;
-            if (statusCode !== 200) {
-                const alertArgs = {
-                    title: authService.failureHeader,
-                    body: authService.errorMessage
-                };
-                Cache.ee.emit('alert', alertArgs);
-                return;
+        return new Promise((resolve, reject) => {
+            if (!authService.token) {
+                return false;
             }
+            const tokenId = authService.token;
 
-            externalTokenResponse.json()
-                .then((externalTokenJson: any) => {
-                    Token.set(externalTokenJson, tokenId, authService.logout);
-                    return this.fetchFromUrl(url, callback, false, Token.get(tokenId));
-                });
+            fetch(tokenId).then((externalTokenResponse) => {
+                const statusCode = externalTokenResponse.status;
+                if (statusCode !== 200) {
+                    const alertArgs = {
+                        title: authService.failureHeader,
+                        body: authService.errorMessage
+                    };
+                    Cache.ee.emit('alert', alertArgs);
+                    return;
+                }
+
+                externalTokenResponse.json()
+                    .then((externalTokenJson: any) => {
+                        Token.set(externalTokenJson, tokenId, authService.logout);
+                        resolve(this.fetchFromUrl(url, false, Token.get(tokenId)));
+                    });
+            });
+
+            return true;
         });
-
-        return true;
     }
 
     static getAuthService(manifestoData: IIIFResource): IAuthService | undefined {

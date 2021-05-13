@@ -65,8 +65,7 @@ export default function ReactOpenSeadragon(props: IProps) {
         const oldImage = viewer.current.world.getItemAt(0);
         viewer.current.world.removeItem(oldImage);
 
-        ImageApi.get(props.images[page].id, function(result: any) {
-
+        ImageApi.get(props.images[page].id).then((result: any) => {
             if (!viewer.current) {
                 return;
             }
@@ -124,7 +123,7 @@ export default function ReactOpenSeadragon(props: IProps) {
         viewer.current = null;
 
 
-        ImageApi.get(props.images[page].id, function(result: any) {
+        ImageApi.get(props.images[page].id).then((result: any) => {
 
             if (result[0] && result[0].statusCode === 401) {
                 viewer.current = undefined;

@@ -31,14 +31,10 @@ export default function TreeViewItem(props: IPros) {
     }
 
     const loadSubTree = () => {
-        PresentationApi.get(
-            props.id,
-            async function(manifestData: IManifestData) {
-                setChildren(manifestData.collections ?? []);
-                setIsOpen(true);
-            }
-        );
-
+        PresentationApi.get(props.id).then(async function(manifestData: IManifestData) {
+            setChildren(manifestData.collections ?? []);
+            setIsOpen(true);
+        });
     }
 
     const toggleCaret = () => {
