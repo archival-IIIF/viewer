@@ -16,7 +16,7 @@ export default function fetchAutoCompleteApi(url: string): Promise<IAutoComplete
                 return;
             }
 
-            response.json().then((data: any) => {
+            response.json().then(data => {
                 resolve(data.terms ?? []);
             });
         })
