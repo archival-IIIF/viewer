@@ -3,7 +3,7 @@
 ## 1.0.0
 
 * Audio and video transcript support added
-* TreeView more lazy #156
+* TreeView loading async and a lazy mode added #156
 * Search possibility in none single manifests add, #163
 * Search possibility for folder view added
 * Disable download option added
@@ -13,6 +13,7 @@
 * SeaDragon showNavigator disabled
 * Image buttons with auto hide
 * Single manifest support improved
+* Do not show tree view if there is only the root level
 
 ## 0.2.0 (2020-06-24)
 
