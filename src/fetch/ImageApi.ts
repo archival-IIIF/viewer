@@ -23,7 +23,7 @@ class ImageApi {
                 return;
             }
 
-            this.fetchFromUrl(id).then(d => resolve(d));
+            this.fetchFromUrl(id).then(d => resolve(d)).catch(r => reject(r));
         })
     }
 
@@ -98,12 +98,13 @@ class ImageApi {
 
                         const newToken = authService.token;
                         if (Token.has(newToken)) {
-                            this.fetchFromUrl(url, Token.get(newToken)).then(d => resolve(d));
+                            this.fetchFromUrl(url, Token.get(newToken)).then(d => resolve(d)).catch(r => reject(r));
                             return;
                         }
 
                         if (authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            Manifest.loginInExternal(authService, url).then((d: any) => resolve(d));
+                            Manifest.loginInExternal(authService, url).then((d: any) => resolve(d))
+                                .catch(r => reject(r));
                             return;
                         }
 

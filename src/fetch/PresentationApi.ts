@@ -42,7 +42,7 @@ class Manifest {
                 return;
             }
 
-            this.fetchFromUrl(url, skipAuthentication).then(d => resolve(d));
+            this.fetchFromUrl(url, skipAuthentication).then(d => resolve(d)).catch(r => reject(r));
         });
     }
 
@@ -158,12 +158,14 @@ class Manifest {
 
                         const newToken = manifestData.authService.token;
                         if (Token.has(newToken)) {
-                            this.fetchFromUrl(url,  false, Token.get(newToken)).then(d => resolve(d));
+                            this.fetchFromUrl(url,  false, Token.get(newToken)).then(d => resolve(d))
+                                .catch(r => reject(r));
                             return;
                         }
 
                         if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            this.loginInExternal(manifestData.authService, url).then(d => resolve(d));
+                            this.loginInExternal(manifestData.authService, url).then(d => resolve(d))
+                                .catch(r => reject(r));
                             return;
                         }
 
@@ -233,7 +235,8 @@ class Manifest {
                 externalTokenResponse.json()
                     .then((externalTokenJson: any) => {
                         Token.set(externalTokenJson, tokenId, authService.logout);
-                        this.fetchFromUrl(url, false, Token.get(tokenId)).then(d => resolve(d));
+                        this.fetchFromUrl(url, false, Token.get(tokenId)).then(d => resolve(d))
+                            .catch(r => reject(r));
                     });
             });
 
