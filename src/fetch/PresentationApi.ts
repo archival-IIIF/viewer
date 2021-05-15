@@ -163,7 +163,7 @@ class Manifest {
                         }
 
                         if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            this.loginInExternal(manifestData.authService, url).then((d: any) => resolve(d));
+                            this.loginInExternal(manifestData.authService, url).then(d => resolve(d));
                             return;
                         }
 
