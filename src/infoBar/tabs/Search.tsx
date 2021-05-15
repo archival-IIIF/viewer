@@ -16,7 +16,7 @@ const autocompleteWaitInterval = 300;
 
 export default function Search() {
 
-    const {currentManifest, currentAnnotation, setCurrentAnnotation, searchResult, setSearchResult, q, setQ} =
+    const {currentManifest, currentAnnotation, setCurrentAnnotation, searchResult, setSearchResult, q, setQ, setAlert} =
         useContext(AppContext);
     const [searchPhrase, setSearchPhrase] = useState<string>(q);
     const [isAutocompleteLoading, setIsAutocompleteLoading] = useState<boolean>(false);
@@ -35,9 +35,7 @@ export default function Search() {
 
             const searchId = currentManifest.search.id;
             const searchUrl = searchId + '?q=' + q;
-            fetchSearchApi(searchUrl, currentManifest).then(h=> {
-                setSearchResult(h);
-            });
+            fetchSearchApi(searchUrl, currentManifest).then(h => setSearchResult(h)).catch(a => setAlert(a));
         }
     }, [q, currentManifest, setSearchResult]);
 

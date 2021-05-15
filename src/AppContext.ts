@@ -1,6 +1,7 @@
 import React from 'react';
 import IManifestData from "./interface/IManifestData";
 import {AnnotationType, HitType} from "./fetch/SearchApi";
+import {IAlertContent} from "./Alert";
 
 interface IContext {
     treeDate: number;
@@ -20,6 +21,8 @@ interface IContext {
     setSearchResult: (annotation: HitType[]) => void;
     q: string;
     setQ: (q: string) => void;
+    alert: IAlertContent | undefined;
+    setAlert: (content: IAlertContent | undefined) => void;
 }
 
 export const AppContext = React.createContext<IContext>({
@@ -39,5 +42,7 @@ export const AppContext = React.createContext<IContext>({
     searchResult: [],
     setSearchResult: () => {},
     q: '',
-    setQ: () => {}
+    setQ: () => {},
+    alert: undefined,
+    setAlert: () => {}
 });

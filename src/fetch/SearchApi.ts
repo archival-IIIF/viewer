@@ -1,6 +1,4 @@
-import Cache from "../lib/Cache";
 import IManifestData from "../interface/IManifestData";
-import {IAutoCompleteTerms} from "./AutoCompleteApi";
 
 export type HitType = {
     match: string;
@@ -25,13 +23,11 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
         fetch(searchUrl).then((response) => {
 
             const statusCode = response.status;
-
             if (statusCode !== 401 && statusCode >= 400) {
-                const alertArgs = {
+                reject( {
                     title: 'Error',
-                    body: 'Could not fetch info.json!\n\n'  + searchUrl
-                };
-                Cache.ee.emit('alert', alertArgs);
+                    body: 'Could not fetch search url!\n\n'  + searchUrl
+                })
                 return;
             }
 
@@ -53,7 +49,6 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
                             continue;
                         }
                         let position = tmpArray[1].split(',');
-
 
                         const page = manifest.images.findIndex(r => r.on === tmpArray[0]);
                         hits.push({
@@ -78,11 +73,10 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
             });
         }).catch((err) => {
             console.log(err);
-            const alertArgs = {
+            reject( {
                 title: 'Error',
-                body: 'Could not read info.json!\n\n'  + searchUrl
-            };
-            Cache.ee.emit('alert', alertArgs);
+                body: 'Could not read search url!\n\n'  + searchUrl
+            })
         });
     });
 }

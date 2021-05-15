@@ -15,6 +15,7 @@ import './lib/i18n';
 import {AppContext} from "./AppContext";
 import {AnnotationType, HitType} from "./fetch/SearchApi";
 import Main from "./layout/Main";
+import {IAlertContent} from "./Alert";
 
 interface IProps {
     config: IConfigParameter;
@@ -42,6 +43,7 @@ export default function App(props: IProps) {
     const [page, setPage] = useState<number>(0);
     const [currentAnnotation, setCurrentAnnotation] = useState<AnnotationType | undefined>(undefined);
     const [searchResult, setSearchResult] = useState<HitType[]>([]);
+    const [alert, setAlert] = useState<IAlertContent | undefined>(undefined);
 
     const setCurrentManifest0 = (id?: string) => {
 
@@ -146,7 +148,7 @@ export default function App(props: IProps) {
 
     const appContextValue= {treeDate, tab, setTab: setTab0, page, setPage, currentManifest, setCurrentManifest:
         setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, currentAnnotation,
-        setCurrentAnnotation, searchResult, setSearchResult, q, setQ: setQ0};
+        setCurrentAnnotation, searchResult, setSearchResult, q, setQ: setQ0, alert, setAlert};
 
     return <AppContext.Provider value={appContextValue}>
         <I18nextProvider i18n={i18n}>
