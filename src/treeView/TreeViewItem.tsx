@@ -25,7 +25,7 @@ declare let global: {
 
 export default function TreeViewItem(props: IPros) {
 
-    const {setCurrentManifest, currentFolder} = useContext(AppContext);
+    const {setCurrentManifest, currentFolder, setAlert} = useContext(AppContext);
 
     const [children, setChildren] = useState<IManifestReference[] | undefined>(props.children);
     const [isOpen, setIsOpen] = useState<boolean>(TreeBuilder.cache[props.id] ?? false);
@@ -58,6 +58,8 @@ export default function TreeViewItem(props: IPros) {
                 setChildren(children);
             }
             setIsOpen(true);
+        }).catch(r => {
+            setAlert(r);
         });
     }
 

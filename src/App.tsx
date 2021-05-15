@@ -81,7 +81,7 @@ export default function App(props: IProps) {
                     TreeBuilder.buildCache(currentFolder.id, () => {
                         setTreeDate(Date.now());
                     });
-                })
+                }).catch(r => setAlert(r));
             } else {
                 const currentFolder = new ManifestData();
                 currentFolder.type = 'Manifest';
@@ -90,6 +90,8 @@ export default function App(props: IProps) {
             }
 
             document.title = getLocalized(currentManifest.label);
+        }).catch(r => {
+            setAlert(r);
         });
     }
 

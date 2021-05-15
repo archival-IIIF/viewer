@@ -36,7 +36,6 @@ class Manifest {
             }
 
             const data = this.fetchFromCache(url, skipAuthentication);
-
             if (data) {
                 resolve(data);
                 return;
@@ -50,8 +49,10 @@ class Manifest {
 
         return new Promise((resolve, reject) => {
             if (!global.config.isAllowedOrigin(url)) {
-                const alertArgs = {title: 'Error', body: 'The manifest url is not an allowed origin: ' + url};
-                Cache.ee.emit('alert', alertArgs);
+                reject({
+                    title: 'Error',
+                    body: 'The manifest url is not an allowed origin: ' + url
+                });
                 return;
             }
 
@@ -67,11 +68,10 @@ class Manifest {
                 const statusCode = response.status;
 
                 if (statusCode !== 401 && statusCode >= 400) {
-                    const alertArgs = {
+                    reject({
                         title: 'Error',
                         body: 'Could not fetch manifest!\n\n' + url
-                    };
-                    Cache.ee.emit('alert', alertArgs);
+                    });
                     return;
                 }
 
@@ -80,11 +80,10 @@ class Manifest {
                     let manifestoData;
                     manifestoData = manifesto.parseManifest(json);
                     if (!manifestoData) {
-                        const alertArgs = {
+                        reject({
                             title: 'Error',
                             body: 'Manifest could not load!\n\n' + url
-                        };
-                        Cache.ee.emit('alert', alertArgs);
+                        });
                         return;
                     }
 
@@ -111,48 +110,42 @@ class Manifest {
                     }
                     manifestData.authService = this.getAuthService(manifestoData);
 
-                    if (!manifestData.label) {
-                        const alertArgs = {
+                    if (!manifestData.label || manifestData.label.length === 0) {
+                        reject({
                             title: 'Error',
                             body: 'Manifest file does not contain a label!\n\n' + url
-                        };
-                        Cache.ee.emit('alert', alertArgs);
+                        });
                         return;
                     }
 
                     if (!manifestData.id) {
-                        const alertArgs = {
+                        return reject({
                             title: 'Error',
                             body: 'Manifest file does not contain an id!\n\n' + url
-                        };
-                        Cache.ee.emit('alert', alertArgs);
-                        return;
+                        });
                     }
 
                     if (statusCode === 401 || (url !== response.url && manifestData.authService)) {
 
                         if (token) {
-                            const alertArgs = {
+                            reject({
                                 title: 'Login failed',
                                 body: ''
-                            };
-                            Cache.ee.emit('alert', alertArgs);
+                            });
                             return;
                         }
                         if (!manifestData.authService) {
-                            const alertArgs = {
+                            reject({
                                 title: 'Login failed',
                                 body: 'Auth service is missing!'
-                            };
-                            Cache.ee.emit('alert', alertArgs);
+                            });
                             return;
                         }
                         if (!manifestData.authService.token) {
-                            const alertArgs = {
+                            reject({
                                 title: 'Login failed',
                                 body: 'Token service is missing!'
-                            };
-                            Cache.ee.emit('alert', alertArgs);
+                            });
                             return;
                         }
 
@@ -203,11 +196,10 @@ class Manifest {
                     resolve(manifestData);
                 }).catch((err) => {
                     console.log(err, url);
-                    const alertArgs = {
+                    reject({
                         title: 'Error',
-                        body: 'Could not read manifest!\n\n' + url
-                    };
-                    Cache.ee.emit('alert', alertArgs);
+                            body: 'Could not read manifest!\n\n' + url
+                    });
                 });
             });
         });
@@ -224,11 +216,10 @@ class Manifest {
             fetch(tokenId).then((externalTokenResponse) => {
                 const statusCode = externalTokenResponse.status;
                 if (statusCode !== 200) {
-                    const alertArgs = {
+                    reject({
                         title: authService.failureHeader,
                         body: authService.errorMessage
-                    };
-                    Cache.ee.emit('alert', alertArgs);
+                    });
                     return;
                 }
 
