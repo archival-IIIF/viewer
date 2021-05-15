@@ -42,7 +42,7 @@ class Manifest {
                 return;
             }
 
-            resolve(this.fetchFromUrl(url, skipAuthentication));
+            this.fetchFromUrl(url, skipAuthentication).then(d => resolve(d));
         });
     }
 
@@ -158,12 +158,12 @@ class Manifest {
 
                         const newToken = manifestData.authService.token;
                         if (Token.has(newToken)) {
-                            resolve(this.fetchFromUrl(url,  false, Token.get(newToken)));
+                            this.fetchFromUrl(url,  false, Token.get(newToken)).then(d => resolve(d));
                             return;
                         }
 
                         if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            resolve(this.loginInExternal(manifestData.authService, url));
+                            this.loginInExternal(manifestData.authService, url).then((d: any) => resolve(d));
                             return;
                         }
 
@@ -233,7 +233,7 @@ class Manifest {
                 externalTokenResponse.json()
                     .then((externalTokenJson: any) => {
                         Token.set(externalTokenJson, tokenId, authService.logout);
-                        resolve(this.fetchFromUrl(url, false, Token.get(tokenId)));
+                        this.fetchFromUrl(url, false, Token.get(tokenId)).then(d => resolve(d));
                     });
             });
 
