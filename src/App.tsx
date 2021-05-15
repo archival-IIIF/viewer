@@ -68,9 +68,11 @@ export default function App(props: IProps) {
                 setPage(0);
                 setCurrentAnnotation(undefined);
                 setSearchResult([]);
-                TreeBuilder.buildCache(currentFolder.id, () => {
-                    setTreeDate(Date.now());
-                });
+                if (!currentManifest.restricted) {
+                    TreeBuilder.buildCache(currentFolder.id, () => {
+                        setTreeDate(Date.now());
+                    });
+                }
             } else if (!isSingleManifest(currentManifest)) {
                 PresentationApi.get(currentManifest.parentId).then((currentFolder: IManifestData) => {
                     setCurrentManifest(currentManifest);
