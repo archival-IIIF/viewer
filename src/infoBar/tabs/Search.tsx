@@ -1,5 +1,4 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
-import SearchApi from "../../fetch/SearchApi";
 import './search.css';
 import TextField from '@material-ui/core/TextField';
 import i18next from 'i18next';
@@ -37,7 +36,7 @@ export default function Search() {
             const searchUrl = searchId + '?q=' + q;
             fetchSearchApi(searchUrl, currentManifest).then(h => setSearchResult(h)).catch(a => setAlert(a));
         }
-    }, [q, currentManifest, setSearchResult]);
+    }, [q, currentManifest, setSearchResult, setAlert]);
 
     if (!currentManifest || !currentManifest.search) {
         return <></>;
