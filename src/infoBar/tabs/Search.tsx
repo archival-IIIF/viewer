@@ -10,6 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {debounce} from 'throttle-debounce';
 import fetchAutoCompleteApi, {IAutoCompleteTerms} from "../../fetch/AutoCompleteApi";
+import fetchSearchApi from "../../fetch/SearchApi";
 
 const autocompleteWaitInterval = 300;
 
@@ -34,7 +35,9 @@ export default function Search() {
 
             const searchId = currentManifest.search.id;
             const searchUrl = searchId + '?q=' + q;
-            SearchApi.get(searchUrl, currentManifest, setSearchResult);
+            fetchSearchApi(searchUrl, currentManifest).then(h=> {
+                setSearchResult(h);
+            });
         }
     }, [q, currentManifest, setSearchResult]);
 

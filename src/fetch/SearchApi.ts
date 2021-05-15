@@ -1,5 +1,6 @@
 import Cache from "../lib/Cache";
 import IManifestData from "../interface/IManifestData";
+import {IAutoCompleteTerms} from "./AutoCompleteApi";
 
 export type HitType = {
     match: string;
@@ -19,25 +20,8 @@ export type AnnotationType = {
     height: number;
 }
 
-export default class SearchApi {
-
-    static cache: {[key: string]: HitType[]} = {};
-
-    static get(searchUrl: string, manifest: IManifestData, callback?: (hits: HitType[]) => void): any {
-
-        if (this.cache.hasOwnProperty(searchUrl)) {
-            if (callback !== undefined) {
-                callback(this.cache[searchUrl]);
-            }
-
-            return;
-        }
-
-
-        this.fetchFromUrl(searchUrl, manifest, callback);
-    }
-
-    static fetchFromUrl(searchUrl: string, manifest: IManifestData, callback?: any) {
+export default function  fetchSearchApi(searchUrl: string, manifest: IManifestData):  Promise<HitType[]> {
+    return new Promise((resolve, reject) => {
         fetch(searchUrl).then((response) => {
 
             const statusCode = response.status;
@@ -90,13 +74,7 @@ export default class SearchApi {
                     }
                 }
 
-                this.cache[searchUrl] = hits;
-
-
-                if (callback !== undefined) {
-                    callback(hits);
-                }
-
+                resolve(hits);
             });
         }).catch((err) => {
             console.log(err);
@@ -106,5 +84,5 @@ export default class SearchApi {
             };
             Cache.ee.emit('alert', alertArgs);
         });
-    }
+    });
 }
