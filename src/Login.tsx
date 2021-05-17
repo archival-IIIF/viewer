@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState, useContext} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import PresentationApi from './fetch/PresentationApi';
 import ImageApi from './fetch/ImageApi';
 import Cache from './lib/Cache';
