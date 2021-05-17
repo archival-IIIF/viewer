@@ -353,7 +353,13 @@ class Manifest {
 
             const fileResource = this.getFileResource(sequence0);
             if (fileResource) {
-                return {resource: fileResource, images: [], type: 'file'};
+                let type: IPresentationApiItemsType = 'file';
+                if (fileResource.type === 'pdf' || fileResource.format === 'pdf/application') {
+                    type = 'pdf';
+                } else if (fileResource.format.endsWith('/plain')) {
+                    type = 'plain';
+                }
+                return {resource: fileResource, images: [], type};
             }
         }
 
