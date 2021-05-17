@@ -17,6 +17,8 @@ class Config {
 
     private readonly lazyTree: boolean;
 
+    private readonly hideUnbranchedTrees: boolean;
+
     private readonly externalSearchUrl?: string;
 
     private readonly manifest: string;
@@ -41,6 +43,7 @@ class Config {
         this.disableDownload = config.disableDownload ? config.disableDownload : false;
         this.disableLanguageSelection = config.disableLanguageSelection ? config.disableLanguageSelection : false;
         this.lazyTree = config.lazyTree ? config.lazyTree : false;
+        this.hideUnbranchedTrees = config.hideUnbranchedTrees ? config.hideUnbranchedTrees : false;
         this.externalSearchUrl = config.externalSearchUrl;
     }
 
@@ -104,6 +107,10 @@ class Config {
 
     getLazyTree() {
         return this.lazyTree;
+    }
+
+    getHideUnbranchedTrees() {
+        return this.hideUnbranchedTrees;
     }
 
     getExternalSearchUrl() {

@@ -107,13 +107,22 @@ https://github.com/archival-IIIF/viewer/releases
             <td><code>*</code></td>
         </tr>
         <tr>
-            <td>externalSearchUrl </td>
+            <td>externalSearchUrl</td>
             <td>External search URL</td>
             <td>
                 <code>https://iiif-search.sozialarchiv.ch</code> 
             </td>
             <td>No</td>
             <td></td>
+        </tr>
+        <tr>
+            <td>hideUnbranchedTrees</td>
+            <td>Hide tree view if tree is unbranched</td>
+            <td>
+                <code>true</code> 
+            </td>
+            <td>No</td>
+            <td>false</td>
         </tr>
     </tbody>
 </table>

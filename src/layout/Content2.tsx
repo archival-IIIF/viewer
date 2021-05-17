@@ -25,7 +25,7 @@ export default function Content2() {
         return <Viewer />;
     }
 
-    if (isSingleRoot(currentFolder)) {
+    if (global.config.getHideUnbranchedTrees() && isSingleRoot(currentFolder)) {
         return <Content3/>;
     }
 

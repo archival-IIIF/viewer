@@ -6,6 +6,7 @@ interface IConfigParameter {
     lazyTree?: boolean;
     disableDownload?: boolean;
     disableLanguageSelection?: boolean;
+    hideUnbranchedTrees?: boolean;
     externalSearchUrl?: string;
     allowedOrigins?: string | string[];
 }

@@ -8,6 +8,11 @@ import TabButtons from "../infoBar/tabButtons";
 import InfoBar from "../infoBar/infoBar";
 import TreeView from "../treeView/TreeView";
 import Content3 from "./Content3";
+import Config from "../lib/Config";
+
+declare let global: {
+    config: Config;
+};
 
 export default function Content1() {
 
@@ -17,7 +22,10 @@ export default function Content1() {
         return <></>;
     }
 
-    if (isSingleManifest(currentManifest) || isSingleRoot(currentFolder)) {
+    if (
+        isSingleManifest(currentManifest) ||
+        (global.config.getHideUnbranchedTrees() && isSingleRoot(currentFolder))
+    ) {
         if (tab === '') {
             return <>
                 <div className="aiiif-infobar">
