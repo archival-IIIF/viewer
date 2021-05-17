@@ -29,7 +29,7 @@ export default function FolderView() {
 
     if (files.length === 0 && folders.length === 0) {
 
-        content.push(<div className="aiiif-empty">
+        content.push(<div className="aiiif-empty" key="empty">
             <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
         </div>);
     } else {
