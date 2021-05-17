@@ -41,7 +41,7 @@ export default function ReactOpenSeadragon(props: IProps) {
 
     const {page, setPage, currentAnnotation, searchResult} = useContext(AppContext);
     const viewer = useRef<Viewer | undefined | null>(undefined);
-    const id = useRef<number>(Math.random());
+    const id = useRef<number>(Math.floor(Math.random() * 10000));
 
     const [spinner, setSpinner] = useState<boolean>(true);
     const [showButtons, setShowButtons] = useState<boolean>(true);
@@ -125,13 +125,16 @@ export default function ReactOpenSeadragon(props: IProps) {
 
         ImageApi.get(props.images[page].id).then(result => {
 
-            if (result[0] && result[0].statusCode === 401) {
+            if (
+                (result[0] && result[0].statusCode === 401) ||
+                !document.getElementById('openseadragon-' + id.current.toString(10))
+            ) {
                 viewer.current = undefined;
                 return;
             }
 
             const options: Options = {
-                id: 'openseadragon-' + id.current,
+                id: 'openseadragon-' + id.current.toString(10),
                 defaultZoomLevel: 0,
                 tileSources: result,
                 showNavigationControl: true,
