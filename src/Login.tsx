@@ -13,11 +13,8 @@ import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import * as DOMPurify from "dompurify";
 import {IAuthService} from "./interface/IManifestData";
 import {sanitizeRulesSet} from "./lib/ManifestHelpers";
-import {AppContext} from "./AppContext";
 
 export default function Login() {
-
-    const {setCurrentManifest} = useContext(AppContext);
 
     const messageFrameId = useRef<number>(Math.random());
     const openWindows = useRef<string[]>([]);
@@ -44,9 +41,6 @@ export default function Login() {
                 openWindow(service.id);
                 return;
             }
-            /*if (!authService.options) {
-                authService['options'] = {locale: Manifest.lang};
-            }*/
 
             if (!visible) {
                 setError(false);
@@ -70,6 +64,7 @@ export default function Login() {
             return;
         }
         const token = authService.current.token;
+        setVisible(false);
 
         const url = id + '?origin=' + origin;
         if (openWindows.current.includes(id)) {
@@ -135,7 +130,6 @@ export default function Login() {
         PresentationApi.clearCache();
         ImageApi.clearCache();
         Token.set(event.data, authService.current.token, authService.current.logout);
-        setCurrentManifest();
         setVisible(false);
     }
 
