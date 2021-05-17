@@ -65,10 +65,15 @@
 .aiiif-bar-search {
     display: flex;
     margin-right: auto;
+    flex-grow: 2;
 }
 
 .aiiif-bar-search > div {
-    margin: auto;
+    margin: auto 0;
+}
+
+.aiiif-bar-search > .MuiInputBase-root {
+    width: 100%;
 }
 
 .aiiif-bar-search .fa-search {
