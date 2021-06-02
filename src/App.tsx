@@ -63,9 +63,9 @@ export default function App(props: IProps) {
 
             if (currentManifest.type === 'Collection') {
                 const currentFolder = currentManifest;
+                setPage(0);
                 setCurrentManifest(currentManifest);
                 setCurrentFolder(currentFolder);
-                setPage(0);
                 setCurrentAnnotation(undefined);
                 setSearchResult([]);
                 if (!currentManifest.restricted) {
@@ -75,9 +75,9 @@ export default function App(props: IProps) {
                 }
             } else if (!isSingleManifest(currentManifest)) {
                 PresentationApi.get(currentManifest.parentId).then((currentFolder: IManifestData) => {
+                    setPage(0);
                     setCurrentManifest(currentManifest);
                     setCurrentFolder(currentFolder);
-                    setPage(0);
                     setCurrentAnnotation(undefined);
                     setSearchResult([]);
                     TreeBuilder.buildCache(currentFolder.id, () => {
