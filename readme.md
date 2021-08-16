@@ -1,9 +1,12 @@
-# Archival IIIF viewer
+<p align="center">
+  <a href="https://material-ui.com/" rel="noopener" target="_blank"><img width="150" src="https://archival-iiif.github.io/logos/iiif.png" alt="Material-UI logo"></a>
+</p>
+
+<h1 align="center">Archival IIIF viewer</h1>
 
 This software is an open-source and web-based viewer for [IIIF](https://iiif.io/). It is focused on tree views but also works with single manifests.
 
 The viewer was developed for the Archival IIIF Server, but also works with any other IIIF server.
-
 ## Demo
 
 https://iiif.sozialarchiv.ch
@@ -20,6 +23,16 @@ https://iiif.sozialarchiv.ch
 ## Download
 
 https://github.com/archival-IIIF/viewer/releases
+
+The viewer is also available as an [npm package](https://www.npmjs.com/package/@archival-iiif/viewer):
+
+```sh
+// with npm
+npm -i @archival-iiif/viewer
+
+// with yarn
+yarn add @archival-iiif/viewer
+```
 
 ## Usage
 

@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "homepage": ".",
-  "main": "dist/archivalIIIFViewer.min.js",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
