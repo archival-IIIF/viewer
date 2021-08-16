@@ -9,7 +9,7 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource} from "manifesto.js";
+import {IIIFResource, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
 
 declare let global: {
@@ -97,7 +97,7 @@ class Manifest {
                     } else if (type === 'sc:Collection' || type === 'Collection') {
                         manifestData.type = 'Collection';
                     }
-                    manifestData.label = manifestoData.getLabel() ?? '';
+                    manifestData.label = manifestoData.getLabel() ?? new PropertyValue();
                     const isV3 = this.isV3(manifestoData);
                     if (isV3) {
                         const partOf = manifestoData.getProperty('partOf');
