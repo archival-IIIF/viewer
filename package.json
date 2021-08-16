@@ -1,5 +1,5 @@
 {
-  "name": "archival-iiif-viewer",
+  "name": "@archival-iiif/viewer-react",
   "version": "1.0.0",
   "license": "MIT",
   "homepage": ".",
@@ -31,6 +31,8 @@
     "video.js": "^7.11.8"
   },
   "devDependencies": {
+    "@craco/craco": "^6.2.0",
+    "craco-plugin-scoped-css": "^1.1.1",
     "@types/dompurify": "^2.2.2",
     "@types/openseadragon": "alvaromartmart/types-openseadragon",
     "@types/react": "17.0.5",
@@ -38,20 +40,14 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/throttle-debounce": "^2.1.0",
     "@types/video.js": "^7.3.16",
-    "mini-css-extract-plugin": "^0.9.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
-    "react-app-rewired": "^2.1.8",
-    "react-scripts": "^3.4.4",
-    "terser-webpack-plugin": "^4.2.3",
+    "react-scripts": "^4.0.3",
     "typescript": "4.2.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "build:dist": "react-app-rewired build && node bin/buildDist.js",
-    "build:dist2": "node bin/buildDist.js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "build:react": "tsc -p tsconfig.prod.json",
+    "build:dist": "craco build && node dist-pkg/buildDistPkg.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -69,5 +65,16 @@
       "last 1 safari version",
       "IE 11"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archival-IIIF/viewer.git"
+  },
+  "keywords": [
+    "IIIF"
+  ],
+  "author": "Archival IIIF",
+  "bugs": {
+    "url": "https://github.com/archival-IIIF/viewer/issues"
   }
 }
