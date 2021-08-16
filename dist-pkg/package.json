@@ -1,0 +1,21 @@
+{
+  "name": "@archival-iiif/viewer",
+  "description": "IIIF viewer.",
+  "version": "1.0.1",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archival-IIIF/viewer.git"
+  },
+  "keywords": [
+    "IIIF"
+  ],
+  "author": "Archival IIIF",
+  "bugs": {
+    "url": "https://github.com/archival-IIIF/viewer/issues"
+  },
+  "homepage": "https://archival-iiif.github.io/"
+}

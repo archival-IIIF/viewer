@@ -27,13 +27,13 @@ https://github.com/archival-IIIF/viewer/releases
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="path-to-viewer/archival-IIIF-viewer-x.y.z.min.css">
+        <link rel="stylesheet" href="path-to-viewer/archival-IIIF-viewer.min.css?v=x.y.z">
     </head>
     <body>
     
         <div id="root"></div>
     
-        <script type="text/javascript" src="path-to-viewer/archival-IIIF-viewer-x.y.z.min.js"></script>
+        <script type="text/javascript" src="path-to-viewer/archival-IIIF-viewer.min.js?v=x.y.z"></script>
         <script type="text/javascript">
             new ArchivalIIIFViewer({id: 'root'});
         </script>
