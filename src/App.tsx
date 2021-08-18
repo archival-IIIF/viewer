@@ -11,7 +11,7 @@ import PresentationApi from "./fetch/PresentationApi";
 import TreeBuilder from "./treeView/TreeBuilder";
 import ManifestData from "./entity/ManifestData";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
-import './lib/i18n';
+import InitI18n from './lib/InitI18n';
 import {AppContext} from "./AppContext";
 import {AnnotationType, HitType} from "./fetch/SearchApi";
 import Main from "./layout/Main";
@@ -25,12 +25,12 @@ declare let global: {
     config: Config;
 };
 
+InitI18n();
 
 export default function App(props: IProps) {
 
     Cache.ee.setMaxListeners(100);
     global.config = new Config(props.config);
-
 
     const [currentManifest, setCurrentManifest] = useState<IManifestData | undefined>(undefined);
     const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);

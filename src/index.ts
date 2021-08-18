@@ -31,7 +31,7 @@ import Main from './layout/Main';
 import Cache from './lib/Cache';
 import Config from './lib/Config';
 import Diacritics from './lib/Diacritics';
-import i18n from './lib/i18n';
+import InitI18n from './lib/InitI18n';
 import * as ManifestHelpers from './lib/ManifestHelpers';
 import ManifestHistory from './lib/ManifestHistory';
 import Token from './lib/Token';
@@ -92,7 +92,7 @@ export {
     Cache,
     Config,
     Diacritics,
-    i18n,
+    InitI18n,
     ManifestHelpers,
     ManifestHistory,
     Token,
