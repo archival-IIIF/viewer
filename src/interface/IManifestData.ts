@@ -1,5 +1,5 @@
 import IManifestDataThumbnail from './IManifestDataThumbnail';
-import {LabelValuePair, PropertyValue} from "manifesto.js";
+import {LabelValuePair, PropertyValue, Service} from "manifesto.js";
 import ITranscription from "./ITranscription";
 
 export default interface IManifestData {
@@ -25,6 +25,7 @@ export default interface IManifestData {
     thumbnail?: IManifestDataThumbnail;
     transcription: ITranscription[];
     images: IPresentationApiImage[];
+    services?: Service[];
 }
 
 export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain';

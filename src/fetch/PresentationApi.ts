@@ -187,6 +187,7 @@ class Manifest {
                         manifestData.attribution = manifestoData.getRequiredStatement();
                         manifestData.manifestations = t.getManifestations(manifestoData);
                         manifestData.seeAlso = t.getSeeAlso(manifestoData);
+                        manifestData.services = manifestoData.getServices();
                         manifestData.restricted = false;
                         if (manifestData.type === 'Collection') {
                             manifestData.manifests = t.getManifests(manifestoData);
