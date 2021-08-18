@@ -49,7 +49,7 @@ import ImageButtons from './viewer/image/ImageButtons';
 import ReactOpenSeadragon from './viewer/image/ReactOpenSeadragon';
 import MediaPlayer from './viewer/media/MediaPlayer';
 import Transcription from './viewer/media/Transcription';
-import PdfViewer from './viewer/pdf/pdfViewer';
+import PdfViewer from './viewer/pdf/PdfViewer';
 import Nl2br from './viewer/plainText/Nl2br';
 import PlainTextViewer from './viewer/plainText/PlainTextViewer';
 import Viewer from './viewer/Viewer';

@@ -3,7 +3,7 @@ import ReactOpenSeadragon from './image/ReactOpenSeadragon';
 import MediaPlayer from './media/MediaPlayer';
 import PlainTextViewer from './plainText/PlainTextViewer';
 import './viewer.css';
-import PdfViewer from "./pdf/pdfViewer";
+import PdfViewer from "./pdf/PdfViewer";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
 
