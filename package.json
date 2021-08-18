@@ -50,7 +50,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "build:react": "rimraf ./dist && tsc -p tsconfig.prod.json && copyfiles -u 1 src/**/*.png src/**/*.css dist/",
+    "build:react": "rimraf ./dist/* && tsc -p tsconfig.prod.json && copyfiles -u 1 src/**/*.png src/**/*.css dist/",
     "build:dist": "craco build && node dist-pkg/buildDistPkg.js"
   },
   "eslintConfig": {
