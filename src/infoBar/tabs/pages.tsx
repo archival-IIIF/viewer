@@ -28,7 +28,7 @@ export default function Pages() {
         output.push(
             <div className={className} key={i++} onClick={() => setPage(j)}>
                 <img src={image.id + '/full/'+width+',/0/default.jpg'} alt="" style={style}/>
-                <div><span>{i}</span></div>
+                <div><span>{i + 1}</span></div>
             </div>
         );
     }
