@@ -3,7 +3,7 @@ import IManifestData, {IAuthService, IManifestReference, IPresentationApiImage, 
     IPresentationApiManifestation, IPresentationApiResource, ISearchService} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
-import ISequenze from '../interface/ISequenze';
+import ISequence from '../interface/ISequence';
 import UrlValidation from '../lib/UrlValidation';
 import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
@@ -392,7 +392,7 @@ class Manifest {
         return manifestations;
     }
 
-    static getAudioVideoResource(sequence0: ISequenze): IPresentationApiResource | undefined {
+    static getAudioVideoResource(sequence0: ISequence): IPresentationApiResource | undefined {
         if (!sequence0.__jsonld) {
             return undefined;
         }

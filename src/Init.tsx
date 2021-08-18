@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import IConfigParameter from './interface/IConfigParameter';
 import i18n from "i18next";
 
-class Init {
+export default class Init {
 
     constructor(config: IConfigParameter) {
 
@@ -22,5 +22,3 @@ class Init {
     }
 
 }
-
-export default Init;

@@ -1,4 +1,4 @@
-interface IConfigParameter {
+export default interface IConfigParameter {
     id: string;
     language?: string;
     manifest?: string;
@@ -10,6 +10,4 @@ interface IConfigParameter {
     externalSearchUrl?: string;
     allowedOrigins?: string | string[];
 }
-
-export default IConfigParameter;
 

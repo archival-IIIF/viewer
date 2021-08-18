@@ -2,7 +2,7 @@ import IManifestDataThumbnail from './IManifestDataThumbnail';
 import {LabelValuePair, PropertyValue} from "manifesto.js";
 import ITranscription from "./ITranscription";
 
-interface IManifestData {
+export default interface IManifestData {
     id: string;
     request?: string;
     type: string;
@@ -72,6 +72,3 @@ export interface ISearchService {
     id: string;
     autoCompleteId?: string;
 }
-
-
-export default IManifestData;

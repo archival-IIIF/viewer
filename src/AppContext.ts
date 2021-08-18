@@ -25,7 +25,7 @@ interface IContext {
     setAlert: (content: IAlertContent | undefined) => void;
 }
 
-export const AppContext = React.createContext<IContext>({
+const AppContext = React.createContext<IContext>({
     treeDate: 0,
     tab: '',
     setTab: () => {},
@@ -46,3 +46,5 @@ export const AppContext = React.createContext<IContext>({
     alert: undefined,
     setAlert: () => {}
 });
+
+export default AppContext;
