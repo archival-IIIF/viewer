@@ -13,6 +13,38 @@ export default function Download() {
 
     const output: JSX.Element[] = [];
 
+    if (currentManifest.images[page]) {
+        const image = currentManifest.images[page];
+        let extension = 'jpg';
+        if (image.format === 'image/tiff') {
+            extension = 'tif';
+        } else if (image.format === 'image/png') {
+            extension = 'png';
+        } else if (image.format === 'image/webp') {
+            extension = 'webp';
+        } else if (image.format === 'image/gif') {
+            extension = 'gif';
+        }
+        output.push(
+            <div className="aiiif-download" key="elementDownload1">
+                <a href={image.id + '/full/max/0/default.' + extension}
+                   download={basename(image.id)}>{i18next.t('common:image')} (
+                    {extension.toUpperCase()} {image.width}x{image.height})</a>
+            </div>
+        );
+        if (image.width > 1000 || image.height > 1000) {
+            const smallWidth = image.width < 1000 ? image.width : 1000;
+            const smallHeight = image.width < 1000  ? image.height : Math.round(image.height / image.width * 1000);
+            output.push(
+                <div className="aiiif-download" key="elementDownload2">
+                    <a href={image.id + '/full/'+smallWidth+','+smallHeight+'/0/default.jpg'}
+                       download={basename(image.id)+'.jpg'}>{i18next.t('common:image')} (JPG
+                        {smallWidth}x{smallHeight})</a>
+                </div>
+            );
+        }
+    }
+
     let manifestations = [];
     const rawManifestations = currentManifest.manifestations;
     const resource = currentManifest.resource;
@@ -34,35 +66,12 @@ export default function Download() {
         }
     }
 
-
-    if (currentManifest.images[page]) {
-        const image = currentManifest.images[page];
-        let extension = 'jpg';
-        if (image.format === 'image/tiff') {
-            extension = 'tif';
-        } else if (image.format === 'image/png') {
-            extension = 'png';
-        } else if (image.format === 'image/webp') {
-            extension = 'webp';
-        } else if (image.format === 'image/gif') {
-            extension = 'gif';
-        }
-        output.push(
-            <div className="aiiif-metadata-item" key="elementDownload1">
-                <a href={image.id + '/full/max/0/default.' + extension}
-                   download={basename(image.id)}>{i18next.t('common:image')} (
-                    {extension.toUpperCase()} {image.width}x{image.height})</a>
-            </div>
-        );
-        if (image.width > 1000 || image.height > 1000) {
-            const smallWidth = image.width < 1000 ? image.width : 1000;
-            const smallHeight = image.width < 1000  ? image.height : Math.round(image.height / image.width * 1000);
+    if (currentManifest.seeAlso) {
+        for (const i of currentManifest.seeAlso) {
             output.push(
-                <div className="aiiif-metadata-item" key="elementDownload2">
-                    <a href={image.id + '/full/'+smallWidth+','+smallHeight+'/0/default.jpg'}
-                       download={basename(image.id)+'.jpg'}>{i18next.t('common:image')} (JPG
-                        {smallWidth}x{smallHeight})</a>
-                </div>
+                <a key={i.id} href={i.id} className="aiiif-download" target="_blank"  rel="noopener noreferrer">
+                    {getLocalized(i.label)}
+                </a>
             );
         }
     }

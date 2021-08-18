@@ -1,6 +1,8 @@
 import Cache from '../lib/Cache';
-import IManifestData, {IAuthService, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
-    IPresentationApiManifestation, IPresentationApiResource, ISearchService} from '../interface/IManifestData';
+import IManifestData, {
+    IAuthService, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
+    IPresentationApiManifestation, IPresentationApiResource, ISearchService, ISeeAlso
+} from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
 import ISequence from '../interface/ISequence';
@@ -184,6 +186,7 @@ class Manifest {
                         manifestData.logo = manifestoData.getLogo();
                         manifestData.attribution = manifestoData.getRequiredStatement();
                         manifestData.manifestations = t.getManifestations(manifestoData);
+                        manifestData.seeAlso = t.getSeeAlso(manifestoData);
                         manifestData.restricted = false;
                         if (manifestData.type === 'Collection') {
                             manifestData.manifests = t.getManifests(manifestoData);
@@ -390,6 +393,21 @@ class Manifest {
         }
 
         return manifestations;
+    }
+
+    static getSeeAlso(manifestoData: IIIFResource): ISeeAlso[] | undefined {
+
+        const seeAlso: ISeeAlso[] = [];
+
+        const seeAlso0 = manifestoData.getSeeAlso();
+        for (const i of seeAlso0) {
+            seeAlso.push({
+                id: i.id,
+                label: i.label
+            });
+        }
+
+        return seeAlso.length > 1 ? seeAlso : undefined;
     }
 
     static getAudioVideoResource(sequence0: ISequence): IPresentationApiResource | undefined {

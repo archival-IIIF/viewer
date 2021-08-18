@@ -2,28 +2,30 @@ import i18n  from 'i18next';
 import {PropertyValue} from "manifesto.js";
 import IManifestData from "../interface/IManifestData";
 
-export function getLocalized(input?: PropertyValue | string | null) {
-    if (!input || input.length === 0) {
+export function getLocalized(input?: PropertyValue | PropertyValue[] | null): string {
+    if (!input) {
         return '';
     }
 
-    if (typeof input === 'string') {
-        return input;
+    if (!Array.isArray(input)) {
+        input = [input];
     }
 
-    for (const item of input) {
-        if (item.locale === i18n.language) {
-            return item.value;
+    for (const i of input) {
+        for (const [key, value] of Object.entries(i)) {
+            if (key === i18n.language) {
+                return value.toString();
+            }
+        }
+
+        for (const [key, value] of Object.entries(i)) {
+            if (key.substr(0, 2) === i18n.language.substr(0, 2)) {
+                return value.toString();
+            }
         }
     }
 
-    for (const item of input) {
-        if (item.locale.substr(0, 2) === i18n.language.substr(0, 2)) {
-            return item.value;
-        }
-    }
-
-    return input[0].value;
+    return Object.values(input[0])[0];
 }
 
 export function addBlankTarget(input: string) {

@@ -12,6 +12,7 @@ export default interface IManifestData {
     logo: string | null;
     attribution: LabelValuePair | null;
     manifestations: any;
+    seeAlso?: ISeeAlso[];
     parentId?: string;
     collections: IManifestReference[];
     manifests: IManifestReference[];
@@ -71,4 +72,9 @@ export interface IAuthService {
 export interface ISearchService {
     id: string;
     autoCompleteId?: string;
+}
+
+export interface ISeeAlso {
+    id: string;
+    label?: PropertyValue;
 }
