@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import Metadata from "./tabs/metadata";
+import Metadata from "./tabs/Metadata";
 import Download from "./tabs/Download";
 import Pages from "./tabs/Pages";
 import Share from "./tabs/Share";

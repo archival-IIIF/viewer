@@ -11,7 +11,7 @@ import FolderView from './folder/FolderView';
 import Item from './folder/Item';
 import IIIFIcon from './icons/IIIFIcon';
 import Download from './infoBar/tabs/Download';
-import Metadata from './infoBar/tabs/metadata';
+import Metadata from './infoBar/tabs/Metadata';
 import Pages from './infoBar/tabs/Pages';
 import Search from './infoBar/tabs/Search';
 import Share from './infoBar/tabs/Share';
