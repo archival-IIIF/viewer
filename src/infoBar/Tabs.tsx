@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
 import Metadata from "./tabs/metadata";
-import Download from "./tabs/download";
-import Pages from "./tabs/pages";
-import Share from "./tabs/share";
+import Download from "./tabs/Download";
+import Pages from "./tabs/Pages";
+import Share from "./tabs/Share";
 import Search from "./tabs/Search";
 import {AppContext} from "../AppContext";
 import i18next from "i18next";

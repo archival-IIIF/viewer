@@ -1,6 +1,6 @@
 import React from "react";
 import "./infoBar.css";
-import Tabs from "./tabs";
+import Tabs from "./Tabs";
 
 
 export default function InfoBar() {

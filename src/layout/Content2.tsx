@@ -3,10 +3,10 @@ import Viewer from "../viewer/Viewer";
 import Splitter from "../splitter/Splitter";
 import {isSingleManifest, isSingleRoot} from "../lib/ManifestHelpers";
 import Content3 from "./Content3";
-import InfoBar from "../infoBar/infoBar";
+import InfoBar from "../infoBar/InfoBar";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
-import TabButtons from "../infoBar/tabButtons";
+import TabButtons from "../infoBar/TabButtons";
 import Config from "../lib/Config";
 
 declare let global: {
