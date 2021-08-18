@@ -5,7 +5,12 @@ import UrlValidation from "../../lib/UrlValidation";
 import {Translation} from "react-i18next";
 import {AppContext} from "../../AppContext";
 
-export default function Metadata() {
+interface IProps {
+    showLicense?: boolean;
+    showLogo?: boolean;
+}
+
+export default function Metadata(props: IProps) {
 
     const {currentManifest} = useContext(AppContext);
     if (!currentManifest) {
@@ -66,7 +71,7 @@ export default function Metadata() {
         }
     }
 
-    if (currentManifest.license) {
+    if (props.showLicense !== false && currentManifest.license) {
         metadataView.push(<div key="termsOfUsage">
             <div className="aiiif-label">
                 <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>
@@ -87,7 +92,7 @@ export default function Metadata() {
     }
 
     const logo = currentManifest.logo;
-    if (logo) {
+    if (props.showLogo !== false && logo) {
         metadataView.push(<img key="providerLogo" className="aiiif-provider-logo" src={logo} alt="Logo" title="Logo"/>);
     }
 
