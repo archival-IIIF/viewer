@@ -11,10 +11,19 @@ import {useContext} from "react";
 import {AppContext} from "../AppContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import Config from "../lib/Config";
+
+declare let global: {
+    config: Config;
+};
 
 export default function TopBar() {
 
     const {currentManifest} = useContext(AppContext);
+
+    if (global.config.isEmbedded()) {
+        return <></>;
+    }
 
     return <div className="aiiif-topbar">
         {(currentManifest && !isSingleManifest(currentManifest)) &&
