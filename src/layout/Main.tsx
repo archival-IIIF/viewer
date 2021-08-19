@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Alert from "../Alert";
 import Login from "../Login";
-import TopBar from "../TopBar/TopBar";
+import TopBar from "../topBar/TopBar";
 import Content1 from "./Content1";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
