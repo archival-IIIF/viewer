@@ -6,13 +6,13 @@ import {Translation} from 'react-i18next';
 import './topbar.css';
 import Token from "../lib/Token";
 import ExternalSearch from "./ExternalSearch";
+import FullscreenButton from "./FullscreenButton";
 import {isSingleManifest} from "../lib/ManifestHelpers";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExpand, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import Config from "../lib/Config";
-import enterFullscreen from "../lib/EnterFullscreen";
 
 declare let global: {
     config: Config;
@@ -41,10 +41,6 @@ export default function TopBar() {
                 <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
             </div>
         }
-        <div className="aiiif-fullscreen-button">
-            <button onClick={() => enterFullscreen()}>
-                <FontAwesomeIcon icon={faExpand} />
-            </button>
-        </div>
+       <FullscreenButton />
     </div>;
 }

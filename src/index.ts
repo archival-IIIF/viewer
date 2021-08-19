@@ -39,6 +39,7 @@ import TouchDetection from './lib/TouchDetection';
 import UrlValidation from './lib/UrlValidation';
 import WindowInfo from './lib/WindowInfo';
 import Splitter from './splitter/Splitter';
+import FullscreenButton from './topBar/FullscreenButton';
 import ExternalSearch from './topBar/ExternalSearch';
 import LanguageSwitcher from './topBar/LanguageSwitcher';
 import TopBar from './topBar/TopBar';
@@ -100,6 +101,7 @@ export {
     UrlValidation,
     WindowInfo,
     Splitter,
+    FullscreenButton,
     ExternalSearch,
     LanguageSwitcher,
     TopBar,
