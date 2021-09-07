@@ -401,6 +401,9 @@ class Manifest {
         const seeAlso: ISeeAlso[] = [];
 
         const seeAlso0 = manifestoData.getSeeAlso();
+        if (!seeAlso0) {
+            return undefined;
+        }
         for (const i of seeAlso0) {
             seeAlso.push({
                 id: i.id,
