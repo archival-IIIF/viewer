@@ -1,7 +1,7 @@
 {
   "name": "@archival-iiif/viewer",
   "description": "IIIF viewer.",
-  "version": "1.0.3",
+  "version": "1.0.10",
   "license": "MIT",
   "files": [
     "dist"
