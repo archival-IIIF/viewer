@@ -1,8 +1,9 @@
 import i18n  from 'i18next';
 import {PropertyValue} from "manifesto.js";
 import IManifestData from "../interface/IManifestData";
+import {LocalizedValue} from "manifesto.js/dist-esmodule/PropertyValue";
 
-export function getLocalized(input?: PropertyValue | PropertyValue[] | null): string {
+export function getLocalized(input?: LocalizedValue | LocalizedValue[] | PropertyValue | PropertyValue[] | null): string {
     if (!input) {
         return '';
     }
@@ -11,17 +12,21 @@ export function getLocalized(input?: PropertyValue | PropertyValue[] | null): st
         input = [input];
     }
 
-    for (const i of input) {
-        for (const [key, value] of Object.entries(i)) {
-            if (key === i18n.language) {
-                return value.toString();
-            }
-        }
 
-        for (const [key, value] of Object.entries(i)) {
-            if (key.substr(0, 2) === i18n.language.substr(0, 2)) {
-                return value.toString();
-            }
+    for (const i of input) {
+
+        if (i instanceof LocalizedValue && i._locale === i18n.language) {
+            return i._value.toString();
+        }
+    }
+
+    for (const i of input) {
+
+        if (
+            i instanceof LocalizedValue &&
+            i._locale?.toString().substr(0, 2) === i18n.language.substr(0, 2)
+        ) {
+            return i._value.toString();
         }
     }
 
