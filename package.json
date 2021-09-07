@@ -1,6 +1,6 @@
 {
   "name": "@archival-iiif/viewer-react",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "license": "MIT",
   "homepage": ".",
   "main": "dist/index.js",
