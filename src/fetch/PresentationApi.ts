@@ -208,7 +208,7 @@ class Manifest {
                     console.log(err, url);
                     reject({
                         title: 'Error',
-                            body: 'Could not read manifest!\n\n' + url
+                        body: 'Could not read manifest!\n\n' + url
                     });
                 });
             });
