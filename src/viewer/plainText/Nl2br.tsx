@@ -13,6 +13,6 @@ export default function Nl2br(props: IProps) {
             return <span key={i}><a href={item} target="_blank" rel="noopener noreferrer">{item}</a><br /></span>;
         }
 
-        return <span key={i}>{item}<br /></span>;
+        return <span key={i} style={{whiteSpace: 'pre'}}>{item}<br /></span>;
     })}</>;
 }
