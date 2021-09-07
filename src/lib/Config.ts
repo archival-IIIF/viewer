@@ -3,6 +3,8 @@ import IConfigParameter from '../interface/IConfigParameter';
 
 class Config {
 
+    private readonly id: string = '';
+
     private readonly defaultNavBarWidth: number = 300;
 
     private minimalNavBarWidth: number = 120;
@@ -36,6 +38,7 @@ class Config {
     };
 
     constructor(config: IConfigParameter) {
+        this.id = config.id;
         this.language = config.language ? config.language : window.navigator.language;
         this.manifest = config.manifest ? config.manifest : '';
         this.allowedOrigins = config.allowedOrigins ? config.allowedOrigins : '*';
@@ -133,6 +136,10 @@ class Config {
         }
 
         return false;
+    }
+
+    getID() {
+        return this.id;
     }
 }
 
