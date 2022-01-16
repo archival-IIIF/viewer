@@ -1,9 +1,9 @@
 import React, {useEffect, useContext} from 'react';
 import Cache from './lib/Cache';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Nl2br from './viewer/plainText/Nl2br';
 import './css/modal.css';
 import {AppContext} from "./AppContext";

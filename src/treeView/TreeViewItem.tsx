@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import './treeview.css';
-import CaretDownIcon from '@material-ui/icons/ArrowDropDown';
-import CaretRightIcon from '@material-ui/icons/ArrowRight';
+import CaretDownIcon from '@mui/icons-material/ArrowDropDown';
+import CaretRightIcon from '@mui/icons-material/ArrowRight';
 import {useState} from "react";
 import {getLocalized} from "../lib/ManifestHelpers";
 import PresentationApi from "../fetch/PresentationApi";

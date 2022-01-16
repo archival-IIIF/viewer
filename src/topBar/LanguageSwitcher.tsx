@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Translation } from 'react-i18next';
-import LanguageIcon from '@material-ui/icons/Language';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import LanguageIcon from '@mui/icons-material/Language';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Config from '../lib/Config';
 import {ReactElement, useState} from 'react';
 import i18n from 'i18next';

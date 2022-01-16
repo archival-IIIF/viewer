@@ -45,6 +45,7 @@ class ManifestData implements IManifestData {
         this.authService = undefined;
         this.transcription = [];
         this.images = [];
+        this.license = null;
     }
 }
 

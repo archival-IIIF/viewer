@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Cache from '../lib/Cache';
-import NavBarIcon from '@material-ui/icons/VerticalSplit';
+import NavBarIcon from '@mui/icons-material/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
 import {Translation} from 'react-i18next';
 import './topbar.css';

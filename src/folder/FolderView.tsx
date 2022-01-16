@@ -4,7 +4,7 @@ import {Translation} from 'react-i18next';
 import {getLocalized} from "../lib/ManifestHelpers";
 import {useContext, useState} from "react";
 import {AppContext} from "../AppContext";
-import {InputBase} from "@material-ui/core";
+import {InputBase} from "@mui/material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch, faTh, faThList} from "@fortawesome/free-solid-svg-icons";
 import removeDiacritics from "../lib/Diacritics";
