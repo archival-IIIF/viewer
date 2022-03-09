@@ -2,13 +2,13 @@ import PresentationApi from "../fetch/PresentationApi";
 import IManifestData from "../interface/IManifestData";
 import Config from "../lib/Config";
 
-interface ITreeStatus {[key: string]: boolean};
+interface ITreeStatus {[key: string]: boolean}
 
 declare let global: {
     config: Config;
 };
 
-class TreeBuilder {
+export default class TreeBuilder {
 
     static cache: ITreeStatus = {};
 
@@ -41,5 +41,3 @@ class TreeBuilder {
 
 
 }
-
-export default TreeBuilder;
