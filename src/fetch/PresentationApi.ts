@@ -109,7 +109,6 @@ class Manifest {
                         manifestData.transcription = this.getTranscription(manifestoData);
                     } else {
                         const within = manifestoData.getProperty('within');
-                        console.log(within)
                         if (typeof within === 'string') {
                             manifestData.parentId = within;
                         } else if (within && within.hasOwnProperty('@id')) {
