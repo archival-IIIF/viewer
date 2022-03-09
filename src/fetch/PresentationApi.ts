@@ -365,7 +365,7 @@ class Manifest {
                 let type: IPresentationApiItemsType = 'file';
                 if (fileResource.type === 'pdf' || fileResource.format === 'pdf/application') {
                     type = 'pdf';
-                } else if (fileResource.format.endsWith('/plain')) {
+                } else if (fileResource.format?.endsWith('/plain')) {
                     type = 'plain';
                 }
                 return {resource: fileResource, images: [], type};
