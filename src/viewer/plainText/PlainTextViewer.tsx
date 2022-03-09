@@ -3,6 +3,8 @@ import ViewerSpinner from '../ViewerSpinner';
 import Nl2br from './Nl2br';
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../AppContext";
+import languageEncoding from 'detect-file-encoding-and-language';
+import jschardet from 'jschardet'
 
 export default function PlainTextViewer() {
 
@@ -15,9 +17,14 @@ export default function PlainTextViewer() {
             const source = currentManifest.resource.id;
             fetch(source)
                 .then(function(response) {
-                    return response.text();
+                    return response.arrayBuffer();
                 })
-                .then(function(text) {
+                .then(async buffer => {
+                    const decoder0 = new TextDecoder();
+                    const text0 = decoder0.decode(buffer);
+                    const t = jschardet.detect(text0);
+                    const decoder = new TextDecoder(t.encoding);
+                    const text = decoder.decode(buffer);
                     setLoading(false);
                     setText(text);
                 });
