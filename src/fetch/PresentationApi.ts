@@ -455,27 +455,26 @@ class Manifest {
         const images: IPresentationApiImage[] = [];
         for (const canvas of sequence0.getCanvases()) {
             try {
+
                 const source = canvas.getContent()[0].getBody()[0];
-                if (
-                    source.getType().toLowerCase() === 'video' ||
-                    source.getFormat().substr(0, 5) === 'video'
-                ) {
+                const type = (source.getType() ?? '').toLowerCase();
+                const format = (source.__jsonld?.value ?? '').toLowerCase();
+
+                if (type === 'video' || format.substr(0, 5) === 'video') {
+                    console.log('iii')
                     return {
                         resource: {
-                            format: source.getFormat(),
+                            format,
                             id: source.id,
-                            type: 'video',
+                            type,
                             manifestations: this.getManifestations(canvas)
                         },
                         images,
                         type: 'audioVideo'
                     };
                 }
-                if (
-                    source.getType().toLocaleLowerCase() === 'sound' ||
-                    source.getType().toLocaleLowerCase() === 'audio' ||
-                    source.getFormat().substr(0, 5) === 'audio'
-                ) {
+
+                if (type === 'sound' || type === 'audio' || format.substr(0, 5) === 'audio') {
                     return {
                         resource: {
                             format: source.getFormat(),
@@ -487,10 +486,10 @@ class Manifest {
                         type: 'audioVideo'
                     };
                 }
-                if (source.getFormat().toLowerCase() === 'application/pdf') {
+                if (format === 'application/pdf') {
                     return {
                         resource: {
-                            format: 'application/pdf',
+                            format,
                             id: source.id,
                             type: 'pdf',
                             manifestations: this.getManifestations(canvas)
@@ -499,10 +498,10 @@ class Manifest {
                         type: 'pdf'
                     };
                 }
-                if (source.getFormat().toLowerCase() === 'text/plain') {
+                if (format === 'text/plain') {
                     return {
                         resource: {
-                            format: 'text/plain',
+                            format,
                             id: source.id,
                             type: 'plainText',
                             manifestations: this.getManifestations(canvas)
@@ -512,7 +511,7 @@ class Manifest {
                     };
                 }
 
-                if (source.getType() === 'image') {
+                if (type === 'image') {
                     const profiles = [
                         'level2',
                         'level3',
@@ -536,7 +535,7 @@ class Manifest {
                 } else {
                     return {
                         resource: {
-                            format: source.getFormat(),
+                            format,
                             id: source.id,
                             type: 'file',
                             manifestations: this.getManifestations(canvas)
