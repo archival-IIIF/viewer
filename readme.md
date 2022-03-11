@@ -137,6 +137,15 @@ yarn add @archival-iiif/viewer
             <td>No</td>
             <td>false</td>
         </tr>
+        <tr>
+            <td>htmlViewer</td>
+            <td>Activate inline viewer for html documents</td>
+            <td>
+                <code>true</code> 
+            </td>
+            <td>No</td>
+            <td>false</td>
+        </tr>
     </tbody>
 </table>
 

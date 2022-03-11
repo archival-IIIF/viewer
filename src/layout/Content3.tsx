@@ -6,7 +6,11 @@ import IManifestData from "../interface/IManifestData";
 import {isSingleManifest} from "../lib/ManifestHelpers";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
+import Config from "../lib/Config";
 
+declare let global: {
+    config: Config;
+};
 
 export default function Content3() {
 
@@ -62,7 +66,11 @@ function getSize(currentManifest: IManifestData): number {
         return 0;
     }
 
-    if (['audioVideo', 'image', 'plain', 'pdf'].includes(currentManifest.itemsType )) {
+    const viewers = ['audioVideo', 'image', 'plain', 'pdf'];
+    if (global.config.getHtmlViewer()) {
+        viewers.push('html')
+    }
+    if (viewers.includes(currentManifest.itemsType )) {
         return 50;
     }
 

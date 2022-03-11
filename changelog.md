@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1
+
+* Optional HTML viewer added
+
 ## 1.0.0
 
 * Audio and video transcript support added

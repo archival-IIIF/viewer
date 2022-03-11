@@ -9,5 +9,6 @@ export default interface IConfigParameter {
     hideUnbranchedTrees?: boolean;
     externalSearchUrl?: string;
     allowedOrigins?: string | string[];
+    htmlViewer?: htmlViewer;
 }
 

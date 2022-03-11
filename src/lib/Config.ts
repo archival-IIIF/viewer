@@ -29,6 +29,8 @@ class Config {
 
     private readonly allowedOrigins: string | string[] = '*';
 
+    private readonly htmlViewer: boolean;
+
     private readonly translations: {[key: string]: string} = {
         en: 'English',
         de: 'Deutsch',
@@ -48,6 +50,7 @@ class Config {
         this.lazyTree = config.lazyTree ? config.lazyTree : false;
         this.hideUnbranchedTrees = config.hideUnbranchedTrees ? config.hideUnbranchedTrees : false;
         this.externalSearchUrl = config.externalSearchUrl;
+        this.htmlViewer = config.htmlViewer ?? false;
     }
 
     getSplitterWidth(folded: boolean) {
@@ -140,6 +143,10 @@ class Config {
 
     getID() {
         return this.id;
+    }
+
+    getHtmlViewer() {
+        return this.htmlViewer;
     }
 }
 

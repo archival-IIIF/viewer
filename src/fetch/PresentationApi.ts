@@ -510,6 +510,18 @@ class Manifest {
                         type: 'plain'
                     };
                 }
+                if (format === 'text/html') {
+                    return {
+                        resource: {
+                            format,
+                            id: source.id,
+                            type: 'html',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'html'
+                    };
+                }
 
                 if (type === 'image') {
                     const profiles = [
