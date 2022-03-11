@@ -3,6 +3,30 @@
 ## 1.1
 
 * Optional HTML viewer added
+* @material-ui to @mui upgraded
+* Encoding detection for PlainTextViewer added
+
+## 1.0.10
+
+* keyDown Buttons activated, #7
+* metadata: showLicense & showLogo added
+* seeAlso added
+* InitI18n fixed
+* Fullscreen button added
+
+## 1.0.2
+
+* react-app-rewired -> craco
+* isSingle root added
+* fetchAutoCompleteApi added
+* lazyTree config value added
+* SearchApi cache removed
+* hideUnbranchedTrees config value added
+* iiif v2 pdf and plain fixed
+* Login fixes, #164
+* json.info fix, #165
+* within issue fixed
+* Page number fixed
 
 ## 1.0.0
 
