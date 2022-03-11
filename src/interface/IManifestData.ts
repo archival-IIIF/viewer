@@ -28,7 +28,7 @@ export default interface IManifestData {
     services?: Service[];
 }
 
-export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain';
+export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain' | 'html';
 
 export interface IPresentationApiImage {
     id: string;

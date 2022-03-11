@@ -1,10 +1,7 @@
 import * as React from 'react';
 import ViewerSpinner from '../ViewerSpinner';
-import Nl2br from './Nl2br';
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../AppContext";
-import languageEncoding from 'detect-file-encoding-and-language';
-import jschardet from 'jschardet'
 import * as DOMPurify from "dompurify";
 
 export default function HtmlViewer() {
@@ -25,7 +22,7 @@ export default function HtmlViewer() {
                     let text = decoder0.decode(buffer);
                     const regex = /charset=([a-zA-Z0-9-]*)/g;
                     const found = text.match(regex);
-                    if (found.length > 0) {
+                    if (found && found.length > 0) {
                         const encoding = found[0].slice(8);
                         const decoder = new TextDecoder(encoding);
                         text = decoder.decode(buffer);

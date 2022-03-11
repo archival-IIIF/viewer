@@ -3,7 +3,6 @@ import ViewerSpinner from '../ViewerSpinner';
 import Nl2br from './Nl2br';
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../AppContext";
-import languageEncoding from 'detect-file-encoding-and-language';
 import jschardet from 'jschardet'
 
 export default function PlainTextViewer() {
