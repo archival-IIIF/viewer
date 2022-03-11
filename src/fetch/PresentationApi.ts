@@ -498,18 +498,6 @@ class Manifest {
                         type: 'pdf'
                     };
                 }
-                if (format === 'text/plain') {
-                    return {
-                        resource: {
-                            format,
-                            id: source.id,
-                            type: 'plainText',
-                            manifestations: this.getManifestations(canvas)
-                        },
-                        images,
-                        type: 'plain'
-                    };
-                }
                 if (format === 'text/html') {
                     return {
                         resource: {
@@ -520,6 +508,18 @@ class Manifest {
                         },
                         images,
                         type: 'html'
+                    };
+                }
+                if (format.startsWith('text/')) {
+                    return {
+                        resource: {
+                            format,
+                            id: source.id,
+                            type: 'plainText',
+                            manifestations: this.getManifestations(canvas)
+                        },
+                        images,
+                        type: 'plain'
                     };
                 }
 
