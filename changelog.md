@@ -2,6 +2,7 @@
 
 ## 1.1
 
+* UrlValidation fixed, #179
 * Optional HTML viewer added
 * @material-ui to @mui upgraded
 * Encoding detection for PlainTextViewer added
