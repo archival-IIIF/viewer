@@ -154,9 +154,11 @@ export default function App(props: IProps) {
         setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, currentAnnotation,
         setCurrentAnnotation, searchResult, setSearchResult, q, setQ: setQ0, alert, setAlert};
 
-    return <AppContext.Provider value={appContextValue}>
-        <I18nextProvider i18n={i18n}>
-            <Main />
-        </I18nextProvider>
-    </AppContext.Provider>;
+    return <React.StrictMode>
+        <AppContext.Provider value={appContextValue}>
+            <I18nextProvider i18n={i18n}>
+               <Main />
+            </I18nextProvider>
+        </AppContext.Provider>
+    </React.StrictMode>;
 }
