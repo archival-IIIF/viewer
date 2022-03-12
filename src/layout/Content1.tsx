@@ -51,7 +51,7 @@ export default function Content1() {
     return <Splitter
         id="main"
         a={<div className="aiiif-navigation"><TreeView /></div>}
-        b={<Content2 key={currentManifest.id}/>}
+        b={<Content2 />}
         direction="vertical"
     />;
 }

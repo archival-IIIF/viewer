@@ -3,10 +3,11 @@ import './splitter.css';
 import Cache from "../lib/Cache";
 
 interface IProps {
-    a: JSX.Element;
-    b: JSX.Element;
+    a?: JSX.Element;
+    b?: JSX.Element;
     id?: string;
     aSize?: number;
+    frozen?: boolean;
     direction: "horizontal"|"vertical";
 }
 
@@ -37,6 +38,10 @@ export default function Splitter(props: IProps) {
 
     const getAStyle = (): CSSProperties => {
 
+        if (props.frozen === true || !props.b) {
+            return {};
+        }
+
         let sizeP;
         if (size <= 0) {
             sizeP = 0;
@@ -53,6 +58,10 @@ export default function Splitter(props: IProps) {
     }
 
     const getBStyle = (): CSSProperties => {
+
+        if (props.frozen === true || !props.a) {
+            return {};
+        }
 
         let sizeP;
         if (size <= 0) {
@@ -152,13 +161,21 @@ export default function Splitter(props: IProps) {
         }
     }
 
-
+    if (!props.a && !props.b) {
+        return <></>;
+    }
 
     const containerClassName = 'aiiif-splitter-container aiiif-splitter-' + props.direction + ' aiiif-' + props.id;
     return <div className={containerClassName} ref={myRef}>
-        <div className="aiiif-a" style={getAStyle()}>{props.a}</div>
-        <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()} />
-        <div className="aiiif-b" style={getBStyle()}>{props.b}</div>
+        {props.a &&
+            <div className="aiiif-a" style={getAStyle()}>{props.a}</div>
+        }
+        {(props.frozen !== true && (props.a && props.b)) &&
+            <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()}/>
+        }
+        {props.b &&
+            <div className="aiiif-b" style={getBStyle()}>{props.b}</div>
+        }
     </div>;
 }
 

@@ -26,35 +26,15 @@ export default function Content3() {
 
     const size = getSize(currentManifest);
     let key = "content" + size.toString();
-    if(currentManifest) {
-        key += currentManifest.id;
-    }
-
-    if (size === 0) {
-        return <FolderView
-            key={currentManifest.id}
-        />;
-    }
-
-    if (isAudio(currentManifest)) {
-        return <div className="aiiif-content-audio">
-            <Viewer />
-            <FolderView
-                key={currentManifest.id}
-            />
-        </div>;
-    }
 
     return <Splitter
         id="content"
-        key={key}
         aSize={size}
-        a={<Viewer />}
-        b={<FolderView
-            key={currentManifest.id}
-        />}
+        a={size > 0 ? <Viewer key={currentManifest.id}/> : undefined}
+        b={<FolderView />}
         direction="horizontal"
-    />
+        frozen={isAudio(currentManifest)}
+    />;
 }
 
 function isAudio(currentManifest: IManifestData) {
