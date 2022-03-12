@@ -477,7 +477,7 @@ class Manifest {
                 if (type === 'sound' || type === 'audio' || format.substr(0, 5) === 'audio') {
                     return {
                         resource: {
-                            format: source.getFormat(),
+                            format: source.__jsonld?.value ?? '',
                             id: source.id,
                             type: 'audio',
                             manifestations: this.getManifestations(canvas)
