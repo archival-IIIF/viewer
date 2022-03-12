@@ -70,7 +70,7 @@ export default function MediaPlayer() {
                 a={
                     <div className="aiiif-media-player-container">
                         <video ref={(node) => videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
-                               preload={preload} onTimeUpdate={handleTimeUpdate}/>
+                               preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                     </div>
                 }
                 b={<Transcription jumpToTime={jumpToTime}/>}
@@ -80,7 +80,7 @@ export default function MediaPlayer() {
 
         return <div className="aiiif-media-player-container">
             <video ref={(node) => videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
-                   preload={preload}/>
+                   preload={preload} autoPlay={true}/>
         </div>;
     }
 
@@ -88,14 +88,14 @@ export default function MediaPlayer() {
         if (hasTranscription(currentManifest)) {
             return <div className="aiiif-media-player-container">
                 <audio ref={(node) => videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
-                       preload={preload} onTimeUpdate={handleTimeUpdate}/>
+                       preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                 <Transcription jumpToTime={jumpToTime} />
             </div>;
         }
 
         return <div className="aiiif-media-player-container">
             <audio ref={(node) => videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
-                   preload={preload}/>
+                   preload={preload} autoPlay={true}/>
         </div>;
     }
 
