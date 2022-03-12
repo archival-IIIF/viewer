@@ -461,7 +461,6 @@ class Manifest {
                 const format = (source.__jsonld?.value ?? '').toLowerCase();
 
                 if (type === 'video' || format.substr(0, 5) === 'video') {
-                    console.log('iii')
                     return {
                         resource: {
                             format,
