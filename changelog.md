@@ -6,6 +6,7 @@
 * Optional HTML viewer added
 * @material-ui to @mui upgraded
 * Encoding detection for PlainTextViewer added
+* fontawesome version 5 to 6 updated
 
 ## 1.0.10
 
