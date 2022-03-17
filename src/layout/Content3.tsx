@@ -25,7 +25,6 @@ export default function Content3() {
     }
 
     const size = getSize(currentManifest);
-    let key = "content" + size.toString();
 
     return <Splitter
         id="content"
