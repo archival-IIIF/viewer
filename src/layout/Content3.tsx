@@ -45,7 +45,7 @@ function getSize(currentManifest: IManifestData): number {
         return 0;
     }
 
-    const viewers = ['audioVideo', 'image', 'plain', 'pdf'];
+    const viewers = ['audioVideo', 'image', 'plain', 'pdf', 'html'];
     if (global.config.getHtmlViewer()) {
         viewers.push('html')
     }
