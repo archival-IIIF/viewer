@@ -37,7 +37,7 @@ export default function Viewer() {
         </div>;
     }
 
-    if (currentManifest.itemsType=== 'pdf') {
+    if (currentManifest.itemsType === 'pdf') {
         return <PdfViewer />;
     }
 
