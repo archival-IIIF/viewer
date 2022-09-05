@@ -7602,10 +7602,10 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
-manifesto.js@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.2.4.tgz#996cb3bd638883ea8f447ad00b958f23aeb0a184"
-  integrity sha512-Kfa3RSFnWeLTmzpkRQu/WM1275cx859rzwQO0wiRVo3Kl3yjbyV7QPzZkLCqgaL76gOarfYe28t1EDytgGpL9A==
+manifesto.js@^4.2.14:
+  version "4.2.14"
+  resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.2.14.tgz#376fc73f9884646ff79168a67c4d3356cbd28b48"
+  integrity sha512-6lsgr3j/DyxlIQfqE+0VlNeKlb3MzJVv42Is9+Y8AC6pBfVIqKV4xfGrP7B1q9jX59elFR4grYGDMVWi71KwSQ==
   dependencies:
     "@edsilv/http-status-codes" "^1.0.3"
     "@iiif/vocabulary" "^1.0.20"
