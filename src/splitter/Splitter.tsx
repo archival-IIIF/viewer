@@ -1,6 +1,7 @@
 import React, {CSSProperties, useEffect, useState, useRef} from 'react';
 import './splitter.css';
 import Cache from "../lib/Cache";
+import SplitterDots from "./SplitterDots";
 
 interface IProps {
     a?: JSX.Element;
@@ -171,7 +172,9 @@ export default function Splitter(props: IProps) {
             <div className="aiiif-a" style={getAStyle()}>{props.a}</div>
         }
         {(props.frozen !== true && (props.a && props.b)) &&
-            <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()}/>
+            <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()}>
+                <SplitterDots />
+            </div>
         }
         {props.b &&
             <div className="aiiif-b" style={getBStyle()}>{props.b}</div>

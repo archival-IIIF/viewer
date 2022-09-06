@@ -1,8 +1,23 @@
 .aiiif-splitter {
-    background: #d7d6d7 url('../icons/splitter.png') no-repeat 50%;
+    background: #d7d6d7;
     z-index: 999;
 }
 
+.aiiif-splitter-dots {
+    width: 100%;
+    margin: auto 0;
+}
+
+.aiiif-splitter-dots > div {
+    display: flex;
+}
+
+.aiiif-splitter-dots > div > div {
+    background: white;
+    width: 2px;
+    height: 2px;
+    margin: 1px auto;
+}
 
 .aiiif-splitter-vertical > .aiiif-splitter {
     cursor: col-resize;
