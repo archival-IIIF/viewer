@@ -32,7 +32,7 @@ export default function Tabs() {
 
     return <>
         <div className="aiiif-tab-container">
-            <h2>{i18next.t('common:' + tab2)}</h2>
+            <h2><>{i18next.t('common:' + tab2)}</></h2>
             {content}
         </div>
     </>

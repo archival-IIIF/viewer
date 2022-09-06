@@ -63,7 +63,9 @@ export default function Search() {
             output.push(
                 <div className={className} key={hit.i}
                      onClick={() => setCurrentAnnotation(hit.resource)}>
-                    <span className="aiiif-search-badge">{i18next.t('common:pageDot')} {hit.resource.page + 1}</span>
+                    <span className="aiiif-search-badge">
+                        <>{i18next.t('common:pageDot')} {hit.resource.page + 1}</>
+                    </span>
 
                     {stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}
                 </div>
@@ -119,7 +121,7 @@ export default function Search() {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={i18next.t('common:searchInputLabel')}
+                        label={<>{i18next.t('common:searchInputLabel')}</>}
                         onKeyUp={event => handleEnter(event)}
                         InputProps={{
                             ...params.InputProps,
