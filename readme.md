@@ -39,9 +39,6 @@ yarn add @archival-iiif/viewer
 ```html
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="path-to-viewer/archival-IIIF-viewer.min.css?v=x.y.z">
-    </head>
     <body>
     
         <div id="root"></div>
