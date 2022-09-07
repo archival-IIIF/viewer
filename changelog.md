@@ -1,12 +1,18 @@
 # Changelog
 
+## 2.0
+
+* react updated from version 17 to 18
+* craco/cra4 replaced by pure webpack
+* Dockerfile added
+
 ## 1.1
 
 * UrlValidation fixed, #179
 * Optional HTML viewer added
 * @material-ui to @mui upgraded
 * Encoding detection for PlainTextViewer added
-* fontawesome version 5 to 6 updated
+* fontawesome updated from version 5 to 6
 
 ## 1.0.10
 
