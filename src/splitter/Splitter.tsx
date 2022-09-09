@@ -173,7 +173,7 @@ export default function Splitter(props: IProps) {
         }
         {(props.frozen !== true && (props.a && props.b)) &&
             <div className="aiiif-splitter" onMouseDown={() => movingStart()} onTouchStart={() => movingStart()}>
-                <SplitterDots />
+                <SplitterDots direction={props.direction}/>
             </div>
         }
         {props.b &&

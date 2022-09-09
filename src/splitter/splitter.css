@@ -19,6 +19,17 @@
     margin: 1px auto;
 }
 
+
+.aiiif-splitter-horizontal > div > .aiiif-splitter-dots {
+    height: 100%;
+    width: inherit;
+    margin: auto;
+}
+
+.aiiif-splitter-horizontal > div > .aiiif-splitter-dots > div > div {
+    margin: 1px;
+}
+
 .aiiif-splitter-vertical > .aiiif-splitter {
     cursor: col-resize;
     min-width: 8px;
