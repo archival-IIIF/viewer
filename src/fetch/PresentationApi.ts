@@ -465,7 +465,7 @@ class Manifest {
                         resource: {
                             format,
                             id: source.id,
-                            type,
+                            type: 'video',
                             manifestations: this.getManifestations(canvas)
                         },
                         images,
