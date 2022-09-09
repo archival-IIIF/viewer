@@ -5,13 +5,27 @@ const webpack = require('webpack');
 
 
 module.exports = (env) => {
+    const plugins = [
+        new HtmlWebpackPlugin({template: './public/index.html'}),
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: 'public/favicon.ico', to: 'favicon.ico'},
+                {from: 'public/manifest.json', to: 'manifest.json'},
+            ]
+        }),
+    ]
     if (env.development) {
         require('dotenv').config({path: '.env.development.local'});
+    } else {
+        plugins.push(new webpack.SourceMapDevToolPlugin({
+            filename: 'archival-IIIF-viewer.min.js.map'
+        }));
     }
+
     return {
         mode: 'development',
         entry: './src/Init.tsx',
-        devtool: false,
+        devtool: env.development ? undefined : false,
         output: {
             path: path.join(__dirname, '/build'),
             library: 'ArchivalIIIFViewer',
@@ -46,17 +60,6 @@ module.exports = (env) => {
         resolve: {
             extensions: ['.tsx', '.ts', '.js', '.css']
         },
-        plugins: [
-            new HtmlWebpackPlugin({template: './public/index.html'}),
-            new CopyWebpackPlugin({
-                patterns: [
-                    {from: 'public/favicon.ico', to: 'favicon.ico'},
-                    {from: 'public/manifest.json', to: 'manifest.json'},
-                ]
-            }),
-            new webpack.SourceMapDevToolPlugin({
-                filename: 'archival-IIIF-viewer.min.js.map',
-            })
-        ]
+        plugins
     }
 }
