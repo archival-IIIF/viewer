@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+* manifesto.js fix
+
 ## 2.0
 
 * react updated from version 17 to 18
