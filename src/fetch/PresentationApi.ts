@@ -433,7 +433,7 @@ class Manifest {
         }
 
         const mime = element0.format;
-        const mediaType = mime.substr(0, 5);
+        const mediaType = mime.slice(0, 5);
         if (mediaType !== 'audio' && mediaType !== 'video') {
             return undefined;
         }
@@ -460,7 +460,7 @@ class Manifest {
                 const type = (source.getType() ?? '').toLowerCase();
                 const format = (source.getFormat() ?? '').toLowerCase();
 
-                if (type === 'video' || format.substr(0, 5) === 'video') {
+                if (type === 'video' || format.slice(0, 5) === 'video') {
                     return {
                         resource: {
                             format,
@@ -473,7 +473,7 @@ class Manifest {
                     };
                 }
 
-                if (type === 'sound' || type === 'audio' || format.substr(0, 5) === 'audio') {
+                if (type === 'sound' || type === 'audio' || format.slice(0, 5) === 'audio') {
                     return {
                         resource: {
                             format: source.__jsonld?.value ?? '',
