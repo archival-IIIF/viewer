@@ -458,8 +458,11 @@ class Manifest {
 
                 const source = canvas.getContent()[0].getBody()[0];
                 const type = (source.getType() ?? '').toLowerCase();
-                const format = (source.getFormat() ?? '').toLowerCase();
-
+                let format = source.getFormat() ?? '';
+                if (format === '') {
+                    format = source.__jsonld?.value ?? '';
+                }
+                format = format.toLowerCase();
                 if (type === 'video' || format.slice(0, 5) === 'video') {
                     return {
                         resource: {
