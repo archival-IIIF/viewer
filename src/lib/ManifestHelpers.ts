@@ -14,19 +14,17 @@ export function getLocalized(input?: LocalizedValue | LocalizedValue[] | Propert
 
 
     for (const i of input) {
-
-        if (i instanceof LocalizedValue && i._locale === i18n.language) {
-            return i._value.toString();
+        if ('_locale' in i  && i._locale === i18n.language) {
+            return i._value?.toString() ?? '';
         }
     }
 
     for (const i of input) {
-
         if (
-            i instanceof LocalizedValue &&
+            '_locale' in i &&
             i._locale?.toString().slice(0, 2) === i18n.language.slice(0, 2)
         ) {
-            return i._value.toString();
+            return i._value?.toString() ?? '';
         }
     }
 
