@@ -24,7 +24,7 @@ export function getLocalized(input?: LocalizedValue | LocalizedValue[] | Propert
 
         if (
             i instanceof LocalizedValue &&
-            i._locale?.toString().substr(0, 2) === i18n.language.substr(0, 2)
+            i._locale?.toString().slice(0, 2) === i18n.language.slice(0, 2)
         ) {
             return i._value.toString();
         }
