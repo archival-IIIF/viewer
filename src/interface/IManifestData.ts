@@ -26,6 +26,7 @@ export default interface IManifestData {
     transcription: ITranscription[];
     images: IPresentationApiImage[];
     services?: Service[];
+    homepage?: IHomepage;
 }
 
 export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain' | 'html';
@@ -78,4 +79,11 @@ export interface ISearchService {
 export interface ISeeAlso {
     id: string;
     label?: PropertyValue;
+}
+
+export interface IHomepage {
+    id: string;
+    label: PropertyValue;
+    type: string;
+    format?: string;
 }

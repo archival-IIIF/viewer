@@ -1,6 +1,6 @@
 import Cache from '../lib/Cache';
 import IManifestData, {
-    IAuthService, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
+    IAuthService, IHomepage, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
     IPresentationApiManifestation, IPresentationApiResource, ISearchService, ISeeAlso
 } from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
@@ -11,8 +11,9 @@ import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource, PropertyValue} from "manifesto.js";
+import {IIIFResource, LabelValuePair, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
+import i18n from "i18next";
 
 declare let global: {
     config: Config;
@@ -186,6 +187,7 @@ class Manifest {
                         manifestData.attribution = manifestoData.getRequiredStatement();
                         manifestData.manifestations = t.getManifestations(manifestoData);
                         manifestData.seeAlso = t.getSeeAlso(manifestoData);
+                        manifestData.homepage = t.getHomepage(manifestoData);
                         manifestData.services = manifestoData.getServices();
                         manifestData.restricted = false;
                         if (manifestData.type === 'Collection') {
@@ -412,6 +414,63 @@ class Manifest {
 
         return seeAlso.length > 1 ? seeAlso : undefined;
     }
+
+    static getHomepage(manifestoData: IIIFResource): IHomepage | undefined {
+
+        const homepage: any = this.getMainHomepage(manifestoData);
+        if (!homepage) {
+            return undefined;
+        }
+        if (!('id' in homepage)) {
+            console.log('Homepage has no id!')
+            return undefined;
+        }
+        if (!('type' in homepage)) {
+            console.log('Homepage has no type!')
+            return undefined;
+        }
+        if (!('label' in homepage)) {
+            console.log('Homepage has no label!')
+            return undefined;
+        }
+
+        const label = new PropertyValue();
+        for (const [key, value] of Object.entries(homepage.label)) {
+            label.setValue(value as string, key)
+        }
+        return {
+            id: homepage.id,
+            type: homepage.type,
+            label,
+            format: homepage.format,
+        }
+    }
+
+    static getMainHomepage(manifestoData: IIIFResource): any {
+        const homepages = manifestoData.getProperty("homepage");
+        if (!homepages || !Array.isArray(homepages) || homepages.length === 0) {
+            return undefined;
+        }
+
+        if (homepages.length === 1) {
+            return homepages[0];
+        }
+
+        for (const h of homepages) {
+            if ('language' in h && h.language.includes(i18n.language)) {
+                return h;
+            }
+        }
+
+        for (const h of homepages) {
+            if ('language' in h && h.language.map((l: string) => l.slice(0, 2)).includes(i18n.language.slice(0,2))) {
+                return h;
+            }
+        }
+
+        return homepages[0];
+    }
+
 
     static getAudioVideoResource(sequence0: ISequence): IPresentationApiResource | undefined {
         if (!sequence0.__jsonld) {
