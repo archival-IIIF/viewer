@@ -152,6 +152,7 @@ export default function ReactOpenSeadragon(props: IProps) {
                 homeButton: 'home-button-'+ id.current,
                 fullPageButton: 'fullpage-button-'+ id.current,
                 rotateRightButton: 'rotate-right-button-'+ id.current,
+                rotateLeftButton: 'rotate-left-button-'+ id.current,
                 ajaxWithCredentials: false,
                 minZoomLevel: 0.3,
                 viewportMargins: {left: 12, top: 12, right: 12, bottom: 12}

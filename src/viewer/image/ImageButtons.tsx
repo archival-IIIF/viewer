@@ -32,6 +32,7 @@ export default function ImageButtons(props: IProps) {
         <button id={"rotate-right-button-" + props.viewerId}>
             <FontAwesomeIcon icon={faUndo} flip="horizontal" />
         </button>
+        <span id={"rotate-left-button-" + props.viewerId} />
         <button id={"home-button-" + props.viewerId.toString()}>
             <FontAwesomeIcon icon={faHome}  />
         </button>
