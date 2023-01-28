@@ -73,7 +73,7 @@ export default function FolderView() {
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </div>
                     <InputBase
-                        placeholder={i18next.t('common:searchInputLabel')}
+                        placeholder={i18next.t('common:searchInputLabel') ?? undefined}
                         inputProps={{ 'aria-label': 'search' }}
                         type="search"
                         value={search}

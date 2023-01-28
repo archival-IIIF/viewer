@@ -14,11 +14,11 @@ export default function TabButton(props: IProps) {
 
     if (props.active) {
         return <button className="active" onClick={() => props.setTab('')}>
-            <FontAwesomeIcon icon={props.icon} title={i18next.t('common:' + props.name)}/>
+            <FontAwesomeIcon icon={props.icon} title={i18next.t('common:' + props.name) ?? undefined}/>
         </button>;
     }
 
     return<button onClick={() => props.setTab(props.name)}>
-            <FontAwesomeIcon icon={props.icon} title={i18next.t('common:' + props.name)}/>
+            <FontAwesomeIcon icon={props.icon} title={i18next.t('common:' + props.name) ??  undefined}/>
         </button>;
 }

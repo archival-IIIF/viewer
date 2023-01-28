@@ -40,13 +40,13 @@ export default function ImageButtons(props: IProps) {
         </button>
         {(props.data.length > 1) &&
         <button disabled={(page === 0)}
-                onClick={() => setPage(page - 1)} title={i18next.t('common:previousPage')}>
+                onClick={() => setPage(page - 1)} title={i18next.t('common:previousPage') ?? undefined}>
             <FontAwesomeIcon icon={faArrowLeft}/>
         </button>
         }
         {(props.data.length > 1) &&
         <button disabled={(page + 1 === props.data.length)}
-                onClick={() => setPage(page + 1)} title={i18next.t('common:nextPage')}>
+                onClick={() => setPage(page + 1)} title={i18next.t('common:nextPage') ?? undefined}>
             <FontAwesomeIcon icon={faArrowRight}/>
         </button>
         }
