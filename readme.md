@@ -39,8 +39,7 @@ yarn add @archival-iiif/viewer
 ```html
 <!DOCTYPE html>
 <html>
-    <body>
-    
+    <body class="aiiif-body">
         <div id="root"></div>
     
         <script type="text/javascript" src="path-to-viewer/archival-IIIF-viewer.min.js?v=x.y.z"></script>

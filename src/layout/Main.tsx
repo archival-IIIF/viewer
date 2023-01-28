@@ -10,11 +10,11 @@ export default function Main() {
 
     const {authDate} = useContext(AppContext);
 
-    return <>
+    return <div className="aiiif-root">
         <Alert />
         <Login />
         <TopBar key={authDate} />
         <Content1 />
-    </>;
+    </div>;
 
 }
