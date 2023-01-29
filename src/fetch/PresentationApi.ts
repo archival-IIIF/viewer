@@ -4,14 +4,14 @@ import IManifestData, {
     IPresentationApiManifestation, IPresentationApiResource, ISearchService, ISeeAlso
 } from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
-import ManifestDataThumnail from '../entity/ManifestDataThumbnail';
+import ManifestDataThumbnail from '../entity/ManifestDataThumbnail';
 import ISequence from '../interface/ISequence';
 import UrlValidation from '../lib/UrlValidation';
 import Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource, LabelValuePair, PropertyValue} from "manifesto.js";
+import {IIIFResource, PropertyValue} from "manifesto.js";
 import ITranscription from "../interface/ITranscription";
 import i18n from "i18next";
 
@@ -742,7 +742,7 @@ class Manifest {
             return undefined;
         }
 
-        const thumbnail = new ManifestDataThumnail();
+        const thumbnail = new ManifestDataThumbnail();
         thumbnail.id = manifestoThumbnail.id;
 
         const services = [
