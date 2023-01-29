@@ -26,7 +26,7 @@ export default interface IManifestData {
     transcription: ITranscription[];
     images: IPresentationApiImage[];
     services?: Service[];
-    homepage?: IHomepage;
+    homepages?: IHomepage[];
 }
 
 export type IPresentationApiItemsType = 'image' | 'audioVideo' | 'pdf' | 'file' | 'plain' | 'html';

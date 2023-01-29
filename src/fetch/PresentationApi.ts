@@ -187,7 +187,7 @@ class Manifest {
                         manifestData.attribution = manifestoData.getRequiredStatement();
                         manifestData.manifestations = t.getManifestations(manifestoData);
                         manifestData.seeAlso = t.getSeeAlso(manifestoData);
-                        manifestData.homepage = t.getHomepage(manifestoData);
+                        manifestData.homepages = t.getHomepages(manifestoData);
                         manifestData.services = manifestoData.getServices();
                         manifestData.restricted = false;
                         if (manifestData.type === 'Collection') {
@@ -415,60 +415,65 @@ class Manifest {
         return seeAlso.length > 1 ? seeAlso : undefined;
     }
 
-    static getHomepage(manifestoData: IIIFResource): IHomepage | undefined {
+    static getHomepages(manifestoData: IIIFResource): IHomepage[] | undefined {
 
-        const homepage: any = this.getMainHomepage(manifestoData);
-        if (!homepage) {
+        const homepagesRaw: any = this.getHomepages0(manifestoData);
+        if (!homepagesRaw) {
             return undefined;
         }
-        if (!('id' in homepage)) {
-            console.log('Homepage has no id!')
-            return undefined;
-        }
-        if (!('type' in homepage)) {
-            console.log('Homepage has no type!')
-            return undefined;
-        }
-        if (!('label' in homepage)) {
-            console.log('Homepage has no label!')
-            return undefined;
+        const homepages: IHomepage[] = [];
+        for (const rawHomepage of homepagesRaw) {
+            if (!('id' in rawHomepage)) {
+                console.log('Homepage has no id!')
+                continue;
+            }
+            if (!('type' in rawHomepage)) {
+                console.log('Homepage has no type!')
+                continue;
+            }
+            if (!('label' in rawHomepage)) {
+                console.log('Homepage has no label!')
+                continue;
+            }
+
+            const label = new PropertyValue();
+            for (const [key, value] of Object.entries(rawHomepage.label)) {
+                label.setValue(value as string, key)
+            }
+            homepages.push({
+                id: rawHomepage.id,
+                type: rawHomepage.type,
+                label,
+                format: rawHomepage.format,
+            })
         }
 
-        const label = new PropertyValue();
-        for (const [key, value] of Object.entries(homepage.label)) {
-            label.setValue(value as string, key)
-        }
-        return {
-            id: homepage.id,
-            type: homepage.type,
-            label,
-            format: homepage.format,
-        }
+        return homepages;
     }
 
-    static getMainHomepage(manifestoData: IIIFResource): any {
+    static getHomepages0(manifestoData: IIIFResource): any {
         const homepages = manifestoData.getProperty("homepage");
         if (!homepages || !Array.isArray(homepages) || homepages.length === 0) {
             return undefined;
         }
 
         if (homepages.length === 1) {
-            return homepages[0];
+            return homepages;
         }
 
-        for (const h of homepages) {
-            if ('language' in h && h.language.includes(i18n.language)) {
-                return h;
-            }
+        let filtered = homepages.filter(h => 'language' in h && h.language.includes(i18n.language));
+        if (filtered.length > 0) {
+            return filtered;
         }
 
-        for (const h of homepages) {
-            if ('language' in h && h.language.map((l: string) => l.slice(0, 2)).includes(i18n.language.slice(0,2))) {
-                return h;
-            }
+        filtered = homepages.filter(
+            h => 'language' in h && h.language.map((l: string) => l.slice(0, 2)).includes(i18n.language.slice(0,2))
+        );
+        if (filtered.length > 0) {
+            return filtered;
         }
 
-        return homepages[0];
+        return homepages;
     }
 
 
@@ -864,8 +869,6 @@ class Manifest {
 
         return false;
     }
-
-
 }
 
 export default Manifest;

@@ -96,12 +96,14 @@ export default function Metadata(props: IProps) {
         metadataView.push(<img key="providerLogo" className="aiiif-provider-logo" src={logo} alt="Logo" title="Logo"/>);
     }
 
-    if (currentManifest.homepage) {
-        metadataView.push(
-            <a key={"homepage"} href={currentManifest.homepage.id} className="aiiif-download" target="_blank"
-               rel="noopener noreferrer">{getLocalized(currentManifest.homepage.label)}
-            </a>
-        );
+    if (currentManifest.homepages) {
+        for (const homepage of currentManifest.homepages) {
+            metadataView.push(
+                <a key={"homepage"} href={homepage.id} className="aiiif-download" target="_blank"
+                   rel="noopener noreferrer">{getLocalized(homepage.label)}
+                </a>
+            );
+        }
     }
 
     return <>{metadataView}</>;
