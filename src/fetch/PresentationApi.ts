@@ -417,10 +417,11 @@ class Manifest {
 
     static getHomepages(manifestoData: IIIFResource): IHomepage[] | undefined {
 
-        const homepagesRaw: any = this.getHomepages0(manifestoData);
-        if (!homepagesRaw) {
+        const homepagesRaw = manifestoData.getProperty("homepage");
+        if (!homepagesRaw || !Array.isArray(homepagesRaw) || homepagesRaw.length === 0) {
             return undefined;
         }
+
         const homepages: IHomepage[] = [];
         for (const rawHomepage of homepagesRaw) {
             if (!('id' in rawHomepage)) {
@@ -446,31 +447,6 @@ class Manifest {
                 label,
                 format: rawHomepage.format,
             })
-        }
-
-        return homepages;
-    }
-
-    static getHomepages0(manifestoData: IIIFResource): any {
-        const homepages = manifestoData.getProperty("homepage");
-        if (!homepages || !Array.isArray(homepages) || homepages.length === 0) {
-            return undefined;
-        }
-
-        if (homepages.length === 1) {
-            return homepages;
-        }
-
-        let filtered = homepages.filter(h => 'language' in h && h.language.includes(i18n.language));
-        if (filtered.length > 0) {
-            return filtered;
-        }
-
-        filtered = homepages.filter(
-            h => 'language' in h && h.language.map((l: string) => l.slice(0, 2)).includes(i18n.language.slice(0,2))
-        );
-        if (filtered.length > 0) {
-            return filtered;
         }
 
         return homepages;
