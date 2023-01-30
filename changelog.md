@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0
+
+* Breaking: Global CSS removed (body css to .aiiif-body moved), #192
+* Homepage support improved, #195, #196
+* openseadragon: v3 -> v4
+
 ## 2.0.1
 
 * manifesto.js fix
