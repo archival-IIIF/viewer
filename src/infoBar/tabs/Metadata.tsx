@@ -5,7 +5,6 @@ import UrlValidation from "../../lib/UrlValidation";
 import {Translation} from "react-i18next";
 import {AppContext} from "../../AppContext";
 import i18n from "i18next";
-import {IHomepage} from "../../interface/IManifestData";
 
 interface IProps {
     showLicense?: boolean;
@@ -98,7 +97,7 @@ export default function Metadata(props: IProps) {
         metadataView.push(<img key="providerLogo" className="aiiif-provider-logo" src={logo} alt="Logo" title="Logo"/>);
     }
 
-    for (const homepage of filterHomepage(currentManifest.homepages)) {
+    for (const homepage of languageFilter(currentManifest.homepages)) {
         metadataView.push(
             <a key={Math.random()} href={homepage.id} className="aiiif-download" target="_blank"
                rel="noopener noreferrer">{getLocalized(homepage.label)}
@@ -110,18 +109,18 @@ export default function Metadata(props: IProps) {
     return <>{metadataView}</>;
 }
 
-function filterHomepage(homepages: IHomepage[] | undefined): IHomepage[] {
+export function languageFilter(data: any[] | undefined): any[] {
 
-    if (!homepages) {
+    if (!data) {
         return [];
     }
 
-    if (homepages.length === 1) {
-        return homepages;
+    if (data.length === 1) {
+        return data;
     }
 
 
-    let filtered = homepages.filter(h => {
+    let filtered = data.filter(h => {
         for (const l of h.label) {
             if (l._locale === i18n.language) {
                 return true;
@@ -133,7 +132,7 @@ function filterHomepage(homepages: IHomepage[] | undefined): IHomepage[] {
         return filtered;
     }
 
-    filtered = homepages.filter(
+    filtered = data.filter(
         h => {
             for (const l of h.label) {
                 if (l._locale && l._locale.slice(0, 2) === i18n.language.slice(0, 2)) {
@@ -147,5 +146,5 @@ function filterHomepage(homepages: IHomepage[] | undefined): IHomepage[] {
         return filtered;
     }
 
-    return homepages;
+    return data;
 }
