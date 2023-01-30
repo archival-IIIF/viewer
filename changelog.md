@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1
+
+* Language filter for renderings
+* Homepage language filter fixed
+
 ## 3.0.0
 
 * Breaking: Global CSS removed (body css to .aiiif-body moved), #192
