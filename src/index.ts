@@ -1,5 +1,4 @@
 import 'core-js';
-import 'react-app-polyfill/ie11';
 import Init from './Init';
 import ManifestData from './entity/ManifestData';
 import ManifestDataThumbnail from './entity/ManifestDataThumbnail';

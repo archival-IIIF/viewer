@@ -28,7 +28,6 @@
     "manifesto.js": "^4.2.22",
     "openseadragon": "^5.0.1",
     "react": "^19.2.0",
-    "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.2.0",
     "react-i18next": "^16.0.0",
     "throttle-debounce": "^5.0.2",
