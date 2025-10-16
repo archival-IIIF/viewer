@@ -1,4 +1,4 @@
-import React, {CSSProperties, useContext} from "react";
+import React, {CSSProperties, ReactElement, useContext} from "react";
 import {AppContext} from "../../AppContext";
 
 
@@ -7,7 +7,7 @@ export default function Pages() {
 
     const {page, setPage, currentManifest} = useContext(AppContext);
 
-    const output: JSX.Element[] = [];
+    const output: ReactElement[] = [];
 
     if (!currentManifest || currentManifest.images.length < 1) {
         return <></>;

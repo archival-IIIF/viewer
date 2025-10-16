@@ -11,8 +11,8 @@ interface IPros {
 
 export default function Transcription(props: IPros) {
 
-    const containerRef: React.RefObject<HTMLDivElement> = React.createRef();
-    const currentRef: React.RefObject<HTMLDivElement> = React.createRef();
+    const containerRef: React.RefObject<HTMLDivElement | null> = React.createRef();
+    const currentRef: React.RefObject<HTMLDivElement | null> = React.createRef();
     const [currentPart, setCurrentPart] = useState<number>(0);
     const {currentManifest} = useContext(AppContext);
 

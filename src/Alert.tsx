@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, ReactElement} from 'react';
 import Cache from './lib/Cache';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,9 +10,9 @@ import {AppContext} from "./AppContext";
 
 export interface IAlertContent {
     title?: string;
-    titleJsx?: JSX.Element;
+    titleJsx?: ReactElement;
     body?: string;
-    bodyJsx?:  JSX.Element;
+    bodyJsx?:  ReactElement;
 }
 
 export default function Alert() {

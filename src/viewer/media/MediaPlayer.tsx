@@ -14,7 +14,7 @@ import {AppContext} from "../../AppContext";
 export default function MediaPlayer() {
 
     const {currentManifest} = useContext(AppContext);
-    const player = useRef<videojs.Player>();
+    const player = useRef<videojs.Player>(null);
     let videoNode: any = React.createRef();
     let currentTranscriptionPart = 0;
     const preload = 'metadata';
@@ -62,6 +62,10 @@ export default function MediaPlayer() {
         return <></>;
     }
 
+    const refFunc = (node: HTMLVideoElement | null) => {
+        videoNode = node
+    }
+
     const renderVideo = () => {
 
         if (hasTranscription(currentManifest)) {
@@ -69,7 +73,7 @@ export default function MediaPlayer() {
                 id="video-splitter"
                 a={
                     <div className="aiiif-media-player-container">
-                        <video ref={(node) => videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
+                        <video ref={refFunc} className="video-js aiiif-video-player vjs-theme-forest"
                                preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                     </div>
                 }
@@ -79,7 +83,7 @@ export default function MediaPlayer() {
         }
 
         return <div className="aiiif-media-player-container">
-            <video ref={(node) => videoNode = node} className="video-js aiiif-video-player vjs-theme-forest"
+            <video ref={refFunc} className="video-js aiiif-video-player vjs-theme-forest"
                    preload={preload} autoPlay={true}/>
         </div>;
     }
@@ -87,14 +91,14 @@ export default function MediaPlayer() {
     const renderAudio = () => {
         if (hasTranscription(currentManifest)) {
             return <div className="aiiif-media-player-container">
-                <audio ref={(node) => videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
+                <audio ref={refFunc} className="video-js aiiif-audio-player vjs-theme-forest"
                        preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                 <Transcription jumpToTime={jumpToTime} />
             </div>;
         }
 
         return <div className="aiiif-media-player-container">
-            <audio ref={(node) => videoNode = node} className="video-js aiiif-audio-player vjs-theme-forest"
+            <audio ref={refFunc} className="video-js aiiif-audio-player vjs-theme-forest"
                    preload={preload} autoPlay={true}/>
         </div>;
     }

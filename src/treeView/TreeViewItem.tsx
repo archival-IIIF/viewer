@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {ReactElement, useContext} from 'react';
 import './treeview.css';
 import CaretDownIcon from '@mui/icons-material/ArrowDropDown';
 import CaretRightIcon from '@mui/icons-material/ArrowRight';
@@ -100,7 +100,7 @@ export default function TreeViewItem(props: IPros) {
         className += ' aiiif-current';
     }
     const label = getLocalized(props.label);
-    const childrenElements: JSX.Element[] = [];
+    const childrenElements: ReactElement[] = [];
 
     if (isOpen && children) {
         const childrenLevel = props.level + 1;

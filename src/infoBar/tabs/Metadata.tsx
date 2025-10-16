@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {ReactElement, useContext} from "react";
 import DOMPurify from 'dompurify';
 import {addBlankTarget, getLocalized, sanitizeRulesSet} from "../../lib/ManifestHelpers";
 import UrlValidation from "../../lib/UrlValidation";
@@ -28,7 +28,7 @@ export default function Metadata(props: IProps) {
         }
     });
 
-    const metadataView: JSX.Element[] = [];
+    const metadataView: ReactElement[] = [];
 
 
     if (currentManifest.description.length > 0) {

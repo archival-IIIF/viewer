@@ -1,11 +1,11 @@
-import React, {CSSProperties, useEffect, useState, useRef} from 'react';
+import React, {CSSProperties, useEffect, useState, useRef, ReactElement} from 'react';
 import './splitter.css';
 import Cache from "../lib/Cache";
 import SplitterDots from "./SplitterDots";
 
 interface IProps {
-    a?: JSX.Element;
-    b?: JSX.Element;
+    a?: ReactElement;
+    b?: ReactElement;
     id?: string;
     aSize?: number;
     frozen?: boolean;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Item from './Item';
 import {Translation} from 'react-i18next';
 import {getLocalized} from "../lib/ManifestHelpers";
-import {useContext, useState} from "react";
+import {ReactElement, useContext, useState} from "react";
 import {AppContext} from "../AppContext";
 import {InputBase} from "@mui/material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -25,7 +25,7 @@ export default function FolderView() {
 
     const files = currentFolder.manifests;
     const folders = currentFolder.collections;
-    const content: JSX.Element[] = [];
+    const content: ReactElement[] = [];
 
     if (files.length === 0 && folders.length === 0) {
 

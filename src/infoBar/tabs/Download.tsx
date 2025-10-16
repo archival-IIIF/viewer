@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {ReactElement, useContext} from "react";
 import {basename, getLocalized} from "../../lib/ManifestHelpers";
 import i18next from "i18next";
 import "./download.css"
@@ -12,7 +12,7 @@ export default function Download() {
         return <></>;
     }
 
-    const output: JSX.Element[] = [];
+    const output: ReactElement[] = [];
 
     if (currentManifest.images[page]) {
         const image = currentManifest.images[page];
