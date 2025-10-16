@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useContext} from 'react';
-import videojs, {VideoJsPlayerOptions} from 'video.js';
+import videojs from 'video.js';
 import Cache from '../../lib/Cache';
 import 'video.js/dist/video-js.css';
 import "./vjsForest.css";
@@ -8,13 +8,15 @@ import {hasTranscription} from "../../lib/ManifestHelpers";
 import Splitter from "../../splitter/Splitter";
 import './media-player.css';
 import {AppContext} from "../../AppContext";
+import Player from "video.js/dist/types/player";
+import {SourceObject} from "video.js/dist/types/tech/tech";
 
-
+type VideoJsPlayerOptions = Parameters<typeof videojs>[1]
 
 export default function MediaPlayer() {
 
     const {currentManifest} = useContext(AppContext);
-    const player = useRef<videojs.Player>(null);
+    const player = useRef<Player>(null);
     let videoNode: any = React.createRef();
     let currentTranscriptionPart = 0;
     const preload = 'metadata';
@@ -41,7 +43,7 @@ export default function MediaPlayer() {
         if (currentManifest && currentManifest.resource) {
             const mime = currentManifest.resource.format;
             const file = currentManifest.resource.id;
-            const sources: videojs.Tech.SourceObject[] = [{src: file, type: mime}];
+            const sources: SourceObject[] = [{src: file, type: mime}];
 
             if (player.current) {
                 player.current.selectSource(sources);
@@ -112,7 +114,7 @@ export default function MediaPlayer() {
         let i = -1;
         const t = player.current.currentTime();
         for (const part of parts) {
-            if (part.start > t) {
+            if (t && part.start > t) {
                 let previous = (i === -1) ? 0 : i;
                 if (previous !== currentTranscriptionPart) {
                     currentTranscriptionPart = previous;
