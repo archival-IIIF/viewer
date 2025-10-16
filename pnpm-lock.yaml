@@ -27,8 +27,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(@fortawesome/fontawesome-svg-core@7.1.0)(react@18.3.1)
       '@iiif/vocabulary':
-        specifier: 1.0.22
-        version: 1.0.22
+        specifier: ^1.0.31
+        version: 1.0.31
       '@mui/icons-material':
         specifier: ^5.18.0
         version: 5.18.0(@mui/material@5.18.0(@emotion/react@11.14.0(@types/react@18.3.26)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.26)(react@18.3.1))(@types/react@18.3.26)(react@18.3.1))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.26)(react@18.3.1)
@@ -91,8 +91,8 @@ importers:
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.28.4)
       '@types/dompurify':
-        specifier: ^2.4.0
-        version: 2.4.0
+        specifier: ^3.2.0
+        version: 3.2.0
       '@types/node':
         specifier: ^24.7.1
         version: 24.7.1
@@ -768,9 +768,6 @@ packages:
       '@fortawesome/fontawesome-svg-core': ~6 || ~7
       react: ^18.0.0 || ^19.0.0
 
-  '@iiif/vocabulary@1.0.22':
-    resolution: {integrity: sha512-KOIZgRpDERMK4YGeSwPBNjpJETapMWp8pvEvSGUQkuTlqkiNLirZH65CIcEENZEL5A6mxrYLJX6okDYq7W1+RA==}
-
   '@iiif/vocabulary@1.0.31':
     resolution: {integrity: sha512-j2Y/WKRgyHGO7VkQYg2JPJk6XSdYcZ51J/NHnMygeOAo7rSLVHT9B97+tYlYMqV3Z7EBpXID/zeS5Gn12cyUAA==}
 
@@ -923,8 +920,9 @@ packages:
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
-  '@types/dompurify@2.4.0':
-    resolution: {integrity: sha512-IDBwO5IZhrKvHFUl+clZxgf3hn2b/lU6H1KaBShPkQyGJUQ0xwebezIPSuiyGwfz1UzJWQl4M7BDxtHtCCPlTg==}
+  '@types/dompurify@3.2.0':
+    resolution: {integrity: sha512-Fgg31wv9QbLDA0SpTOXO3MaxySc4DKGLi8sna4/Utjo4r3ZRPdCt4UQee8BWr+Q5z21yifghREPJGYaEOEIACg==}
+    deprecated: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -3786,8 +3784,6 @@ snapshots:
       '@fortawesome/fontawesome-svg-core': 7.1.0
       react: 18.3.1
 
-  '@iiif/vocabulary@1.0.22': {}
-
   '@iiif/vocabulary@1.0.31': {}
 
   '@isaacs/balanced-match@4.0.1': {}
@@ -3947,9 +3943,9 @@ snapshots:
     dependencies:
       '@types/node': 24.7.1
 
-  '@types/dompurify@2.4.0':
+  '@types/dompurify@3.2.0':
     dependencies:
-      '@types/trusted-types': 2.0.7
+      dompurify: 3.2.7
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -4054,7 +4050,8 @@ snapshots:
 
   '@types/throttle-debounce@5.0.2': {}
 
-  '@types/trusted-types@2.0.7': {}
+  '@types/trusted-types@2.0.7':
+    optional: true
 
   '@types/video.js@7.3.58': {}
 

@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify';
 import {addBlankTarget, getLocalized, sanitizeRulesSet} from "../../lib/ManifestHelpers";
 import UrlValidation from "../../lib/UrlValidation";
 import {Translation} from "react-i18next";

@@ -10,7 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Token from "./lib/Token";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import {IAuthService} from "./interface/IManifestData";
 import {sanitizeRulesSet} from "./lib/ManifestHelpers";
 

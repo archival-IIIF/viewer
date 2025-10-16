@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import './transcription.css';
 import Cache from "../../lib/Cache";
 import {sanitizeRulesSet} from "../../lib/ManifestHelpers";

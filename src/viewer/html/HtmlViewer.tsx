@@ -2,7 +2,7 @@ import * as React from 'react';
 import ViewerSpinner from '../ViewerSpinner';
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../AppContext";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import {getCharsetFromHeader} from "../plainText/PlainTextViewer";
 import chardet from "chardet";
 import {Buffer} from "buffer";
