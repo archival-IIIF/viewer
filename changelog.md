@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.0
+
+* react-app-polyfill (ie11) support removed
+* openseadragon updated from version 3 to 5
+* video.js updated from version 7 to 8
+* fontawesome updated from version 6 to 7
+* @mui/material updated from version 5 to 7
+* react version updated from version 18 to 19
+* react-i18next updated from version 12 to 16 
+* dompurify updated from version 2 to 3
+
 ## 3.1
 
 * Language filter for renderings
