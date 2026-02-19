@@ -59,7 +59,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --env development --mode development --hot",
     "build": "webpack --mode production",
-    "build:react": "rimraf ./dist/* && tsc -p tsconfig.prod.json && copyfiles -u 1 \"src/**/*.png\" \"src/**/*.css\" \"src/**/*.json\" ./dist/",
+    "build:react": "rimraf ./dist/* && tsc -p tsconfig.prod.json && copyfiles -u 1 \"src/**/*.css\" \"src/**/*.json\" ./dist/",
     "build:dist": "webpack --mode production && node dist-pkg/buildDistPkg.js"
   },
   "eslintConfig": {
