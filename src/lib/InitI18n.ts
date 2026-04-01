@@ -1,11 +1,10 @@
 import i18n from "i18next";
 import {initReactI18next} from "react-i18next";
-
-const commonEn = require('../translations/en/common.json');
-const commonDe = require('../translations/de/common.json');
-const commonNl = require('../translations/nl/common.json');
-const commonFr = require('../translations/fr/common.json');
-const commonIt = require('../translations/it/common.json');
+import commonEn from '../translations/en/common.json';
+import commonDe from '../translations/de/common.json';
+import commonNl from '../translations/nl/common.json';
+import commonFr from '../translations/fr/common.json';
+import commonIt from '../translations/it/common.json';
 
 export default function InitI18n() {
     i18n.use(initReactI18next).init({
