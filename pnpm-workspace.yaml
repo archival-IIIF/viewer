@@ -1,3 +1,5 @@
+allowBuilds:
+  core-js: true
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - minimatch
