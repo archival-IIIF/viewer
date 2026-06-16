@@ -55,6 +55,12 @@ module.exports = (env) => {
                     test: /\.css$/i,
                     use: ["style-loader", "css-loader"],
                 },
+                {
+                    test: /\.m?js$/,
+                    resolve: {
+                        fullySpecified: false,
+                    },
+                },
             ]
         },
         resolve: {

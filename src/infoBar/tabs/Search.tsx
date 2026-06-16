@@ -123,18 +123,18 @@ export default function Search() {
                         {...params}
                         label={<>{i18next.t('common:searchInputLabel')}</>}
                         onKeyUp={event => handleEnter(event)}
-                        InputProps={{
-                            ...params.InputProps,
+                        slotProps={{input: {
+                            ...params.slotProps.input,
                             endAdornment: (
                                 <div>
                                     {isAutocompleteLoading ?
                                         <CircularProgress color="inherit" size={20} /> :
                                         <FontAwesomeIcon icon={faSearch} onClick={() => setQ(q)} />
                                     }
-                                    {params.InputProps.endAdornment}
+                                    {params.slotProps.input.endAdornment}
                                 </div>
                             ),
-                        }}
+                        }}}
                     />
                 )}
             />
