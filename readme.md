@@ -4,6 +4,8 @@
 
 <h1 align="center">Archival IIIF viewer</h1>
 
+![CI](https://github.com/archival-IIIF/viewer/actions/workflows/ci.yml/badge.svg)
+
 This software is an open-source and web-based viewer for [IIIF](https://iiif.io/). It is focused on tree views but also works with single manifests.
 
 The viewer was developed for the Archival IIIF Server, but also works with any other IIIF server.
