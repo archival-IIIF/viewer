@@ -66,7 +66,7 @@ export default function ReactOpenSeadragon(props: IProps) {
         viewer.current.world.removeItem(oldImage);
 
         ImageApi.get(props.images[page].id).then(result => {
-            if (!viewer.current) {
+            if (!viewer.current || !result) {
                 return;
             }
 
@@ -126,8 +126,9 @@ export default function ReactOpenSeadragon(props: IProps) {
         ImageApi.get(props.images[page].id).then(result => {
 
             if (
-                (result[0] && result[0].statusCode === 401) ||
-                !document.getElementById('openseadragon-' + id.current.toString(10))
+                (Array.isArray(result) && result[0]?.statusCode === 401) ||
+                !document.getElementById('openseadragon-' + id.current.toString(10)) ||
+                !result
             ) {
                 viewer.current = undefined;
                 return;
@@ -136,7 +137,7 @@ export default function ReactOpenSeadragon(props: IProps) {
             const options: Options = {
                 id: 'openseadragon-' + id.current.toString(10),
                 defaultZoomLevel: 0,
-                tileSources: result,
+                tileSources: result as object,
                 showNavigationControl: true,
                 showNavigator: false,
                 showRotationControl: true,
@@ -158,7 +159,7 @@ export default function ReactOpenSeadragon(props: IProps) {
                 viewportMargins: {left: 12, top: 12, right: 12, bottom: 12}
             };
 
-            if (result.authService?.token && Token.has(result.authService.token)) {
+            if ('authService' in result && result.authService?.token && Token.has(result.authService.token)) {
                 options.ajaxHeaders = {
                     Authorization: 'Bearer ' + Token.get(result.authService.token)
                 };

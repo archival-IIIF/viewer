@@ -1,4 +1,5 @@
 import Cache from '../lib/Cache';
+import type IManifestData from "../interface/IManifestData";
 import type {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
@@ -26,11 +27,14 @@ interface IBaseServiceRaw {
     profile: string
 }
 
+
+type TCache = IManifestData | {statusCode: number}[]
+
 class ImageApi {
 
-    static cache: Record<string, string> = {};
+    static cache: Record<string, TCache> = {};
 
-    static get(id: string): Promise<string | false | unknown> {
+    static get(id: string): Promise<TCache | false> {
 
         return new Promise((resolve, reject) => {
 
@@ -44,12 +48,13 @@ class ImageApi {
         })
     }
 
-    static fetchFromUrl(url: string, token?: string) {
+    static fetchFromUrl(url: string, token?: string): Promise<IManifestData | false> {
 
         return new Promise((resolve, reject) => {
             if (!global.config.isAllowedOrigin(url)) {
                 const alertArgs = {title: 'Error', body: 'The image manifest-Url is not an allowed origin: ' + url};
                 Cache.ee.emit('alert', alertArgs);
+                resolve(false)
                 return;
             }
 
@@ -131,7 +136,7 @@ class ImageApi {
                         t.cache[id] = json;
                     }
 
-                    resolve(json);
+                    resolve(json as IManifestData);
                 });
             }).catch((err) => {
                 console.log(err);
