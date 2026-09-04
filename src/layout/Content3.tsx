@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Viewer from "../viewer/Viewer";
 import Splitter from "../splitter/Splitter";
 import FolderView from "../folder/FolderView";
@@ -17,7 +16,7 @@ export default function Content3() {
     const {currentManifest} = useContext(AppContext);
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     if (isSingleManifest(currentManifest)) {

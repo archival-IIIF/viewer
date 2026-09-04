@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Cache from '../lib/Cache';
 import TouchDetection from '../lib/TouchDetection';
 import type IManifestData from '../interface/IManifestData';
@@ -51,7 +50,7 @@ function getThumbnail(props: IProps) {
     }
 
 
-    let thumbnailUrl;
+    let thumbnailUrl = '';
     if (Object.hasOwn(props.item.thumbnail, 'service') && props.item.thumbnail.service) {
         const width = '72';
         const height = '72';

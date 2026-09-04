@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import {useContext, useEffect} from "react";
 import "./infoBar.css";
 import Tabs from "./Tabs";
 import {AppContext} from "../AppContext";
@@ -15,7 +15,7 @@ export default function InfoBar() {
     });
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     const keyDown = (event: KeyboardEvent) => {

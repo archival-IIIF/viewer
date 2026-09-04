@@ -1,4 +1,4 @@
-import React, {type CSSProperties, useContext} from 'react';
+import {type CSSProperties, useContext} from 'react';
 import i18next from "i18next";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHome, faSearchPlus, faSearchMinus, faUndo, faExpand, faArrowLeft, faArrowRight}
@@ -23,30 +23,30 @@ export default function ImageButtons(props: IProps) {
     }
 
     return <div className="aiiif-openseadragon-action-buttons" style={style}>
-        <button id={"zoom-in-button-" + props.viewerId}>
+        <button type="button" id={"zoom-in-button-" + props.viewerId}>
             <FontAwesomeIcon icon={faSearchPlus} />
         </button>
-        <button id={"zoom-out-button-" + props.viewerId}>
+        <button type="button" id={"zoom-out-button-" + props.viewerId}>
             <FontAwesomeIcon icon={faSearchMinus}  />
         </button>
-        <button id={"rotate-right-button-" + props.viewerId}>
+        <button type="button" id={"rotate-right-button-" + props.viewerId}>
             <FontAwesomeIcon icon={faUndo} flip="horizontal" />
         </button>
         <span id={"rotate-left-button-" + props.viewerId} />
-        <button id={"home-button-" + props.viewerId.toString()}>
+        <button type="button" id={"home-button-" + props.viewerId.toString()}>
             <FontAwesomeIcon icon={faHome}  />
         </button>
-        <button id={"fullpage-button-" + props.viewerId.toString()} className="aiiif-openseadragon-icon aiiif-fullpage-button">
+        <button type="button" id={"fullpage-button-" + props.viewerId.toString()} className="aiiif-openseadragon-icon aiiif-fullpage-button">
             <FontAwesomeIcon icon={faExpand} />
         </button>
         {(props.data.length > 1) &&
-        <button disabled={(page === 0)}
+        <button type="button" disabled={(page === 0)}
                 onClick={() => setPage(page - 1)} title={i18next.t('common:previousPage') ?? undefined}>
             <FontAwesomeIcon icon={faArrowLeft}/>
         </button>
         }
         {(props.data.length > 1) &&
-        <button disabled={(page + 1 === props.data.length)}
+        <button type="button" disabled={(page + 1 === props.data.length)}
                 onClick={() => setPage(page + 1)} title={i18next.t('common:nextPage') ?? undefined}>
             <FontAwesomeIcon icon={faArrowRight}/>
         </button>

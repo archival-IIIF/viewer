@@ -1,4 +1,3 @@
-import * as React from 'react';
 import ReactOpenSeadragon from './image/ReactOpenSeadragon';
 import MediaPlayer from './media/MediaPlayer';
 import PlainTextViewer from './plainText/PlainTextViewer';
@@ -13,7 +12,7 @@ export default function Viewer() {
 
     const {currentManifest, authDate} = useContext(AppContext);
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     if (currentManifest.images.length > 0) {
@@ -47,5 +46,5 @@ export default function Viewer() {
         </div>;
     }
 
-    return <></>;
+    return null;
 }

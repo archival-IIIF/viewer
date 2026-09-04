@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useContext} from 'react';
+import {useRef, useEffect, useContext, createRef} from 'react';
 import videojs from 'video.js';
 import Cache from '../../lib/Cache';
 import 'video.js/dist/video-js.css';
@@ -17,7 +17,7 @@ export default function MediaPlayer() {
 
     const {currentManifest} = useContext(AppContext);
     const player = useRef<Player>(null);
-    let videoNode: any = React.createRef();
+    const videoNode = createRef<HTMLVideoElement | null>();
     let currentTranscriptionPart = 0;
     const preload = 'metadata';
 
@@ -40,7 +40,7 @@ export default function MediaPlayer() {
     })
 
     useEffect(() => {
-        if (currentManifest && currentManifest.resource) {
+        if (currentManifest?.resource) {
             const mime = currentManifest.resource.format;
             const file = currentManifest.resource.id;
             const sources: SourceObject[] = [{src: file, type: mime}];
@@ -55,17 +55,17 @@ export default function MediaPlayer() {
                     controls: true
                 }
 
-                player.current = videojs(videoNode, videoJsPlayerOptions);
+                player.current = videojs(videoNode.current as Element, videoJsPlayerOptions);
             }
         }
     })
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     const refFunc = (node: HTMLVideoElement | null) => {
-        videoNode = node
+        videoNode.current = node
     }
 
     const renderVideo = () => {
@@ -75,6 +75,7 @@ export default function MediaPlayer() {
                 id="video-splitter"
                 a={
                     <div className="aiiif-media-player-container">
+                        {/* biome-ignore lint/a11y/useMediaCaption: Transcription is rendered separately below */}
                         <video ref={refFunc} className="video-js aiiif-video-player vjs-theme-forest"
                                preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                     </div>
@@ -85,6 +86,7 @@ export default function MediaPlayer() {
         }
 
         return <div className="aiiif-media-player-container">
+            {/* biome-ignore lint/a11y/useMediaCaption: Transcription is rendered separately below */}
             <video ref={refFunc} className="video-js aiiif-video-player vjs-theme-forest"
                    preload={preload} autoPlay={true}/>
         </div>;
@@ -93,6 +95,7 @@ export default function MediaPlayer() {
     const renderAudio = () => {
         if (hasTranscription(currentManifest)) {
             return <div className="aiiif-media-player-container">
+                {/* biome-ignore lint/a11y/useMediaCaption: Transcription is rendered separately below */}
                 <audio ref={refFunc} className="video-js aiiif-audio-player vjs-theme-forest"
                        preload={preload} onTimeUpdate={handleTimeUpdate} autoPlay={true}/>
                 <Transcription jumpToTime={jumpToTime} />
@@ -100,6 +103,7 @@ export default function MediaPlayer() {
         }
 
         return <div className="aiiif-media-player-container">
+            {/* biome-ignore lint/a11y/useMediaCaption: Transcription is rendered separately below */}
             <audio ref={refFunc} className="video-js aiiif-audio-player vjs-theme-forest"
                    preload={preload} autoPlay={true}/>
         </div>;
@@ -136,7 +140,7 @@ export default function MediaPlayer() {
     }
 
     if (!currentManifest.resource) {
-        return <></>;
+        return null;
     }
 
     if (currentManifest.resource.type === 'video') {

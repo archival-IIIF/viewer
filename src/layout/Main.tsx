@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Alert from "../Alert";
 import Login from "../Login";
 import TopBar from "../topBar/TopBar";

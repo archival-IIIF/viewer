@@ -60,10 +60,10 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
                                 id: resource['@id'],
                                 on: tmpArray[0],
                                 page,
-                                x: parseInt(position[0]),
-                                y: parseInt(position[1]),
-                                width: parseInt(position[2]),
-                                height: parseInt(position[3]),
+                                x: parseInt(position[0], 10),
+                                y: parseInt(position[1], 10),
+                                width: parseInt(position[2], 10),
+                                height: parseInt(position[3], 10),
                             }
                         });
                     }

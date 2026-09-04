@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Viewer from "../viewer/Viewer";
 import Splitter from "../splitter/Splitter";
 import {isSingleManifest, isSingleRoot} from "../lib/ManifestHelpers";
@@ -18,7 +17,7 @@ export default function Content2() {
     const {tab, currentManifest, currentFolder} = useContext(AppContext);
 
     if (!currentManifest || !currentFolder) {
-        return <></>;
+        return null;
     }
 
     if (isSingleManifest(currentManifest)) {

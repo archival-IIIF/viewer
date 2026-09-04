@@ -1,4 +1,4 @@
-import React, {type ReactElement, useContext} from "react";
+import {type ReactElement, useContext} from "react";
 import DOMPurify from 'dompurify';
 import {addBlankTarget, getLocalized, sanitizeRulesSet} from "../../lib/ManifestHelpers";
 import UrlValidation from "../../lib/UrlValidation";
@@ -15,11 +15,11 @@ export default function Metadata(props: IProps) {
 
     const {currentManifest} = useContext(AppContext);
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     // Add a hook to make all links open a new window
-    DOMPurify.addHook('afterSanitizeAttributes', (node: any) => {
+    DOMPurify.addHook('afterSanitizeAttributes', node => {
         // set all elements owning target to target=_blank
         if ('target' in node) {
             node.setAttribute('target', '_blank');
@@ -34,11 +34,13 @@ export default function Metadata(props: IProps) {
     if (currentManifest.description.length > 0) {
         metadataView.push(<div key="description">
             <div className="aiiif-label">
-                <Translation ns="common">{(t, { i18n }) => <>{t('description')}</>}</Translation>
+                <Translation ns="common">{t => <>{t('description')}</>}</Translation>
             </div>
-            <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                __html: DOMPurify.sanitize(getLocalized(currentManifest.description), sanitizeRulesSet)
-            }} />
+            <div
+                className="aiiif-value"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(getLocalized(currentManifest.description), sanitizeRulesSet)}}
+            />
         </div>);
     }
 
@@ -64,9 +66,11 @@ export default function Metadata(props: IProps) {
             metadataView.push(
                 <div key={key++} className="aiiif-metadata-item">
                     <strong>{label}</strong>
-                    <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(value, sanitizeRulesSet)
-                    }} />
+                    <div
+                        className="aiiif-value"
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(value, sanitizeRulesSet)}}
+                    />
                 </div>
             );
         }
@@ -75,20 +79,22 @@ export default function Metadata(props: IProps) {
     if (props.showLicense !== false && currentManifest.license) {
         metadataView.push(<div key="termsOfUsage">
             <div className="aiiif-label">
-                <Translation ns="common">{(t, { i18n }) => <p>{t('license')}</p>}</Translation>
+                <Translation ns="common">{t => <p>{t('license')}</p>}</Translation>
             </div>
             <div className="aiiif-value"><a href={currentManifest.license}>{currentManifest.license}</a></div>
         </div>);
     }
 
-    if (currentManifest.attribution && currentManifest.attribution.value && currentManifest.attribution.value.length > 0) {
+    if (currentManifest.attribution?.value && currentManifest.attribution.value.length > 0) {
         metadataView.push(<div key="attribution">
             <div className="aiiif-label">
-                <Translation ns="common">{(t, { i18n }) => <p>{t('attribution')}</p>}</Translation>
+                <Translation ns="common">{t => <p>{t('attribution')}</p>}</Translation>
             </div>
-            <div className="aiiif-value" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                __html: DOMPurify.sanitize(getLocalized(currentManifest.attribution.value), sanitizeRulesSet)
-            }} />
+            <div
+                className="aiiif-value"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(getLocalized(currentManifest.attribution.value), sanitizeRulesSet)}}
+            />
         </div>);
     }
 

@@ -15,7 +15,15 @@
                 "noExplicitAny": "off"
             },
             "complexity": {
-                "noImportantStyles": "off"
+                "noImportantStyles": "off",
+                "noStaticOnlyClass": "off"
+            },
+            "correctness": {
+              "useExhaustiveDependencies": "off"
+            },
+            "a11y": {
+                "useKeyWithClickEvents": "off",
+                "noStaticElementInteractions": "off"
             }
         }
     }

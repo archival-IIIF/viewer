@@ -1,4 +1,4 @@
-import React, {type CSSProperties, useEffect, useState, useRef, type ReactElement} from 'react';
+import {type CSSProperties, useEffect, useState, useRef, type ReactElement} from 'react';
 import './splitter.css';
 import Cache from "../lib/Cache";
 import SplitterDots from "./SplitterDots";
@@ -22,8 +22,8 @@ export default function Splitter(props: IProps) {
     const getSize = (): number => {
         if (props.id) {
             const storesSize = sessionStorage.getItem('aiiif-splitter-' + props.id);
-            if (storesSize && parseInt(storesSize) < 100 && parseInt(storesSize) > 0) {
-                return parseInt(storesSize);
+            if (storesSize && parseInt(storesSize, 10) < 100 && parseInt(storesSize, 10) > 0) {
+                return parseInt(storesSize, 10);
             }
         }
         if (props.aSize && props.aSize < 100 && props.aSize > 0) {
@@ -43,7 +43,7 @@ export default function Splitter(props: IProps) {
             return {};
         }
 
-        let sizeP;
+        let sizeP: number | string;
         if (size <= 0) {
             sizeP = 0;
         } else if (size >= 100) {
@@ -64,7 +64,7 @@ export default function Splitter(props: IProps) {
             return {};
         }
 
-        let sizeP;
+        let sizeP: string;
         if (size <= 0) {
             sizeP = 'calc(100% - 8px)';
         } else if (size >= 100) {
@@ -81,7 +81,7 @@ export default function Splitter(props: IProps) {
 
     const globalMoveStart = (size: number) => {
 
-        if (isMoving && myRef && myRef.current) {
+        if (isMoving && myRef?.current) {
             let offset: number;
             let totalSize: number;
             if (props.direction === 'vertical') {
@@ -163,7 +163,7 @@ export default function Splitter(props: IProps) {
     }
 
     if (!props.a && !props.b) {
-        return <></>;
+        return null;
     }
 
     const containerClassName = 'aiiif-splitter-container aiiif-splitter-' + props.direction + ' aiiif-' + props.id;

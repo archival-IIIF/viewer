@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import {useContext} from "react";
 import TabButton from "./TabButton";
 import {faDownload, faInfoCircle, faSearch, faShare, faImages} from "@fortawesome/free-solid-svg-icons";
 import type Config from "../lib/Config";
@@ -15,7 +15,7 @@ export default function TabButtons() {
     const {currentManifest, tab, setTab} = useContext(AppContext);
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     const buttons = [];

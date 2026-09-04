@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import {createRef, useContext, useEffect, useState} from 'react';
 import DOMPurify from "dompurify";
 import './transcription.css';
 import Cache from "../../lib/Cache";
@@ -11,8 +11,8 @@ interface IPros {
 
 export default function Transcription(props: IPros) {
 
-    const containerRef: React.RefObject<HTMLDivElement | null> = React.createRef();
-    const currentRef: React.RefObject<HTMLDivElement | null> = React.createRef();
+    const containerRef: React.RefObject<HTMLDivElement | null> = createRef();
+    const currentRef: React.RefObject<HTMLDivElement | null> = createRef();
     const [currentPart, setCurrentPart] = useState<number>(0);
     const {currentManifest} = useContext(AppContext);
 
@@ -45,7 +45,7 @@ export default function Transcription(props: IPros) {
     }, [currentPart, containerRef, currentRef]);
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     const parts = [];
@@ -62,18 +62,19 @@ export default function Transcription(props: IPros) {
                 <div className="aiiif-transcription-part active" onClick={() => props.jumpToTime(t.start)}
                      key={i++} ref={currentRef}>
                     <div className="aiiif-time-code">{hours}:{pad(minutes, 2)}:{pad(seconds, 2)}</div>
-                    <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(t.content, sanitizeRulesSet)
-                    }}/>
+                    <div
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(t.content, sanitizeRulesSet)}}/>
                 </div>
             );
         } else {
             parts.push(
                 <div className="aiiif-transcription-part" onClick={() => props.jumpToTime(t.start)} key={i++}>
                     <div className="aiiif-time-code">{hours}:{pad(minutes, 2)}:{pad(seconds, 2)}</div>
-                    <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-                        __html: DOMPurify.sanitize(t.content, sanitizeRulesSet)
-                    }}/>
+                    <div
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(t.content, sanitizeRulesSet)}}
+                    />
                 </div>
             );
         }

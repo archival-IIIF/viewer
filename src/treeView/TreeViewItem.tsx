@@ -1,4 +1,4 @@
-import React, {type ReactElement, useContext} from 'react';
+import {type ReactElement, useContext} from 'react';
 import './treeview.css';
 import CaretDownIcon from '@mui/icons-material/ArrowDropDown';
 import CaretRightIcon from '@mui/icons-material/ArrowRight';
@@ -82,7 +82,7 @@ export default function TreeViewItem(props: IPros) {
     const style = {marginLeft: (props.level - 1) * 10};
     let className = 'aiiif-treeview-item level-' + props.level;
     let classNameCaret = 'aiiif-treeview-caret';
-    let caret = <></>;
+    let caret = null;
     const iconStyle = {
         color: "#8C8C8C",
         fontSize: 32
@@ -125,8 +125,9 @@ export default function TreeViewItem(props: IPros) {
                        key={Math.random()}
                        id={c.id}
                        label={c.label}
-                       children={c.collections ?? []}
-                   />
+                   >
+                       {c.collections ?? []}
+                   </TreeViewItem>
                );
            }
         }

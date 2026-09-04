@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState, useContext} from 'react';
+import {useRef, useEffect, useState, useContext} from 'react';
 import * as OpenSeadragon from 'openseadragon';
 import ImageApi from '../../fetch/ImageApi';
 import ViewerSpinner from '../ViewerSpinner';
@@ -158,8 +158,8 @@ export default function ReactOpenSeadragon(props: IProps) {
                 viewportMargins: {left: 12, top: 12, right: 12, bottom: 12}
             };
 
-            if (result.authService && result.authService.token && Token.has(result.authService.token)) {
-                options['ajaxHeaders'] = {
+            if (result.authService?.token && Token.has(result.authService.token)) {
+                options.ajaxHeaders = {
                     Authorization: 'Bearer ' + Token.get(result.authService.token)
                 };
             }

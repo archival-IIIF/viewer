@@ -60,8 +60,8 @@
   "scripts": {
     "dev": "webpack-dev-server --open --env development --mode development --hot",
     "build": "webpack --mode production",
-    "build:react": "rimraf ./dist/* && tsc -p tsconfig.prod.json && copyfiles -u 1 \"src/**/*.css\" \"src/**/*.json\" ./dist/",
-    "build:dist": "webpack --mode production && node dist-pkg/buildDistPkg.js",
+    "build:react": "rimraf ./dist/* && tsc --noEmit  -p tsconfig.prod.json && copyfiles -u 1 \"src/**/*.css\" \"src/**/*.json\" ./dist/",
+    "build:dist": "tsc --noEmit && webpack --mode production && node dist-pkg/buildDistPkg.js",
     "lint": "biome lint .",
     "lint:fix": "biome lint --write ."
   },

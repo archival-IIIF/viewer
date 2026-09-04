@@ -1,7 +1,7 @@
-import React from 'react';
 import type IManifestData from "./interface/IManifestData";
 import type {AnnotationType, HitType} from "./fetch/SearchApi";
 import type {IAlertContent} from "./Alert";
+import {createContext} from "react";
 
 interface IContext {
     treeDate: number;
@@ -25,7 +25,7 @@ interface IContext {
     setAlert: (content: IAlertContent | undefined) => void;
 }
 
-export const AppContext = React.createContext<IContext>({
+export const AppContext = createContext<IContext>({
     treeDate: 0,
     tab: '',
     setTab: () => {},

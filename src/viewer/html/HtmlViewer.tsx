@@ -1,4 +1,3 @@
-import * as React from 'react';
 import ViewerSpinner from '../ViewerSpinner';
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../AppContext";
@@ -14,7 +13,7 @@ export default function HtmlViewer() {
     const [html, setHtml] = useState<string>('');
 
     useEffect(() => {
-        if (currentManifest && currentManifest.resource) {
+        if (currentManifest?.resource) {
             const source = currentManifest.resource.id;
             fetch(source)
                 .then((response) => {
@@ -53,12 +52,16 @@ export default function HtmlViewer() {
     });
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     if (loading) {
         return <ViewerSpinner show={loading} />;
     }
 
-    return <div className="aiiif-viewer-html" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
+    return <div
+        className="aiiif-viewer-html"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}}
+    />
 }

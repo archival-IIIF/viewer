@@ -9,21 +9,38 @@ declare let global: {
     config: Config;
 };
 
+interface IBaseAuthServiceRaw {
+    id?: string
+    "@id"?: string
+    confirmLabel: string | null,
+    description: string | null,
+    failureDescription: string | null,
+    header: string | null,
+    failureHeader: string | null,
+    service?: IBaseServiceRaw[]
+}
+
+interface IBaseServiceRaw {
+    id?: string
+    "@id"?: string
+    profile: string
+}
+
 class ImageApi {
 
-    static cache: any = {};
+    static cache: Record<string, string> = {};
 
-    static get(id: string): Promise<any> {
+    static get(id: string): Promise<string | false | unknown> {
 
         return new Promise((resolve, reject) => {
 
-            const data = this.fetchFromCache(id);
+            const data = ImageApi.fetchFromCache(id);
             if (data !== false) {
                 resolve(data)
                 return;
             }
 
-            this.fetchFromUrl(id).then(d => resolve(d)).catch(r => reject(r));
+            ImageApi.fetchFromUrl(id).then(d => resolve(d)).catch(r => reject(r));
         })
     }
 
@@ -36,7 +53,7 @@ class ImageApi {
                 return;
             }
 
-            const t = this;
+            const t = ImageApi;
             const init: RequestInit = {};
             if (token) {
                 const authHeader: Headers = new Headers();
@@ -64,8 +81,8 @@ class ImageApi {
                     return;
                 }
 
-                response.json().then((json) => {
-                    const authService = this.getAuthService(json);
+                response.json().then(json => {
+                    const authService = ImageApi.getAuthService(json);
                     json.statusCode = statusCode;
                     json.authService = authService;
 
@@ -98,12 +115,12 @@ class ImageApi {
 
                         const newToken = authService.token;
                         if (Token.has(newToken)) {
-                            this.fetchFromUrl(url, Token.get(newToken)).then(d => resolve(d)).catch(r => reject(r));
+                            ImageApi.fetchFromUrl(url, Token.get(newToken)).then(d => resolve(d)).catch(r => reject(r));
                             return;
                         }
 
                         if (authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            Manifest.loginInExternal(authService, url).then((d: any) => resolve(d))
+                            Manifest.loginInExternal(authService, url).then(d => resolve(d))
                                 .catch(r => reject(r));
                             return;
                         }
@@ -127,12 +144,13 @@ class ImageApi {
         });
     }
 
-    static getAuthService(json: any): IAuthService | undefined {
+
+    static getAuthService(json: {service: IBaseAuthServiceRaw | IBaseAuthServiceRaw[]}): IAuthService | undefined {
 
         if (!json.service) {
             return undefined;
         }
-        let authService;
+        let authService: IBaseAuthServiceRaw;
         if (Array.isArray(json.service)) {
             authService = json.service[0];
         } else {
@@ -159,8 +177,8 @@ class ImageApi {
             }
         }
 
-        let token;
-        let logout;
+        let token: string | undefined;
+        let logout: string | undefined;
         if (authService.service) {
             for (const service of authService.service) {
                 if (service.profile === ServiceProfile.AUTH_1_TOKEN) {
@@ -181,22 +199,22 @@ class ImageApi {
             header: authService.header,
             failureHeader: authService.failureHeader,
             profile,
-            id
+            id: id ?? ''
         };
     }
 
 
     static fetchFromCache(id: string) {
 
-        if (Object.hasOwn(this.cache, id)) {
-            return this.cache[id];
+        if (Object.hasOwn(ImageApi.cache, id)) {
+            return ImageApi.cache[id];
         }
 
         return false;
     }
 
     static clearCache() {
-        this.cache = {};
+        ImageApi.cache = {};
     }
 }
 

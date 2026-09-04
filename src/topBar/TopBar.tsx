@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Cache from '../lib/Cache';
 import NavBarIcon from '@mui/icons-material/VerticalSplit';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -21,7 +20,7 @@ export default function TopBar() {
         {(currentManifest && !isSingleManifest(currentManifest)) &&
             <div className="aiiif-icon-button" onClick={() => Cache.ee.emit('toggle-splitter-main')}>
                 <NavBarIcon />
-                <Translation ns="common">{(t, { i18n }) => <p>{t('navBar')}</p>}</Translation>
+                <Translation ns="common">{t => <p>{t('navBar')}</p>}</Translation>
             </div>
         }
         <LanguageSwitcher />
@@ -29,7 +28,7 @@ export default function TopBar() {
         {Token.hasActiveToken() &&
             <div className="aiiif-icon-button" onClick={() => Token.logout()}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
-                <Translation ns="common">{(t, { i18n }) => <p>{t('logout')}</p>}</Translation>
+                <Translation ns="common">{t => <p>{t('logout')}</p>}</Translation>
             </div>
         }
        <FullscreenButton />

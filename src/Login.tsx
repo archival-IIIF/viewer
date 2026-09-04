@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import {useRef, useEffect, useState} from 'react';
 import PresentationApi from './fetch/PresentationApi';
 import ImageApi from './fetch/ImageApi';
 import Cache from './lib/Cache';
@@ -60,7 +60,7 @@ export default function Login() {
 
     const openWindow = (id: string) => {
 
-        if (!authService.current || !authService.current.token) {
+        if (!authService.current?.token) {
             return;
         }
         const token = authService.current.token;
@@ -82,12 +82,12 @@ export default function Login() {
                         (event) => receiveToken(event, id), {once: true}
                     );
                     const src = token + '?messageId=1&origin=' + origin;
-                    const messageFrame: any = document.getElementById('message-frame-' + messageFrameId.current);
-                    if (messageFrame) {
+                    const messageFrame = document.getElementById('message-frame-' + messageFrameId.current);
+                    if (messageFrame instanceof HTMLIFrameElement) {
                         messageFrame.src = src;
                     }
                 }
-            } catch (e) {
+            } catch (_e) {
             }
 
         }, 1000);
@@ -99,9 +99,13 @@ export default function Login() {
 
     const body = (authService: IAuthService) => {
         const body = [];
-        body.push(<div key="description" dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-            __html: DOMPurify.sanitize(authService.description ?? '', sanitizeRulesSet)
-        }} />);
+        body.push(
+            <div
+                key="description"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: DOMPurify
+                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(authService.description ?? '', sanitizeRulesSet)}}
+            />
+        );
 
 
         if (error) {
@@ -112,9 +116,9 @@ export default function Login() {
     }
 
 
-    const receiveToken = (event: any, id: string) => {
+    const receiveToken = (event: MessageEvent, id: string) => {
 
-        if (!authService.current || !authService.current.token) {
+        if (!authService.current?.token) {
             return;
         }
 
@@ -134,7 +138,7 @@ export default function Login() {
     }
 
     if (!authService.current) {
-        return <></>
+        return null
     }
     const aService = authService.current;
 

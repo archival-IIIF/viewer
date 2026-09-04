@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, type ReactElement} from 'react';
+import {useEffect, useContext, type ReactElement} from 'react';
 import Cache from './lib/Cache';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -31,13 +31,13 @@ export default function Alert() {
     });
 
     if (!alert) {
-        return <></>;
+        return null;
     }
 
-    const title = alert.title ?? (alert.titleJsx ?? <></>);
+    const title = alert.title ?? (alert.titleJsx ?? null);
     const body = alert.body ?
         <Nl2br text={alert.body} urlTransformation={true}/> :
-        (alert.bodyJsx ?? <></>);
+        (alert.bodyJsx ?? null);
 
     return <Dialog
         open={true}

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import TreeViewItem from './TreeViewItem';
 import './treeview.css';
 import PresentationApi from "../fetch/PresentationApi";
@@ -21,7 +21,7 @@ export default function TreeView() {
 
     const rootManifest = PresentationApi.fetchFromCache(rootId);
     if (!rootManifest) {
-        return <></>;
+        return null;
     }
 
 
@@ -30,8 +30,9 @@ export default function TreeView() {
             key={Math.random()}
             id={rootManifest.id}
             label={rootManifest.label}
-            children={rootManifest.collections ?? []}
             level={1}
-        />
+        >
+            {rootManifest.collections ?? []}
+        </TreeViewItem>
     </div>;
 }

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Item from './Item';
 import {Translation} from 'react-i18next';
 import {getLocalized} from "../lib/ManifestHelpers";
@@ -16,7 +15,7 @@ export default function FolderView() {
     const [mode, setMode] = useState<string>('icon-view');
     const [search, setSearch] = useState<string>('');
     if (!currentManifest || !currentFolder) {
-        return  <></>;
+        return  null;
     }
 
     if (currentFolder.restricted) {
@@ -30,7 +29,7 @@ export default function FolderView() {
     if (files.length === 0 && folders.length === 0) {
 
         content.push(<div className="aiiif-empty" key="empty">
-            <Translation ns="common">{(t, { i18n }) => <p>{t('emptyFolder')}</p>}</Translation>
+            <Translation ns="common">{t => <p>{t('emptyFolder')}</p>}</Translation>
         </div>);
     } else {
         const s = removeDiacritics(search);
@@ -82,11 +81,11 @@ export default function FolderView() {
                 </div>
                 <div className="aiiif-icon-button" onClick={() => setMode('icon-view')}>
                     <FontAwesomeIcon icon={faTh} />
-                    <Translation ns="common">{(t, { i18n }) => <p>{t('iconView')}</p>}</Translation>
+                    <Translation ns="common">{t=> <p>{t('iconView')}</p>}</Translation>
                 </div>
                 <div className="aiiif-icon-button" onClick={() => setMode('list-view')}>
                     <FontAwesomeIcon icon={faThList} />
-                    <Translation ns="common">{(t, { i18n }) => <p>{t('listView')}</p>}</Translation>
+                    <Translation ns="common">{t=> <p>{t('listView')}</p>}</Translation>
                 </div>
             </nav>
             <div>

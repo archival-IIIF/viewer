@@ -1,5 +1,4 @@
-import type React from 'react';
-import {useContext, useState, useEffect, useRef} from 'react';
+import {useContext, useState, useEffect, useRef, type SubmitEvent, type KeyboardEvent} from 'react';
 import './search.css';
 import TextField from '@mui/material/TextField';
 import i18next from 'i18next';
@@ -26,7 +25,7 @@ export default function Search() {
 
     useEffect(() => {
 
-        if (currentManifest && currentManifest.search) {
+        if (currentManifest?.search) {
             setSearchResult([]);
 
             if (q === '') {
@@ -39,11 +38,11 @@ export default function Search() {
         }
     }, [q, currentManifest, setSearchResult, setAlert]);
 
-    if (!currentManifest || !currentManifest.search) {
-        return <></>;
+    if (!currentManifest?.search) {
+        return null;
     }
 
-    const onSubmit = (event: React.FormEvent) => {
+    const onSubmit = (event: SubmitEvent) => {
         event.preventDefault();
         setQ(searchPhrase);
     }
@@ -51,7 +50,7 @@ export default function Search() {
 
     const renderHits = () => {
         if (searchResult.length === 0) {
-            return <></>;
+            return null;
         }
 
         const output = [];
@@ -65,7 +64,7 @@ export default function Search() {
                 <div className={className} key={hit.i}
                      onClick={() => setCurrentAnnotation(hit.resource)}>
                     <span className="aiiif-search-badge">
-                        <>{i18next.t('common:pageDot')} {hit.resource.page + 1}</>
+                        {i18next.t('common:pageDot')} {hit.resource.page + 1}
                     </span>
 
                     {stripTags(hit.before)} <strong>{hit.match}</strong> {stripTags(hit.after)}
@@ -75,7 +74,7 @@ export default function Search() {
         return output;
     }
 
-    const handleEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleEnter = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key !== 'Enter') {
             return;
         }
@@ -111,10 +110,10 @@ export default function Search() {
                 onOpen={() => setIsAutocompleteOpen(true)}
                 onClose={() => setIsAutocompleteOpen(false)}
                 options={autocompleteResult.map((option) => option.match)}
-                onInputChange={(event, value) => handleAutocompleteInput(value)}
+                onInputChange={(_event, value) => handleAutocompleteInput(value)}
                 loading={isAutocompleteLoading}
                 noOptionsText=""
-                onChange={(event, value) => setQ(value ?? '')}
+                onChange={(_event, value) => setQ(value ?? '')}
                 className="amsab-iiif-autocomplete"
                 freeSolo={true}
                 selectOnFocus={false}
@@ -122,7 +121,7 @@ export default function Search() {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={<>{i18next.t('common:searchInputLabel')}</>}
+                        label={i18next.t('common:searchInputLabel')}
                         onKeyUp={event => handleEnter(event)}
                         slotProps={{input: {
                             ...params.slotProps.input,

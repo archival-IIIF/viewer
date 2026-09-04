@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Splitter from "../splitter/Splitter";
 import Content2 from "./Content2";
 import {useContext} from "react";
@@ -19,7 +18,7 @@ export default function Content1() {
     const {currentManifest, tab, currentFolder} = useContext(AppContext);
 
     if (!currentManifest || !currentFolder) {
-        return <></>;
+        return null;
     }
 
     if (
@@ -27,12 +26,10 @@ export default function Content1() {
         (global.config.getHideUnbranchedTrees() && isSingleRoot(currentFolder))
     ) {
         if (tab === '') {
-            return <>
-                <div className="aiiif-infobar">
-                    <TabButtons />
-                    <Content3 key={currentManifest.id}/>
-                </div>
-            </>;
+            return <div className="aiiif-infobar">
+                <TabButtons />
+                <Content3 key={currentManifest.id}/>
+            </div>;
         }
 
         return <Splitter

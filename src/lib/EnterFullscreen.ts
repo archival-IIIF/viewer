@@ -6,42 +6,27 @@ declare let global: {
 
 export default function enterFullscreen() {
 
-    const d: any = document as any;
+    const d = document;
 
     if (
-        d.fullscreenElement ||
-        d.webkitFullscreenElement ||
-        d.mozFullScreenElement ||
-        d.msFullscreenElement
+        d.fullscreenElement
     ) {
         if (d.exitFullscreen) {
-            d.exitFullscreen();
-        } else if (d.mozCancelFullScreen) {
-            d.mozCancelFullScreen();
-        } else if (d.webkitExitFullscreen) {
-            d.webkitExitFullscreen();
-        } else if (d.msExitFullscreen) {
-            d.msExitFullscreen();
+            d.exitFullscreen().then(_ => {});
         }
     }
 
 
-    const element: any = document.getElementById(global.config.getID());
+    const element = document.getElementById(global.config.getID());
     if (!element) {
         return;
     }
 
     try {
         if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
+            element.requestFullscreen().then(_ => {});
         }
-    } catch (e) {
+    } catch (_e) {
         return;
     }
 }

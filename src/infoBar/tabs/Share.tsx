@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import {useContext} from "react";
 import {getLocalized} from "../../lib/ManifestHelpers";
 import IIIFIcon from "../../icons/IIIFIcon";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,7 +15,7 @@ export default function Share() {
 
     const {currentManifest} = useContext(AppContext);
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
     const title = getLocalized(currentManifest.label);
     const encodedUrl = encodeURI(window.location.href);

@@ -7,11 +7,11 @@ class ManifestHistory {
     static pageChanged(id: string, label: string, q?: string, tab?: string) {
 
         let previousId = '';
-        if (this.previousIds.length > 0) {
-            previousId = this.previousIds.slice(-1)[0];
+        if (ManifestHistory.previousIds.length > 0) {
+            previousId = ManifestHistory.previousIds.slice(-1)[0];
         }
         if (previousId !== id) {
-            this.previousIds.push(id);
+            ManifestHistory.previousIds.push(id);
         }
 
         let url = '?manifest=' + id;
@@ -32,9 +32,9 @@ class ManifestHistory {
 
     static goBack() {
         // delete current
-        this.previousIds.splice(-1, 1);
+        ManifestHistory.previousIds.splice(-1, 1);
 
-        return this.previousIds.slice(-1)[0];
+        return ManifestHistory.previousIds.slice(-1)[0];
     }
 
 

@@ -20,18 +20,18 @@ class Token {
     static activeTokens: string[] = [];
 
     static get(url: string) {
-        const token = this.getBase(url);
+        const token = Token.getBase(url);
         if (!token) {
             return undefined;
         }
 
-        this.addActive(url);
+        Token.addActive(url);
 
         return token.value.accessToken;
     };
 
     static getLogoutUrl(url: string) {
-       const token = this.getBase(url);
+       const token = Token.getBase(url);
        if (!token) {
            return undefined;
        }
@@ -46,7 +46,7 @@ class Token {
         }
         const token: token = JSON.parse(rawToken);
 
-        if (!token.value || !token.value.accessToken || !token.expiresAt) {
+        if (!token.value?.accessToken || !token.expiresAt) {
             return undefined;
         }
 
@@ -59,12 +59,12 @@ class Token {
     };
 
     static hasActiveToken():boolean {
-        return this.activeTokens.length > 0
+        return Token.activeTokens.length > 0
     }
 
     static set(data: tokenValue, tokenUrl: string, logoutUrl?: string) {
 
-        this.addActive(tokenUrl)
+        Token.addActive(tokenUrl)
 
         if (UrlValidation.isURL(tokenUrl)) {
             sessionStorage.setItem(tokenUrl, JSON.stringify({
@@ -76,16 +76,16 @@ class Token {
     };
 
     static addActive(tokenUrl: string) {
-        if (!this.activeTokens.includes(tokenUrl)) {
-            this.activeTokens.push(tokenUrl);
-            if (this.activeTokens.length === 1) {
+        if (!Token.activeTokens.includes(tokenUrl)) {
+            Token.activeTokens.push(tokenUrl);
+            if (Token.activeTokens.length === 1) {
                 Cache.ee.emit('token-changed');
             }
         }
     }
 
     static has(url: string) {
-        return this.get(url);
+        return Token.get(url);
     }
 
     static delete(tokenId: string) {
@@ -93,14 +93,14 @@ class Token {
     }
 
     static logout() {
-        for (const tokenId of this.activeTokens) {
-            const logoutUrl = this.getLogoutUrl(tokenId);
+        for (const tokenId of Token.activeTokens) {
+            const logoutUrl = Token.getLogoutUrl(tokenId);
             sessionStorage.removeItem(tokenId);
             if (logoutUrl){
                 window.open(logoutUrl, '_blank');
             }
         }
-        this.activeTokens = [];
+        Token.activeTokens = [];
         PresentationApi.clearCache();
         ImageApi.clearCache();
         setTimeout(() => {

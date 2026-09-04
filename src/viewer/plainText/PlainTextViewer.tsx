@@ -1,4 +1,3 @@
-import * as React from 'react';
 import ViewerSpinner from '../ViewerSpinner';
 import Nl2br from './Nl2br';
 import {useContext, useEffect, useState} from "react";
@@ -13,7 +12,7 @@ export default function PlainTextViewer() {
     const [text, setText] = useState<string>('');
 
     useEffect(() => {
-        if (currentManifest && currentManifest.resource) {
+        if (currentManifest?.resource) {
             const source = currentManifest.resource.id;
             fetch(source)
                 .then((response) => {
@@ -32,7 +31,7 @@ export default function PlainTextViewer() {
     });
 
     if (!currentManifest) {
-        return <></>;
+        return null;
     }
 
     if (loading) {

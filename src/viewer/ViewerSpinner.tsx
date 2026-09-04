@@ -1,4 +1,3 @@
-import * as React from 'react';
 import "./spinner.css";
 
 interface IProps {
@@ -9,7 +8,7 @@ interface IProps {
 export default function ViewerSpinner(props: IProps) {
 
     if (!props.show) {
-        return <></>;
+        return null;
     }
 
     let className = 'lds-ripple';

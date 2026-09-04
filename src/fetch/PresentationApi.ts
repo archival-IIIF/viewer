@@ -14,7 +14,6 @@ import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
 import {type IIIFResource, PropertyValue} from "manifesto.js";
 import type ITranscription from "../interface/ITranscription";
-import i18n from "i18next";
 
 declare let global: {
     config: Config;
@@ -39,13 +38,13 @@ class Manifest {
                 return;
             }
 
-            const data = this.fetchFromCache(url, skipAuthentication);
+            const data = Manifest.fetchFromCache(url, skipAuthentication);
             if (data) {
                 resolve(data);
                 return;
             }
 
-            this.fetchFromUrl(url, skipAuthentication).then(d => resolve(d)).catch(r => reject(r));
+            Manifest.fetchFromUrl(url, skipAuthentication).then(d => resolve(d)).catch(r => reject(r));
         });
     }
 
@@ -60,7 +59,7 @@ class Manifest {
                 return;
             }
 
-            const t = this;
+            const t = Manifest;
             const init: RequestInit = {};
             if (token) {
                 const authHeader: Headers = new Headers();
@@ -81,7 +80,7 @@ class Manifest {
 
                 response.json().then((json) => {
 
-                    let manifestoData;
+                    let manifestoData: IIIFResource | null;
                     manifestoData = manifesto.parseManifest(json);
                     if (!manifestoData) {
                         reject({
@@ -102,13 +101,13 @@ class Manifest {
                         manifestData.type = 'Collection';
                     }
                     manifestData.label = manifestoData.getLabel() ?? new PropertyValue();
-                    const isV3 = this.isV3(manifestoData);
+                    const isV3 = Manifest.isV3(manifestoData);
                     if (isV3) {
                         const partOf = manifestoData.getProperty('partOf');
                         if (partOf && partOf.length > 0) {
                             manifestData.parentId = partOf[0].id;
                         }
-                        manifestData.transcription = this.getTranscription(manifestoData);
+                        manifestData.transcription = Manifest.getTranscription(manifestoData);
                     } else {
                         const within = manifestoData.getProperty('within');
                         if (typeof within === 'string') {
@@ -117,7 +116,7 @@ class Manifest {
                             manifestData.parentId = within['@id'];
                         }
                     }
-                    manifestData.authService = this.getAuthService(manifestoData);
+                    manifestData.authService = Manifest.getAuthService(manifestoData);
 
                     if (!manifestData.label || manifestData.label.length === 0) {
                         reject({
@@ -160,13 +159,13 @@ class Manifest {
 
                         const newToken = manifestData.authService.token;
                         if (Token.has(newToken)) {
-                            this.fetchFromUrl(url,  false, Token.get(newToken)).then(d => resolve(d))
+                            Manifest.fetchFromUrl(url,  false, Token.get(newToken)).then(d => resolve(d))
                                 .catch(r => reject(r));
                             return;
                         }
 
                         if (manifestData.authService.profile === ServiceProfile.AUTH_1_EXTERNAL) {
-                            this.loginInExternal(manifestData.authService, url).then(d => resolve(d))
+                            Manifest.loginInExternal(manifestData.authService, url).then(d => resolve(d))
                                 .catch(r => reject(r));
                             return;
                         }
@@ -180,7 +179,7 @@ class Manifest {
                             manifestData.restricted = true;
                         }
                     } else {
-                        const isV3 = this.isV3(manifestoData);
+                        const isV3 = Manifest.isV3(manifestoData);
                         manifestData.metadata = manifestoData.getMetadata();
                         manifestData.description = manifestoData.getDescription();
                         manifestData.license = t.getLicense(manifestoData);
@@ -236,9 +235,9 @@ class Manifest {
                 }
 
                 externalTokenResponse.json()
-                    .then((externalTokenJson: any) => {
+                    .then(externalTokenJson => {
                         Token.set(externalTokenJson, tokenId, authService.logout);
-                        this.fetchFromUrl(url, false, Token.get(tokenId)).then(d => resolve(d))
+                        Manifest.fetchFromUrl(url, false, Token.get(tokenId)).then(d => resolve(d))
                             .catch(r => reject(r));
                     });
             });
@@ -256,7 +255,7 @@ class Manifest {
             ServiceProfile.AUTH_1_LOGIN
         ]
 
-        let authService;
+        let authService: manifesto.Service | null = null;
         let profile = '';
         let id = '';
         for (const serviceProfile of serviceProfiles) {
@@ -324,7 +323,7 @@ class Manifest {
 
     static getLicense(manifestoData: IIIFResource): string | null {
         let license: string | null;
-        if (this.isV3(manifestoData)) {
+        if (Manifest.isV3(manifestoData)) {
             license = manifestoData.getProperty('rights');
         } else {
             license = manifestoData.getLicense();
@@ -351,19 +350,19 @@ class Manifest {
 
 
         if (isV3) {
-            return this.getIIF3Resource(sequence0);
+            return Manifest.getIIF3Resource(sequence0);
         } else {
-            const images = this.getImageResources(sequence0);
+            const images = Manifest.getImageResources(sequence0);
             if (images.length > 0) {
                 return {resource: undefined, images, type: 'image'};
             }
 
-            const audioVideoResource = this.getAudioVideoResource(sequence0);
+            const audioVideoResource = Manifest.getAudioVideoResource(sequence0);
             if (audioVideoResource) {
                 return {resource: audioVideoResource,  images: [], type: 'audioVideo'};
             }
 
-            const fileResource = this.getFileResource(sequence0);
+            const fileResource = Manifest.getFileResource(sequence0);
             if (fileResource) {
                 let type: IPresentationApiItemsType = 'file';
                 if (fileResource.type === 'pdf' || fileResource.format === 'pdf/application') {
@@ -464,7 +463,7 @@ class Manifest {
             return undefined;
         }
 
-        const element0: any = jsonld['elements'][0];
+        const element0 = jsonld.elements[0];
         if (element0 === undefined) {
             return undefined;
         }
@@ -510,7 +509,7 @@ class Manifest {
                             format,
                             id: source.id,
                             type: 'video',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'audioVideo'
@@ -523,7 +522,7 @@ class Manifest {
                             format: source.__jsonld?.value ?? '',
                             id: source.id,
                             type: 'audio',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'audioVideo'
@@ -535,7 +534,7 @@ class Manifest {
                             format,
                             id: source.id,
                             type: 'pdf',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'pdf'
@@ -547,7 +546,7 @@ class Manifest {
                             format,
                             id: source.id,
                             type: 'html',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'html'
@@ -559,7 +558,7 @@ class Manifest {
                             format,
                             id: source.id,
                             type: 'plainText',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'plain'
@@ -593,14 +592,14 @@ class Manifest {
                             format,
                             id: source.id,
                             type: 'file',
-                            manifestations: this.getManifestations(canvas)
+                            manifestations: Manifest.getManifestations(canvas)
                         },
                         images,
                         type: 'file'
                     };
                 }
 
-            } catch (e) {
+            } catch (_e) {
                 return {resource: undefined, images: [], type: 'file'};
             }
         }
@@ -622,7 +621,7 @@ class Manifest {
                     id,
                     type: 'pdf',
                     format,
-                    manifestations: this.getManifestations(element)
+                    manifestations: Manifest.getManifestations(element)
                 };
             }
             if (format === 'text/plain') {
@@ -636,9 +635,9 @@ class Manifest {
                 id,
                 type: 'file',
                 format,
-                manifestations: this.getManifestations(element)
+                manifestations: Manifest.getManifestations(element)
             };
-        } catch (e) {}
+        } catch (_e) {}
 
         return null;
     }
@@ -708,8 +707,8 @@ class Manifest {
             const timeCodes =  annotation.target.split('#t=').pop().split(',');
             transcription.push({
                 content: annotation.body.value,
-                start:  parseInt(timeCodes[0]),
-                end:  timeCodes[1] ? parseInt(timeCodes[1]) : 0
+                start:  parseInt(timeCodes[0], 10),
+                end:  timeCodes[1] ? parseInt(timeCodes[1], 10) : 0
             });
         }
         return transcription;
@@ -756,7 +755,7 @@ class Manifest {
                 manifests.push({
                     id: manifestoManifest.id,
                     label: manifestoManifest.getLabel(),
-                    thumbnail: this.getThumbnail(manifestoManifest),
+                    thumbnail: Manifest.getThumbnail(manifestoManifest),
                     type: manifestoManifest.getProperty('type')
                 });
             }
@@ -778,7 +777,7 @@ class Manifest {
                 collections.push({
                     id: manifestoManifest.id,
                     label: manifestoManifest.getLabel(),
-                    thumbnail: this.getThumbnail(manifestoManifest),
+                    thumbnail: Manifest.getThumbnail(manifestoManifest),
                     type: manifestoManifest.getProperty('type').replace('sc:', '')
                 });
             }
@@ -789,19 +788,19 @@ class Manifest {
 
     static fetchFromCache(url: string, skipAuthentication?: boolean): IManifestData | false {
 
-        if (Object.hasOwn(this.cache, url)) {
-            return this.cache[url];
+        if (Object.hasOwn(Manifest.cache, url)) {
+            return Manifest.cache[url];
         }
 
-        if (skipAuthentication === true && Object.hasOwn(this.cacheSkipAuthentication, url)) {
-            return this.cacheSkipAuthentication[url];
+        if (skipAuthentication === true && Object.hasOwn(Manifest.cacheSkipAuthentication, url)) {
+            return Manifest.cacheSkipAuthentication[url];
         }
 
         return false;
     }
 
     static getIdFromCurrentUrl() {
-        let manifestUri = this.getGetParameter('manifest');
+        let manifestUri = Manifest.getGetParameter('manifest');
 
         if (!manifestUri || manifestUri === '') {
             manifestUri = global.config.getManifest();
@@ -815,11 +814,11 @@ class Manifest {
     }
 
     static clearCache() {
-        this.cache = {};
+        Manifest.cache = {};
     }
 
     static getRootId() {
-        for(const m of Object.values(this.cache)) {
+        for(const m of Object.values(Manifest.cache)) {
             if (m.parentId === undefined && m.id) {
                 return m.id;
             }

@@ -8,12 +8,6 @@
   --vjs-theme-forest--secondary: var(--aiiif-main-color)
 }
 
-.aiiif-video-player .vjs-theme-forest.vjs-big-play-button:focus, .aiiif-video-player .vjs-theme-forest:hover .vjs-big-play-button {
-  background:  var(--aiiif-main-color) no-repeat 20px center;
-  background-image: url("data:image/svg+xml;utf8,<svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='play' class='svg-inline--fa fa-play fa-w-14' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path fill='%23fff' d='M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z'></path></svg>");
-  background-size: 40%;
-  opacity: 1;
-}
 
 .aiiif-video-player.vjs-theme-forest .vjs-big-play-button {
   width: 56px;
@@ -28,6 +22,13 @@
   opacity: 1;
   margin-top: -44px;
   margin-left: -44px;
+}
+
+.aiiif-video-player .vjs-theme-forest.vjs-big-play-button:focus, .aiiif-video-player .vjs-theme-forest:hover .vjs-big-play-button {
+  background:  var(--aiiif-main-color) no-repeat 20px center;
+  background-image: url("data:image/svg+xml;utf8,<svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='play' class='svg-inline--fa fa-play fa-w-14' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path fill='%23fff' d='M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z'></path></svg>");
+  background-size: 40%;
+  opacity: 1;
 }
 
 .vjs-theme-forest .vjs-big-play-button .vjs-icon-placeholder {
@@ -97,6 +98,11 @@
   margin: 0
 }
 
+.vjs-theme-forest .vjs-volume-level {
+  overflow: hidden;
+  background-color: transparent
+}
+
 .vjs-theme-forest .vjs-slider-horizontal .vjs-volume-level {
   height: 100%
 }
@@ -106,6 +112,8 @@
   margin-bottom: 0;
   height: 100%
 }
+
+
 
 .vjs-theme-forest .vjs-volume-bar:before {
   content: "";
@@ -119,11 +127,6 @@
   border-bottom: 2em solid var(--vjs-theme-forest--primary);
   border-right: 0 solid transparent;
   border-top: 0 solid transparent
-}
-
-.vjs-theme-forest .vjs-volume-level {
-  overflow: hidden;
-  background-color: transparent
 }
 
 .vjs-theme-forest .vjs-volume-level:before {
@@ -140,18 +143,18 @@
   border-top: 0 solid transparent
 }
 
+.vjs-theme-forest .vjs-progress-holder {
+  border-radius: .2em;
+  height: .5em;
+  margin: 0
+}
+
 .vjs-theme-forest .vjs-progress-control:hover .vjs-progress-holder {
   font-size: 1em
 }
 
 .vjs-theme-forest .vjs-play-progress:before {
   display: none
-}
-
-.vjs-theme-forest .vjs-progress-holder {
-  border-radius: .2em;
-  height: .5em;
-  margin: 0
 }
 
 .vjs-theme-forest .vjs-load-progress, .vjs-theme-forest .vjs-load-progress div, .vjs-theme-forest .vjs-play-progress {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface IProps {
   direction: "horizontal"|"vertical";
 }
@@ -8,9 +6,9 @@ interface IProps {
 export default function SplitterDots(props: IProps) {
 
   const dots = props.direction === "vertical" ?
-      <>{[0,1,2,3,4,5,6].map(i => <div key={i}>
+      [0,1,2,3,4,5,6].map(i => <div key={i}>
         <div /><div />
-      </div>)}</> :
+      </div>):
       <>{[0,1].map(i => <div key={i}>
         <div /><div /><div /><div /><div /><div /><div />
       </div>)} </>;

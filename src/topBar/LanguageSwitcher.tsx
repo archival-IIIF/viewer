@@ -1,4 +1,3 @@
-import type * as React from 'react';
 import { Translation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
 import Menu from '@mui/material/Menu';
@@ -16,7 +15,7 @@ export default function LanguageSwitcher() {
     const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
     if (global.config.getDisableLanguageSelection()) {
-        return <></>;
+        return null;
     }
 
     const open = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -47,7 +46,7 @@ export default function LanguageSwitcher() {
         <div className="aiiif-icon-button" onClick={open} aria-controls="language-switch-menu"
              aria-haspopup="true">
             <LanguageIcon/>
-            <Translation ns="common">{(t, { i18n }) => <p>{t('language')}</p>}</Translation>
+            <Translation ns="common">{t => <p>{t('language')}</p>}</Translation>
         </div>
         <Menu
             className="aiiif-language-switch-menu"

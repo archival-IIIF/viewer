@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import {useContext} from "react";
 import Metadata from "./tabs/Metadata";
 import Download from "./tabs/Download";
 import Pages from "./tabs/Pages";
@@ -12,10 +12,10 @@ export default function Tabs() {
 
     const {currentManifest, tab} = useContext(AppContext);
     if (!currentManifest || tab === '') {
-        return <></>;
+        return null;
     }
 
-    let content;
+    let content = null;
     let tab2 = tab;
     if (tab === 'download') {
         content = <Download />
@@ -30,10 +30,8 @@ export default function Tabs() {
         content = <Metadata  />;
     }
 
-    return <>
-        <div className="aiiif-tab-container">
-            <h2><>{i18next.t('common:' + tab2)}</></h2>
-            {content}
-        </div>
-    </>
+    return <div className="aiiif-tab-container">
+        <h2>{i18next.t('common:' + tab2)}</h2>
+        {content}
+    </div>
 }

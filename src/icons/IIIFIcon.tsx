@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function IIIFIcon() {
     return (
         <svg
@@ -8,6 +6,7 @@ export default function IIIFIcon() {
             height="441.33334"
             width="493.35999"
             version="1.1">
+            <title>IIIF Icon</title>
             <g transform="matrix(1.3333333,0,0,-1.3333333,0,441.33333)">
                 <g transform="scale(0.1)">
                     <path fill="#2873ab" fillOpacity={1} fillRule="nonzero" stroke="none" d="M 65.2422,2178.75 775.242,1915 773.992,15 65.2422,276.25 v 1902.5" />

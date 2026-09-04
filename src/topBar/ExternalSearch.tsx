@@ -1,4 +1,3 @@
-import React from 'react';
 import {Translation} from "react-i18next";
 import type Config from "../lib/Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -12,11 +11,11 @@ export default function ExternalSearch() {
 
     const externalSearchUrl = global.config.getExternalSearchUrl();
     if (!externalSearchUrl) {
-        return <></>
+        return null
     }
 
     return <a className="aiiif-icon-button" href={externalSearchUrl}>
         <FontAwesomeIcon icon={faSearch} />
-        <Translation ns="common">{(t, { i18n }) => <p>{t('search')}</p>}</Translation>
+        <Translation ns="common">{t => <p>{t('search')}</p>}</Translation>
     </a>
 }

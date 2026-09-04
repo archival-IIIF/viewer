@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect, StrictMode} from 'react';
 import ManifestHistory from './lib/ManifestHistory';
 import {I18nextProvider} from 'react-i18next';
 import i18n  from 'i18next';
@@ -135,7 +135,7 @@ export default function App(props: IProps) {
         i18n.options.fallbackLng = global.config.getFallbackLanguage();
         i18n.on('languageChanged', refresh);
 
-        window.addEventListener('popstate', (event) => {
+        window.addEventListener('popstate', (_event) => {
             const backId = ManifestHistory.goBack();
             if (backId) {
                 setCurrentManifest0(backId)
@@ -154,11 +154,11 @@ export default function App(props: IProps) {
         setCurrentManifest0, currentFolder, setCurrentFolder, authDate, setAuthDate, currentAnnotation,
         setCurrentAnnotation, searchResult, setSearchResult, q, setQ: setQ0, alert, setAlert};
 
-    return <React.StrictMode>
+    return <StrictMode>
         <AppContext.Provider value={appContextValue}>
             <I18nextProvider i18n={i18n}>
                <Main />
             </I18nextProvider>
         </AppContext.Provider>
-    </React.StrictMode>;
+    </StrictMode>;
 }
