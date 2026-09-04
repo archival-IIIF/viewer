@@ -103,7 +103,7 @@ class Token {
         this.activeTokens = [];
         PresentationApi.clearCache();
         ImageApi.clearCache();
-        setTimeout(function () {
+        setTimeout(() => {
             Cache.ee.emit('token-changed')
         }, 500);
     }

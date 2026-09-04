@@ -2,11 +2,11 @@ import * as React from 'react';
 import Viewer from "../viewer/Viewer";
 import Splitter from "../splitter/Splitter";
 import FolderView from "../folder/FolderView";
-import IManifestData from "../interface/IManifestData";
+import type IManifestData from "../interface/IManifestData";
 import {isSingleManifest} from "../lib/ManifestHelpers";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 
 declare let global: {
     config: Config;

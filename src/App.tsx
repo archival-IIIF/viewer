@@ -2,20 +2,20 @@ import React, {useState, useEffect} from 'react';
 import ManifestHistory from './lib/ManifestHistory';
 import {I18nextProvider} from 'react-i18next';
 import i18n  from 'i18next';
-import IConfigParameter from './interface/IConfigParameter';
+import type IConfigParameter from './interface/IConfigParameter';
 import Config from './lib/Config';
 import './css/App.css';
 import Cache from "./lib/Cache";
-import IManifestData from "./interface/IManifestData";
+import type IManifestData from "./interface/IManifestData";
 import PresentationApi from "./fetch/PresentationApi";
 import TreeBuilder from "./treeView/TreeBuilder";
 import ManifestData from "./entity/ManifestData";
 import {getLocalized, isSingleManifest} from "./lib/ManifestHelpers";
 import InitI18n from './lib/InitI18n';
 import {AppContext} from "./AppContext";
-import {AnnotationType, HitType} from "./fetch/SearchApi";
+import type {AnnotationType, HitType} from "./fetch/SearchApi";
 import Main from "./layout/Main";
-import {IAlertContent} from "./Alert";
+import type {IAlertContent} from "./Alert";
 
 interface IProps {
     config: IConfigParameter;
@@ -36,8 +36,8 @@ export default function App(props: IProps) {
     const [currentFolder, setCurrentFolder] = useState<IManifestData | undefined>(undefined);
     const [treeDate, setTreeDate] = useState<number>(Date.now());
     const [authDate, setAuthDate] = useState<number>(0);
-    let initialQ = PresentationApi.getGetParameter('q') ?? '';
-    let initialTab = initialQ !== '' ? 'search' : PresentationApi.getGetParameter('tab') ?? 'metadata';
+    const initialQ = PresentationApi.getGetParameter('q') ?? '';
+    const initialTab = initialQ !== '' ? 'search' : PresentationApi.getGetParameter('tab') ?? 'metadata';
     const [tab, setTab] = useState<string>(initialTab);
     const [q, setQ] = useState<string>(initialQ);
     const [page, setPage] = useState<number>(0);
@@ -135,7 +135,7 @@ export default function App(props: IProps) {
         i18n.options.fallbackLng = global.config.getFallbackLanguage();
         i18n.on('languageChanged', refresh);
 
-        window.addEventListener('popstate', function(event) {
+        window.addEventListener('popstate', (event) => {
             const backId = ManifestHistory.goBack();
             if (backId) {
                 setCurrentManifest0(backId)

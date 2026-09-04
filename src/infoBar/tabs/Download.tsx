@@ -1,4 +1,4 @@
-import React, {ReactElement, useContext} from "react";
+import React, {type ReactElement, useContext} from "react";
 import {basename, getLocalized} from "../../lib/ManifestHelpers";
 import i18next from "i18next";
 import "./download.css"

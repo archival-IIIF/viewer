@@ -1,4 +1,4 @@
-import IManifestDataThumbnail from '../interface/IManifestDataThumbnail';
+import type IManifestDataThumbnail from '../interface/IManifestDataThumbnail';
 
 class ManifestDataThumbnail implements IManifestDataThumbnail {
 

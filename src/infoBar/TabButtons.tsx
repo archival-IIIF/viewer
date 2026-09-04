@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import TabButton from "./TabButton";
 import {faDownload, faInfoCircle, faSearch, faShare, faImages} from "@fortawesome/free-solid-svg-icons";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 import {ServiceProfile} from "@iiif/vocabulary";
 import {AppContext} from "../AppContext";
 

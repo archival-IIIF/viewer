@@ -7,7 +7,7 @@ import InfoBar from "../infoBar/InfoBar";
 import {useContext} from "react";
 import {AppContext} from "../AppContext";
 import TabButtons from "../infoBar/TabButtons";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 
 declare let global: {
     config: Config;

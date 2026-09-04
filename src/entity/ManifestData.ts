@@ -1,11 +1,12 @@
-import IManifestData, {
+import type IManifestData from '../interface/IManifestData';
+import type {
     IAuthService,
     IManifestReference,
     IPresentationApiImage,
     IPresentationApiItemsType
 } from '../interface/IManifestData';
-import {LabelValuePair, PropertyValue} from "manifesto.js";
-import ITranscription from "../interface/ITranscription";
+import {type LabelValuePair, PropertyValue} from "manifesto.js";
+import type ITranscription from "../interface/ITranscription";
 
 class ManifestData implements IManifestData {
 

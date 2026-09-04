@@ -8,7 +8,7 @@ import TabButtons from "../infoBar/TabButtons";
 import InfoBar from "../infoBar/InfoBar";
 import TreeView from "../treeView/TreeView";
 import Content3 from "./Content3";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 
 declare let global: {
     config: Config;

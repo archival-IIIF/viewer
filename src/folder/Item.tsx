@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Cache from '../lib/Cache';
 import TouchDetection from '../lib/TouchDetection';
-import IManifestData, {IManifestReference} from '../interface/IManifestData';
+import type IManifestData from '../interface/IManifestData';
+import type {IManifestReference} from '../interface/IManifestData';
 import './item.css';
 import {getLocalized} from "../lib/ManifestHelpers";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -37,7 +38,7 @@ export default  function Item(props: IProps) {
 
 function getThumbnail(props: IProps) {
 
-    if (props.item.thumbnail === undefined || !props.item.thumbnail.hasOwnProperty('id')) {
+    if (props.item.thumbnail === undefined || !Object.hasOwn(props.item.thumbnail, 'id')) {
         if (props.item.type === 'Collection') {
             return <div className="aiiif-item-thumbnail">
                 <FontAwesomeIcon icon={faFolder} />
@@ -51,7 +52,7 @@ function getThumbnail(props: IProps) {
 
 
     let thumbnailUrl;
-    if (props.item.thumbnail.hasOwnProperty('service') && props.item.thumbnail.service) {
+    if (Object.hasOwn(props.item.thumbnail, 'service') && props.item.thumbnail.service) {
         const width = '72';
         const height = '72';
         const serviceUrl = props.item.thumbnail.service;

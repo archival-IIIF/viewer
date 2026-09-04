@@ -17,7 +17,7 @@ export default function HtmlViewer() {
         if (currentManifest && currentManifest.resource) {
             const source = currentManifest.resource.id;
             fetch(source)
-                .then(function(response) {
+                .then((response) => {
                     let charSet: string | undefined = getCharsetFromHeader(response);
                     return response.arrayBuffer().then(buffer => {
                         if (charSet) {

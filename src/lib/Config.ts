@@ -1,5 +1,5 @@
 import TouchDetection from './TouchDetection';
-import IConfigParameter from '../interface/IConfigParameter';
+import type IConfigParameter from '../interface/IConfigParameter';
 
 class Config {
 

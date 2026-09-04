@@ -1,11 +1,11 @@
-import React, {CSSProperties, useContext} from 'react';
+import React, {type CSSProperties, useContext} from 'react';
 import i18next from "i18next";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHome, faSearchPlus, faSearchMinus, faUndo, faExpand, faArrowLeft, faArrowRight}
     from "@fortawesome/free-solid-svg-icons";
 import './imageButtons.css';
 import {AppContext} from "../../AppContext";
-import {IPresentationApiImage} from "../../interface/IManifestData";
+import type {IPresentationApiImage} from "../../interface/IManifestData";
 
 interface IProps {
     viewerId: number;

@@ -1,18 +1,19 @@
 import Cache from '../lib/Cache';
-import IManifestData, {
+import type IManifestData from '../interface/IManifestData';
+import type {
     IAuthService, IHomepage, IManifestReference, IPresentationApiImage, IPresentationApiItemsType,
     IPresentationApiManifestation, IPresentationApiResource, ISearchService, ISeeAlso
 } from '../interface/IManifestData';
 import ManifestData from '../entity/ManifestData';
 import ManifestDataThumbnail from '../entity/ManifestDataThumbnail';
-import ISequence from '../interface/ISequence';
+import type ISequence from '../interface/ISequence';
 import UrlValidation from '../lib/UrlValidation';
-import Config from '../lib/Config';
+import type Config from '../lib/Config';
 import * as manifesto from 'manifesto.js';
 import { ServiceProfile } from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
-import {IIIFResource, PropertyValue} from "manifesto.js";
-import ITranscription from "../interface/ITranscription";
+import {type IIIFResource, PropertyValue} from "manifesto.js";
+import type ITranscription from "../interface/ITranscription";
 import i18n from "i18next";
 
 declare let global: {
@@ -112,7 +113,7 @@ class Manifest {
                         const within = manifestoData.getProperty('within');
                         if (typeof within === 'string') {
                             manifestData.parentId = within;
-                        } else if (within && within.hasOwnProperty('@id')) {
+                        } else if (within && Object.hasOwn(within, '@id')) {
                             manifestData.parentId = within['@id'];
                         }
                     }
@@ -290,7 +291,7 @@ class Manifest {
     static getSearch(manifestoData: IIIFResource): ISearchService | undefined {
         let searchService = manifestoData.getService(ServiceProfile.SEARCH_0);
         if (searchService) {
-            let autoCompleteService = searchService.getService(ServiceProfile.SEARCH_0_AUTO_COMPLETE);
+            const autoCompleteService = searchService.getService(ServiceProfile.SEARCH_0_AUTO_COMPLETE);
             if (autoCompleteService) {
                 return {
                     id: searchService.id,
@@ -304,7 +305,7 @@ class Manifest {
         searchService = manifestoData.getService(ServiceProfile.SEARCH_1);
         if (searchService) {
 
-            let autoCompleteService = searchService.getService(ServiceProfile.SEARCH_1_AUTO_COMPLETE);
+            const autoCompleteService = searchService.getService(ServiceProfile.SEARCH_1_AUTO_COMPLETE);
             if (autoCompleteService) {
                 return {
                     id: searchService.id,
@@ -384,7 +385,7 @@ class Manifest {
 
         const renderings = manifestoData.getRenderings();
         for (const i in renderings) {
-            if (renderings.hasOwnProperty(i)) {
+            if (Object.hasOwn(renderings, i)) {
                 const rendering = renderings[i];
                 const manifestation: IPresentationApiManifestation = {
                     label: rendering.getLabel(),
@@ -459,7 +460,7 @@ class Manifest {
         }
 
         const jsonld: any = sequence0.__jsonld;
-        if (!jsonld.hasOwnProperty('elements')) {
+        if (!Object.hasOwn(jsonld, 'elements')) {
             return undefined;
         }
 
@@ -468,7 +469,7 @@ class Manifest {
             return undefined;
         }
 
-        if (!element0.hasOwnProperty('format')) {
+        if (!Object.hasOwn(element0, 'format')) {
             return undefined;
         }
 
@@ -648,14 +649,14 @@ class Manifest {
         const sources: IPresentationApiImage[] = [];
         for (const canvases of sequence0.getCanvases()) {
 
-            let images = canvases.getImages();
+            const images = canvases.getImages();
             if (images === undefined || images.length === 0) {
                 continue;
             }
             const image0 = images[0];
 
 
-            let resource = image0.getResource();
+            const resource = image0.getResource();
 
 
             if (resource === undefined || !resource.id) {
@@ -670,7 +671,7 @@ class Manifest {
                 }
             }
 
-            if (service.hasOwnProperty('id') === undefined) {
+            if (Object.hasOwn(service, 'id') === undefined) {
                 continue;
             }
 
@@ -719,7 +720,7 @@ class Manifest {
         const manifestoThumbnail = manifestoData.getThumbnail();
         if (manifestoThumbnail === undefined ||
             manifestoThumbnail === null ||
-            !manifestoThumbnail.hasOwnProperty('id')) {
+            !Object.hasOwn(manifestoThumbnail, 'id')) {
             return undefined;
         }
 
@@ -731,8 +732,8 @@ class Manifest {
             'level2'
         ];
         for (const service of services) {
-            let thumbnailService = manifestoThumbnail.getService(service);
-            if (thumbnailService !== null && thumbnailService.hasOwnProperty('id')) {
+            const thumbnailService = manifestoThumbnail.getService(service);
+            if (thumbnailService !== null && Object.hasOwn(thumbnailService, 'id')) {
                 thumbnail.service = thumbnailService.id;
                 return thumbnail;
             }
@@ -750,7 +751,7 @@ class Manifest {
 
         const manifests = [];
         for (const key in manifestoManifests) {
-            if (manifestoManifests.hasOwnProperty(key)) {
+            if (Object.hasOwn(manifestoManifests, key)) {
                 const manifestoManifest = manifestoManifests[key];
                 manifests.push({
                     id: manifestoManifest.id,
@@ -772,7 +773,7 @@ class Manifest {
 
         const collections: IManifestReference[] = [];
         for (const key in manifestoCollections) {
-            if (manifestoCollections.hasOwnProperty(key)) {
+            if (Object.hasOwn(manifestoCollections, key)) {
                 const manifestoManifest = manifestoCollections[key];
                 collections.push({
                     id: manifestoManifest.id,
@@ -788,11 +789,11 @@ class Manifest {
 
     static fetchFromCache(url: string, skipAuthentication?: boolean): IManifestData | false {
 
-        if (this.cache.hasOwnProperty(url)) {
+        if (Object.hasOwn(this.cache, url)) {
             return this.cache[url];
         }
 
-        if (skipAuthentication === true && this.cacheSkipAuthentication.hasOwnProperty(url)) {
+        if (skipAuthentication === true && Object.hasOwn(this.cacheSkipAuthentication, url)) {
             return this.cacheSkipAuthentication[url];
         }
 

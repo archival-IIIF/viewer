@@ -16,7 +16,7 @@ export default function PlainTextViewer() {
         if (currentManifest && currentManifest.resource) {
             const source = currentManifest.resource.id;
             fetch(source)
-                .then(function(response) {
+                .then((response) => {
                     let charSet: string | undefined = getCharsetFromHeader(response);
                     response.arrayBuffer().then(buffer => {
                         if (!charSet) {

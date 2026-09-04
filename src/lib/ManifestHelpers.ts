@@ -1,7 +1,7 @@
 import i18n  from 'i18next';
-import {PropertyValue} from "manifesto.js";
-import IManifestData from "../interface/IManifestData";
-import {LocalizedValue} from "manifesto.js/dist-esmodule/PropertyValue";
+import type {PropertyValue} from "manifesto.js";
+import type IManifestData from "../interface/IManifestData";
+import type {LocalizedValue} from "manifesto.js/dist-esmodule/PropertyValue";
 
 export function getLocalized(input?: LocalizedValue | LocalizedValue[] | PropertyValue | PropertyValue[] | null): string {
     if (!input) {
@@ -35,7 +35,7 @@ export function addBlankTarget(input: string) {
     const tmp: HTMLDivElement = document.createElement('div');
     tmp.innerHTML = input;
     for (let i: number = 0; i < tmp.children.length; i++) {
-        let child: Element | null = tmp.children.item(i);
+        const child: Element | null = tmp.children.item(i);
         if (child) {
             if (child.nodeName === 'A') {
                 child.setAttribute('target', '_blank');

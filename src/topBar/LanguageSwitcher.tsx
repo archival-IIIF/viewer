@@ -1,10 +1,10 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { Translation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Config from '../lib/Config';
-import {ReactElement, useState} from 'react';
+import type Config from '../lib/Config';
+import {type ReactElement, useState} from 'react';
 import i18n from 'i18next';
 
 declare let global: {
@@ -36,7 +36,7 @@ export default function LanguageSwitcher() {
     const translations = global.config.getTranslations();
     for (const i in translations) {
 
-        if (!translations.hasOwnProperty(i)) {
+        if (!Object.hasOwn(translations, i)) {
             continue;
         }
 

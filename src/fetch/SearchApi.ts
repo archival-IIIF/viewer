@@ -1,4 +1,4 @@
-import IManifestData from "../interface/IManifestData";
+import type IManifestData from "../interface/IManifestData";
 
 export type HitType = {
     match: string;
@@ -34,7 +34,7 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
             response.json().then((json) => {
 
                 const hits: HitType[] = [];
-                let resources = json.resources;
+                const resources = json.resources;
                 let i = 0;
                 for (const hit of json.hits) {
                     for (const annotation of hit.annotations) {
@@ -43,12 +43,12 @@ export default function  fetchSearchApi(searchUrl: string, manifest: IManifestDa
                         if (!resource) {
                             continue;
                         }
-                        let tmpArray = resource.on.split('#xywh=');
+                        const tmpArray = resource.on.split('#xywh=');
                         if (tmpArray.length !== 2) {
                             console.log('Error: url must include #xywh=! ' + resource.on)
                             continue;
                         }
-                        let position = tmpArray[1].split(',');
+                        const position = tmpArray[1].split(',');
 
                         const page = manifest.images.findIndex(r => r.on === tmpArray[0]);
                         hits.push({

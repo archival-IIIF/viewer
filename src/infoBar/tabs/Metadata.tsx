@@ -1,4 +1,4 @@
-import React, {ReactElement, useContext} from "react";
+import React, {type ReactElement, useContext} from "react";
 import DOMPurify from 'dompurify';
 import {addBlankTarget, getLocalized, sanitizeRulesSet} from "../../lib/ManifestHelpers";
 import UrlValidation from "../../lib/UrlValidation";

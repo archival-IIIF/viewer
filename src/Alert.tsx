@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, ReactElement} from 'react';
+import React, {useEffect, useContext, type ReactElement} from 'react';
 import Cache from './lib/Cache';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';

@@ -1,15 +1,16 @@
-import React, {ReactElement, useContext} from 'react';
+import React, {type ReactElement, useContext} from 'react';
 import './treeview.css';
 import CaretDownIcon from '@mui/icons-material/ArrowDropDown';
 import CaretRightIcon from '@mui/icons-material/ArrowRight';
 import {useState} from "react";
 import {getLocalized} from "../lib/ManifestHelpers";
 import PresentationApi from "../fetch/PresentationApi";
-import IManifestData, {IManifestReference} from "../interface/IManifestData";
-import {PropertyValue} from "manifesto.js";
+import type IManifestData from "../interface/IManifestData";
+import type {IManifestReference} from "../interface/IManifestData";
+import type {PropertyValue} from "manifesto.js";
 import TreeBuilder from "./TreeBuilder";
 import {AppContext} from "../AppContext";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 
 
 interface IPros {

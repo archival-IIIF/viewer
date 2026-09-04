@@ -1,6 +1,6 @@
-import IManifestDataThumbnail from './IManifestDataThumbnail';
-import {LabelValuePair, PropertyValue, Service} from "manifesto.js";
-import ITranscription from "./ITranscription";
+import type IManifestDataThumbnail from './IManifestDataThumbnail';
+import type {LabelValuePair, PropertyValue, Service} from "manifesto.js";
+import type ITranscription from "./ITranscription";
 
 export default interface IManifestData {
     id: string;

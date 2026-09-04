@@ -1,4 +1,5 @@
-import React, {useContext, useState, useEffect, useRef} from 'react';
+import type React from 'react';
+import {useContext, useState, useEffect, useRef} from 'react';
 import './search.css';
 import TextField from '@mui/material/TextField';
 import i18next from 'i18next';
@@ -8,7 +9,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Autocomplete from '@mui/material/Autocomplete';
 import {debounce} from 'throttle-debounce';
-import fetchAutoCompleteApi, {IAutoCompleteTerms} from "../../fetch/AutoCompleteApi";
+import fetchAutoCompleteApi, {type IAutoCompleteTerms} from "../../fetch/AutoCompleteApi";
 import fetchSearchApi from "../../fetch/SearchApi";
 
 const autocompleteWaitInterval = 300;

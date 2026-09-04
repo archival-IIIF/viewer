@@ -1,6 +1,6 @@
 import PresentationApi from "../fetch/PresentationApi";
-import IManifestData from "../interface/IManifestData";
-import Config from "../lib/Config";
+import type IManifestData from "../interface/IManifestData";
+import type Config from "../lib/Config";
 
 interface ITreeStatus {[key: string]: boolean}
 
@@ -14,7 +14,7 @@ export default class TreeBuilder {
 
     static buildCache(url: string, done: () => void) {
 
-        PresentationApi.get(url).then(async function(manifestData: IManifestData) {
+        PresentationApi.get(url).then(async (manifestData: IManifestData) => {
             TreeBuilder.cache[manifestData.id] = true;
 
             if (manifestData.parentId) {

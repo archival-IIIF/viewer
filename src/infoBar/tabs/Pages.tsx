@@ -1,4 +1,4 @@
-import React, {CSSProperties, ReactElement, useContext} from "react";
+import React, {type CSSProperties, type ReactElement, useContext} from "react";
 import {AppContext} from "../../AppContext";
 
 

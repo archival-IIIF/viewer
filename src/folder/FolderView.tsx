@@ -2,7 +2,7 @@ import * as React from 'react';
 import Item from './Item';
 import {Translation} from 'react-i18next';
 import {getLocalized} from "../lib/ManifestHelpers";
-import {ReactElement, useContext, useState} from "react";
+import {type ReactElement, useContext, useState} from "react";
 import {AppContext} from "../AppContext";
 import {InputBase} from "@mui/material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

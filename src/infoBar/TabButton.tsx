@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import i18next from 'i18next';
-import {IconProp} from "@fortawesome/fontawesome-svg-core";
+import type {IconProp} from "@fortawesome/fontawesome-svg-core";
 
 interface IProps {
     icon: IconProp;

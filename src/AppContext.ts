@@ -1,7 +1,7 @@
 import React from 'react';
-import IManifestData from "./interface/IManifestData";
-import {AnnotationType, HitType} from "./fetch/SearchApi";
-import {IAlertContent} from "./Alert";
+import type IManifestData from "./interface/IManifestData";
+import type {AnnotationType, HitType} from "./fetch/SearchApi";
+import type {IAlertContent} from "./Alert";
 
 interface IContext {
     treeDate: number;

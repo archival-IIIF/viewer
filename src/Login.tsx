@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Token from "./lib/Token";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import DOMPurify from "dompurify";
-import {IAuthService} from "./interface/IManifestData";
+import type {IAuthService} from "./interface/IManifestData";
 import {sanitizeRulesSet} from "./lib/ManifestHelpers";
 
 export default function Login() {
@@ -73,7 +73,7 @@ export default function Login() {
         openWindows.current.push(id);
 
         const win = window.open(url);
-        let checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
+        const checkIfLoginWindowIsClosedInterval = window.setInterval(() => {
             try {
                 if (win === null || win.closed) {
                     window.clearInterval(checkIfLoginWindowIsClosedInterval);
@@ -123,7 +123,7 @@ export default function Login() {
             openWindows.current.splice(index, 1);
         }
 
-        if (!event.data.hasOwnProperty('accessToken') || event.data.hasOwnProperty('error')) {
+        if (!Object.hasOwn(event.data, 'accessToken') || Object.hasOwn(event.data, 'error')) {
             setError(true);
             return;
         }

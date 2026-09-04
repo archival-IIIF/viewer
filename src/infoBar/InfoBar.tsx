@@ -18,7 +18,7 @@ export default function InfoBar() {
         return <></>;
     }
 
-    const keyDown = function(event: KeyboardEvent) {
+    const keyDown = (event: KeyboardEvent) => {
 
         if (event.key === 'ArrowLeft' && page > 0) {
             setPage(page - 1);

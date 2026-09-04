@@ -1,4 +1,4 @@
-import Config from "./Config";
+import type Config from "./Config";
 
 declare let global: {
     config: Config;

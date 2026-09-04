@@ -8,8 +8,8 @@ import {hasTranscription} from "../../lib/ManifestHelpers";
 import Splitter from "../../splitter/Splitter";
 import './media-player.css';
 import {AppContext} from "../../AppContext";
-import Player from "video.js/dist/types/player";
-import {SourceObject} from "video.js/dist/types/tech/tech";
+import type Player from "video.js/dist/types/player";
+import type {SourceObject} from "video.js/dist/types/tech/tech";
 
 type VideoJsPlayerOptions = Parameters<typeof videojs>[1]
 
@@ -115,7 +115,7 @@ export default function MediaPlayer() {
         const t = player.current.currentTime();
         for (const part of parts) {
             if (t && part.start > t) {
-                let previous = (i === -1) ? 0 : i;
+                const previous = (i === -1) ? 0 : i;
                 if (previous !== currentTranscriptionPart) {
                     currentTranscriptionPart = previous;
                     Cache.ee.emit('transcription-part-changed', previous);

@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect, useState, useRef, ReactElement} from 'react';
+import React, {type CSSProperties, useEffect, useState, useRef, type ReactElement} from 'react';
 import './splitter.css';
 import Cache from "../lib/Cache";
 import SplitterDots from "./SplitterDots";

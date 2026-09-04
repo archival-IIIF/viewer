@@ -1,6 +1,6 @@
 import React from 'react';
 import {Translation} from "react-i18next";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 

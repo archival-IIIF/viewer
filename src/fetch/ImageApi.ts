@@ -1,9 +1,9 @@
 import Cache from '../lib/Cache';
-import {IAuthService} from "../interface/IManifestData";
+import type {IAuthService} from "../interface/IManifestData";
 import {ServiceProfile} from "@iiif/vocabulary/dist-commonjs";
 import Token from "../lib/Token";
 import Manifest from "./PresentationApi";
-import Config from "../lib/Config";
+import type Config from "../lib/Config";
 
 declare let global: {
     config: Config;
@@ -44,7 +44,7 @@ class ImageApi {
                 init.headers = authHeader;
             }
 
-            let id = url;
+            const id = url;
             if (url.endsWith('/info.json')) {
                 id.replace('/info.json', '');
             } else {
@@ -151,7 +151,7 @@ class ImageApi {
         ]
 
         let profile = '';
-        let id = authService.id ?? authService["@id"];
+        const id = authService.id ?? authService["@id"];
         for (const serviceProfile of serviceProfiles) {
             if (id === serviceProfile) {
                 profile = serviceProfile;
@@ -188,7 +188,7 @@ class ImageApi {
 
     static fetchFromCache(id: string) {
 
-        if (this.cache.hasOwnProperty(id)) {
+        if (Object.hasOwn(this.cache, id)) {
             return this.cache[id];
         }
 

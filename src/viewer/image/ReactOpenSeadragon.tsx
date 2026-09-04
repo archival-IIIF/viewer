@@ -5,10 +5,10 @@ import ViewerSpinner from '../ViewerSpinner';
 import Token from "../../lib/Token";
 import i18next from 'i18next';
 import './openSeadragon.css';
-import {Options, Viewer} from "openseadragon";
+import type {Options, Viewer} from "openseadragon";
 import ImageButtons from "./ImageButtons";
 import {AppContext} from "../../AppContext";
-import {IPresentationApiImage} from "../../interface/IManifestData";
+import type {IPresentationApiImage} from "../../interface/IManifestData";
 
 interface IProps {
     images: IPresentationApiImage[];
