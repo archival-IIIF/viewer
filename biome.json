@@ -1,0 +1,22 @@
+{
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "includes": [
+            "src/**"
+        ]
+    },
+    "linter": {
+        "rules": {
+            "preset": "recommended",
+            "style": {
+                "useTemplate": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off"
+            },
+            "complexity": {
+                "noImportantStyles": "off"
+            }
+        }
+    }
+}

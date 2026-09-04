@@ -54,13 +54,16 @@
     "typescript": "^6.0.3",
     "webpack": "^5.108.4",
     "webpack-cli": "^7.2.1",
-    "webpack-dev-server": "^6.0.0"
+    "webpack-dev-server": "^6.0.0",
+    "@biomejs/biome": "^2.5.11"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --env development --mode development --hot",
+    "dev": "webpack-dev-server --open --env development --mode development --hot",
     "build": "webpack --mode production",
     "build:react": "rimraf ./dist/* && tsc -p tsconfig.prod.json && copyfiles -u 1 \"src/**/*.css\" \"src/**/*.json\" ./dist/",
-    "build:dist": "webpack --mode production && node dist-pkg/buildDistPkg.js"
+    "build:dist": "webpack --mode production && node dist-pkg/buildDistPkg.js",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write ."
   },
   "eslintConfig": {
     "extends": "react-app"
