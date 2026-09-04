@@ -151,12 +151,12 @@ yarn add @archival-iiif/viewer
 
 1. Install [Node.js](https://nodejs.org/en/https://nodejs.org/en/)
 1. Install [yarn](https://yarnpkg.com) or [npm](https://www.npmjs.com/)
-1. ```yarn install``` or ```npm install```
-1. ```yarn run start``` or  ```npm run start```
+1. ```pnpm install``` or ```npm install```
+1. ```pnpm run dev``` or  ```npm run dev```
 
 ### Building
 
-1. ```yarn run build``` or  ```npm run build```
+1. ```pnpm run build``` or  ```npm run build```
 
 #### See also
 
