@@ -17,7 +17,7 @@
     "@fortawesome/react-fontawesome": "^3.4.0",
     "@iiif/vocabulary": "^1.0.31",
     "@mui/icons-material": "^9.2.0",
-    "@mui/material": "^9.2.0",
+    "@mui/material": "^9.4.0",
     "buffer": "^6.0.3",
     "chardet": "^2.2.0",
     "core-js": "^3.49.0",
