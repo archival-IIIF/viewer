@@ -90,5 +90,6 @@
   "author": "Archival IIIF",
   "bugs": {
     "url": "https://github.com/archival-IIIF/viewer/issues"
-  }
+  },
+  "packageManager": "pnpm@12.0.0"
 }
