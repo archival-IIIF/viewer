@@ -1,5 +1,5 @@
 import 'core-js';
-import Init from './Init';
+import Init from './ArchivalIIIFViewer';
 import ManifestData from './entity/ManifestData';
 import ManifestDataThumbnail from './entity/ManifestDataThumbnail';
 import AutoCompleteApi from './fetch/AutoCompleteApi';

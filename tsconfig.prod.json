@@ -1,8 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
-    "outDir": "./dist",
-    "declaration": true
-  }
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": false
+  },
+  "exclude": [
+    "src/main.tsx",
+    "src/library.ts",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ]
 }

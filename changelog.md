@@ -1,6 +1,12 @@
 # Changelog
 
-## 4.0
+# 5.0.0
+
+* Build system from webpack to vite migrated
+* @mui/material updated from version 5 to 7
+* openseadragon updated from version 5 to 6
+
+## 4.0.0 (2025-10-26)
 
 * react-app-polyfill (ie11) support removed
 * openseadragon updated from version 3 to 5
@@ -11,12 +17,12 @@
 * react-i18next updated from version 12 to 16 
 * dompurify updated from version 2 to 3
 
-## 3.1
+## 3.1.0 (2023-01-10)
 
 * Language filter for renderings
 * Homepage language filter fixed
 
-## 3.0.0
+## 3.0.0 (2023-01-10)
 
 * Breaking: Global CSS removed (body css to .aiiif-body moved), #192
 * Homepage support improved, #195, #196
@@ -26,13 +32,13 @@
 
 * manifesto.js fix
 
-## 2.0
+## 2.0 (2022-09-07)
 
 * react updated from version 17 to 18
 * craco/cra4 replaced by pure webpack
 * Dockerfile added
 
-## 1.1
+## 1.1 (2022-05-16)
 
 * UrlValidation fixed, #179
 * Optional HTML viewer added
@@ -40,7 +46,7 @@
 * Encoding detection for PlainTextViewer added
 * fontawesome updated from version 5 to 6
 
-## 1.0.10
+## 1.0.10 (2021-09-07)
 
 * keyDown Buttons activated, #7
 * metadata: showLicense & showLogo added
