@@ -16,6 +16,7 @@ import {AppContext} from "./AppContext";
 import type {AnnotationType, HitType} from "./fetch/SearchApi";
 import Main from "./layout/Main";
 import type {IAlertContent} from "./Alert";
+import CssBaseline from '@mui/material/CssBaseline';
 
 interface IProps {
     config: IConfigParameter;
@@ -157,7 +158,8 @@ export default function App(props: IProps) {
     return <StrictMode>
         <AppContext.Provider value={appContextValue}>
             <I18nextProvider i18n={i18n}>
-               <Main />
+                <CssBaseline />
+                <Main />
             </I18nextProvider>
         </AppContext.Provider>
     </StrictMode>;
