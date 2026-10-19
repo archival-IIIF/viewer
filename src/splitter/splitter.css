@@ -12,23 +12,6 @@
     display: flex;
 }
 
-.aiiif-splitter-dots > div > div {
-    background: white;
-    width: 2px;
-    height: 2px;
-    margin: 1px auto;
-}
-
-
-.aiiif-splitter-horizontal > div > .aiiif-splitter-dots {
-    height: 100%;
-    width: inherit;
-    margin: auto;
-}
-
-.aiiif-splitter-horizontal > div > .aiiif-splitter-dots > div > div {
-    margin: 1px;
-}
 
 .aiiif-splitter-vertical > .aiiif-splitter {
     cursor: col-resize;
@@ -67,5 +50,23 @@ body.no-select {
 
 .aiiif-splitter-container > div.aiiif-b {
     flex-grow: 2;
+}
+
+
+.aiiif-splitter-dots > div > div {
+    background: white;
+    width: 2px;
+    height: 2px;
+    margin: 1px auto;
+}
+
+.aiiif-splitter-horizontal > div > .aiiif-splitter-dots {
+    height: 100%;
+    width: inherit;
+    margin: auto;
+}
+
+.aiiif-splitter-horizontal > div > .aiiif-splitter-dots > div > div {
+    margin: 1px;
 }
 
