@@ -60,6 +60,10 @@ export default defineConfig(({ mode }) => {
                     },
 
                     minify: true,
+                    sourcemap: true,
+                    license: {
+                        fileName: 'archival-IIIF-viewer.min.js.LICENSE.txt',
+                    },
                 }
                 : {
                     outDir: 'dist',
