@@ -28,6 +28,11 @@ export default defineConfig(({ mode }) => {
         },
         define: {
             global: 'globalThis',
+            ...(isBrowserLib
+                ? {
+                    'process.env.NODE_ENV': JSON.stringify('production'),
+                }
+                : {}),
         },
         build: isReactLib
             ? {

@@ -1,6 +1,10 @@
 # Changelog
 
-# 5.0.0
+# 5.0.1 (2026-10-19)
+
+* Lib process fix
+
+# 5.0.0 (2026-10-19)
 
 * Build system from webpack to vite migrated
 * @mui/material updated from version 5 to 7
