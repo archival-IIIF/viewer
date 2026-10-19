@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig(({ mode }) => {
 
@@ -11,6 +12,9 @@ export default defineConfig(({ mode }) => {
     return {
         plugins: [
             react(),
+            ...(isBrowserLib
+                ? [cssInjectedByJsPlugin()]
+                : []),
             ...(isReactLib
                 ? [dts({
                     tsconfigPath: './tsconfig.prod.json',
