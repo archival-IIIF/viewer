@@ -5,6 +5,9 @@ minimumReleaseAgeExclude:
   - minimatch
   - ajv
   - brace-expansion
+  - '@peculiar/asn1-x509-attr@2.11.0'
+  - '@peculiar/asn1-x509@2.11.0'
+  - dotenv@18.0.8
 
 overrides:
   ajv@<8.18.0: '>=8.18.0'
